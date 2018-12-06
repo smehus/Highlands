@@ -8,14 +8,16 @@
 
 #include <metal_stdlib>
 using namespace metal;
+#import "Common.h"
 
 struct VertexIn {
     float4 position [[ attribute(0) ]];
 };
 
-vertex float4 vertex_main(const VertexIn vertexIn [[ stage_in ]], constant float &timer [[ buffer(1) ]]) {
-    float4 position = vertexIn.position;
-    position.x += timer;
+vertex float4 vertex_main(const VertexIn vertexIn [[ stage_in ]],
+                          constant Uniforms & uniforms [[ buffer(1) ]]) {
+
+    float4 position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertexIn.position;
     return position;
 }
 

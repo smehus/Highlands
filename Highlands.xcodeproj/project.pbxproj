@@ -26,6 +26,8 @@
 		A57F6A5E21B8CC06002C0632 /* train.obj in Resources */ = {isa = PBXBuildFile; fileRef = A57F6A2921B8C6CB002C0632 /* train.obj */; };
 		A57F6A5F21B8CC08002C0632 /* train.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A57F6A2A21B8C6CB002C0632 /* train.mtl */; };
 		A57F6A6021B8CC09002C0632 /* train.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A57F6A2A21B8C6CB002C0632 /* train.mtl */; };
+		A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
+		A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +50,8 @@
 		A57F6A5021B8CBA8002C0632 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A57F6A5221B8CBA8002C0632 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A57F6A5321B8CBA8002C0632 /* Highlands_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Highlands_macOS.entitlements; sourceTree = "<group>"; };
+		A57F6A6221B978E3002C0632 /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
+		A57F6A6521B9795D002C0632 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,10 +94,12 @@
 		A57F6A2121B8A1CC002C0632 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A57F6A6121B978E3002C0632 /* Utility */,
 				A57F6A2821B8C6CB002C0632 /* Models */,
 				A57F6A2221B8A1E0002C0632 /* Renderer.swift */,
 				A57F6A2421B8A3E5002C0632 /* Primitive.swift */,
 				A57F6A2621B8A901002C0632 /* Shaders.metal */,
+				A57F6A6521B9795D002C0632 /* Common.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -131,6 +137,14 @@
 				A57F6A5321B8CBA8002C0632 /* Highlands_macOS.entitlements */,
 			);
 			path = "Highlands-macOS";
+			sourceTree = "<group>";
+		};
+		A57F6A6121B978E3002C0632 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				A57F6A6221B978E3002C0632 /* MathLibrary.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,6 +257,7 @@
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
+				A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +270,7 @@
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
 				A57F6A5A21B8CBDB002C0632 /* Primitive.swift in Sources */,
 				A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */,
+				A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +361,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = Common/Common.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -399,6 +416,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = Common/Common.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
