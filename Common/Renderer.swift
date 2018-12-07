@@ -15,15 +15,32 @@ final class Renderer: NSObject {
     static var library: MTLLibrary!
     static var colorPixelFormat: MTLPixelFormat!
 
-    private var uniforms = Uniforms()
-
     lazy var camera: Camera = {
         let camera = Camera()
         camera.position = [0, 0.5, -3]
         return camera
     }()
 
-    var models = [Model]()
+    lazy var sunlight: Light = {
+        var light = buildDefaultLight()
+        light.position = [1, 2, -2]
+        return light
+    }()
+
+    lazy var ambientLight: Light = {
+        var light = buildDefaultLight()
+        light.color = [0.5, 1, 0]
+        light.intensity = 0.3
+        light.type = Ambientlight
+        return light
+    }()
+
+    private var fragmentUniforms = FragmentUniforms()
+    private var uniforms = Uniforms()
+    private var depthStencilState: MTLDepthStencilState!
+
+    private var models = [Model]()
+    private var lights: [Light] = []
 
     init(metalView: MTKView) {
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -31,6 +48,8 @@ final class Renderer: NSObject {
         }
 
         metalView.device = device
+        metalView.depthStencilPixelFormat = .depth32Float
+        
         Renderer.commandQueue = device.makeCommandQueue()!
         Renderer.device = device
         Renderer.colorPixelFormat = metalView.colorPixelFormat
@@ -42,11 +61,39 @@ final class Renderer: NSObject {
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
+
+        buildDepthStencilState()
+
+
+        lights.append(sunlight)
+        lights.append(ambientLight)
+
         // add model to the scene
         let train = Model(name: "train")
         train.position = [0, 0, 0]
         train.rotation = [0, radians(fromDegrees: 45), 0]
         models.append(train)
+
+
+        fragmentUniforms.lightCount = UInt32(lights.count)
+    }
+
+    private func buildDefaultLight() -> Light {
+        var light = Light()
+        light.position = [0, 0, 0]
+        light.color = [1, 1, 1]
+        light.specularColor = [0.6, 0.6, 0.6]
+        light.intensity = 1
+        light.attenuation = float3(1, 0, 0)
+        light.type = Sunlight
+        return light
+    }
+
+    private func buildDepthStencilState() {
+        let descriptor = MTLDepthStencilDescriptor()
+        descriptor.depthCompareFunction = .less
+        descriptor.isDepthWriteEnabled = true
+        depthStencilState = Renderer.device.makeDepthStencilState(descriptor: descriptor)
     }
 }
 
@@ -60,10 +107,17 @@ extension Renderer: MTKViewDelegate {
         guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else { return }
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
 
+        renderEncoder.setDepthStencilState(depthStencilState)
+
         uniforms.projectionMatrix = camera.projectionMatrix
         uniforms.viewMatrix = camera.viewMatrix
 
+        renderEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: 2)
+        renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: 3)
+
         for model in models {
+
+            uniforms.normalMatrix = float3x3(normalFrom4x4: model.modelMatrix)
             uniforms.modelMatrix = model.modelMatrix
             renderEncoder.setRenderPipelineState(model.pipelineState)
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)

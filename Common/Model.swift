@@ -17,7 +17,13 @@ class Model: Node {
                                                             offset: 0,
                                                             bufferIndex: 0)
 
-        vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: 12)
+
+        vertexDescriptor.attributes[1] = MDLVertexAttribute(name: MDLVertexAttributeNormal,
+                                                            format: .float3,
+                                                            offset: 12,
+                                                            bufferIndex: 0)
+
+        vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: 24)
         return vertexDescriptor
     }()
 
@@ -56,6 +62,7 @@ class Model: Node {
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
         pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)
         pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
 
