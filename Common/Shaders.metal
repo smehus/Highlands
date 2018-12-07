@@ -92,7 +92,8 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
             diffuseColor += color;
         } else if (light.type == Spotlight) {
-
+            
+            //https://forums.raywenderlich.com/t/chapter-5-cone-direction/50705/2
             float d = distance(light.position, in.worldPosition);
             // Could be outside of the cone direction - This is really direction to the fragment
             // Could also negate this thing instead of cone direction
