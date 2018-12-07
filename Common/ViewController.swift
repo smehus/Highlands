@@ -1,26 +1,23 @@
 //
 //  ViewController.swift
-//  Highlands-macOS
+//  Highlands
 //
-//  Created by Scott Mehus on 12/5/18.
+//  Created by Scott Mehus on 12/6/18.
 //  Copyright © 2018 Scott Mehus. All rights reserved.
 //
 
-import Cocoa
 import MetalKit
+class ViewController: LocalViewController {
 
-class ViewController: NSViewController {
-
-    private var renderer: Renderer?
+    var renderer: Renderer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         guard let metalView = view as? MTKView else {
-            fatalError()
+            fatalError("metal view not set up in storyboard")
         }
 
         renderer = Renderer(metalView: metalView)
+        addGestureRecognizer(to: metalView)
     }
 }
-

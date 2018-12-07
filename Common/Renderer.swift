@@ -12,13 +12,18 @@ final class Renderer: NSObject {
 
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
+    static var library: MTLLibrary!
+    static var colorPixelFormat: MTLPixelFormat!
 
-    private var mesh: MTKMesh!
-    private var vertexBuffer: MTLBuffer!
-    private var pipelineState: MTLRenderPipelineState!
     private var uniforms = Uniforms()
 
-    var timer: Float = 0
+    lazy var camera: Camera = {
+        let camera = Camera()
+        camera.position = [0, 0.5, -3]
+        return camera
+    }()
+
+    var models = [Model]()
 
     init(metalView: MTKView) {
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -27,71 +32,27 @@ final class Renderer: NSObject {
 
         metalView.device = device
         Renderer.commandQueue = device.makeCommandQueue()!
-
-        let library = device.makeDefaultLibrary()
-        let vertexFunction = library?.makeFunction(name: "vertex_main")
-        let fragmentFunction = library?.makeFunction(name: "fragment_main")
-
-
-        let mdlMesh = Renderer.createTrain(device: device)
-        do {
-            mesh = try MTKMesh(mesh: mdlMesh, device: device)
-        } catch {
-            assertionFailure(error.localizedDescription)
-        }
-
-        vertexBuffer = mesh.vertexBuffers.first!.buffer
-
-        let pipelineDescriptor = MTLRenderPipelineDescriptor()
-        pipelineDescriptor.vertexFunction = vertexFunction
-        pipelineDescriptor.fragmentFunction = fragmentFunction
-        pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-        pipelineDescriptor.colorAttachments[0].pixelFormat = metalView.colorPixelFormat
-
-        do {
-            pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+        Renderer.device = device
+        Renderer.colorPixelFormat = metalView.colorPixelFormat
+        Renderer.library = device.makeDefaultLibrary()
 
         super.init()
 
         metalView.clearColor = MTLClearColor(red: 1.0, green: 1.0, blue: 0.8, alpha: 1.0)
         metalView.delegate = self
-
-        let translation = float4x4(translation: [0, 0.3, 0])
-        let rotation = float4x4(rotation: [0, radians(fromDegrees: 45), 0])
-
-
-        uniforms.modelMatrix = translation * rotation
-        uniforms.viewMatrix = float4x4(translation: [0.8, 0, 0]).inverse
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
-    }
 
-    static func createTrain(device: MTLDevice) -> MDLMesh {
-        guard let assetURL = Bundle.main.url(forResource: "train", withExtension: "obj") else {
-            fatalError()
-        }
-
-        let vertexDescriptor = MTLVertexDescriptor()
-        vertexDescriptor.attributes[0].format = .float3
-        vertexDescriptor.attributes[0].offset = 0
-        vertexDescriptor.attributes[0].bufferIndex = 0
-        vertexDescriptor.layouts[0].stride = MemoryLayout<float3>.stride
-
-        let meshDescriptor = MTKModelIOVertexDescriptorFromMetal(vertexDescriptor)
-        (meshDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
-
-        let allocator = MTKMeshBufferAllocator(device: device)
-        let asset = MDLAsset(url: assetURL, vertexDescriptor: meshDescriptor, bufferAllocator: allocator)
-        return asset.object(at: 0) as! MDLMesh
+        // add model to the scene
+        let train = Model(name: "train")
+        train.position = [0, 0, 0]
+        train.rotation = [0, radians(fromDegrees: 45), 0]
+        models.append(train)
     }
 }
 
 extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.001, far: 100, aspect: aspect)
+        camera.aspect = Float(view.bounds.width)/Float(view.bounds.height)
     }
 
     func draw(in view: MTKView) {
@@ -99,20 +60,22 @@ extension Renderer: MTKViewDelegate {
         guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else { return }
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
 
-        renderEncoder.setRenderPipelineState(pipelineState)
+        uniforms.projectionMatrix = camera.projectionMatrix
+        uniforms.viewMatrix = camera.viewMatrix
 
-        // Move camera back
-        uniforms.viewMatrix = float4x4(translation: [0, 0, -3]).inverse
+        for model in models {
+            uniforms.modelMatrix = model.modelMatrix
+            renderEncoder.setRenderPipelineState(model.pipelineState)
+            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
+            renderEncoder.setVertexBuffer(model.vertexBuffer, offset: 0, index: 0)
 
-        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
-        renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-
-        for submesh in mesh.submeshes {
-            renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                indexCount: submesh.indexCount,
-                                                indexType: submesh.indexType,
-                                                indexBuffer: submesh.indexBuffer.buffer,
-                                                indexBufferOffset: submesh.indexBuffer.offset)
+            for submesh in model.mesh.submeshes {
+                renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                    indexCount: submesh.indexCount,
+                                                    indexType: submesh.indexType,
+                                                    indexBuffer: submesh.indexBuffer.buffer,
+                                                    indexBufferOffset: submesh.indexBuffer.offset)
+            }
         }
 
         renderEncoder.endEncoding()
