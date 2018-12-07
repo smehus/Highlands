@@ -74,6 +74,10 @@ final class Renderer: NSObject {
         train.rotation = [0, radians(fromDegrees: 45), 0]
         models.append(train)
 
+        let fir = Model(name: "treefir")
+        fir.position = [1.4, 0, 0]
+        models.append(fir)
+
 
         fragmentUniforms.lightCount = UInt32(lights.count)
     }
@@ -109,6 +113,7 @@ extension Renderer: MTKViewDelegate {
 
         renderEncoder.setDepthStencilState(depthStencilState)
 
+        fragmentUniforms.cameraPosition = camera.position
         uniforms.projectionMatrix = camera.projectionMatrix
         uniforms.viewMatrix = camera.viewMatrix
 
