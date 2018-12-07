@@ -6,7 +6,7 @@
 //  Copyright © 2018 Scott Mehus. All rights reserved.
 //
 
-import Foundation
+import MetalKit
 
 extension Renderer {
     func zoomUsing(delta: CGFloat, sensitivity: Float) {
