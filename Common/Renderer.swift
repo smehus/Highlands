@@ -44,6 +44,18 @@ final class Renderer: NSObject {
         return light
     }()
 
+    lazy var spotlight: Light = {
+        var light = buildDefaultLight()
+        light.position = [0.4, 0.8, 1]
+        light.color = [1, 0, 1]
+        light.attenuation = float3(1, 0.5, 0)
+        light.type = Spotlight
+        light.coneAngle = radians(fromDegrees: 40)
+        light.coneDirection = [-2, 0, -1.5]
+        light.coneAttenuation = 12
+        return light
+    }()
+
     private var fragmentUniforms = FragmentUniforms()
     private var uniforms = Uniforms()
     private var depthStencilState: MTLDepthStencilState!
@@ -66,7 +78,7 @@ final class Renderer: NSObject {
 
         super.init()
 
-        metalView.clearColor = MTLClearColor(red: 1.0, green: 1.0, blue: 0.8, alpha: 1.0)
+        metalView.clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
@@ -77,6 +89,7 @@ final class Renderer: NSObject {
         lights.append(sunlight)
         lights.append(ambientLight)
         lights.append(redLight)
+        lights.append(spotlight)
 
         // add model to the scene
         let train = Model(name: "train")

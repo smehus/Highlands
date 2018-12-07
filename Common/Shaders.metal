@@ -91,6 +91,31 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
             color *= attenuation;
 
             diffuseColor += color;
+        } else if (light.type == Spotlight) {
+
+            float d = distance(light.position, in.worldPosition);
+            // Could be outside of the cone direction - This is really direction to the fragment
+            // Could also negate this thing instead of cone direction
+            float3 directionFromLightToFragment = normalize(light.position - in.worldPosition);
+
+            // Inverting here to put the cone direction & light -> fragment pointing in opposite directions
+            float3 coneDirection = normalize(-light.coneDirection);
+
+            // Find angle (dot product) between direction from light to fragment & the direction of the cone
+            float spotResult = dot(directionFromLightToFragment, coneDirection);
+
+            if (spotResult > cos(light.coneAngle)) {
+                // Standard formulat for attenuation
+                float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
+
+                // Adding attenuation for distance from center of the cone
+                attenuation *= pow(spotResult, light.coneAttenuation);
+                float diffuseIntensity = saturate(dot(directionFromLightToFragment, normalDirection));
+                float3 color = light.color * baseColor * diffuseIntensity;
+                color *= attenuation;
+
+                diffuseColor += color;
+            }
         }
     }
 
