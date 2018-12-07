@@ -35,7 +35,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant Light *lights [[ buffer(2) ]],
                               constant FragmentUniforms &fragmentUniforms [[ buffer(3) ]])
 {
-    float3 baseColor = float3(0, 0, 1);
+    float3 baseColor = float3(1, 1, 1);
 
     float3 diffuseColor = 0;
     float3 ambientColor = 0;
@@ -69,6 +69,28 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
             diffuseColor += light.color * baseColor * diffuseIntensity;
         } else if (light.type == Ambientlight) {
             ambientColor += light.color * light.intensity;
+        } else if (light.type == Pointlight) {
+            // *** Light Bulb ***\\
+
+            // distance between light and fragment
+            float d = distance(light.position, in.worldPosition);
+
+            // Vector direction between light & fragment
+            float3 lightDirection = normalize(light.position - in.worldPosition);
+
+            // Standard formula for curved light drop off (attenuation)
+            float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
+
+            // Angle between light direction & normal
+            float diffuseIntensity = saturate(dot(lightDirection, normalDirection));
+
+            // Color with out light drop off
+            float3 color = light.color * baseColor * diffuseIntensity;
+
+            // Light drop off
+            color *= attenuation;
+
+            diffuseColor += color;
         }
     }
 
