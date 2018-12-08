@@ -24,6 +24,10 @@ typedef enum {
     UV = 2
 } Attributes;
 
+typedef enum {
+    BaseColorTexture = 0
+} Textures;
+
 typedef struct {
     matrix_float4x4 modelMatrix;
     matrix_float4x4 viewMatrix;
@@ -54,6 +58,7 @@ typedef struct {
 typedef struct {
     uint lightCount;
     vector_float3 cameraPosition;
+    uint tiling;
 } FragmentUniforms;
 
 

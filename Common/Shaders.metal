@@ -36,10 +36,13 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
 
 fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant Light *lights [[ buffer(BufferIndexLights) ]],
-                              constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]])
+                              constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
+                              texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
+                              sampler textureSampler [[ sampler(0) ]])
 {
-    float3 baseColor = float3(1, 1, 1);
 
+    float3 baseColor = baseColorTexture.sample(textureSampler, in.uv * fragmentUniforms.tiling).rgb;
+    return float4(baseColor, 1);
     float3 diffuseColor = 0;
     float3 ambientColor = 0;
     float3 specularColor = 0;

@@ -91,6 +91,11 @@ final class Renderer: NSObject {
         house.rotation = [0, radians(fromDegrees: 45), 0]
         models.append(house)
 
+        let ground = Model(name: "plane")
+        ground.scale = [40, 40, 40]
+        ground.tiling = 16
+        models.append(ground)
+
 
         lights.append(sunlight)
         fragmentUniforms.lightCount = UInt32(lights.count)
@@ -132,22 +137,28 @@ extension Renderer: MTKViewDelegate {
         uniforms.viewMatrix = camera.viewMatrix
 
         renderEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: Int(BufferIndexLights.rawValue))
-        renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: Int(BufferIndexFragmentUniforms.rawValue))
 
         for model in models {
-
             uniforms.normalMatrix = float3x3(normalFrom4x4: model.modelMatrix)
             uniforms.modelMatrix = model.modelMatrix
             renderEncoder.setRenderPipelineState(model.pipelineState)
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+
+            fragmentUniforms.tiling = model.tiling
+            renderEncoder.setFragmentSamplerState(model.samplerState, index: 0)
+            renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: Int(BufferIndexFragmentUniforms.rawValue))
+
             renderEncoder.setVertexBuffer(model.vertexBuffer, offset: 0, index: Int(BufferIndexVertices.rawValue))
 
-            for submesh in model.mesh.submeshes {
+            for modelSubmesh in model.submeshes {
+
+                renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+
                 renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                    indexCount: submesh.indexCount,
-                                                    indexType: submesh.indexType,
-                                                    indexBuffer: submesh.indexBuffer.buffer,
-                                                    indexBufferOffset: submesh.indexBuffer.offset)
+                                                    indexCount: modelSubmesh.submesh.indexCount,
+                                                    indexType: modelSubmesh.submesh.indexType,
+                                                    indexBuffer: modelSubmesh.submesh.indexBuffer.buffer,
+                                                    indexBufferOffset: modelSubmesh.submesh.indexBuffer.offset)
             }
         }
 

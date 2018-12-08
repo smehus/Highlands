@@ -36,6 +36,8 @@ class Model: Node {
     let submeshes: [Submesh]
     let vertexBuffer: MTLBuffer
     let pipelineState: MTLRenderPipelineState
+    var tiling: UInt32 = 1
+    let samplerState: MTLSamplerState?
 
     init(name: String) {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
@@ -54,8 +56,17 @@ class Model: Node {
         } ?? []
 
         pipelineState = Model.buildPipelineState(vertexDescriptor: mdlMesh.vertexDescriptor)
-
+        samplerState = Model.buildSamplerState()
         super.init()
+    }
+
+    private static func buildSamplerState() -> MTLSamplerState? {
+        let descriptor = MTLSamplerDescriptor()
+        descriptor.sAddressMode = .repeat
+        descriptor.tAddressMode = .repeat
+        let samplerState =
+            Renderer.device.makeSamplerState(descriptor: descriptor)
+        return samplerState
     }
 
     private static func buildPipelineState(vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {

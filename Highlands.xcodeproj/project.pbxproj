@@ -59,6 +59,9 @@
 		A5A9E08B21BC16E800A6F6BB /* lowpoly-house.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5A9E07921BC169300A6F6BB /* lowpoly-house.mtl */; };
 		A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
 		A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
+		A5A9E09021BC293200A6F6BB /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5A9E07B21BC169300A6F6BB /* plane.obj */; };
+		A5A9E09121BC293200A6F6BB /* plane.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5A9E07C21BC169300A6F6BB /* plane.mtl */; };
+		A5A9E09221BC293200A6F6BB /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = A5A9E07D21BC169300A6F6BB /* ground.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -360,12 +363,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5A9E09221BC293200A6F6BB /* ground.png in Resources */,
 				A5A1CD2F21BA294A002F6F35 /* treefir.mtl in Resources */,
 				A5A9E08B21BC16E800A6F6BB /* lowpoly-house.mtl in Resources */,
+				A5A9E09021BC293200A6F6BB /* plane.obj in Resources */,
 				A5A9E08A21BC16E800A6F6BB /* lowpoly-house.obj in Resources */,
 				A5A9E08921BC16E800A6F6BB /* lowpoly-house-color.png in Resources */,
 				A5A1CD3321BA294A002F6F35 /* train.mtl in Resources */,
 				A5A1CD3521BA294A002F6F35 /* train.obj in Resources */,
+				A5A9E09121BC293200A6F6BB /* plane.mtl in Resources */,
 				A5A1CD3121BA294A002F6F35 /* treefir.obj in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
