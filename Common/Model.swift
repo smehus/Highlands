@@ -12,18 +12,23 @@ class Model: Node {
 
     static var defaultVertexDescriptor: MDLVertexDescriptor = {
         let vertexDescriptor = MDLVertexDescriptor()
-        vertexDescriptor.attributes[Int(VertexAttributePosition.rawValue)] = MDLVertexAttribute(name: MDLVertexAttributePosition,
+        vertexDescriptor.attributes[Int(Position.rawValue)] = MDLVertexAttribute(name: MDLVertexAttributePosition,
                                                             format: .float3,
                                                             offset: 0,
                                                             bufferIndex: 0)
 
 
-        vertexDescriptor.attributes[Int(VertexAttributeNormal.rawValue)] = MDLVertexAttribute(name: MDLVertexAttributeNormal,
+        vertexDescriptor.attributes[Int(Normal.rawValue)] = MDLVertexAttribute(name: MDLVertexAttributeNormal,
                                                             format: .float3,
                                                             offset: 12,
                                                             bufferIndex: 0)
 
-        vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: 24)
+        vertexDescriptor.attributes[Int(UV.rawValue)] = MDLVertexAttribute(name: MDLVertexAttributeTextureCoordinate,
+                                                                           format: .float2,
+                                                                           offset: 24,
+                                                                           bufferIndex: 0)
+
+        vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: 32)
         return vertexDescriptor
     }()
 

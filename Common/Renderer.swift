@@ -17,7 +17,7 @@ final class Renderer: NSObject {
 
     lazy var camera: Camera = {
         let camera = Camera()
-        camera.position = [0, 0.5, -3]
+        camera.position = [0, 1.2, -4]
         return camera
     }()
 
@@ -78,7 +78,7 @@ final class Renderer: NSObject {
 
         super.init()
 
-        metalView.clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        metalView.clearColor = MTLClearColor(red: 0.7, green: 0.9, blue: 1.0, alpha: 1)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
@@ -86,22 +86,13 @@ final class Renderer: NSObject {
         buildDepthStencilState()
 
 
+        let house = Model(name: "lowpoly-house")
+        house.position = [0, 0, 0]
+        house.rotation = [0, radians(fromDegrees: 45), 0]
+        models.append(house)
+
+
         lights.append(sunlight)
-        lights.append(ambientLight)
-        lights.append(redLight)
-        lights.append(spotlight)
-
-        // add model to the scene
-        let train = Model(name: "train")
-        train.position = [0, 0, 0]
-        train.rotation = [0, radians(fromDegrees: 45), 0]
-        models.append(train)
-
-        let fir = Model(name: "treefir")
-        fir.position = [1.4, 0, 0]
-        models.append(fir)
-
-
         fragmentUniforms.lightCount = UInt32(lights.count)
     }
 

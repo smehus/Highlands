@@ -9,18 +9,5 @@
 import Cocoa
 import MetalKit
 
-class LocalViewController: NSViewController {
-
-    private var renderer: Renderer?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        guard let metalView = view as? MTKView else {
-            fatalError()
-        }
-
-        renderer = Renderer(metalView: metalView)
-    }
-}
+class LocalViewController: NSViewController { }
 

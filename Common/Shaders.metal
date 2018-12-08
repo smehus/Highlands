@@ -11,14 +11,16 @@ using namespace metal;
 #import "Common.h"
 
 struct VertexIn {
-    float4 position [[ attribute(VertexAttributePosition) ]];
-    float3 normal [[ attribute(VertexAttributeNormal) ]];
+    float4 position [[ attribute(Position) ]];
+    float3 normal [[ attribute(Normal) ]];
+    float2 uv [[ attribute(UV) ]];
 };
 
 struct VertexOut {
     float4 position [[ position ]];
     float3 worldPosition;
     float3 worldNormal;
+    float2 uv;
 };
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -28,6 +30,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertexIn.position;
     out.worldPosition = (uniforms.modelMatrix * vertexIn.position).xyz;
     out.worldNormal = uniforms.normalMatrix * vertexIn.normal;
+    out.uv = vertexIn.uv;
     return out;
 }
 

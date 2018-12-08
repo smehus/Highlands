@@ -19,9 +19,10 @@ typedef enum {
 } BufferIndices;
 
 typedef enum {
-    VertexAttributePosition = 0,
-    VertexAttributeNormal = 1
-} VertexAttributeIndices;
+    Position = 0,
+    Normal = 1,
+    UV = 2
+} Attributes;
 
 typedef struct {
     matrix_float4x4 modelMatrix;
