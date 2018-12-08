@@ -64,9 +64,9 @@ class Model: Node {
         let descriptor = MTLSamplerDescriptor()
         descriptor.sAddressMode = .repeat
         descriptor.tAddressMode = .repeat
-        let samplerState =
-            Renderer.device.makeSamplerState(descriptor: descriptor)
-        return samplerState
+        descriptor.mipFilter = .linear
+        descriptor.maxAnisotropy = 8
+        return Renderer.device.makeSamplerState(descriptor: descriptor)
     }
 
     private static func buildPipelineState(vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {
