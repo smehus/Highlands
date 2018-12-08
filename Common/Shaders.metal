@@ -11,8 +11,8 @@ using namespace metal;
 #import "Common.h"
 
 struct VertexIn {
-    float4 position [[ attribute(0) ]];
-    float3 normal [[ attribute(1) ]];
+    float4 position [[ attribute(VertexAttributePosition) ]];
+    float3 normal [[ attribute(VertexAttributeNormal) ]];
 };
 
 struct VertexOut {
@@ -22,7 +22,7 @@ struct VertexOut {
 };
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
-                          constant Uniforms & uniforms [[ buffer(1) ]]) {
+                          constant Uniforms & uniforms [[ buffer(BufferIndexUniforms) ]]) {
 
     VertexOut out;
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertexIn.position;
@@ -32,8 +32,8 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
 }
 
 fragment float4 fragment_main(VertexOut in [[ stage_in ]],
-                              constant Light *lights [[ buffer(2) ]],
-                              constant FragmentUniforms &fragmentUniforms [[ buffer(3) ]])
+                              constant Light *lights [[ buffer(BufferIndexLights) ]],
+                              constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]])
 {
     float3 baseColor = float3(1, 1, 1);
 

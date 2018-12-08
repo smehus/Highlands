@@ -140,16 +140,16 @@ extension Renderer: MTKViewDelegate {
         uniforms.projectionMatrix = camera.projectionMatrix
         uniforms.viewMatrix = camera.viewMatrix
 
-        renderEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: 2)
-        renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: 3)
+        renderEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: Int(BufferIndexLights.rawValue))
+        renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: Int(BufferIndexFragmentUniforms.rawValue))
 
         for model in models {
 
             uniforms.normalMatrix = float3x3(normalFrom4x4: model.modelMatrix)
             uniforms.modelMatrix = model.modelMatrix
             renderEncoder.setRenderPipelineState(model.pipelineState)
-            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
-            renderEncoder.setVertexBuffer(model.vertexBuffer, offset: 0, index: 0)
+            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+            renderEncoder.setVertexBuffer(model.vertexBuffer, offset: 0, index: Int(BufferIndexVertices.rawValue))
 
             for submesh in model.mesh.submeshes {
                 renderEncoder.drawIndexedPrimitives(type: .triangle,

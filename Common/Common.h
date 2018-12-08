@@ -11,6 +11,18 @@
 
 #import <simd/simd.h>
 
+typedef enum {
+    BufferIndexVertices = 0,
+    BufferIndexUniforms = 1,
+    BufferIndexLights = 2,
+    BufferIndexFragmentUniforms = 3
+} BufferIndices;
+
+typedef enum {
+    VertexAttributePosition = 0,
+    VertexAttributeNormal = 1
+} VertexAttributeIndices;
+
 typedef struct {
     matrix_float4x4 modelMatrix;
     matrix_float4x4 viewMatrix;
