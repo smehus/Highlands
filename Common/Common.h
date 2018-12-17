@@ -15,7 +15,8 @@ typedef enum {
     BufferIndexVertices = 0,
     BufferIndexUniforms = 11,
     BufferIndexLights = 12,
-    BufferIndexFragmentUniforms = 13
+    BufferIndexFragmentUniforms = 13,
+    BufferIndexMaterials = 14
 } BufferIndices;
 
 typedef enum {
@@ -64,5 +65,13 @@ typedef struct {
     uint tiling;
 } FragmentUniforms;
 
+typedef struct {
+    vector_float3 baseColor;
+    vector_float3 specularColor;
+    float roughness;
+    float metallic;
+    vector_float3 ambientOcclusion;
+    float shininess;
+} Material;
 
 #endif /* Common_h */

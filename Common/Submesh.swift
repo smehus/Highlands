@@ -18,10 +18,13 @@ class Submesh {
     let textures: Textures
     var submesh: MTKSubmesh
     let pipelineState: MTLRenderPipelineState
+    let material: Material
+
     init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh) {
 
         self.submesh = submesh
         textures = Textures(material: mdlSubmesh.material)
+        material = Material(material: mdlSubmesh.material)
         pipelineState = Submesh.buildPipelineState(textures: textures)
     }
 
@@ -64,5 +67,23 @@ private extension Submesh.Textures {
         }
         baseColor = property(with: .baseColor)
         normal = property(with: .tangentSpaceNormal)
+    }
+}
+
+private extension Material {
+    init(material: MDLMaterial?) {
+        self.init()
+
+        if let baseColor = material?.property(with: .baseColor), baseColor.type == .float3 {
+            self.baseColor = baseColor.float3Value
+        }
+
+        if let specular = material?.property(with: .specular), specular.type == .float3 {
+            self.specularColor = specular.float3Value
+        }
+
+        if let shininess = material?.property(with: .specularExponent), shininess.type == .float {
+            self.shininess = shininess.floatValue
+        }
     }
 }

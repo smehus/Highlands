@@ -55,7 +55,7 @@ final class Renderer: NSObject {
 
         // models
         do {
-            let model = try Model(name: "cottage1")
+            let model = try Model(name: "cottage2")
             model.position = [0, 0, 0]
             model.rotation = [0, radians(fromDegrees: 45), 0]
             models.append(model)
@@ -112,6 +112,8 @@ extension Renderer: MTKViewDelegate {
 
                 renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
                 renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
+                var material = modelSubmesh.material
+                renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
 
                 renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                     indexCount: modelSubmesh.submesh.indexCount,

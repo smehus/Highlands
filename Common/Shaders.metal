@@ -46,10 +46,17 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                               texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
                               texture2d<float> normalTexture [[ texture(NormalTexture)]],
+                              constant Material &material [[ buffer(BufferIndexMaterials) ]],
                               sampler textureSampler [[ sampler(0) ]])
 {
 
-    float3 baseColor = baseColorTexture.sample(textureSampler, in.uv * fragmentUniforms.tiling).xyz;
+    // *** THIS IS THE BASE COLOR FOR A TEXTURE ***
+//    float3 baseColor = baseColorTexture.sample(textureSampler, in.uv * fragmentUniforms.tiling).xyz;
+
+    // USED FOR MATERIAL COLORS INSTEAD OF TEXTURES
+    float3 baseColor = material.baseColor;
+    float materialShininess = material.shininess;
+    float3 materialSpecularColor = material.specularColor;
 
     // Normal Map tangents & bit tangents
     float3 normalValue = normalTexture.sample(textureSampler, in.uv * fragmentUniforms.tiling).xyz;
@@ -59,8 +66,10 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     float3 diffuseColor = 0;
     float3 ambientColor = 0;
     float3 specularColor = 0;
-    float materialShininess = 32;
-    float3 materialSpecularColor = float3(1, 1, 1);
+
+    // *** UNCOMMENT FOR TEXTURES
+//    float materialShininess = 32;
+//    float3 materialSpecularColor = float3(1, 1, 1);
 
     // between 0 and 1
     float3 normalDirection = float3x3(in.worldTangent,
