@@ -17,43 +17,8 @@ final class Renderer: NSObject {
 
     lazy var camera: Camera = {
         let camera = Camera()
-        camera.position = [0, 1.2, -4]
+        camera.position = [0, 2, -6]
         return camera
-    }()
-
-    lazy var sunlight: Light = {
-        var light = buildDefaultLight()
-        light.position = [1, 2, -2]
-        return light
-    }()
-
-    lazy var ambientLight: Light = {
-        var light = buildDefaultLight()
-        light.color = [0.5, 1, 0]
-        light.intensity = 0.3
-        light.type = Ambientlight
-        return light
-    }()
-
-    lazy var redLight: Light = {
-        var light = buildDefaultLight()
-        light.position = [-0, 0.5, -0.5]
-        light.color = [1, 0, 0]
-        light.attenuation = float3(1, 3, 4)
-        light.type = Pointlight
-        return light
-    }()
-
-    lazy var spotlight: Light = {
-        var light = buildDefaultLight()
-        light.position = [0.4, 0.8, 1]
-        light.color = [1, 0, 1]
-        light.attenuation = float3(1, 0.5, 0)
-        light.type = Spotlight
-        light.coneAngle = radians(fromDegrees: 40)
-        light.coneDirection = [-2, 0, -1.5]
-        light.coneAttenuation = 12
-        return light
     }()
 
     private var fragmentUniforms = FragmentUniforms()
@@ -61,7 +26,9 @@ final class Renderer: NSObject {
     private var depthStencilState: MTLDepthStencilState!
 
     private var models = [Model]()
-    private var lights: [Light] = []
+    private lazy var lights: [Light] = {
+        return lighting()
+    }()
 
     init(metalView: MTKView) {
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -86,30 +53,17 @@ final class Renderer: NSObject {
         buildDepthStencilState()
 
 
-        let house = Model(name: "lowpoly-house")
-        house.position = [0, 0, 0]
-        house.rotation = [0, radians(fromDegrees: 45), 0]
-        models.append(house)
+        // models
+        do {
+            let model = try Model(name: "cottage1")
+            model.position = [0, 0, 0]
+            model.rotation = [0, radians(fromDegrees: 45), 0]
+            models.append(model)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
 
-        let ground = Model(name: "plane")
-        ground.scale = [40, 40, 40]
-        ground.tiling = 16
-        models.append(ground)
-
-
-        lights.append(sunlight)
         fragmentUniforms.lightCount = UInt32(lights.count)
-    }
-
-    private func buildDefaultLight() -> Light {
-        var light = Light()
-        light.position = [0, 0, 0]
-        light.color = [1, 1, 1]
-        light.specularColor = [0.6, 0.6, 0.6]
-        light.intensity = 1
-        light.attenuation = float3(1, 0, 0)
-        light.type = Sunlight
-        return light
     }
 
     private func buildDepthStencilState() {
@@ -152,7 +106,9 @@ extension Renderer: MTKViewDelegate {
 
             for modelSubmesh in model.submeshes {
                 renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
+
                 renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+                renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
 
                 renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                     indexCount: modelSubmesh.submesh.indexCount,
@@ -164,7 +120,7 @@ extension Renderer: MTKViewDelegate {
 
         renderEncoder.endEncoding()
 
-        guard let drawable = view.currentDrawable else { return }
+        guard let drawable = view.currentDrawable else { fatalError() }
 
         commandBuffer.present(drawable)
         commandBuffer.commit()

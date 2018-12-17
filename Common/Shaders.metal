@@ -42,8 +42,12 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               sampler textureSampler [[ sampler(0) ]])
 {
 
-    float3 baseColor = baseColorTexture.sample(textureSampler, in.uv * fragmentUniforms.tiling).rgb;
-    return float4(baseColor, 1);
+    float3 baseColor = baseColorTexture.sample(textureSampler, in.uv * fragmentUniforms.tiling).xyz;
+
+    // Normal Map tangents & bit tangents
+    float3 normalValue = normalTexture.sample(textureSampler, in.uv * fragmentUniforms.tiling).xyz;
+    normalValue = normalize(normalValue);
+
     float3 diffuseColor = 0;
     float3 ambientColor = 0;
     float3 specularColor = 0;

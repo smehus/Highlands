@@ -19,7 +19,7 @@ extension Texturable {
         let fileExtension = URL(fileURLWithPath: imageName).pathExtension.isEmpty ? "png" : nil
 
         guard let url = Bundle.main.url(forResource: imageName, withExtension: fileExtension) else {
-            print("Failed to load \(imageName)")
+            print("Failed to load \(imageName) - attempting to load from asset catalog")
             return try textureLoader.newTexture(name: imageName,
                                                 scaleFactor: 1.0,
                                                 bundle: Bundle.main,

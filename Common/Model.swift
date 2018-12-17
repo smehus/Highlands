@@ -8,6 +8,10 @@
 
 import MetalKit
 
+enum ModelError: Error {
+    case missingVertexBuffer
+}
+
 class Model: Node {
 
     static var defaultVertexDescriptor: MDLVertexDescriptor = {
@@ -38,23 +42,25 @@ class Model: Node {
     var tiling: UInt32 = 1
     let samplerState: MTLSamplerState?
 
-    init(name: String) {
+    init(name: String) throws {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: Model.defaultVertexDescriptor, bufferAllocator: allocator)
         let mdlMesh = asset.object(at: 0) as! MDLMesh
 
-        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+        let mesh = try MTKMesh(mesh: mdlMesh, device: Renderer.device)
         self.mesh = mesh
+        guard let buffer = mesh.vertexBuffers.first?.buffer else {
+            throw ModelError.missingVertexBuffer
+        }
 
-        vertexBuffer = mesh.vertexBuffers[0].buffer
+        vertexBuffer = buffer
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
-            guard let submesh = element as? MDLSubmesh else { return nil }
+            guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
             return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh)
         } ?? []
 
-        
         samplerState = Model.buildSamplerState()
         super.init()
     }
