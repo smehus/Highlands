@@ -102,7 +102,10 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.setFragmentSamplerState(model.samplerState, index: 0)
             renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: Int(BufferIndexFragmentUniforms.rawValue))
 
-            renderEncoder.setVertexBuffer(model.vertexBuffer, offset: 0, index: Int(BufferIndexVertices.rawValue))
+
+            for (index, vertexBuffer) in model.mesh.vertexBuffers.enumerated() {
+                renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
+            }
 
             for modelSubmesh in model.submeshes {
                 renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)

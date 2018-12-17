@@ -14,6 +14,8 @@ struct VertexIn {
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];
     float2 uv [[ attribute(UV) ]];
+    float3 tangent [[ attribute(Tangent) ]];
+    float3 bitangent [[ attribute(Bitangent) ]];
 };
 
 struct VertexOut {
@@ -21,6 +23,8 @@ struct VertexOut {
     float3 worldPosition;
     float3 worldNormal;
     float2 uv;
+    float3 worldTangent;
+    float3 worldBitangent;
 };
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -31,6 +35,9 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.worldPosition = (uniforms.modelMatrix * vertexIn.position).xyz;
     out.worldNormal = uniforms.normalMatrix * vertexIn.normal;
     out.uv = vertexIn.uv;
+    // Normal matrix is the same as world space aka model matrix
+    out.worldTangent = uniforms.normalMatrix * vertexIn.tangent;
+    out.worldBitangent = uniforms.normalMatrix * vertexIn.bitangent;
     return out;
 }
 
@@ -46,6 +53,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
     // Normal Map tangents & bit tangents
     float3 normalValue = normalTexture.sample(textureSampler, in.uv * fragmentUniforms.tiling).xyz;
+    normalValue = normalValue * 2 - 1;
     normalValue = normalize(normalValue);
 
     float3 diffuseColor = 0;
@@ -55,7 +63,10 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     float3 materialSpecularColor = float3(1, 1, 1);
 
     // between 0 and 1
-    float3 normalDirection = normalize(in.worldNormal);
+    float3 normalDirection = float3x3(in.worldTangent,
+                                      in.worldBitangent,
+                                      in.worldNormal) * normalValue;
+    normalDirection = normalize(normalDirection);
 
     for (uint i = 0; i < fragmentUniforms.lightCount; i++) {
         Light light = lights[i];

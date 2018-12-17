@@ -48,6 +48,12 @@ class Model: Node {
         let asset = MDLAsset(url: assetURL, vertexDescriptor: Model.defaultVertexDescriptor, bufferAllocator: allocator)
         let mdlMesh = asset.object(at: 0) as! MDLMesh
 
+        // Add tangent and bit tangent
+        mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
+                                tangentAttributeNamed: MDLVertexAttributeTangent,
+                                bitangentAttributeNamed: MDLVertexAttributeBitangent)
+
+        Model.defaultVertexDescriptor = mdlMesh.vertexDescriptor
         let mesh = try MTKMesh(mesh: mdlMesh, device: Renderer.device)
         self.mesh = mesh
         guard let buffer = mesh.vertexBuffers.first?.buffer else {
