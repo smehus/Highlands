@@ -141,7 +141,7 @@ extension Renderer: MTKViewDelegate {
         for model in models {
             uniforms.normalMatrix = float3x3(normalFrom4x4: model.modelMatrix)
             uniforms.modelMatrix = model.modelMatrix
-            renderEncoder.setRenderPipelineState(model.pipelineState)
+
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
             fragmentUniforms.tiling = model.tiling
@@ -151,7 +151,7 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.setVertexBuffer(model.vertexBuffer, offset: 0, index: Int(BufferIndexVertices.rawValue))
 
             for modelSubmesh in model.submeshes {
-
+                renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
                 renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
 
                 renderEncoder.drawIndexedPrimitives(type: .triangle,

@@ -38,6 +38,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant Light *lights [[ buffer(BufferIndexLights) ]],
                               constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                               texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
+                              texture2d<float> normalTexture [[ texture(NormalTexture)]],
                               sampler textureSampler [[ sampler(0) ]])
 {
 

@@ -35,7 +35,6 @@ class Model: Node {
     let mesh: MTKMesh
     let submeshes: [Submesh]
     let vertexBuffer: MTLBuffer
-    let pipelineState: MTLRenderPipelineState
     var tiling: UInt32 = 1
     let samplerState: MTLSamplerState?
 
@@ -55,7 +54,7 @@ class Model: Node {
             return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh)
         } ?? []
 
-        pipelineState = Model.buildPipelineState(vertexDescriptor: mdlMesh.vertexDescriptor)
+        
         samplerState = Model.buildSamplerState()
         super.init()
     }
@@ -68,27 +67,4 @@ class Model: Node {
         descriptor.maxAnisotropy = 8
         return Renderer.device.makeSamplerState(descriptor: descriptor)
     }
-
-    private static func buildPipelineState(vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {
-        let library = Renderer.library
-        let vertexFunction = library?.makeFunction(name: "vertex_main")
-        let fragmentFunction = library?.makeFunction(name: "fragment_main")
-
-        let pipelineState: MTLRenderPipelineState
-        let pipelineDescriptor = MTLRenderPipelineDescriptor()
-        pipelineDescriptor.vertexFunction = vertexFunction
-        pipelineDescriptor.fragmentFunction = fragmentFunction
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-        pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)
-        pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-
-        do {
-            pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-
-        return pipelineState
-    }
-
 }
