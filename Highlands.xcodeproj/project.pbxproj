@@ -46,8 +46,8 @@
 		A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */; };
 		A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */; };
-		A5A1CD1E21B9F332002F6F35 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1D21B9F332002F6F35 /* Model.swift */; };
-		A5A1CD1F21B9F332002F6F35 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1D21B9F332002F6F35 /* Model.swift */; };
+		A5A1CD1E21B9F332002F6F35 /* Prop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1D21B9F332002F6F35 /* Prop.swift */; };
+		A5A1CD1F21B9F332002F6F35 /* Prop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1D21B9F332002F6F35 /* Prop.swift */; };
 		A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2021B9F718002F6F35 /* Submesh.swift */; };
 		A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2021B9F718002F6F35 /* Submesh.swift */; };
 		A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
@@ -93,7 +93,7 @@
 		A57F6A6521B9795D002C0632 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		A5A1CD1721B9EC5D002F6F35 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
-		A5A1CD1D21B9F332002F6F35 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		A5A1CD1D21B9F332002F6F35 /* Prop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prop.swift; sourceTree = "<group>"; };
 		A5A1CD2021B9F718002F6F35 /* Submesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
 		A5A1CD2321BA2833002F6F35 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A5A1CD2621BA2880002F6F35 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 				A57F6A6521B9795D002C0632 /* Common.h */,
 				A5A1CD1721B9EC5D002F6F35 /* Node.swift */,
 				A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */,
-				A5A1CD1D21B9F332002F6F35 /* Model.swift */,
+				A5A1CD1D21B9F332002F6F35 /* Prop.swift */,
 				A5A1CD2021B9F718002F6F35 /* Submesh.swift */,
 				A5A1CD2321BA2833002F6F35 /* ViewController.swift */,
 				A5B95CB021C8A02100DB723E /* PBR.metal */,
@@ -348,7 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5A1CD1E21B9F332002F6F35 /* Model.swift in Sources */,
+				A5A1CD1E21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
@@ -370,7 +370,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5A1CD1F21B9F332002F6F35 /* Model.swift in Sources */,
+				A5A1CD1F21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,

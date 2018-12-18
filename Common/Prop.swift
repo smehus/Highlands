@@ -12,7 +12,7 @@ enum ModelError: Error {
     case missingVertexBuffer
 }
 
-class Model: Node {
+class Prop: Node {
 
     static var defaultVertexDescriptor: MDLVertexDescriptor = {
         let vertexDescriptor = MDLVertexDescriptor()
@@ -45,7 +45,7 @@ class Model: Node {
     init(name: String) throws {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
-        let asset = MDLAsset(url: assetURL, vertexDescriptor: Model.defaultVertexDescriptor, bufferAllocator: allocator)
+        let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
         let mdlMesh = asset.object(at: 0) as! MDLMesh
 
         // Add tangent and bit tangent
@@ -53,7 +53,7 @@ class Model: Node {
                                 tangentAttributeNamed: MDLVertexAttributeTangent,
                                 bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
-        Model.defaultVertexDescriptor = mdlMesh.vertexDescriptor
+        Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
         let mesh = try MTKMesh(mesh: mdlMesh, device: Renderer.device)
         self.mesh = mesh
         guard let buffer = mesh.vertexBuffers.first?.buffer else {
@@ -67,7 +67,7 @@ class Model: Node {
             return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh)
         } ?? []
 
-        samplerState = Model.buildSamplerState()
+        samplerState = Prop.buildSamplerState()
         super.init()
     }
 
@@ -79,4 +79,8 @@ class Model: Node {
         descriptor.maxAnisotropy = 8
         return Renderer.device.makeSamplerState(descriptor: descriptor)
     }
+}
+
+extension Prop {
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) { }
 }

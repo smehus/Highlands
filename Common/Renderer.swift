@@ -25,7 +25,7 @@ final class Renderer: NSObject {
     private var uniforms = Uniforms()
     private var depthStencilState: MTLDepthStencilState!
 
-    private var models = [Model]()
+    private var models = [Prop]()
     private lazy var lights: [Light] = {
         return lighting()
     }()
@@ -55,7 +55,7 @@ final class Renderer: NSObject {
 
         // models
         do {
-            let model = try Model(name: "cottage1")
+            let model = try Prop(name: "cottage1")
             model.position = [0, 0, 0]
             models.append(model)
         } catch {
