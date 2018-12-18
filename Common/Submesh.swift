@@ -29,9 +29,15 @@ class Submesh {
     }
 
     private static func buildPipelineState(textures: Textures) -> MTLRenderPipelineState {
+        let functionConstants = makeFunctionConstants(textures: textures)
         let library = Renderer.library
         let vertexFunction = library?.makeFunction(name: "vertex_main")
-        let fragmentFunction = library?.makeFunction(name: "fragment_main")
+        let fragmentFunction: MTLFunction?
+        do {
+             fragmentFunction = try library?.makeFunction(name: "fragment_main", constantValues: functionConstants)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
 
         let pipelineState: MTLRenderPipelineState
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -48,6 +54,15 @@ class Submesh {
         }
 
         return pipelineState
+    }
+
+    static func makeFunctionConstants(textures: Textures) -> MTLFunctionConstantValues {
+        let functionConstants = MTLFunctionConstantValues()
+        var property = textures.baseColor != nil
+        functionConstants.setConstantValue(&property, type: .bool, index: 0)
+        property = textures.normal != nil
+        functionConstants.setConstantValue(&property, type: .bool, index: 1)
+        return functionConstants
     }
 }
 
