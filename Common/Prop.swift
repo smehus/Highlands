@@ -63,6 +63,8 @@ class Prop: Node {
 
         samplerState = Prop.buildSamplerState()
         super.init()
+
+        boundingBox = mdlMesh.boundingBox
     }
 
     private static func buildSamplerState() -> MTLSamplerState? {

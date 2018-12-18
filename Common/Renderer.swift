@@ -10,6 +10,11 @@ import MetalKit
 
 final class Renderer: NSObject {
 
+    // Chapter Variables
+    var currentTime: Float = 0
+    var ballVelocity: Float = 0
+
+    // Base Variables
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
     static var library: MTLLibrary!
@@ -55,7 +60,7 @@ final class Renderer: NSObject {
 
         // models
         let ball = Prop(name: "beachball")
-        ball.position = [0, 0.35, 0]
+        ball.position = [0, 3, 0]
         models.append(ball)
 
         let ground = Prop(name: "ground")
@@ -84,6 +89,13 @@ extension Renderer: MTKViewDelegate {
         guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else { return }
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
 
+        // *** Chapter Work
+        let deltaTime = 1 / Float(view.preferredFramesPerSecond)
+        update(deltaTime: deltaTime)
+
+
+        // ***** End
+
         renderEncoder.setDepthStencilState(depthStencilState)
 
         fragmentUniforms.cameraPosition = camera.position
@@ -102,5 +114,26 @@ extension Renderer: MTKViewDelegate {
 
         commandBuffer.present(drawable)
         commandBuffer.commit()
+    }
+
+    func update(deltaTime: Float) {
+
+        let gravity: Float = 9.8 // meter / sec2
+        let mass: Float = 0.05
+        let acceleration = gravity / mass
+        let airFriction: Float = 0.2
+        let bounciness: Float = 0.9
+        let timeStep: Float = 1 / 600
+
+        currentTime += deltaTime * 4
+        let ball = models[0]
+
+        ballVelocity += (acceleration * timeStep) / airFriction
+        ball.position.y -= ballVelocity * timeStep
+
+        if ball.position.y <= ball.size.y / 2 {
+            ball.position.y = ball.size.y / 2
+            ballVelocity = ballVelocity * -1 * bounciness
+        }
     }
 }

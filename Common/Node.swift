@@ -15,6 +15,11 @@ class Node {
     var rotation: float3 = [0, 0, 0]
     var scale: float3 = [1, 1, 1]
 
+    var boundingBox = MDLAxisAlignedBoundingBox()
+    var size: float3 {
+        return boundingBox.maxBounds - boundingBox.minBounds
+    }
+
     var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
         let rotationMatrix = float4x4(rotation: rotation)
