@@ -82,5 +82,43 @@ class Prop: Node {
 }
 
 extension Prop {
-    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) { }
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, fragmentUniforms: FragmentUniforms) {
+        var uniforms = uniforms
+        var fragmentUniforms = fragmentUniforms
+
+        uniforms.modelMatrix = modelMatrix
+        uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+        renderEncoder.setFragmentSamplerState(samplerState, index: 0)
+
+        renderEncoder.setVertexBytes(&uniforms,
+                                     length: MemoryLayout<Uniforms>.stride,
+                                     index: Int(BufferIndexUniforms.rawValue))
+
+        fragmentUniforms.tiling = tiling
+        renderEncoder.setFragmentBytes(&fragmentUniforms,
+                                       length: MemoryLayout<FragmentUniforms>.stride,
+                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+
+
+        for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+            renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
+        }
+
+        for modelSubmesh in submeshes {
+            renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
+
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: Int(RoughnessTexture.rawValue))
+
+            var material = modelSubmesh.material
+            renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
+
+            renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                indexCount: modelSubmesh.submesh.indexCount,
+                                                indexType: modelSubmesh.submesh.indexType,
+                                                indexBuffer: modelSubmesh.submesh.indexBuffer.buffer,
+                                                indexBufferOffset: modelSubmesh.submesh.indexBuffer.offset)
+        }
+    }
 }

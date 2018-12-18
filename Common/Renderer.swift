@@ -92,36 +92,7 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: Int(BufferIndexLights.rawValue))
 
         for model in models {
-            uniforms.normalMatrix = float3x3(normalFrom4x4: model.modelMatrix)
-            uniforms.modelMatrix = model.modelMatrix
-
-            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
-
-            fragmentUniforms.tiling = model.tiling
-            renderEncoder.setFragmentSamplerState(model.samplerState, index: 0)
-            renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: Int(BufferIndexFragmentUniforms.rawValue))
-
-
-            for (index, vertexBuffer) in model.mesh.vertexBuffers.enumerated() {
-                renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
-            }
-
-            for modelSubmesh in model.submeshes {
-                renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
-
-                renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
-                renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
-                renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: Int(RoughnessTexture.rawValue))
-
-                var material = modelSubmesh.material
-                renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
-
-                renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                    indexCount: modelSubmesh.submesh.indexCount,
-                                                    indexType: modelSubmesh.submesh.indexType,
-                                                    indexBuffer: modelSubmesh.submesh.indexBuffer.buffer,
-                                                    indexBufferOffset: modelSubmesh.submesh.indexBuffer.offset)
-            }
+            model.render(renderEncoder: renderEncoder, uniforms: uniforms, fragmentUniforms: fragmentUniforms)
         }
 
         renderEncoder.endEncoding()
