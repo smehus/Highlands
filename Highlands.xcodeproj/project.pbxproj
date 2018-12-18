@@ -164,6 +164,7 @@
 				A5A1CD1D21B9F332002F6F35 /* Model.swift */,
 				A5A1CD2021B9F718002F6F35 /* Submesh.swift */,
 				A5A1CD2321BA2833002F6F35 /* ViewController.swift */,
+				A5B95CB021C8A02100DB723E /* PBR.metal */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -200,7 +201,6 @@
 			isa = PBXGroup;
 			children = (
 				A57F6A6221B978E3002C0632 /* MathLibrary.swift */,
-				A5B95CB021C8A02100DB723E /* PBR.metal */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
