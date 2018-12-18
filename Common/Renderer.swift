@@ -17,7 +17,7 @@ final class Renderer: NSObject {
 
     lazy var camera: Camera = {
         let camera = Camera()
-        camera.position = [0, 0, -3]
+        camera.position = [0, 1, -3]
         return camera
     }()
 
@@ -54,13 +54,14 @@ final class Renderer: NSObject {
 
 
         // models
-        do {
-            let model = try Prop(name: "cottage1")
-            model.position = [0, 0, 0]
-            models.append(model)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+        let ball = Prop(name: "beachball")
+        ball.position = [0, 0.35, 0]
+        models.append(ball)
+
+        let ground = Prop(name: "ground")
+        ground.scale = [10, 10, 10]
+        models.append(ground)
+
 
         fragmentUniforms.lightCount = UInt32(lights.count)
     }

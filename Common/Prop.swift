@@ -38,11 +38,10 @@ class Prop: Node {
 
     let mesh: MTKMesh
     let submeshes: [Submesh]
-    let vertexBuffer: MTLBuffer
     var tiling: UInt32 = 1
     let samplerState: MTLSamplerState?
 
-    init(name: String) throws {
+    init(name: String) {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
@@ -54,13 +53,8 @@ class Prop: Node {
                                 bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
         Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-        let mesh = try MTKMesh(mesh: mdlMesh, device: Renderer.device)
+        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
         self.mesh = mesh
-        guard let buffer = mesh.vertexBuffers.first?.buffer else {
-            throw ModelError.missingVertexBuffer
-        }
-
-        vertexBuffer = buffer
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }

@@ -11,6 +11,18 @@
 		A551ADED21C983DD00FA207B /* chest.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A551ADEA21C983DD00FA207B /* chest.mtl */; };
 		A551ADEE21C983DD00FA207B /* chest.obj in Resources */ = {isa = PBXBuildFile; fileRef = A551ADEB21C983DD00FA207B /* chest.obj */; };
 		A551ADEF21C983DD00FA207B /* chest.obj in Resources */ = {isa = PBXBuildFile; fileRef = A551ADEB21C983DD00FA207B /* chest.obj */; };
+		A551ADF621C997B500FA207B /* beachball.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A551ADF121C997B500FA207B /* beachball.mtl */; };
+		A551ADF721C997B500FA207B /* beachball.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A551ADF121C997B500FA207B /* beachball.mtl */; };
+		A551ADF821C997B500FA207B /* beachball.obj in Resources */ = {isa = PBXBuildFile; fileRef = A551ADF221C997B500FA207B /* beachball.obj */; };
+		A551ADF921C997B500FA207B /* beachball.obj in Resources */ = {isa = PBXBuildFile; fileRef = A551ADF221C997B500FA207B /* beachball.obj */; };
+		A551ADFA21C997B500FA207B /* ground.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A551ADF421C997B500FA207B /* ground.mtl */; };
+		A551ADFB21C997B500FA207B /* ground.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A551ADF421C997B500FA207B /* ground.mtl */; };
+		A551ADFC21C997B500FA207B /* ground.obj in Resources */ = {isa = PBXBuildFile; fileRef = A551ADF521C997B500FA207B /* ground.obj */; };
+		A551ADFD21C997B500FA207B /* ground.obj in Resources */ = {isa = PBXBuildFile; fileRef = A551ADF521C997B500FA207B /* ground.obj */; };
+		A551AE0221C997C000FA207B /* skeletonWave.bin in Resources */ = {isa = PBXBuildFile; fileRef = A551AE0021C997C000FA207B /* skeletonWave.bin */; };
+		A551AE0321C997C000FA207B /* skeletonWave.bin in Resources */ = {isa = PBXBuildFile; fileRef = A551AE0021C997C000FA207B /* skeletonWave.bin */; };
+		A551AE0421C997C000FA207B /* skeletonWave.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A551AE0121C997C000FA207B /* skeletonWave.gltf */; };
+		A551AE0521C997C000FA207B /* skeletonWave.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A551AE0121C997C000FA207B /* skeletonWave.gltf */; };
 		A56ACB4121C727980069962B /* cottage2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3B21C727970069962B /* cottage2.mtl */; };
 		A56ACB4221C727980069962B /* cottage2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3B21C727970069962B /* cottage2.mtl */; };
 		A56ACB4321C727980069962B /* cottage1.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3C21C727970069962B /* cottage1.mtl */; };
@@ -65,6 +77,12 @@
 /* Begin PBXFileReference section */
 		A551ADEA21C983DD00FA207B /* chest.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = chest.mtl; sourceTree = "<group>"; };
 		A551ADEB21C983DD00FA207B /* chest.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = chest.obj; sourceTree = "<group>"; };
+		A551ADF121C997B500FA207B /* beachball.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beachball.mtl; sourceTree = "<group>"; };
+		A551ADF221C997B500FA207B /* beachball.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beachball.obj; sourceTree = "<group>"; };
+		A551ADF421C997B500FA207B /* ground.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ground.mtl; sourceTree = "<group>"; };
+		A551ADF521C997B500FA207B /* ground.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ground.obj; sourceTree = "<group>"; };
+		A551AE0021C997C000FA207B /* skeletonWave.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = skeletonWave.bin; sourceTree = "<group>"; };
+		A551AE0121C997C000FA207B /* skeletonWave.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = skeletonWave.gltf; sourceTree = "<group>"; };
 		A56ACB3B21C727970069962B /* cottage2.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cottage2.mtl; sourceTree = "<group>"; };
 		A56ACB3C21C727970069962B /* cottage1.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cottage1.mtl; sourceTree = "<group>"; };
 		A56ACB3D21C727970069962B /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
@@ -121,9 +139,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A56ACB3A21C727970069962B /* Models */ = {
+		A551ADF021C997B500FA207B /* Beachball */ = {
 			isa = PBXGroup;
 			children = (
+				A551ADF121C997B500FA207B /* beachball.mtl */,
+				A551ADF221C997B500FA207B /* beachball.obj */,
+			);
+			path = Beachball;
+			sourceTree = "<group>";
+		};
+		A551ADF321C997B500FA207B /* Ground */ = {
+			isa = PBXGroup;
+			children = (
+				A551ADF421C997B500FA207B /* ground.mtl */,
+				A551ADF521C997B500FA207B /* ground.obj */,
+			);
+			path = Ground;
+			sourceTree = "<group>";
+		};
+		A551ADFE21C997C000FA207B /* Characters */ = {
+			isa = PBXGroup;
+			children = (
+				A551ADFF21C997C000FA207B /* Skeleton */,
+			);
+			path = Characters;
+			sourceTree = "<group>";
+		};
+		A551ADFF21C997C000FA207B /* Skeleton */ = {
+			isa = PBXGroup;
+			children = (
+				A551AE0021C997C000FA207B /* skeletonWave.bin */,
+				A551AE0121C997C000FA207B /* skeletonWave.gltf */,
+			);
+			path = Skeleton;
+			sourceTree = "<group>";
+		};
+		A551AE0621C997C600FA207B /* Props */ = {
+			isa = PBXGroup;
+			children = (
+				A551ADF021C997B500FA207B /* Beachball */,
+				A551ADF321C997B500FA207B /* Ground */,
 				A551ADEA21C983DD00FA207B /* chest.mtl */,
 				A551ADEB21C983DD00FA207B /* chest.obj */,
 				A56ACB3B21C727970069962B /* cottage2.mtl */,
@@ -132,6 +187,15 @@
 				A56ACB3E21C727970069962B /* cube.mtl */,
 				A56ACB3F21C727970069962B /* cottage1.obj */,
 				A56ACB4021C727970069962B /* cottage2.obj */,
+			);
+			path = Props;
+			sourceTree = "<group>";
+		};
+		A56ACB3A21C727970069962B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A551AE0621C997C600FA207B /* Props */,
+				A551ADFE21C997C000FA207B /* Characters */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -308,9 +372,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A551AE0421C997C000FA207B /* skeletonWave.gltf in Resources */,
 				A56ACB4921C727980069962B /* cottage1.obj in Resources */,
 				A56ACB4321C727980069962B /* cottage1.mtl in Resources */,
+				A551ADFC21C997B500FA207B /* ground.obj in Resources */,
+				A551ADF621C997B500FA207B /* beachball.mtl in Resources */,
+				A551AE0221C997C000FA207B /* skeletonWave.bin in Resources */,
 				A56ACB4721C727980069962B /* cube.mtl in Resources */,
+				A551ADFA21C997B500FA207B /* ground.mtl in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A56ACB4B21C727980069962B /* cottage2.obj in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
@@ -319,6 +388,7 @@
 				A551ADEC21C983DD00FA207B /* chest.mtl in Resources */,
 				A551ADEE21C983DD00FA207B /* chest.obj in Resources */,
 				A56ACB4121C727980069962B /* cottage2.mtl in Resources */,
+				A551ADF821C997B500FA207B /* beachball.obj in Resources */,
 				A56ACB4521C727980069962B /* cube.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,13 +401,19 @@
 				A56ACB4621C727980069962B /* cube.obj in Resources */,
 				A56ACB4C21C727980069962B /* cottage2.obj in Resources */,
 				A56ACB4221C727980069962B /* cottage2.mtl in Resources */,
+				A551ADFD21C997B500FA207B /* ground.obj in Resources */,
+				A551ADF921C997B500FA207B /* beachball.obj in Resources */,
 				A551ADED21C983DD00FA207B /* chest.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
+				A551ADFB21C997B500FA207B /* ground.mtl in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
 				A56ACB4A21C727980069962B /* cottage1.obj in Resources */,
 				A56ACB4421C727980069962B /* cottage1.mtl in Resources */,
+				A551ADF721C997B500FA207B /* beachball.mtl in Resources */,
 				A56ACB4821C727980069962B /* cube.mtl in Resources */,
+				A551AE0521C997C000FA207B /* skeletonWave.gltf in Resources */,
+				A551AE0321C997C000FA207B /* skeletonWave.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
