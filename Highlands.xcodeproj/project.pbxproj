@@ -54,6 +54,8 @@
 		A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */; };
 		A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
 		A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
+		A5B95CB121C8A02100DB723E /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5B95CB021C8A02100DB723E /* PBR.metal */; };
+		A5B95CB221C8A02100DB723E /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5B95CB021C8A02100DB723E /* PBR.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +94,7 @@
 		A5A1CD2821BA2887002F6F35 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererExtensions.swift; sourceTree = "<group>"; };
 		A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texturable.swift; sourceTree = "<group>"; };
+		A5B95CB021C8A02100DB723E /* PBR.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PBR.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				A57F6A6221B978E3002C0632 /* MathLibrary.swift */,
+				A5B95CB021C8A02100DB723E /* PBR.metal */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -336,6 +340,7 @@
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
+				A5B95CB121C8A02100DB723E /* PBR.metal in Sources */,
 				A57F6A5721B8CBD7002C0632 /* Renderer.swift in Sources */,
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
@@ -357,6 +362,7 @@
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
+				A5B95CB221C8A02100DB723E /* PBR.metal in Sources */,
 				A57F6A5821B8CBD8002C0632 /* Renderer.swift in Sources */,
 				A5A1CD2521BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
