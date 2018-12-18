@@ -17,12 +17,18 @@ class Submesh {
     }
 
     let textures: Textures
-    var submesh: MTKSubmesh
+    var submesh: MTKSubmesh?
     let pipelineState: MTLRenderPipelineState
     let material: Material
 
-    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh) {
+    // Used for glTF
+    init(pipelineState: MTLRenderPipelineState, material: MDLMaterial?) {
+        textures = Textures(material: material)
+        self.material = Material(material: material)
+        self.pipelineState = pipelineState
+    }
 
+    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh) {
         self.submesh = submesh
         textures = Textures(material: mdlSubmesh.material)
         material = Material(material: mdlSubmesh.material)

@@ -114,11 +114,12 @@ extension Prop {
             var material = modelSubmesh.material
             renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
 
+            guard let submesh = modelSubmesh.submesh else { return }
             renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                indexCount: modelSubmesh.submesh.indexCount,
-                                                indexType: modelSubmesh.submesh.indexType,
-                                                indexBuffer: modelSubmesh.submesh.indexBuffer.buffer,
-                                                indexBufferOffset: modelSubmesh.submesh.indexBuffer.offset)
+                                                indexCount: submesh.indexCount,
+                                                indexType: submesh.indexType,
+                                                indexBuffer: submesh.indexBuffer.buffer,
+                                                indexBufferOffset: submesh.indexBuffer.offset)
         }
     }
 }
