@@ -13,6 +13,7 @@ class Submesh {
     struct Textures {
         let baseColor: MTLTexture?
         let normal: MTLTexture?
+        let roughness: MTLTexture?
     }
 
     let textures: Textures
@@ -62,6 +63,13 @@ class Submesh {
         functionConstants.setConstantValue(&property, type: .bool, index: 0)
         property = textures.normal != nil
         functionConstants.setConstantValue(&property, type: .bool, index: 1)
+        property = textures.roughness != nil
+        functionConstants.setConstantValue(&property, type: .bool, index: 2)
+
+        // Metallic & Ambeion Occlusion (AO) - Not bothering to use these
+        property = false
+        functionConstants.setConstantValue(&property, type: .bool, index: 3)
+        functionConstants.setConstantValue(&property, type: .bool, index: 4)
         return functionConstants
     }
 }
@@ -82,6 +90,7 @@ private extension Submesh.Textures {
         }
         baseColor = property(with: .baseColor)
         normal = property(with: .tangentSpaceNormal)
+        roughness = property(with: .roughness)
     }
 }
 
@@ -99,6 +108,10 @@ private extension Material {
 
         if let shininess = material?.property(with: .specularExponent), shininess.type == .float {
             self.shininess = shininess.floatValue
+        }
+
+        if let roughness = material?.property(with: .roughness), roughness.type == .float3 {
+            self.roughness = roughness.floatValue
         }
     }
 }

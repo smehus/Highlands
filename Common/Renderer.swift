@@ -17,7 +17,7 @@ final class Renderer: NSObject {
 
     lazy var camera: Camera = {
         let camera = Camera()
-        camera.position = [0, 2, -6]
+        camera.position = [0, 0, -3]
         return camera
     }()
 
@@ -55,9 +55,8 @@ final class Renderer: NSObject {
 
         // models
         do {
-            let model = try Model(name: "cottage2")
+            let model = try Model(name: "cottage1")
             model.position = [0, 0, 0]
-            model.rotation = [0, radians(fromDegrees: 45), 0]
             models.append(model)
         } catch {
             fatalError(error.localizedDescription)
@@ -112,6 +111,8 @@ extension Renderer: MTKViewDelegate {
 
                 renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
                 renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
+                renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: Int(RoughnessTexture.rawValue))
+
                 var material = modelSubmesh.material
                 renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
 
