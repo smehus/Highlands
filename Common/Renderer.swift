@@ -12,6 +12,7 @@ final class Renderer: NSObject {
 
     // Chapter Variables
     var currentTime: Float = 0
+    var maxVelocity: Float = 0
     var ballVelocity: Float = 0
 
     // Base Variables
@@ -118,22 +119,11 @@ extension Renderer: MTKViewDelegate {
 
     func update(deltaTime: Float) {
 
-        let gravity: Float = 9.8 // meter / sec2
-        let mass: Float = 0.05
-        let acceleration = gravity / mass
-        let airFriction: Float = 0.2
-        let bounciness: Float = 0.9
-        let timeStep: Float = 1 / 600
-
-        currentTime += deltaTime * 4
+        currentTime += deltaTime
         let ball = models[0]
-
-        ballVelocity += (acceleration * timeStep) / airFriction
-        ball.position.y -= ballVelocity * timeStep
-
-        if ball.position.y <= ball.size.y / 2 {
-            ball.position.y = ball.size.y / 2
-            ballVelocity = ballVelocity * -1 * bounciness
-        }
+        ball.position.y = ball.size.y
+        let fps = Float(60)
+        let currentFrame = Int(currentTime * fps) % (ballPositionXArray.count)
+        ball.position.x = ballPositionXArray[currentFrame]
     }
 }
