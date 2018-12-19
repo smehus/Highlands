@@ -8,6 +8,12 @@
 
 import MetalKit
 
+protocol Renderable {
+    var name: String { get }
+    func update(deltaTime: Float)
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, fragmentUniforms: FragmentUniforms)
+}
+
 final class Renderer: NSObject {
 
     // Chapter Variables
@@ -31,7 +37,7 @@ final class Renderer: NSObject {
     private var uniforms = Uniforms()
     private var depthStencilState: MTLDepthStencilState!
 
-    private var models = [Prop]()
+    private var models = [Renderable]()
     private lazy var lights: [Light] = {
         return lighting()
     }()
@@ -51,18 +57,16 @@ final class Renderer: NSObject {
 
         super.init()
 
-        metalView.clearColor = MTLClearColor(red: 0.7, green: 0.9, blue: 1.0, alpha: 1)
+        metalView.clearColor = MTLClearColor(red: 0.43, green: 0.47,
+                                             blue: 0.5, alpha: 1)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
 
         buildDepthStencilState()
 
-
-        // models
-        let ball = Prop(name: "beachball")
-        ball.position = [0, 3, 0]
-        models.append(ball)
+        let skeleton = Character(name: "skeletonWave")
+        models.append(skeleton)
 
         let ground = Prop(name: "ground")
         ground.scale = [10, 10, 10]
@@ -118,14 +122,8 @@ extension Renderer: MTKViewDelegate {
     }
 
     func update(deltaTime: Float) {
-
-        currentTime += deltaTime
-        let ball = models[0]
-        let animation = Animation()
-        animation.translations = generateBallTranslations()
-        animation.rotations = generateBallRotations()
-        ball.position = animation.getTranslation(time: currentTime) ?? float3(0)
-        ball.position.y += ball.size.y / 2
-        ball.quaternion = animation.getRotation(time: currentTime) ?? simd_quatf()
+        for model in models {
+            model.update(deltaTime: deltaTime)
+        }
     }
 }

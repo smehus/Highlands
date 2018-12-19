@@ -56,6 +56,16 @@
 		A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A2621B8A901002C0632 /* Shaders.metal */; };
 		A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
 		A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
+		A588D83321CAE17A00652FC2 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83021CAE17A00652FC2 /* GLTFMathLibrary.swift */; };
+		A588D83421CAE17A00652FC2 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83021CAE17A00652FC2 /* GLTFMathLibrary.swift */; };
+		A588D83521CAE17A00652FC2 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83121CAE17A00652FC2 /* GLTFAsset.swift */; };
+		A588D83621CAE17A00652FC2 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83121CAE17A00652FC2 /* GLTFAsset.swift */; };
+		A588D83721CAE17A00652FC2 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83221CAE17A00652FC2 /* GLTFTypes.swift */; };
+		A588D83821CAE17A00652FC2 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83221CAE17A00652FC2 /* GLTFTypes.swift */; };
+		A588D83A21CAE1A300652FC2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
+		A588D83B21CAE1A300652FC2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
+		A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
+		A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
 		A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */; };
@@ -112,6 +122,11 @@
 		A57F6A5321B8CBA8002C0632 /* Highlands_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Highlands_macOS.entitlements; sourceTree = "<group>"; };
 		A57F6A6221B978E3002C0632 /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
 		A57F6A6521B9795D002C0632 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		A588D83021CAE17A00652FC2 /* GLTFMathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFMathLibrary.swift; sourceTree = "<group>"; };
+		A588D83121CAE17A00652FC2 /* GLTFAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFAsset.swift; sourceTree = "<group>"; };
+		A588D83221CAE17A00652FC2 /* GLTFTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFTypes.swift; sourceTree = "<group>"; };
+		A588D83921CAE1A300652FC2 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CharacterShaders.metal; sourceTree = "<group>"; };
 		A5A1CD1721B9EC5D002F6F35 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		A5A1CD1D21B9F332002F6F35 /* Prop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prop.swift; sourceTree = "<group>"; };
@@ -241,6 +256,8 @@
 				A5A1CD2321BA2833002F6F35 /* ViewController.swift */,
 				A5B95CB021C8A02100DB723E /* PBR.metal */,
 				A551AE0721C9A4E700FA207B /* Animation.swift */,
+				A588D83921CAE1A300652FC2 /* Character.swift */,
+				A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -276,9 +293,21 @@
 		A57F6A6121B978E3002C0632 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				A588D82F21CAE17A00652FC2 /* glTF Importer */,
 				A57F6A6221B978E3002C0632 /* MathLibrary.swift */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		A588D82F21CAE17A00652FC2 /* glTF Importer */ = {
+			isa = PBXGroup;
+			children = (
+				A588D83021CAE17A00652FC2 /* GLTFMathLibrary.swift */,
+				A588D83121CAE17A00652FC2 /* GLTFAsset.swift */,
+				A588D83221CAE17A00652FC2 /* GLTFTypes.swift */,
+			);
+			name = "glTF Importer";
+			path = "../../../../../../Downloads/Metal_by_Tutorials_v1/08-character-animation/starter/Animation/Animation/Utility/glTF Importer";
 			sourceTree = "<group>";
 		};
 		A5A1CD3621BA2962002F6F35 /* Extensions */ = {
@@ -431,17 +460,22 @@
 				A5A1CD1E21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
+				A588D83721CAE17A00652FC2 /* GLTFTypes.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
 				A5B95CB121C8A02100DB723E /* PBR.metal in Sources */,
 				A57F6A5721B8CBD7002C0632 /* Renderer.swift in Sources */,
+				A588D83A21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
+				A588D83321CAE17A00652FC2 /* GLTFMathLibrary.swift in Sources */,
 				A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
+				A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */,
+				A588D83521CAE17A00652FC2 /* GLTFAsset.swift in Sources */,
 				A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */,
 			);
@@ -454,17 +488,22 @@
 				A5A1CD1F21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
+				A588D83821CAE17A00652FC2 /* GLTFTypes.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				A5B95CB221C8A02100DB723E /* PBR.metal in Sources */,
 				A57F6A5821B8CBD8002C0632 /* Renderer.swift in Sources */,
+				A588D83B21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2521BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
 				A57F6A5A21B8CBDB002C0632 /* Primitive.swift in Sources */,
+				A588D83421CAE17A00652FC2 /* GLTFMathLibrary.swift in Sources */,
 				A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A551AE0921C9A4E700FA207B /* Animation.swift in Sources */,
 				A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
+				A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,
+				A588D83621CAE17A00652FC2 /* GLTFAsset.swift in Sources */,
 				A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */,
 			);

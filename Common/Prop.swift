@@ -77,7 +77,13 @@ class Prop: Node {
     }
 }
 
-extension Prop {
+extension Prop: Renderable {
+
+    func update(deltaTime: Float) {
+        
+    }
+
+
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, fragmentUniforms: FragmentUniforms) {
         var uniforms = uniforms
         var fragmentUniforms = fragmentUniforms
@@ -111,6 +117,7 @@ extension Prop {
             renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
 
             guard let submesh = modelSubmesh.submesh else { return }
+            
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,

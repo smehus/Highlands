@@ -65,14 +65,10 @@ class Animation {
         }
 
         currentTime = fmod(currentTime, lastKeyframe.time)
-        let keyFramePairs = rotations.indices.dropFirst().map {
-            (previous: rotations[$0 - 1], next: rotations[$0])
-        }
 
+        let keyFramePairs = rotations.indices.dropFirst().map { (previous: rotations[$0 - 1], next: rotations[$0]) }
 
-        guard let (previousKey, nextKey) = ( keyFramePairs.first {
-            currentTime < $0.next.time
-        }) else {return nil}
+        guard let (previousKey, nextKey) = ( keyFramePairs.first { currentTime < $0.next.time }) else {return nil }
 
         let interpolant = (currentTime - previousKey.time) / (nextKey.time - previousKey.time)
         return simd_slerp(previousKey.value, nextKey.value, interpolant)
