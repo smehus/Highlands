@@ -23,6 +23,8 @@
 		A551AE0321C997C000FA207B /* skeletonWave.bin in Resources */ = {isa = PBXBuildFile; fileRef = A551AE0021C997C000FA207B /* skeletonWave.bin */; };
 		A551AE0421C997C000FA207B /* skeletonWave.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A551AE0121C997C000FA207B /* skeletonWave.gltf */; };
 		A551AE0521C997C000FA207B /* skeletonWave.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A551AE0121C997C000FA207B /* skeletonWave.gltf */; };
+		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
+		A551AE0921C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A56ACB4121C727980069962B /* cottage2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3B21C727970069962B /* cottage2.mtl */; };
 		A56ACB4221C727980069962B /* cottage2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3B21C727970069962B /* cottage2.mtl */; };
 		A56ACB4321C727980069962B /* cottage1.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3C21C727970069962B /* cottage1.mtl */; };
@@ -83,6 +85,7 @@
 		A551ADF521C997B500FA207B /* ground.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ground.obj; sourceTree = "<group>"; };
 		A551AE0021C997C000FA207B /* skeletonWave.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = skeletonWave.bin; sourceTree = "<group>"; };
 		A551AE0121C997C000FA207B /* skeletonWave.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = skeletonWave.gltf; sourceTree = "<group>"; };
+		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A56ACB3B21C727970069962B /* cottage2.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cottage2.mtl; sourceTree = "<group>"; };
 		A56ACB3C21C727970069962B /* cottage1.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cottage1.mtl; sourceTree = "<group>"; };
 		A56ACB3D21C727970069962B /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
@@ -237,6 +240,7 @@
 				A5A1CD2021B9F718002F6F35 /* Submesh.swift */,
 				A5A1CD2321BA2833002F6F35 /* ViewController.swift */,
 				A5B95CB021C8A02100DB723E /* PBR.metal */,
+				A551AE0721C9A4E700FA207B /* Animation.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -434,6 +438,7 @@
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
 				A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */,
+				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */,
@@ -456,6 +461,7 @@
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
 				A57F6A5A21B8CBDB002C0632 /* Primitive.swift in Sources */,
 				A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */,
+				A551AE0921C9A4E700FA207B /* Animation.swift in Sources */,
 				A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,

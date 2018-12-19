@@ -12,8 +12,14 @@ class Node {
 
     var name = "untitled"
     var position: float3 = [0, 0, 0]
-    var rotation: float3 = [0, 0, 0]
+    var rotation: float3 = [0, 0, 0] {
+        didSet {
+            let rotationMatrix = float4x4(rotation: rotation)
+            quaternion = simd_quatf(rotationMatrix)
+        }
+    }
     var scale: float3 = [1, 1, 1]
+    var quaternion = simd_quatf()
 
     var boundingBox = MDLAxisAlignedBoundingBox()
     var size: float3 {
@@ -22,8 +28,8 @@ class Node {
 
     var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
-        let rotationMatrix = float4x4(rotation: rotation)
+        let rotateMatrix = float4x4(quaternion)
         let scaleMatrix = float4x4(scaling: scale)
-        return translationMatrix * rotationMatrix * scaleMatrix
+        return translationMatrix * rotateMatrix * scaleMatrix
     }
 }

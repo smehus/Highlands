@@ -121,9 +121,11 @@ extension Renderer: MTKViewDelegate {
 
         currentTime += deltaTime
         let ball = models[0]
-        ball.position.y = ball.size.y
-        let fps = Float(60)
-        let currentFrame = Int(currentTime * fps) % (ballPositionXArray.count)
-        ball.position.x = ballPositionXArray[currentFrame]
+        let animation = Animation()
+        animation.translations = generateBallTranslations()
+        animation.rotations = generateBallRotations()
+        ball.position = animation.getTranslation(time: currentTime) ?? float3(0)
+        ball.position.y += ball.size.y / 2
+        ball.quaternion = animation.getRotation(time: currentTime) ?? simd_quatf()
     }
 }
