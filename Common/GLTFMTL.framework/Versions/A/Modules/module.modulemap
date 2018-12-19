@@ -1,0 +1,6 @@
+framework module GLTFMTL {
+  umbrella header "GLTFMTL.h"
+
+  export *
+  module * { export * }
+}

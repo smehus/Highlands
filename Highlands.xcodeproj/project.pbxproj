@@ -56,16 +56,30 @@
 		A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A2621B8A901002C0632 /* Shaders.metal */; };
 		A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
 		A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
-		A588D83321CAE17A00652FC2 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83021CAE17A00652FC2 /* GLTFMathLibrary.swift */; };
-		A588D83421CAE17A00652FC2 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83021CAE17A00652FC2 /* GLTFMathLibrary.swift */; };
-		A588D83521CAE17A00652FC2 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83121CAE17A00652FC2 /* GLTFAsset.swift */; };
-		A588D83621CAE17A00652FC2 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83121CAE17A00652FC2 /* GLTFAsset.swift */; };
-		A588D83721CAE17A00652FC2 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83221CAE17A00652FC2 /* GLTFTypes.swift */; };
-		A588D83821CAE17A00652FC2 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83221CAE17A00652FC2 /* GLTFTypes.swift */; };
 		A588D83A21CAE1A300652FC2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		A588D83B21CAE1A300652FC2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
 		A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
+		A588D84521CAF7BC00652FC2 /* 02___Default_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */; };
+		A588D84621CAF7BC00652FC2 /* 02___Default_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */; };
+		A588D84721CAF7BC00652FC2 /* 08___Default_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A588D84221CAF7BC00652FC2 /* 08___Default_baseColor.png */; };
+		A588D84821CAF7BC00652FC2 /* 08___Default_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A588D84221CAF7BC00652FC2 /* 08___Default_baseColor.png */; };
+		A588D84921CAF7BC00652FC2 /* scene.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A588D84321CAF7BC00652FC2 /* scene.gltf */; };
+		A588D84A21CAF7BC00652FC2 /* scene.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A588D84321CAF7BC00652FC2 /* scene.gltf */; };
+		A588D84B21CAF7BC00652FC2 /* scene.bin in Resources */ = {isa = PBXBuildFile; fileRef = A588D84421CAF7BC00652FC2 /* scene.bin */; };
+		A588D84C21CAF7BC00652FC2 /* scene.bin in Resources */ = {isa = PBXBuildFile; fileRef = A588D84421CAF7BC00652FC2 /* scene.bin */; };
+		A588D8E021CAFDDC00652FC2 /* GLTF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8DF21CAFDDC00652FC2 /* GLTF.framework */; };
+		A588D8E121CAFDDC00652FC2 /* GLTF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8DF21CAFDDC00652FC2 /* GLTF.framework */; };
+		A588D8E321CAFE2900652FC2 /* GLTFMTL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */; };
+		A588D8E421CAFE2900652FC2 /* GLTFMTL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */; };
+		A588D8E521CAFE4600652FC2 /* GLTFMTL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */; };
+		A588D8E621CAFE4600652FC2 /* GLTFMTL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A588D8E721CAFE4600652FC2 /* GLTF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8DF21CAFDDC00652FC2 /* GLTF.framework */; };
+		A588D8E821CAFE4600652FC2 /* GLTF.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8DF21CAFDDC00652FC2 /* GLTF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A588D8EA21CAFE4C00652FC2 /* GLTFMTL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */; };
+		A588D8EB21CAFE4C00652FC2 /* GLTFMTL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A588D8EC21CAFE4C00652FC2 /* GLTF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8DF21CAFDDC00652FC2 /* GLTF.framework */; };
+		A588D8ED21CAFE4C00652FC2 /* GLTF.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8DF21CAFDDC00652FC2 /* GLTF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */; };
@@ -85,6 +99,33 @@
 		A5B95CB121C8A02100DB723E /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5B95CB021C8A02100DB723E /* PBR.metal */; };
 		A5B95CB221C8A02100DB723E /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5B95CB021C8A02100DB723E /* PBR.metal */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A588D8E921CAFE4600652FC2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A588D8E621CAFE4600652FC2 /* GLTFMTL.framework in Embed Frameworks */,
+				A588D8E821CAFE4600652FC2 /* GLTF.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A588D8EE21CAFE4C00652FC2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A588D8EB21CAFE4C00652FC2 /* GLTFMTL.framework in Embed Frameworks */,
+				A588D8ED21CAFE4C00652FC2 /* GLTF.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A551ADEA21C983DD00FA207B /* chest.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = chest.mtl; sourceTree = "<group>"; };
@@ -127,6 +168,12 @@
 		A588D83221CAE17A00652FC2 /* GLTFTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFTypes.swift; sourceTree = "<group>"; };
 		A588D83921CAE1A300652FC2 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CharacterShaders.metal; sourceTree = "<group>"; };
+		A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "02___Default_baseColor.png"; sourceTree = "<group>"; };
+		A588D84221CAF7BC00652FC2 /* 08___Default_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "08___Default_baseColor.png"; sourceTree = "<group>"; };
+		A588D84321CAF7BC00652FC2 /* scene.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene.gltf; sourceTree = "<group>"; };
+		A588D84421CAF7BC00652FC2 /* scene.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = scene.bin; sourceTree = "<group>"; };
+		A588D8DF21CAFDDC00652FC2 /* GLTF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GLTF.framework; sourceTree = "<group>"; };
+		A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GLTFMTL.framework; sourceTree = "<group>"; };
 		A5A1CD1721B9EC5D002F6F35 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		A5A1CD1D21B9F332002F6F35 /* Prop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prop.swift; sourceTree = "<group>"; };
@@ -144,6 +191,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A588D8E021CAFDDC00652FC2 /* GLTF.framework in Frameworks */,
+				A588D8E521CAFE4600652FC2 /* GLTFMTL.framework in Frameworks */,
+				A588D8E321CAFE2900652FC2 /* GLTFMTL.framework in Frameworks */,
+				A588D8E721CAFE4600652FC2 /* GLTF.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +202,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A588D8E121CAFDDC00652FC2 /* GLTF.framework in Frameworks */,
+				A588D8EA21CAFE4C00652FC2 /* GLTFMTL.framework in Frameworks */,
+				A588D8E421CAFE2900652FC2 /* GLTFMTL.framework in Frameworks */,
+				A588D8EC21CAFE4C00652FC2 /* GLTF.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +233,7 @@
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
+				A588D83F21CAF7BC00652FC2 /* rpg_reptile_mage */,
 				A551ADFF21C997C000FA207B /* Skeleton */,
 			);
 			path = Characters;
@@ -240,6 +296,8 @@
 		A57F6A2121B8A1CC002C0632 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */,
+				A588D8DF21CAFDDC00652FC2 /* GLTF.framework */,
 				A56ACB5321C728750069962B /* Textures.xcassets */,
 				A56ACB3A21C727970069962B /* Models */,
 				A5A9E08C21BC1A0C00A6F6BB /* Protocols */,
@@ -310,6 +368,25 @@
 			path = "../../../../../../Downloads/Metal_by_Tutorials_v1/08-character-animation/starter/Animation/Animation/Utility/glTF Importer";
 			sourceTree = "<group>";
 		};
+		A588D83F21CAF7BC00652FC2 /* rpg_reptile_mage */ = {
+			isa = PBXGroup;
+			children = (
+				A588D84021CAF7BC00652FC2 /* textures */,
+				A588D84321CAF7BC00652FC2 /* scene.gltf */,
+				A588D84421CAF7BC00652FC2 /* scene.bin */,
+			);
+			path = rpg_reptile_mage;
+			sourceTree = "<group>";
+		};
+		A588D84021CAF7BC00652FC2 /* textures */ = {
+			isa = PBXGroup;
+			children = (
+				A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */,
+				A588D84221CAF7BC00652FC2 /* 08___Default_baseColor.png */,
+			);
+			path = textures;
+			sourceTree = "<group>";
+		};
 		A5A1CD3621BA2962002F6F35 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,6 +413,7 @@
 				A57F6A2D21B8CB42002C0632 /* Sources */,
 				A57F6A2E21B8CB42002C0632 /* Frameworks */,
 				A57F6A2F21B8CB42002C0632 /* Resources */,
+				A588D8E921CAFE4600652FC2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -353,6 +431,7 @@
 				A57F6A4321B8CBA8002C0632 /* Sources */,
 				A57F6A4421B8CBA8002C0632 /* Frameworks */,
 				A57F6A4521B8CBA8002C0632 /* Resources */,
+				A588D8EE21CAFE4C00652FC2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -405,6 +484,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A588D84721CAF7BC00652FC2 /* 08___Default_baseColor.png in Resources */,
 				A551AE0421C997C000FA207B /* skeletonWave.gltf in Resources */,
 				A56ACB4921C727980069962B /* cottage1.obj in Resources */,
 				A56ACB4321C727980069962B /* cottage1.mtl in Resources */,
@@ -412,6 +492,7 @@
 				A551ADF621C997B500FA207B /* beachball.mtl in Resources */,
 				A551AE0221C997C000FA207B /* skeletonWave.bin in Resources */,
 				A56ACB4721C727980069962B /* cube.mtl in Resources */,
+				A588D84921CAF7BC00652FC2 /* scene.gltf in Resources */,
 				A551ADFA21C997B500FA207B /* ground.mtl in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A56ACB4B21C727980069962B /* cottage2.obj in Resources */,
@@ -421,7 +502,9 @@
 				A551ADEC21C983DD00FA207B /* chest.mtl in Resources */,
 				A551ADEE21C983DD00FA207B /* chest.obj in Resources */,
 				A56ACB4121C727980069962B /* cottage2.mtl in Resources */,
+				A588D84B21CAF7BC00652FC2 /* scene.bin in Resources */,
 				A551ADF821C997B500FA207B /* beachball.obj in Resources */,
+				A588D84521CAF7BC00652FC2 /* 02___Default_baseColor.png in Resources */,
 				A56ACB4521C727980069962B /* cube.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +520,7 @@
 				A551ADFD21C997B500FA207B /* ground.obj in Resources */,
 				A551ADF921C997B500FA207B /* beachball.obj in Resources */,
 				A551ADED21C983DD00FA207B /* chest.mtl in Resources */,
+				A588D84A21CAF7BC00652FC2 /* scene.gltf in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A551ADFB21C997B500FA207B /* ground.mtl in Resources */,
@@ -444,8 +528,11 @@
 				A56ACB4A21C727980069962B /* cottage1.obj in Resources */,
 				A56ACB4421C727980069962B /* cottage1.mtl in Resources */,
 				A551ADF721C997B500FA207B /* beachball.mtl in Resources */,
+				A588D84621CAF7BC00652FC2 /* 02___Default_baseColor.png in Resources */,
+				A588D84821CAF7BC00652FC2 /* 08___Default_baseColor.png in Resources */,
 				A56ACB4821C727980069962B /* cube.mtl in Resources */,
 				A551AE0521C997C000FA207B /* skeletonWave.gltf in Resources */,
+				A588D84C21CAF7BC00652FC2 /* scene.bin in Resources */,
 				A551AE0321C997C000FA207B /* skeletonWave.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,7 +547,6 @@
 				A5A1CD1E21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
-				A588D83721CAE17A00652FC2 /* GLTFTypes.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
 				A5B95CB121C8A02100DB723E /* PBR.metal in Sources */,
 				A57F6A5721B8CBD7002C0632 /* Renderer.swift in Sources */,
@@ -468,14 +554,12 @@
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
-				A588D83321CAE17A00652FC2 /* GLTFMathLibrary.swift in Sources */,
 				A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */,
-				A588D83521CAE17A00652FC2 /* GLTFAsset.swift in Sources */,
 				A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */,
 			);
@@ -488,7 +572,6 @@
 				A5A1CD1F21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
-				A588D83821CAE17A00652FC2 /* GLTFTypes.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				A5B95CB221C8A02100DB723E /* PBR.metal in Sources */,
 				A57F6A5821B8CBD8002C0632 /* Renderer.swift in Sources */,
@@ -496,14 +579,12 @@
 				A5A1CD2521BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
 				A57F6A5A21B8CBDB002C0632 /* Primitive.swift in Sources */,
-				A588D83421CAE17A00652FC2 /* GLTFMathLibrary.swift in Sources */,
 				A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A551AE0921C9A4E700FA207B /* Animation.swift in Sources */,
 				A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,
-				A588D83621CAE17A00652FC2 /* GLTFAsset.swift in Sources */,
 				A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */,
 			);
@@ -590,7 +671,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -646,7 +727,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -663,6 +744,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4HWQ95CTCF;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Common",
+				);
 				INFOPLIST_FILE = "Highlands-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -684,6 +769,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4HWQ95CTCF;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Common",
+				);
 				INFOPLIST_FILE = "Highlands-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -707,6 +796,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 4HWQ95CTCF;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Common",
+				);
 				INFOPLIST_FILE = "Highlands-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -726,6 +819,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 4HWQ95CTCF;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Common",
+				);
 				INFOPLIST_FILE = "Highlands-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

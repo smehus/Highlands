@@ -1,0 +1,6 @@
+framework module GLTF {
+  umbrella header "GLTF.h"
+
+  export *
+  module * { export * }
+}

@@ -11,6 +11,7 @@
 
 #import <simd/simd.h>
 
+
 typedef enum {
     BufferIndexVertices = 0,
     BufferIndexUniforms = 11,
