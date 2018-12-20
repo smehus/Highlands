@@ -65,7 +65,8 @@ final class Renderer: NSObject {
 
         buildDepthStencilState()
 
-        let skeleton = Character(name: "skeletonWave")
+        let skeleton = Character(name: "scene")
+        skeleton.rotation = float3(85, 0, 0)
         models.append(skeleton)
 
         let ground = Prop(name: "ground")

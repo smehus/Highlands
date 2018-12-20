@@ -88,13 +88,26 @@ private extension Submesh.Textures {
 
             guard let property = material?.property(with: semantic),
                 property.type == .string,
-                let filename = property.stringValue,
-                let texture = try? Submesh.loadTexture(imageName: filename) else {
-                    return nil
+                let filename = property.stringValue
+            else {
+                print("TEXTURABLE MATERIAL NOT A STRING VALUE")
+                return nil
+            }
+
+            guard let texture = try? Submesh.loadTexture(imageName: filename) else {
+                print("FAILED TO LOAD TEXTURE \(filename)")
+                return nil
             }
             return texture
         }
+
+
         baseColor = property(with: .baseColor)
+
+        if baseColor == nil {
+            print("❌❌❌❌❌  Nil base color")
+        }
+
         normal = property(with: .tangentSpaceNormal)
         roughness = property(with: .roughness)
     }

@@ -25,6 +25,8 @@ class Character: Node {
     let animations: [AnimationClip]
     let nodes: [CharacterNode]
     var currentTime: Float = 0
+    var currentAnimation: AnimationClip?
+    var currentAnimationPlaying = false
 
     init(name: String) {
         let asset = GLTFAsset(filename: name)
@@ -45,7 +47,7 @@ extension Character: Renderable {
 
     func calculateJoints(node: CharacterNode, time: Float) {
         // 1
-        if let nodeAnimation = animations[0].nodeAnimations[node.nodeIndex] {
+        if let nodeAnimation = animations[6].nodeAnimations[node.nodeIndex] {
             // 2
             if let translation = nodeAnimation.getTranslation(time: time) {
                 node.translation = translation
@@ -63,7 +65,7 @@ extension Character: Renderable {
     func update(deltaTime: Float) {
         guard animations.count > 0 else { return }
         currentTime += deltaTime
-        let time = fmod(currentTime, animations[0].duration)
+        let time = fmod(currentTime, animations[6].duration)
         for node in meshNodes {
             if let rootNode = node.skin?.skeletonRootNode {
                 calculateJoints(node: rootNode, time: time)
@@ -96,6 +98,8 @@ extension Character: Renderable {
 
             for submesh in mesh.submeshes {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
+
+                renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: 0)
                 var material = submesh.material
                 renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
 

@@ -60,14 +60,6 @@
 		A588D83B21CAE1A300652FC2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
 		A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
-		A588D84521CAF7BC00652FC2 /* 02___Default_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */; };
-		A588D84621CAF7BC00652FC2 /* 02___Default_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */; };
-		A588D84721CAF7BC00652FC2 /* 08___Default_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A588D84221CAF7BC00652FC2 /* 08___Default_baseColor.png */; };
-		A588D84821CAF7BC00652FC2 /* 08___Default_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A588D84221CAF7BC00652FC2 /* 08___Default_baseColor.png */; };
-		A588D84921CAF7BC00652FC2 /* scene.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A588D84321CAF7BC00652FC2 /* scene.gltf */; };
-		A588D84A21CAF7BC00652FC2 /* scene.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A588D84321CAF7BC00652FC2 /* scene.gltf */; };
-		A588D84B21CAF7BC00652FC2 /* scene.bin in Resources */ = {isa = PBXBuildFile; fileRef = A588D84421CAF7BC00652FC2 /* scene.bin */; };
-		A588D84C21CAF7BC00652FC2 /* scene.bin in Resources */ = {isa = PBXBuildFile; fileRef = A588D84421CAF7BC00652FC2 /* scene.bin */; };
 		A588D8E021CAFDDC00652FC2 /* GLTF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8DF21CAFDDC00652FC2 /* GLTF.framework */; };
 		A588D8E121CAFDDC00652FC2 /* GLTF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8DF21CAFDDC00652FC2 /* GLTF.framework */; };
 		A588D8E321CAFE2900652FC2 /* GLTFMTL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */; };
@@ -104,6 +96,10 @@
 		A5F567DC21CC379E009A5574 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F567D721CC379E009A5574 /* GLTFMathLibrary.swift */; };
 		A5F567DD21CC379E009A5574 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F567D821CC379E009A5574 /* GLTFTypes.swift */; };
 		A5F567DE21CC379E009A5574 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F567D821CC379E009A5574 /* GLTFTypes.swift */; };
+		A5F5687421CC48ED009A5574 /* scene.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5F5687221CC48ED009A5574 /* scene.gltf */; };
+		A5F5687521CC48ED009A5574 /* scene.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5F5687221CC48ED009A5574 /* scene.gltf */; };
+		A5F5687621CC48ED009A5574 /* scene.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5F5687321CC48ED009A5574 /* scene.bin */; };
+		A5F5687721CC48ED009A5574 /* scene.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5F5687321CC48ED009A5574 /* scene.bin */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -171,10 +167,6 @@
 		A57F6A6521B9795D002C0632 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		A588D83921CAE1A300652FC2 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CharacterShaders.metal; sourceTree = "<group>"; };
-		A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "02___Default_baseColor.png"; sourceTree = "<group>"; };
-		A588D84221CAF7BC00652FC2 /* 08___Default_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "08___Default_baseColor.png"; sourceTree = "<group>"; };
-		A588D84321CAF7BC00652FC2 /* scene.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene.gltf; sourceTree = "<group>"; };
-		A588D84421CAF7BC00652FC2 /* scene.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = scene.bin; sourceTree = "<group>"; };
 		A588D8DF21CAFDDC00652FC2 /* GLTF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GLTF.framework; sourceTree = "<group>"; };
 		A588D8E221CAFE2800652FC2 /* GLTFMTL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GLTFMTL.framework; sourceTree = "<group>"; };
 		A5A1CD1721B9EC5D002F6F35 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
@@ -190,6 +182,8 @@
 		A5F567D621CC379E009A5574 /* GLTFAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFAsset.swift; sourceTree = "<group>"; };
 		A5F567D721CC379E009A5574 /* GLTFMathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFMathLibrary.swift; sourceTree = "<group>"; };
 		A5F567D821CC379E009A5574 /* GLTFTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFTypes.swift; sourceTree = "<group>"; };
+		A5F5687221CC48ED009A5574 /* scene.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene.gltf; sourceTree = "<group>"; };
+		A5F5687321CC48ED009A5574 /* scene.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = scene.bin; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,7 +233,7 @@
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
-				A588D83F21CAF7BC00652FC2 /* rpg_reptile_mage */,
+				A5F5687121CC48ED009A5574 /* low_poly_dark_elf_free_download */,
 				A551ADFF21C997C000FA207B /* Skeleton */,
 			);
 			path = Characters;
@@ -363,25 +357,6 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
-		A588D83F21CAF7BC00652FC2 /* rpg_reptile_mage */ = {
-			isa = PBXGroup;
-			children = (
-				A588D84021CAF7BC00652FC2 /* textures */,
-				A588D84321CAF7BC00652FC2 /* scene.gltf */,
-				A588D84421CAF7BC00652FC2 /* scene.bin */,
-			);
-			path = rpg_reptile_mage;
-			sourceTree = "<group>";
-		};
-		A588D84021CAF7BC00652FC2 /* textures */ = {
-			isa = PBXGroup;
-			children = (
-				A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */,
-				A588D84221CAF7BC00652FC2 /* 08___Default_baseColor.png */,
-			);
-			path = textures;
-			sourceTree = "<group>";
-		};
 		A5A1CD3621BA2962002F6F35 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,6 +381,15 @@
 				A5F567D821CC379E009A5574 /* GLTFTypes.swift */,
 			);
 			path = "glTF Importer";
+			sourceTree = "<group>";
+		};
+		A5F5687121CC48ED009A5574 /* low_poly_dark_elf_free_download */ = {
+			isa = PBXGroup;
+			children = (
+				A5F5687221CC48ED009A5574 /* scene.gltf */,
+				A5F5687321CC48ED009A5574 /* scene.bin */,
+			);
+			path = low_poly_dark_elf_free_download;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -489,7 +473,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A588D84721CAF7BC00652FC2 /* 08___Default_baseColor.png in Resources */,
 				A551AE0421C997C000FA207B /* skeletonWave.gltf in Resources */,
 				A56ACB4921C727980069962B /* cottage1.obj in Resources */,
 				A56ACB4321C727980069962B /* cottage1.mtl in Resources */,
@@ -497,20 +480,19 @@
 				A551ADF621C997B500FA207B /* beachball.mtl in Resources */,
 				A551AE0221C997C000FA207B /* skeletonWave.bin in Resources */,
 				A56ACB4721C727980069962B /* cube.mtl in Resources */,
-				A588D84921CAF7BC00652FC2 /* scene.gltf in Resources */,
 				A551ADFA21C997B500FA207B /* ground.mtl in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A56ACB4B21C727980069962B /* cottage2.obj in Resources */,
+				A5F5687621CC48ED009A5574 /* scene.bin in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A551ADEC21C983DD00FA207B /* chest.mtl in Resources */,
 				A551ADEE21C983DD00FA207B /* chest.obj in Resources */,
 				A56ACB4121C727980069962B /* cottage2.mtl in Resources */,
-				A588D84B21CAF7BC00652FC2 /* scene.bin in Resources */,
 				A551ADF821C997B500FA207B /* beachball.obj in Resources */,
-				A588D84521CAF7BC00652FC2 /* 02___Default_baseColor.png in Resources */,
 				A56ACB4521C727980069962B /* cube.obj in Resources */,
+				A5F5687421CC48ED009A5574 /* scene.gltf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,9 +505,10 @@
 				A56ACB4C21C727980069962B /* cottage2.obj in Resources */,
 				A56ACB4221C727980069962B /* cottage2.mtl in Resources */,
 				A551ADFD21C997B500FA207B /* ground.obj in Resources */,
+				A5F5687521CC48ED009A5574 /* scene.gltf in Resources */,
+				A5F5687721CC48ED009A5574 /* scene.bin in Resources */,
 				A551ADF921C997B500FA207B /* beachball.obj in Resources */,
 				A551ADED21C983DD00FA207B /* chest.mtl in Resources */,
-				A588D84A21CAF7BC00652FC2 /* scene.gltf in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A551ADFB21C997B500FA207B /* ground.mtl in Resources */,
@@ -533,11 +516,8 @@
 				A56ACB4A21C727980069962B /* cottage1.obj in Resources */,
 				A56ACB4421C727980069962B /* cottage1.mtl in Resources */,
 				A551ADF721C997B500FA207B /* beachball.mtl in Resources */,
-				A588D84621CAF7BC00652FC2 /* 02___Default_baseColor.png in Resources */,
-				A588D84821CAF7BC00652FC2 /* 08___Default_baseColor.png in Resources */,
 				A56ACB4821C727980069962B /* cube.mtl in Resources */,
 				A551AE0521C997C000FA207B /* skeletonWave.gltf in Resources */,
-				A588D84C21CAF7BC00652FC2 /* scene.bin in Resources */,
 				A551AE0321C997C000FA207B /* skeletonWave.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
