@@ -65,8 +65,8 @@ final class Renderer: NSObject {
 
         buildDepthStencilState()
 
-        let skeleton = Character(name: "skeletonWave")
-        models.append(skeleton)
+//        let skeleton = Character(name: "skeletonWave")
+//        models.append(skeleton)
 
         let ground = Prop(name: "ground")
         ground.scale = [10, 10, 10]
