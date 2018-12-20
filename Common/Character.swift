@@ -24,6 +24,7 @@ class Character: Node {
     let meshNodes: [CharacterNode]
     let animations: [AnimationClip]
     let nodes: [CharacterNode]
+    var currentTime: Float = 0
 
     init(name: String) {
         let asset = GLTFAsset(filename: name)
@@ -41,13 +42,49 @@ class Character: Node {
 }
 
 extension Character: Renderable {
-    func update(deltaTime: Float) {
 
+    func calculateJoints(node: CharacterNode, time: Float) {
+        // 1
+        if let nodeAnimation = animations[0].nodeAnimations[node.nodeIndex] {
+            // 2
+            if let translation = nodeAnimation.getTranslation(time: time) {
+                node.translation = translation
+            }
+            if let rotationQuaternion = nodeAnimation.getRotation(time: time) {
+                node.rotationQuaternion = rotationQuaternion
+            }
+        }
+        // 3
+        for child in node.children {
+            calculateJoints(node: child, time: time)
+        }
+    }
+
+    func update(deltaTime: Float) {
+        guard animations.count > 0 else { return }
+        currentTime += deltaTime
+        let time = fmod(currentTime, animations[0].duration)
+        for node in meshNodes {
+            if let rootNode = node.skin?.skeletonRootNode {
+                calculateJoints(node: rootNode, time: time)
+            }
+        }
     }
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, fragmentUniforms: FragmentUniforms) {
         for node in meshNodes {
             guard let mesh = node.mesh else { return }
+
+
+            if let skin = node.skin {
+                for (i, jointNode) in skin.jointNodes.enumerated() {
+                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
+                }
+
+                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
+                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
+                renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
+            }
 
             var uniforms = uniforms
             uniforms.modelMatrix = modelMatrix

@@ -23,11 +23,11 @@ struct VertexIn {
 
 struct VertexOut {
     float4 position [[ position ]];
-//    float3 worldPosition;
+    float3 worldPosition;
     float3 worldNormal;
-//    float2 uv;
-//    float3 worldTangent;
-//    float3 worldBitangent;
+    float2 uv;
+    float3 worldTangent;
+    float3 worldBitangent;
 };
 /*
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -176,6 +176,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.worldNormal = uniforms.normalMatrix * vertexIn.normal;
     return out;
 }
+
 
 fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
