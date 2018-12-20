@@ -8,9 +8,6 @@
 
 import MetalKit
 
-
-
-/*(
 class Character: Node {
 
     class CharacterSubmesh: Submesh {
@@ -78,5 +75,3 @@ extension Character: Renderable {
         }
     }
 }
-
-*/
