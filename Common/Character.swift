@@ -10,15 +10,6 @@ import MetalKit
 
 class Character: Node {
 
-    init(name: String) {
-
-    }
-
-}
-
-/*
-class Character: Node {
-
     class CharacterSubmesh: Submesh {
 
         // Adding properties that are already in the MTKSubmesh
@@ -84,4 +75,4 @@ extension Character: Renderable {
         }
     }
 }
-*/
+

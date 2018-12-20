@@ -28,6 +28,9 @@
 		A553BA0721CC1FF400364731 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0421CC1FF400364731 /* GLTFMathLibrary.swift */; };
 		A553BA0821CC1FF400364731 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0521CC1FF400364731 /* GLTFAsset.swift */; };
 		A553BA0921CC1FF400364731 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0621CC1FF400364731 /* GLTFTypes.swift */; };
+		A553BA0A21CC204900364731 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0421CC1FF400364731 /* GLTFMathLibrary.swift */; };
+		A553BA0B21CC204900364731 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0521CC1FF400364731 /* GLTFAsset.swift */; };
+		A553BA0C21CC204900364731 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0621CC1FF400364731 /* GLTFTypes.swift */; };
 		A56ACB4121C727980069962B /* cottage2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3B21C727970069962B /* cottage2.mtl */; };
 		A56ACB4221C727980069962B /* cottage2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3B21C727970069962B /* cottage2.mtl */; };
 		A56ACB4321C727980069962B /* cottage1.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3C21C727970069962B /* cottage1.mtl */; };
@@ -584,6 +587,7 @@
 				A588D83B21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2521BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
+				A553BA0A21CC204900364731 /* GLTFMathLibrary.swift in Sources */,
 				A57F6A5A21B8CBDB002C0632 /* Primitive.swift in Sources */,
 				A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A551AE0921C9A4E700FA207B /* Animation.swift in Sources */,
@@ -593,6 +597,8 @@
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,
 				A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */,
+				A553BA0B21CC204900364731 /* GLTFAsset.swift in Sources */,
+				A553BA0C21CC204900364731 /* GLTFTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
