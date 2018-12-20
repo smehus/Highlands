@@ -25,6 +25,9 @@
 		A551AE0521C997C000FA207B /* skeletonWave.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A551AE0121C997C000FA207B /* skeletonWave.gltf */; };
 		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A551AE0921C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
+		A553BA0721CC1FF400364731 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0421CC1FF400364731 /* GLTFMathLibrary.swift */; };
+		A553BA0821CC1FF400364731 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0521CC1FF400364731 /* GLTFAsset.swift */; };
+		A553BA0921CC1FF400364731 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A553BA0621CC1FF400364731 /* GLTFTypes.swift */; };
 		A56ACB4121C727980069962B /* cottage2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3B21C727970069962B /* cottage2.mtl */; };
 		A56ACB4221C727980069962B /* cottage2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3B21C727970069962B /* cottage2.mtl */; };
 		A56ACB4321C727980069962B /* cottage1.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB3C21C727970069962B /* cottage1.mtl */; };
@@ -137,6 +140,9 @@
 		A551AE0021C997C000FA207B /* skeletonWave.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = skeletonWave.bin; sourceTree = "<group>"; };
 		A551AE0121C997C000FA207B /* skeletonWave.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = skeletonWave.gltf; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		A553BA0421CC1FF400364731 /* GLTFMathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFMathLibrary.swift; sourceTree = "<group>"; };
+		A553BA0521CC1FF400364731 /* GLTFAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFAsset.swift; sourceTree = "<group>"; };
+		A553BA0621CC1FF400364731 /* GLTFTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFTypes.swift; sourceTree = "<group>"; };
 		A56ACB3B21C727970069962B /* cottage2.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cottage2.mtl; sourceTree = "<group>"; };
 		A56ACB3C21C727970069962B /* cottage1.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cottage1.mtl; sourceTree = "<group>"; };
 		A56ACB3D21C727970069962B /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
@@ -163,9 +169,6 @@
 		A57F6A5321B8CBA8002C0632 /* Highlands_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Highlands_macOS.entitlements; sourceTree = "<group>"; };
 		A57F6A6221B978E3002C0632 /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
 		A57F6A6521B9795D002C0632 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		A588D83021CAE17A00652FC2 /* GLTFMathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFMathLibrary.swift; sourceTree = "<group>"; };
-		A588D83121CAE17A00652FC2 /* GLTFAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFAsset.swift; sourceTree = "<group>"; };
-		A588D83221CAE17A00652FC2 /* GLTFTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFTypes.swift; sourceTree = "<group>"; };
 		A588D83921CAE1A300652FC2 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CharacterShaders.metal; sourceTree = "<group>"; };
 		A588D84121CAF7BC00652FC2 /* 02___Default_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "02___Default_baseColor.png"; sourceTree = "<group>"; };
@@ -265,6 +268,17 @@
 			path = Props;
 			sourceTree = "<group>";
 		};
+		A553BA0321CC1FF400364731 /* glTF Importer */ = {
+			isa = PBXGroup;
+			children = (
+				A553BA0421CC1FF400364731 /* GLTFMathLibrary.swift */,
+				A553BA0521CC1FF400364731 /* GLTFAsset.swift */,
+				A553BA0621CC1FF400364731 /* GLTFTypes.swift */,
+			);
+			name = "glTF Importer";
+			path = "../../../../../../Downloads/Metal_by_Tutorials_v1/08-character-animation/final/Animation/Animation/Utility/glTF Importer";
+			sourceTree = "<group>";
+		};
 		A56ACB3A21C727970069962B /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,21 +365,10 @@
 		A57F6A6121B978E3002C0632 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				A588D82F21CAE17A00652FC2 /* glTF Importer */,
+				A553BA0321CC1FF400364731 /* glTF Importer */,
 				A57F6A6221B978E3002C0632 /* MathLibrary.swift */,
 			);
 			path = Utility;
-			sourceTree = "<group>";
-		};
-		A588D82F21CAE17A00652FC2 /* glTF Importer */ = {
-			isa = PBXGroup;
-			children = (
-				A588D83021CAE17A00652FC2 /* GLTFMathLibrary.swift */,
-				A588D83121CAE17A00652FC2 /* GLTFAsset.swift */,
-				A588D83221CAE17A00652FC2 /* GLTFTypes.swift */,
-			);
-			name = "glTF Importer";
-			path = "../../../../../../Downloads/Metal_by_Tutorials_v1/08-character-animation/starter/Animation/Animation/Utility/glTF Importer";
 			sourceTree = "<group>";
 		};
 		A588D83F21CAF7BC00652FC2 /* rpg_reptile_mage */ = {
@@ -553,6 +556,7 @@
 				A588D83A21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
+				A553BA0721CC1FF400364731 /* GLTFMathLibrary.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
 				A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
@@ -562,6 +566,8 @@
 				A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */,
 				A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */,
+				A553BA0821CC1FF400364731 /* GLTFAsset.swift in Sources */,
+				A553BA0921CC1FF400364731 /* GLTFTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
