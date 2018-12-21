@@ -33,4 +33,8 @@ class Node {
         let scaleMatrix = float4x4(scaling: [scale.x, scale.y, -scale.z])
         return translationMatrix * rotateMatrix * scaleMatrix
     }
+    
+    func update(deltaTime: Float) {
+        // override this
+    }
 }
