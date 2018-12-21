@@ -42,6 +42,16 @@
 		A57506CD21CD669700C63081 /* DebugBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506C921CD669700C63081 /* DebugBoundingBox.swift */; };
 		A57506D021CD680E00C63081 /* Renderable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506CF21CD680E00C63081 /* Renderable.swift */; };
 		A57506D121CD680E00C63081 /* Renderable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506CF21CD680E00C63081 /* Renderable.swift */; };
+		A57506D721CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506D421CD6C9200C63081 /* GLTFMathLibrary.swift */; };
+		A57506D821CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506D421CD6C9200C63081 /* GLTFMathLibrary.swift */; };
+		A57506D921CD6C9200C63081 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506D521CD6C9200C63081 /* GLTFAsset.swift */; };
+		A57506DA21CD6C9200C63081 /* GLTFAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506D521CD6C9200C63081 /* GLTFAsset.swift */; };
+		A57506DB21CD6C9200C63081 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506D621CD6C9200C63081 /* GLTFTypes.swift */; };
+		A57506DC21CD6C9200C63081 /* GLTFTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506D621CD6C9200C63081 /* GLTFTypes.swift */; };
+		A57506DF21CD970B00C63081 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506DE21CD970B00C63081 /* Scene.swift */; };
+		A57506E021CD970B00C63081 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506DE21CD970B00C63081 /* Scene.swift */; };
+		A57506E221CDA2C600C63081 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E121CDA2C600C63081 /* GameScene.swift */; };
+		A57506E321CDA2C600C63081 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E121CDA2C600C63081 /* GameScene.swift */; };
 		A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3321B8CB42002C0632 /* AppDelegate.swift */; };
 		A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3521B8CB42002C0632 /* LocalViewController.swift */; };
 		A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A57F6A3721B8CB42002C0632 /* Main.storyboard */; };
@@ -123,6 +133,11 @@
 		A57506C821CD669700C63081 /* DebugBoundingBox.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DebugBoundingBox.metal; sourceTree = "<group>"; };
 		A57506C921CD669700C63081 /* DebugBoundingBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugBoundingBox.swift; sourceTree = "<group>"; };
 		A57506CF21CD680E00C63081 /* Renderable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderable.swift; sourceTree = "<group>"; };
+		A57506D421CD6C9200C63081 /* GLTFMathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFMathLibrary.swift; sourceTree = "<group>"; };
+		A57506D521CD6C9200C63081 /* GLTFAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFAsset.swift; sourceTree = "<group>"; };
+		A57506D621CD6C9200C63081 /* GLTFTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFTypes.swift; sourceTree = "<group>"; };
+		A57506DE21CD970B00C63081 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		A57506E121CDA2C600C63081 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		A57F6A2221B8A1E0002C0632 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		A57F6A2421B8A3E5002C0632 /* Primitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
 		A57F6A2621B8A901002C0632 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -265,6 +280,26 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
+		A57506D321CD6C9200C63081 /* glTF Importer */ = {
+			isa = PBXGroup;
+			children = (
+				A57506D421CD6C9200C63081 /* GLTFMathLibrary.swift */,
+				A57506D521CD6C9200C63081 /* GLTFAsset.swift */,
+				A57506D621CD6C9200C63081 /* GLTFTypes.swift */,
+			);
+			name = "glTF Importer";
+			path = "Common/glTF Importer";
+			sourceTree = SOURCE_ROOT;
+		};
+		A57506DD21CD96FF00C63081 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				A57506DE21CD970B00C63081 /* Scene.swift */,
+				A57506E121CDA2C600C63081 /* GameScene.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
 		A57F6A0521B8A145002C0632 = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +322,7 @@
 		A57F6A2121B8A1CC002C0632 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A57506DD21CD96FF00C63081 /* Scenes */,
 				A57506CE21CD671A00C63081 /* Shaders */,
 				A56ACB5321C728750069962B /* Textures.xcassets */,
 				A56ACB3A21C727970069962B /* Models */,
@@ -339,6 +375,7 @@
 		A57F6A6121B978E3002C0632 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				A57506D321CD6C9200C63081 /* glTF Importer */,
 				A57506C721CD669700C63081 /* Debug */,
 				A575069C21CD63E100C63081 /* InputController.swift */,
 				A575069D21CD63E200C63081 /* PhysicsController.swift */,
@@ -488,9 +525,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A57506D721CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */,
 				A5A1CD1E21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
+				A57506E221CDA2C600C63081 /* GameScene.swift in Sources */,
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
+				A57506DF21CD970B00C63081 /* Scene.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
 				A57506CA21CD669700C63081 /* DebugBoundingBox.metal in Sources */,
 				A57F6A5721B8CBD7002C0632 /* Renderer.swift in Sources */,
@@ -498,10 +538,12 @@
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57506D021CD680E00C63081 /* Renderable.swift in Sources */,
+				A57506DB21CD6C9200C63081 /* GLTFTypes.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
 				A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A57506CC21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
 				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
+				A57506D921CD6C9200C63081 /* GLTFAsset.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
@@ -521,6 +563,7 @@
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
+				A57506D821CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */,
 				A57F6A5821B8CBD8002C0632 /* Renderer.swift in Sources */,
 				A588D83B21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2521BA2833002F6F35 /* ViewController.swift in Sources */,
@@ -530,6 +573,8 @@
 				A551AE0921C9A4E700FA207B /* Animation.swift in Sources */,
 				A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
+				A57506DC21CD6C9200C63081 /* GLTFTypes.swift in Sources */,
+				A57506DA21CD6C9200C63081 /* GLTFAsset.swift in Sources */,
 				A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A57506A121CD63E200C63081 /* PhysicsController.swift in Sources */,
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,
@@ -540,6 +585,8 @@
 				A575069F21CD63E200C63081 /* InputController.swift in Sources */,
 				A57506CD21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
 				A57506A321CD641300C63081 /* GameView.swift in Sources */,
+				A57506E321CDA2C600C63081 /* GameScene.swift in Sources */,
+				A57506E021CD970B00C63081 /* Scene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

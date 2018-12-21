@@ -1,46 +1,18 @@
-/**
- * Copyright (c) 2018 Razeware LLC
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
- * distribute, sublicense, create a derivative work, and/or sell copies of the
- * Software in any work that is designed, intended, or marketed for pedagogical or
- * instructional purposes related to programming, coding, application development,
- * or information technology.  Permission for such use, copying, modification,
- * merger, publication, distribution, sublicensing, creation of derivative works,
- * or sale is expressly withheld.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
+//
+//  Character.swift
+//  Highlands
+//
+//  Created by Scott Mehus on 12/19/18.
+//  Copyright © 2018 Scott Mehus. All rights reserved.
+//
 
 import MetalKit
 
 class Character: Node {
 
-    let buffers: [MTLBuffer]
-    let meshNodes: [CharacterNode]
-    let animations: [AnimationClip]
-    let nodes: [CharacterNode]
-    var currentTime: Float = 0
-    var currentAnimation: AnimationClip?
-    var currentAnimationPlaying: Bool = false
-
     class CharacterSubmesh: Submesh {
+
+        // Adding properties that are already in the MTKSubmesh
         var attributes: [Attributes] = []
         var indexCount: Int = 0
         var indexBuffer: MTLBuffer?
@@ -55,36 +27,47 @@ class Character: Node {
         }
     }
 
+    let buffers: [MTLBuffer]
+    let meshNodes: [CharacterNode]
+    let animations: [AnimationClip]
+    let nodes: [CharacterNode]
+    var currentTime: Float = 0
+    var currentAnimation: AnimationClip?
+    var currentAnimationPlaying = false
+
     init(name: String) {
         let asset = GLTFAsset(filename: name)
         buffers = asset.buffers
         animations = asset.animations
-        guard asset.scenes.count > 0 else {
-            fatalError("glTF file has no scene")
-        }
+        guard !asset.scenes.isEmpty else { fatalError() }
+
+        // The nodes that contain skinning data which bind vertices to joints.
         meshNodes = asset.scenes[0].meshNodes
+        
         nodes = asset.scenes[0].nodes
-
         super.init()
-
         self.name = name
     }
 
     override func update(deltaTime: Float) {
-        guard let animation = currentAnimation,
-            currentAnimationPlaying == true else {
-                return
+        guard let animation = currentAnimation, currentAnimationPlaying == true else {
+            return
         }
+
         currentTime += deltaTime
         let time = fmod(currentTime, animation.duration)
         for nodeAnimation in animation.nodeAnimations {
+
             let speed = animation.speed
             let animation = nodeAnimation.value
             animation.speed = speed
+
             guard let node = animation.node else { continue }
+
             if let translation = animation.getTranslation(time: time) {
                 node.translation = translation
             }
+
             if let rotationQuaternion = animation.getRotation(time: time) {
                 node.rotationQuaternion = rotationQuaternion
             }
@@ -92,22 +75,7 @@ class Character: Node {
     }
 }
 
-// MARK:- Animation Control
-extension Character {
-
-    func calculateJoints(node: CharacterNode, time: Float) {
-        if let nodeAnimation = animations[0].nodeAnimations[node.nodeIndex] {
-            if let translation = nodeAnimation.getTranslation(time: time) {
-                node.translation = translation
-            }
-            if let rotationQuaternion = nodeAnimation.getRotation(time: time) {
-                node.rotationQuaternion = rotationQuaternion
-            }
-        }
-        for child in node.children {
-            calculateJoints(node: child, time: time)
-        }
-    }
+extension Character: Renderable {
 
     func runAnimation(clip animationClip: AnimationClip? = nil) {
         var clip = animationClip
@@ -125,11 +93,10 @@ extension Character {
     }
 
     func runAnimation(name: String) {
-        guard let clip = (animations.filter {
-            $0.name == name
-        }).first else {
+        guard let clip = (animations.filter { $0.name == name }).first else {
             return
         }
+
         runAnimation(clip: clip)
     }
 
@@ -145,10 +112,7 @@ extension Character {
         currentAnimation = nil
         currentAnimationPlaying = false
     }
-}
 
-// MARK:- Rendering
-extension Character: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
@@ -198,4 +162,3 @@ extension Character: Renderable {
         }
     }
 }
-

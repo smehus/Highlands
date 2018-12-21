@@ -106,23 +106,21 @@ extension Prop: Renderable {
 
         for modelSubmesh in submeshes {
             renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor,
-                                             index: Int(BaseColorTexture.rawValue))
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.normal,
-                                             index: Int(NormalTexture.rawValue))
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness,
-                                             index: 2)
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: 2)
 
             var material = modelSubmesh.material
-            renderEncoder.setFragmentBytes(&material,
-                                           length: MemoryLayout<Material>.stride,
-                                           index: Int(BufferIndexMaterials.rawValue))
+            renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
+
             guard let submesh = modelSubmesh.submesh else { continue }
+
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset)
+            
             if debugRenderBoundingBox {
                 debugBoundingBox.render(renderEncoder: renderEncoder, uniforms: uniforms)
             }
