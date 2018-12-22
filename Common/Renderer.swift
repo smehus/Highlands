@@ -71,6 +71,7 @@ extension Renderer: MTKViewDelegate {
                                        length: MemoryLayout<FragmentUniforms>.stride,
                                        index: Int(BufferIndexFragmentUniforms.rawValue))
 
+        
         renderEncoder.setFragmentBytes(&scene.lights,
                                        length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))

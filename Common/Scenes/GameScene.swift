@@ -37,8 +37,8 @@ final class GameScene: Scene {
 
     override func updateScene(deltaTime: Float) {
         let pos = inputController.player!.position
-
-        lights[0].position = float3(pos.x, pos.y + 1, pos.z + 4)
-
+        let dir = inputController.player!.forwardVector
+        lights[0].position = float3(pos.x, pos.y + 1, pos.z)
+        lights[0].coneDirection = float3(dir.x, -1, dir.z)
     }
 }
