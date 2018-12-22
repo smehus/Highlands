@@ -69,6 +69,27 @@ class Prop: Node {
         boundingBox = mdlMesh.boundingBox
     }
 
+    init(mdlMesh: MDLMesh) {
+        mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
+                                tangentAttributeNamed: MDLVertexAttributeTangent,
+                                bitangentAttributeNamed: MDLVertexAttributeBitangent)
+
+        Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
+        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+        self.mesh = mesh
+
+        submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
+            guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
+            return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh)
+            } ?? []
+
+        samplerState = Prop.buildSamplerState()
+        debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
+        super.init()
+
+        boundingBox = mdlMesh.boundingBox
+    }
+
     private static func buildSamplerState() -> MTLSamplerState? {
         let descriptor = MTLSamplerDescriptor()
         descriptor.sAddressMode = .repeat

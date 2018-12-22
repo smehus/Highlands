@@ -19,4 +19,14 @@ class Primitive {
 
         return mesh
     }
+
+    class func makePlane(device: MTLDevice, size: Float) -> MDLMesh {
+        let allocator = MTKMeshBufferAllocator(device: device)
+        let mesh = MDLMesh(planeWithExtent: [size, size, size],
+                           segments: [1, 1],
+                           geometryType: .triangles,
+                           allocator: allocator)
+
+        return mesh
+    }
 }

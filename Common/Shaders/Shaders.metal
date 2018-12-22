@@ -159,7 +159,8 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
                 // Inverting the normal direction will flip the 'black section of the light '
                 // When pointing backwards
-                float diffuseIntensity = saturate(dot(directionFromLightToFragment, normalDirection));
+                float dotProd = dot(directionFromLightToFragment, normalDirection);
+                float diffuseIntensity = saturate(dotProd);
                 float3 color = light.color * baseColor * diffuseIntensity;
                 color *= attenuation;
 

@@ -17,10 +17,10 @@ func lighting() -> [Light] {
 //    light.intensity = 0.2
 //    lights.append(light)
 
-    light = buildDefaultLight()
-    light.type = Ambientlight
-    light.intensity = 0.1
-    lights.append(light)
+//    light = buildDefaultLight()
+//    light.type = Ambientlight
+//    light.intensity = 0.1
+//    lights.append(light)
 
 
     light.position = [0, 0.5, 0]
@@ -28,7 +28,7 @@ func lighting() -> [Light] {
     light.attenuation = float3(1, 0, 0)
     light.type = Spotlight
     light.coneAngle = radians(fromDegrees: 30)
-    light.coneDirection = [1, -1, 1]
+    light.coneDirection = [1, -1, 0]
     light.coneAttenuation = 2
     light.type = Spotlight
     lights.append(light)
