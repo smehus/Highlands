@@ -11,7 +11,6 @@
 		A551AE0921C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A56ACB5421C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A56ACB5521C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
-		A575069E21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
 		A575069F21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
 		A57506A021CD63E200C63081 /* PhysicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069D21CD63E200C63081 /* PhysicsController.swift */; };
 		A57506A121CD63E200C63081 /* PhysicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069D21CD63E200C63081 /* PhysicsController.swift */; };
@@ -56,6 +55,8 @@
 		A57506E721CDAB5F00C63081 /* DebugLights.metal in Sources */ = {isa = PBXBuildFile; fileRef = A57506E421CDAB5E00C63081 /* DebugLights.metal */; };
 		A57506E821CDAB5F00C63081 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E521CDAB5F00C63081 /* DebugLights.swift */; };
 		A57506E921CDAB5F00C63081 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E521CDAB5F00C63081 /* DebugLights.swift */; };
+		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
+		A57506EE21CE942700C63081 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EB21CE942700C63081 /* GameView.swift */; };
 		A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3321B8CB42002C0632 /* AppDelegate.swift */; };
 		A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3521B8CB42002C0632 /* LocalViewController.swift */; };
 		A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A57F6A3721B8CB42002C0632 /* Main.storyboard */; };
@@ -93,6 +94,7 @@
 		A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */; };
 		A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
 		A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
+		A5C952C521CE952D00B23364 /* MotionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C952C421CE952D00B23364 /* MotionController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -144,6 +146,8 @@
 		A57506E121CDA2C600C63081 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		A57506E421CDAB5E00C63081 /* DebugLights.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DebugLights.metal; sourceTree = "<group>"; };
 		A57506E521CDAB5F00C63081 /* DebugLights.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugLights.swift; sourceTree = "<group>"; };
+		A57506EA21CE942700C63081 /* InputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
+		A57506EB21CE942700C63081 /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		A57F6A2221B8A1E0002C0632 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		A57F6A2421B8A3E5002C0632 /* Primitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
 		A57F6A2621B8A901002C0632 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 		A5A1CD2821BA2887002F6F35 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererExtensions.swift; sourceTree = "<group>"; };
 		A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texturable.swift; sourceTree = "<group>"; };
+		A5C952C421CE952D00B23364 /* MotionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -354,6 +359,9 @@
 		A57F6A3221B8CB42002C0632 /* Highlands-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A5C952C421CE952D00B23364 /* MotionController.swift */,
+				A57506EB21CE942700C63081 /* GameView.swift */,
+				A57506EA21CE942700C63081 /* InputController.swift */,
 				A5A1CD2821BA2887002F6F35 /* ViewControllerExtension.swift */,
 				A57F6A3321B8CB42002C0632 /* AppDelegate.swift */,
 				A57F6A3521B8CB42002C0632 /* LocalViewController.swift */,
@@ -368,6 +376,7 @@
 		A57F6A4821B8CBA8002C0632 /* Highlands-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				A575069C21CD63E100C63081 /* InputController.swift */,
 				A57506A221CD641300C63081 /* GameView.swift */,
 				A5A1CD2621BA2880002F6F35 /* ViewControllerExtension.swift */,
 				A57F6A4921B8CBA8002C0632 /* AppDelegate.swift */,
@@ -385,7 +394,6 @@
 			children = (
 				A57506D321CD6C9200C63081 /* glTF Importer */,
 				A57506C721CD669700C63081 /* Debug */,
-				A575069C21CD63E100C63081 /* InputController.swift */,
 				A575069D21CD63E200C63081 /* PhysicsController.swift */,
 				A57F6A6221B978E3002C0632 /* MathLibrary.swift */,
 			);
@@ -547,10 +555,12 @@
 				A57506E821CDAB5F00C63081 /* DebugLights.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57506D021CD680E00C63081 /* Renderable.swift in Sources */,
+				A5C952C521CE952D00B23364 /* MotionController.swift in Sources */,
 				A57506DB21CD6C9200C63081 /* GLTFTypes.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
 				A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A57506CC21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
+				A57506EC21CE942700C63081 /* InputController.swift in Sources */,
 				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
 				A57506D921CD6C9200C63081 /* GLTFAsset.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
@@ -561,7 +571,7 @@
 				A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */,
 				A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */,
-				A575069E21CD63E200C63081 /* InputController.swift in Sources */,
+				A57506EE21CE942700C63081 /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,6 +779,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -794,6 +805,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

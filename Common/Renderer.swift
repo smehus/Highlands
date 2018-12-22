@@ -82,7 +82,7 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-        debugLights(renderEncoder: renderEncoder, lightType: Spotlight)
+//        debugLights(renderEncoder: renderEncoder, lightType: Spotlight)
         renderEncoder.endEncoding()
 
         guard let drawable = view.currentDrawable else { return }

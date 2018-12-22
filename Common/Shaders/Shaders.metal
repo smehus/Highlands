@@ -156,6 +156,9 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
                 // Adding attenuation for distance from center of the cone
                 attenuation *= pow(spotResult, light.coneAttenuation);
+
+                // Inverting the normal direction will flip the 'black section of the light '
+                // When pointing backwards
                 float diffuseIntensity = saturate(dot(directionFromLightToFragment, normalDirection));
                 float3 color = light.color * baseColor * diffuseIntensity;
                 color *= attenuation;
