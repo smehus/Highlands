@@ -20,7 +20,7 @@ final class GameScene: Scene {
         lights = lighting()
         camera.position = [0, 1.2, -4]
 
-//        ground.tiling = 32
+        ground.tiling = 32
         add(node: ground)
 
         car.rotation = [0, radians(fromDegrees: 90), 0]
@@ -39,6 +39,7 @@ final class GameScene: Scene {
         let pos = inputController.player!.position
         let dir = inputController.player!.forwardVector
         lights[0].position = float3(pos.x, pos.y + 1, pos.z)
+        lights[0].position += (inputController.player!.forwardVector * 2)
         lights[0].coneDirection = float3(dir.x, -1, dir.z)
     }
 }
