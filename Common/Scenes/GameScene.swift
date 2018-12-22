@@ -14,11 +14,16 @@ final class GameScene: Scene {
     let ground = Prop(name: "large-plane", isGround: true)
     let car = Prop(name: "racing-car")
     let skeleton = Character(name: "skeleton")
+    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern")
 
     override func setupScene() {
 
         lights = lighting()
         camera.position = [0, 1.2, -4]
+
+        lantern.position = [1, 1, 4]
+        lantern.rotation = [0, 90, 0]
+        add(node: lantern, parent: camera, render: true)
 
         ground.tiling = 32
         add(node: ground)
@@ -36,10 +41,15 @@ final class GameScene: Scene {
     }
 
     override func updateScene(deltaTime: Float) {
+
+        guard var spotlight = lights.filter ({ (light) -> Bool in
+            return light.type == Spotlight
+        }).first else { return }
+
         let pos = inputController.player!.position
         let dir = inputController.player!.forwardVector
-        lights[0].position = float3(pos.x, pos.y, pos.z)
-        lights[0].position += (inputController.player!.forwardVector * 1.2)
-        lights[0].coneDirection = float3(dir.x, 0, dir.z)
+        spotlight.position = float3(pos.x, pos.y + 1, pos.z - 2)
+        spotlight.position += (inputController.player!.forwardVector * 1.2)
+        spotlight.coneDirection = float3(dir.x, 0, dir.z)
     }
 }

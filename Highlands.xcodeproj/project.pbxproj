@@ -97,6 +97,14 @@
 		A5C952CC21CEA53000B23364 /* plane.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5C952C721CEA53000B23364 /* plane.mtl */; };
 		A5C952CD21CEA53000B23364 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C952C821CEA53000B23364 /* ground.png */; };
 		A5C952CE21CEA53000B23364 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C952C821CEA53000B23364 /* ground.png */; };
+		A5F2917221CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */; };
+		A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */; };
+		A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */; };
+		A5F2917521CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */; };
+		A5F2917621CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916E21CEDFB000FF57A5 /* HRN_LMP_CM.bmp */; };
+		A5F2917721CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916E21CEDFB000FF57A5 /* HRN_LMP_CM.bmp */; };
+		A5F2917821CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916F21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj */; };
+		A5F2917921CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916F21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -182,6 +190,10 @@
 		A5C952C621CEA53000B23364 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
 		A5C952C721CEA53000B23364 /* plane.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.mtl; sourceTree = "<group>"; };
 		A5C952C821CEA53000B23364 /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
+		A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SA_LD_Medieval_Horn_Lantern.mtl; sourceTree = "<group>"; };
+		A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_NM.bmp; sourceTree = "<group>"; };
+		A5F2916E21CEDFB000FF57A5 /* HRN_LMP_CM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_CM.bmp; sourceTree = "<group>"; };
+		A5F2916F21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SA_LD_Medieval_Horn_Lantern.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +225,7 @@
 		A551AE0621C997C600FA207B /* Props */ = {
 			isa = PBXGroup;
 			children = (
+				A5F2916A21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern_OBJ */,
 				A57506AD21CD646900C63081 /* Car */,
 				A57506A721CD646900C63081 /* Ground */,
 				A57506A421CD646900C63081 /* Racetrack */,
@@ -420,6 +433,17 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		A5F2916A21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern_OBJ */ = {
+			isa = PBXGroup;
+			children = (
+				A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */,
+				A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */,
+				A5F2916E21CEDFB000FF57A5 /* HRN_LMP_CM.bmp */,
+				A5F2916F21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj */,
+			);
+			path = SA_LD_Medieval_Horn_Lantern_OBJ;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -501,7 +525,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5F2917821CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A57506C521CD65A400C63081 /* buffer_skeleton.bin in Resources */,
+				A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
 				A57506B021CD646900C63081 /* oilcan.mtl in Resources */,
@@ -513,10 +539,12 @@
 				A57506BC21CD646900C63081 /* racing-car.mtl in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
+				A5F2917221CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
 				A57506BE21CD646900C63081 /* racing-car.obj in Resources */,
 				A57506B221CD646900C63081 /* oilcan.obj in Resources */,
+				A5F2917621CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -526,10 +554,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A57506BD21CD646900C63081 /* racing-car.mtl in Resources */,
+				A5F2917521CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
 				A57506C621CD65A400C63081 /* buffer_skeleton.bin in Resources */,
 				A5C952CC21CEA53000B23364 /* plane.mtl in Resources */,
 				A5C952CA21CEA53000B23364 /* plane.obj in Resources */,
+				A5F2917921CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
+				A5F2917721CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A57506BB21CD646900C63081 /* treefir.obj in Resources */,
+				A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
 				A57506B121CD646900C63081 /* oilcan.mtl in Resources */,
