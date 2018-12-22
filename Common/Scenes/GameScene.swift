@@ -11,7 +11,7 @@ import Foundation
 final class GameScene: Scene {
 
 
-    let ground = Prop(name: "large-plane")
+    let ground = Prop(name: "large-plane", isGround: true)
     let car = Prop(name: "racing-car")
     let skeleton = Character(name: "skeleton")
 
@@ -38,8 +38,8 @@ final class GameScene: Scene {
     override func updateScene(deltaTime: Float) {
         let pos = inputController.player!.position
         let dir = inputController.player!.forwardVector
-        lights[0].position = float3(pos.x, pos.y + 1, pos.z)
-        lights[0].position += (inputController.player!.forwardVector * 2)
-        lights[0].coneDirection = float3(dir.x, -1, dir.z)
+        lights[0].position = float3(pos.x, pos.y, pos.z)
+        lights[0].position += (inputController.player!.forwardVector * 1.2)
+        lights[0].coneDirection = float3(dir.x, 0, dir.z)
     }
 }

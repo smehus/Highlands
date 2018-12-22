@@ -8,21 +8,37 @@ func lighting() -> [Light] {
     var lights: [Light] = []
 
     var light = buildDefaultLight()
-//    light.position = [-1, 0.5, -2]
-//    light.intensity = 2.0
-//    lights.append(light)
-//
-//    light = buildDefaultLight()
-//    light.position = [0, 1, 2]
-//    light.intensity = 0.2
-//    lights.append(light)
+    light.position = [-1, 0.5, -2]
+    light.intensity = 2.0
+    lights.append(light)
 
-//    light = buildDefaultLight()
-//    light.type = Ambientlight
-//    light.intensity = 0.1
-//    lights.append(light)
+    light = buildDefaultLight()
+    light.position = [0, 1, 2]
+    light.intensity = 0.2
+    lights.append(light)
+
+    light = buildDefaultLight()
+    light.type = Ambientlight
+    light.intensity = 0.1
+    lights.append(light)
 
 
+//    lights.append(lantern())
+
+
+    return lights
+}
+
+func lantern() -> Light {
+    var light = buildDefaultLight()
+    light.color = [1, 1, 1]
+    light.attenuation = float3(1, 1, 1)
+    light.type = Pointlight
+    return light
+}
+
+func spotlight() -> Light {
+    var light = buildDefaultLight()
     light.position = [0, 0.5, 0]
     light.color = [1, 1, 1]
     light.attenuation = float3(1, 0, 0)
@@ -31,9 +47,7 @@ func lighting() -> [Light] {
     light.coneDirection = [1, -1, 0]
     light.coneAttenuation = 2
     light.type = Spotlight
-    lights.append(light)
-
-    return lights
+    return light
 }
 
 func buildDefaultLight() -> Light {
