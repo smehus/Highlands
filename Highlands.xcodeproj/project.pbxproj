@@ -52,6 +52,10 @@
 		A57506E021CD970B00C63081 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506DE21CD970B00C63081 /* Scene.swift */; };
 		A57506E221CDA2C600C63081 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E121CDA2C600C63081 /* GameScene.swift */; };
 		A57506E321CDA2C600C63081 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E121CDA2C600C63081 /* GameScene.swift */; };
+		A57506E621CDAB5F00C63081 /* DebugLights.metal in Sources */ = {isa = PBXBuildFile; fileRef = A57506E421CDAB5E00C63081 /* DebugLights.metal */; };
+		A57506E721CDAB5F00C63081 /* DebugLights.metal in Sources */ = {isa = PBXBuildFile; fileRef = A57506E421CDAB5E00C63081 /* DebugLights.metal */; };
+		A57506E821CDAB5F00C63081 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E521CDAB5F00C63081 /* DebugLights.swift */; };
+		A57506E921CDAB5F00C63081 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E521CDAB5F00C63081 /* DebugLights.swift */; };
 		A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3321B8CB42002C0632 /* AppDelegate.swift */; };
 		A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3521B8CB42002C0632 /* LocalViewController.swift */; };
 		A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A57F6A3721B8CB42002C0632 /* Main.storyboard */; };
@@ -138,6 +142,8 @@
 		A57506D621CD6C9200C63081 /* GLTFTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLTFTypes.swift; sourceTree = "<group>"; };
 		A57506DE21CD970B00C63081 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		A57506E121CDA2C600C63081 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		A57506E421CDAB5E00C63081 /* DebugLights.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DebugLights.metal; sourceTree = "<group>"; };
+		A57506E521CDAB5F00C63081 /* DebugLights.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugLights.swift; sourceTree = "<group>"; };
 		A57F6A2221B8A1E0002C0632 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		A57F6A2421B8A3E5002C0632 /* Primitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
 		A57F6A2621B8A901002C0632 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -272,6 +278,8 @@
 		A57506CE21CD671A00C63081 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				A57506E421CDAB5E00C63081 /* DebugLights.metal */,
+				A57506E521CDAB5F00C63081 /* DebugLights.swift */,
 				A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */,
 				A57506C821CD669700C63081 /* DebugBoundingBox.metal */,
 				A57F6A2621B8A901002C0632 /* Shaders.metal */,
@@ -536,6 +544,7 @@
 				A57F6A5721B8CBD7002C0632 /* Renderer.swift in Sources */,
 				A588D83A21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
+				A57506E821CDAB5F00C63081 /* DebugLights.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57506D021CD680E00C63081 /* Renderable.swift in Sources */,
 				A57506DB21CD6C9200C63081 /* GLTFTypes.swift in Sources */,
@@ -545,6 +554,7 @@
 				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
 				A57506D921CD6C9200C63081 /* GLTFAsset.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
+				A57506E621CDAB5F00C63081 /* DebugLights.metal in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A57506A021CD63E200C63081 /* PhysicsController.swift in Sources */,
@@ -563,6 +573,7 @@
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
+				A57506E921CDAB5F00C63081 /* DebugLights.swift in Sources */,
 				A57506D821CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */,
 				A57F6A5821B8CBD8002C0632 /* Renderer.swift in Sources */,
 				A588D83B21CAE1A300652FC2 /* Character.swift in Sources */,
@@ -579,6 +590,7 @@
 				A57506A121CD63E200C63081 /* PhysicsController.swift in Sources */,
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,
 				A57506CB21CD669700C63081 /* DebugBoundingBox.metal in Sources */,
+				A57506E721CDAB5F00C63081 /* DebugLights.metal in Sources */,
 				A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */,
 				A57506D121CD680E00C63081 /* Renderable.swift in Sources */,

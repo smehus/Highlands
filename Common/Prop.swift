@@ -87,9 +87,11 @@ extension Prop: Renderable {
 
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+
         var uniforms = vertex
-        uniforms.modelMatrix = modelMatrix
+        uniforms.modelMatrix = worldTransform
         uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+
         renderEncoder.setFragmentSamplerState(samplerState, index: 0)
 
         renderEncoder.setVertexBytes(&uniforms,

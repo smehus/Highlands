@@ -9,8 +9,8 @@ final class Renderer: NSObject {
     static var library: MTLLibrary?
     private var depthStencilState: MTLDepthStencilState!
 
-    lazy var lights: [Light] = {
-        return lighting()
+    lazy var lightPipelineState: MTLRenderPipelineState = {
+        return buildLightPipelineState()
     }()
 
     var scene: Scene?
@@ -65,14 +65,14 @@ extension Renderer: MTKViewDelegate {
 
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
-        fragmentUniforms.lightCount = UInt32(lights.count)
+        fragmentUniforms.lightCount = UInt32(scene.lights.count)
 
         renderEncoder.setFragmentBytes(&fragmentUniforms,
                                        length: MemoryLayout<FragmentUniforms>.stride,
                                        index: Int(BufferIndexFragmentUniforms.rawValue))
 
-        renderEncoder.setFragmentBytes(&lights,
-                                       length: MemoryLayout<Light>.stride * lights.count,
+        renderEncoder.setFragmentBytes(&scene.lights,
+                                       length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
         for renderable in scene.renderables {
@@ -81,6 +81,7 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
+        debugLights(renderEncoder: renderEncoder, lightType: Spotlight)
         renderEncoder.endEncoding()
 
         guard let drawable = view.currentDrawable else { return }

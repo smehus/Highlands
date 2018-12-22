@@ -119,31 +119,30 @@ extension Character: Renderable {
 
             if let skin = node.skin {
                 for (i, jointNode) in skin.jointNodes.enumerated() {
-                    skin.jointMatrixPalette[i] = node.globalTransform.inverse *
-                        jointNode.globalTransform *
-                        jointNode.inverseBindTransform
+                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
                 }
-                let length = MemoryLayout<float4x4>.stride *
-                    skin.jointMatrixPalette.count
-                let buffer =
-                    Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette,
-                                               length: length, options: [])
+
+                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
+                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
                 renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
             }
 
             var uniforms = vertex
-            uniforms.modelMatrix = modelMatrix
+            uniforms.modelMatrix = worldTransform
             uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+
             renderEncoder.setVertexBytes(&uniforms,
                                          length: MemoryLayout<Uniforms>.stride,
                                          index: Int(BufferIndexUniforms.rawValue))
 
             for submesh in mesh.submeshes {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
+
                 var material = submesh.material
                 renderEncoder.setFragmentBytes(&material,
                                                length: MemoryLayout<Material>.stride,
                                                index: Int(BufferIndexMaterials.rawValue))
+
                 for attribute in submesh.attributes {
                     renderEncoder.setVertexBuffer(buffers[attribute.bufferIndex],
                                                   offset: attribute.offset,
@@ -156,6 +155,7 @@ extension Character: Renderable {
                                                     indexBuffer: submesh.indexBuffer!,
                                                     indexBufferOffset: submesh.indexBufferOffset)
             }
+
             if debugRenderBoundingBox {
                 debugBoundingBox?.render(renderEncoder: renderEncoder, uniforms: uniforms)
             }

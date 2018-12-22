@@ -20,6 +20,8 @@ class Scene {
     let rootNode = Node()
     var renderables = [Renderable]()
     var uniforms = Uniforms()
+    var lights: [Light] = []
+    let inputController = InputController()
 
     init(sceneSize: CGSize) {
         self.sceneSize = sceneSize
@@ -31,8 +33,12 @@ class Scene {
         assertionFailure("Must Subclass Scene")
     }
 
-    final func update(deltaTime: Float) {
+    private func updatePlayer(deltaTime: Float) {
+        inputController.updatePlayer(deltaTime: deltaTime)
+    }
 
+    final func update(deltaTime: Float) {
+        updatePlayer(deltaTime: deltaTime)
         uniforms.projectionMatrix = camera.projectionMatrix
         uniforms.viewMatrix = camera.viewMatrix
         updateScene(deltaTime: deltaTime)
