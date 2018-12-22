@@ -7,13 +7,10 @@ final class Renderer: NSObject {
     static var commandQueue: MTLCommandQueue!
     static var colorPixelFormat: MTLPixelFormat!
     static var library: MTLLibrary?
-    private var depthStencilState: MTLDepthStencilState!
-
-    lazy var lightPipelineState: MTLRenderPipelineState = {
-        return buildLightPipelineState()
-    }()
 
     var scene: Scene?
+
+    private var depthStencilState: MTLDepthStencilState!
 
     init(metalView: MTKView) {
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -55,7 +52,7 @@ extension Renderer: MTKViewDelegate {
             let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor),
             let scene = scene
         else {
-                return
+            return
         }
 
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
@@ -82,7 +79,6 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-        debugLights(renderEncoder: renderEncoder, lightType: Spotlight)
         renderEncoder.endEncoding()
 
         guard let drawable = view.currentDrawable else { return }
