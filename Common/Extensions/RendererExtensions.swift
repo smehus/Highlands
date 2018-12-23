@@ -23,7 +23,7 @@ func lighting() -> [Light] {
 //    lights.append(light)
 
 
-    lights.append(spotlight())
+    lights.append(lantern())
 
 
     return lights
@@ -33,7 +33,7 @@ func lantern() -> Light {
     var light = buildDefaultLight()
     light.color = [1, 1, 1]
     
-    light.attenuation = float3(0.5, 0.5, 0.5)
+    light.attenuation = float3(0.2, 0.2, 0.2)
     light.type = Pointlight
     return light
 }

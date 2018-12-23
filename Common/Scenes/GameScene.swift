@@ -45,7 +45,7 @@ final class GameScene: Scene {
     override func updateScene(deltaTime: Float) {
 
         guard let index = lights.lastIndex (where: { (light) -> Bool in
-            return light.type == Spotlight
+            return light.type == Spotlight || light.type == Pointlight
         }) else { return }
 
 
