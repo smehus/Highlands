@@ -5,3 +5,6 @@ Right now
 
 Lights should use the translation : float4x4(translation: skldjf) instead of just a flaot3.
 Then i can treat them like model matrixs
+
+
+// Scene graph - if the car lighting looks weird, its becuase we're moving the lights in GameScene.

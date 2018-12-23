@@ -42,7 +42,8 @@ final class GameScene: Scene {
     }
 
     override func updateScene(deltaTime: Float) {
-        for index in 0..<lights.count{
+        for index in 0..<lights.count {
+            guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
             let pos = inputController.player!.position
             let dir = inputController.player!.forwardVector
 
