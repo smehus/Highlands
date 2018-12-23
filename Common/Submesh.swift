@@ -21,20 +21,21 @@ class Submesh {
         self.pipelineState = pipelineState
     }
 
-    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, isGround: Bool = false) {
+    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, isGround: Bool = false, lighting: Bool = true) {
         self.submesh = submesh
         textures = Textures(material: mdlSubmesh.material)
         material = Material(material: mdlSubmesh.material)
-        pipelineState = Submesh.makePipelineState(textures: textures, isGround: isGround)
+        pipelineState = Submesh.makePipelineState(textures: textures, isGround: isGround, lighting: lighting)
     }
 }
 
 // Pipeline state
 private extension Submesh {
-    static func makeFunctionConstants(textures: Textures, isGround: Bool) -> MTLFunctionConstantValues {
+    static func makeFunctionConstants(textures: Textures, isGround: Bool, lighting: Bool) -> MTLFunctionConstantValues {
         let functionConstants = MTLFunctionConstantValues()
 
         var isGround = isGround
+        var lighting = lighting
         var property = textures.baseColor != nil
         functionConstants.setConstantValue(&property, type: .bool, index: 0)
 
@@ -50,12 +51,14 @@ private extension Submesh {
 
         functionConstants.setConstantValue(&isGround, type: .bool, index: 5)
 
+        functionConstants.setConstantValue(&lighting, type: .bool, index: 6)
+
 
         return functionConstants
     }
 
-    static func makePipelineState(textures: Textures, isGround: Bool) -> MTLRenderPipelineState {
-        let functionConstants = makeFunctionConstants(textures: textures, isGround: isGround)
+    static func makePipelineState(textures: Textures, isGround: Bool, lighting: Bool) -> MTLRenderPipelineState {
+        let functionConstants = makeFunctionConstants(textures: textures, isGround: isGround, lighting: lighting)
 
         let library = Renderer.library
         let vertexFunction = library?.makeFunction(name: "vertex_main")

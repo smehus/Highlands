@@ -30,3 +30,46 @@ class Camera: Node {
         return (translationMatrix * rotateMatrix * scaleMatrix).inverse
     }
 }
+
+class OrthographicCamera: Camera {
+    var rect = Rectangle(left: 10, right: 10,
+                         top: 10, bottom: 10)
+    override init() {
+        super.init()
+    }
+
+    init(rect: Rectangle, near: Float, far: Float) {
+        super.init()
+        self.rect = rect
+        self.near = near
+        self.far = far
+    }
+
+    // Uses super class viewMatrix:
+
+    override var projectionMatrix: float4x4 {
+        return float4x4(orthographic: rect, near: near, far: far)
+    }
+}
+
+class ThirdPersonCamera: Camera {
+
+    var focus: Node
+    var focusDistance: Float = 3
+    var focusHeight: Float = 1.2
+
+    init(focus: Node) {
+        self.focus = focus
+        super.init()
+    }
+
+    override var viewMatrix: float4x4 {
+//        position = focus.position - focusDistance * focus.forwardVector
+        position = float3(focus.position.x, focus.position.y - focusDistance, focus.position.z - focusDistance)
+        position.y = focusHeight
+//        rotation.y = focus.rotation.y
+        rotation.x = -5
+//        rotation.z = focus.rotation.z
+        return super.viewMatrix
+    }
+}

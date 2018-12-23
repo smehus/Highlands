@@ -42,7 +42,7 @@ class Prop: Node {
     let samplerState: MTLSamplerState?
     let debugBoundingBox: DebugBoundingBox
 
-    init(name: String, isGround: Bool = false) {
+    init(name: String, isGround: Bool = false, lighting: Bool = true) {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
@@ -59,7 +59,7 @@ class Prop: Node {
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
-            return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh, isGround: isGround)
+            return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh, isGround: isGround, lighting: lighting)
         } ?? []
 
         samplerState = Prop.buildSamplerState()

@@ -10,10 +10,11 @@ import Foundation
 
 final class GameScene: Scene {
 
+    let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
     let car = Prop(name: "racing-car")
     let skeleton = Character(name: "skeleton")
-    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern")
+    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
     var inCar = false
 
     override func setupScene() {
@@ -30,15 +31,27 @@ final class GameScene: Scene {
         car.position = [-0.8, 0, 0]
         add(node: car)
 
-        lantern.position = [2.5, 1, 2]
-        add(node: lantern, parent: camera, render: true)
+        lantern.position = [2.5, 2.5, 1]
+        add(node: lantern, parent: skeleton, render: true)
 
-        skeleton.position = [-0.35, -0.2, -0.35]
-        add(node: skeleton, parent: car)
-        skeleton.runAnimation(name: "Armature_sit")
+        skeleton.position = [1.2, 0, 0]
+        add(node: skeleton)
+        skeleton.runAnimation(name: "Armature_walk")
+        skeleton.currentAnimation?.speed = 3.0
         skeleton.pauseAnimation()
 
-        inputController.player = camera
+        inputController.player = skeleton
+
+        orthoCamera.position = [0, 2, 0]
+        orthoCamera.rotation.x = .pi / 2
+        cameras.append(orthoCamera)
+
+
+        let tpCamera = ThirdPersonCamera(focus: skeleton)
+        tpCamera.focusHeight = 10
+        tpCamera.focusDistance = 5
+        cameras.append(tpCamera)
+        currentCameraIndex = 2
     }
 
     override func updateScene(deltaTime: Float) {
@@ -49,10 +62,24 @@ final class GameScene: Scene {
 
 
             lights[index].position = float3(pos.x, pos.y + 1, pos.z)
-//            lights[index].position -= (inputController.player!.forwardVector * 1.2)
+            lights[index].position += (inputController.player!.forwardVector * 1.2)
             lights[index].coneDirection = float3(dir.x, -0.5, dir.z)
 
         }
+    }
+
+    override func sceneSizeWillChange(to size: CGSize) {
+        super.sceneSizeWillChange(to: size)
+
+        let cameraSize: Float = 10
+        let ratio = Float(sceneSize.width / sceneSize.height)
+
+        let rect = Rectangle(left: -cameraSize * ratio,
+                             right: cameraSize * ratio,
+                             top: cameraSize,
+                             bottom: -cameraSize)
+
+        orthoCamera.rect = rect
     }
 }
 
@@ -81,6 +108,17 @@ extension GameScene: KeyboardDelegate {
 
             inCar = !inCar
             return false
+        case .key0:
+            currentCameraIndex = 0
+        case .key1:
+            currentCameraIndex = 1
+        case .w, .s, .a, .d, .left, .right, .up, .down:
+            if state == .began {
+                skeleton.resumeAnimation()
+            }
+            if state == .ended {
+                skeleton.pauseAnimation()
+            }
         default:
             break
         }

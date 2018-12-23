@@ -13,6 +13,7 @@ using namespace metal;
 constant bool hasColorTexture [[ function_constant(0) ]];
 constant bool hasNormalTexture [[ function_constant(1) ]];
 constant bool isGroundTexture [[ function_constant(5) ]];
+constant bool includeLighting [[ function_constant(6) ]];
 
 struct VertexIn {
     float4 position [[ attribute(Position) ]];
@@ -196,7 +197,13 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
     normalValue = normalize(normalValue);
 
+    float3 color;
 
-    float3 color = diffuseLighting(in, baseColor, normalValue, material, fragmentUniforms, lights);
+    if (includeLighting) {
+        color = diffuseLighting(in, baseColor, normalValue, material, fragmentUniforms, lights);
+    } else {
+        color = baseColor;
+    }
+
     return float4(color, 1);
 }
