@@ -24,7 +24,7 @@ struct VertexIn {
 
 struct VertexOut {
     float4 position [[ position ]];
-    float3 worldPosition;
+    float4 worldPosition;
     float3 worldNormal;
     float2 uv;
     float3 worldTangent;
@@ -36,7 +36,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
 
     VertexOut out;
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertexIn.position;
-    out.worldPosition = (uniforms.modelMatrix * vertexIn.position).xyz;
+    out.worldPosition = uniforms.modelMatrix * vertexIn.position;
     out.worldNormal = uniforms.normalMatrix * vertexIn.normal;
     out.uv = vertexIn.uv;
     // Normal matrix is the same as world space aka model matrix
@@ -93,7 +93,7 @@ float3 diffuseLighting(VertexOut in,
                 // reflection
                 float3 reflection = reflect(lightDirection, normalDirection);
                 // vector between camera & fragment
-                float3 cameraPosition = normalize(in.worldPosition - fragmentUniforms.cameraPosition);
+                float3 cameraPosition = normalize(in.worldPosition.xyz - fragmentUniforms.cameraPosition);
                 float specularIntensity = pow(saturate(dot(reflection, cameraPosition)), materialShininess);
                 specularColor = light.specularColor * materialSpecularColor * specularIntensity;
             }
@@ -105,10 +105,10 @@ float3 diffuseLighting(VertexOut in,
             // *** Light Bulb ***\\
 
             // distance between light and fragment
-            float d = distance(light.position, in.worldPosition);
+            float d = distance(light.position, in.worldPosition.xyz);
 
             // Vector direction between light & fragment
-            float3 lightDirection = normalize(light.position - in.worldPosition);
+            float3 lightDirection = normalize(light.position - in.worldPosition.xyz);
 
             // Standard formula for curved light drop off (attenuation)
             float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
@@ -126,10 +126,10 @@ float3 diffuseLighting(VertexOut in,
         } else if (light.type == Spotlight) {
 
             //https://forums.raywenderlich.com/t/chapter-5-cone-direction/50705/2
-            float d = distance(light.position, in.worldPosition);
+            float d = distance(light.position, in.worldPosition.xyz);
             // Could be outside of the cone direction - This is really direction to the fragment
             // Could also negate this thing instead of cone direction
-            float3 directionFromLightToFragment = normalize(light.position - in.worldPosition);
+            float3 directionFromLightToFragment = normalize(light.position - in.worldPosition.xyz);
 
             // Inverting here to put the cone direction & light -> fragment pointing in opposite directions
             float3 coneDirection = normalize(-light.coneDirection);

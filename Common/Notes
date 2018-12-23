@@ -1,3 +1,7 @@
 
 The light direction has to be relevant to the parent node
 Right now
+
+
+Lights should use the translation : float4x4(translation: skldjf) instead of just a flaot3.
+Then i can treat them like model matrixs

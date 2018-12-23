@@ -43,16 +43,15 @@ final class GameScene: Scene {
     }
 
     override func updateScene(deltaTime: Float) {
+        for index in 0..<lights.count{
+            let pos = inputController.player!.position
+            let dir = inputController.player!.forwardVector
+            lights[index].position = float3(pos.x, pos.y + 1, pos.z)
+            lights[index].position -= (inputController.player!.forwardVector * 1.2)
+            lights[index].coneDirection = float3(dir.x, -0.5, dir.z)
 
-        guard let index = lights.lastIndex (where: { (light) -> Bool in
-            return light.type == Spotlight
-        }) else { return }
-
-
-        let pos = inputController.player!.position
-        let dir = inputController.player!.forwardVector
-        lights[index].position = float3(pos.x, pos.y + 1, pos.z)
-        lights[index].position += (inputController.player!.forwardVector * 1.2)
-        lights[index].coneDirection = float3(dir.x, -0.5, dir.z)
+            let lightM = float4x4(translation: lights[index].position)
+            lights[index].modelMatrix = inputController.player!.worldTransform * lightM
+        }
     }
 }
