@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ModelIO
 
 final class GameScene: Scene {
 
@@ -27,18 +28,34 @@ final class GameScene: Scene {
         ground.tiling = 32
         add(node: ground)
 
+        var tree = Prop(name: "treefir")
+        tree.position = [-7, 0, 3]
+        add(node: tree)
+        physicsController.addStaticBody(node: tree)
+
+        tree = Prop(name: "treefir")
+        tree.position = [5, 0, 2]
+        add(node: tree)
+        physicsController.addStaticBody(node: tree)
+
+
         car.rotation = [0, radians(fromDegrees: 90), 0]
-        car.position = [-0.8, 0, 0]
+        car.position = [-2, 0, 0]
         add(node: car)
+        physicsController.addStaticBody(node: car)
 
         lantern.position = [2.5, 2.5, 1]
         add(node: lantern, parent: skeleton, render: true)
 
         skeleton.position = [1.2, 0, 0]
+        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         add(node: skeleton)
         skeleton.runAnimation(name: "Armature_walk")
         skeleton.currentAnimation?.speed = 3.0
         skeleton.pauseAnimation()
+
+        physicsController.dynamicBody = skeleton
+
 
         inputController.player = skeleton
 
@@ -52,6 +69,10 @@ final class GameScene: Scene {
         tpCamera.focusDistance = 5
         cameras.append(tpCamera)
         currentCameraIndex = 2
+    }
+
+    override func isHardCollision() -> Bool {
+        return true
     }
 
     override func updateScene(deltaTime: Float) {

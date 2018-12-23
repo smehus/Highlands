@@ -23,6 +23,7 @@ class Scene {
     var uniforms = Uniforms()
     var lights: [Light] = []
     let inputController = InputController()
+    let physicsController = PhysicsController()
 
     init(sceneSize: CGSize) {
         self.sceneSize = sceneSize
@@ -34,8 +35,21 @@ class Scene {
         assertionFailure("Must Subclass Scene")
     }
 
+    func isHardCollision() -> Bool {
+        assertionFailure("Should override")
+        return false
+    }
+
     private func updatePlayer(deltaTime: Float) {
+        guard let node = inputController.player else { return }
+        let holdPosition = node.position
+        let holdRotation = node.rotation
         inputController.updatePlayer(deltaTime: deltaTime)
+        
+        if physicsController.checkCollisions() && isHardCollision() {
+            node.position = holdPosition
+            node.rotation = holdRotation
+        }
     }
 
     final func update(deltaTime: Float) {

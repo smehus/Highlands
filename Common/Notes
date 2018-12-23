@@ -8,3 +8,6 @@ Then i can treat them like model matrixs
 
 
 // Scene graph - if the car lighting looks weird, its becuase we're moving the lights in GameScene.
+
+// This calculates the flaot3 position of the node
+let nodePosition = node.worldTransform.columns.3.xyz
