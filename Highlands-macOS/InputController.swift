@@ -92,6 +92,7 @@ enum KeyboardControl: UInt16 {
     case key2 =   19
     case key0 =   29
     case space =  49
+    case c = 8
 }
 
 enum MouseControl {

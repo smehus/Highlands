@@ -25,8 +25,8 @@ final class Renderer: NSObject {
         Renderer.library = device.makeDefaultLibrary()
 
         super.init()
-        metalView.clearColor = MTLClearColor(red: 0.7, green: 0.9,
-                                             blue: 1, alpha: 1)
+        metalView.clearColor = MTLClearColor(red: 0.0, green: 0.0,
+                                             blue: 0, alpha: 1)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 

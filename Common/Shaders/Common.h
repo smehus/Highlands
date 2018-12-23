@@ -21,7 +21,6 @@ typedef enum {
 
 typedef struct {
     vector_float3 position;  // for a sunlight, this is direction
-    matrix_float4x4 modelMatrix;
     vector_float3 color;
     vector_float3 specularColor;
     float intensity;
