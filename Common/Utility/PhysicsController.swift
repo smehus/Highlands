@@ -3,13 +3,13 @@
 import MetalKit
 
 // Render bounding boxes
-let debugRenderBoundingBox = true
+let debugRenderBoundingBox = false
 class PhysicsController {
 
     var dynamicBody: Node?
     var staticBodies: [Node] = []
 
-    var holdAllCollided = false
+    var holdAllCollided = true
     var collidedBodies: [Node] = []
 
     func addStaticBody(node: Node) {

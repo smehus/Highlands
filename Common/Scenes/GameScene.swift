@@ -28,15 +28,12 @@ final class GameScene: Scene {
         ground.tiling = 32
         add(node: ground)
 
-        var tree = Prop(name: "treefir")
-        tree.position = [-7, 0, 3]
-        add(node: tree)
-        physicsController.addStaticBody(node: tree)
-
-        tree = Prop(name: "treefir")
-        tree.position = [5, 0, 2]
-        add(node: tree)
-        physicsController.addStaticBody(node: tree)
+        for _ in 0..<50 {
+            let tree = Prop(name: "treefir")
+            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+            add(node: tree)
+            physicsController.addStaticBody(node: tree)
+        }
 
 
         car.rotation = [0, radians(fromDegrees: 90), 0]
