@@ -69,8 +69,12 @@ float3 diffuseLighting(VertexOut in,
     float3 normalDirection;
     if (isGroundTexture) {
         normalDirection = float3(0, 1, 0);
-    } else {
+    } else if (hasNormalTexture) {
         normalDirection = float3x3(in.worldTangent, in.worldBitangent, in.worldNormal) * normalValue;
+    } else {
+        // Using the tangents multiplied by the value will reverse the normals if not using a normal map
+        // For some GD reason
+        normalDirection = normalValue;
     }
 
     normalDirection = normalize(normalDirection);
@@ -132,8 +136,8 @@ float3 diffuseLighting(VertexOut in,
 
             // Find angle (dot product) between direction from light to fragment & the direction of the cone
             float spotResult = dot(directionFromLightToFragment, coneDirection);
-
-            if (spotResult > cos(light.coneAngle)) {
+            float coneAngle = cos(light.coneAngle);
+            if (spotResult > coneAngle) {
                 // Standard formulat for attenuation
                 float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
 
@@ -176,8 +180,6 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         baseColor = material.baseColor;
     }
 
-
-
     float3 normalValue;
     // Compiler will remove these conditionals using the functionConstants
     if (hasNormalTexture) {
@@ -190,6 +192,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         // Just use the faces normal
         normalValue = in.worldNormal;
     }
+
 
     normalValue = normalize(normalValue);
 

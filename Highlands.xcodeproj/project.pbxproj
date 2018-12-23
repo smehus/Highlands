@@ -105,6 +105,10 @@
 		A5F2917721CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916E21CEDFB000FF57A5 /* HRN_LMP_CM.bmp */; };
 		A5F2917821CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916F21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj */; };
 		A5F2917921CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916F21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj */; };
+		A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918121CEF05600FF57A5 /* beachball.mtl */; };
+		A5F2918421CEF05600FF57A5 /* beachball.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918121CEF05600FF57A5 /* beachball.mtl */; };
+		A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918221CEF05600FF57A5 /* beachball.obj */; };
+		A5F2918621CEF05600FF57A5 /* beachball.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918221CEF05600FF57A5 /* beachball.obj */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -194,6 +198,8 @@
 		A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_NM.bmp; sourceTree = "<group>"; };
 		A5F2916E21CEDFB000FF57A5 /* HRN_LMP_CM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_CM.bmp; sourceTree = "<group>"; };
 		A5F2916F21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SA_LD_Medieval_Horn_Lantern.obj; sourceTree = "<group>"; };
+		A5F2918121CEF05600FF57A5 /* beachball.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beachball.mtl; sourceTree = "<group>"; };
+		A5F2918221CEF05600FF57A5 /* beachball.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beachball.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +231,7 @@
 		A551AE0621C997C600FA207B /* Props */ = {
 			isa = PBXGroup;
 			children = (
+				A5F2918021CEF05600FF57A5 /* Beachball */,
 				A5F2916A21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern_OBJ */,
 				A57506AD21CD646900C63081 /* Car */,
 				A57506A721CD646900C63081 /* Ground */,
@@ -444,6 +451,15 @@
 			path = SA_LD_Medieval_Horn_Lantern_OBJ;
 			sourceTree = "<group>";
 		};
+		A5F2918021CEF05600FF57A5 /* Beachball */ = {
+			isa = PBXGroup;
+			children = (
+				A5F2918121CEF05600FF57A5 /* beachball.mtl */,
+				A5F2918221CEF05600FF57A5 /* beachball.obj */,
+			);
+			path = Beachball;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -537,6 +553,8 @@
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
 				A57506BC21CD646900C63081 /* racing-car.mtl in Resources */,
+				A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */,
+				A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				A5F2917221CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
@@ -561,6 +579,7 @@
 				A5F2917921CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A5F2917721CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A57506BB21CD646900C63081 /* treefir.obj in Resources */,
+				A5F2918621CEF05600FF57A5 /* beachball.obj in Resources */,
 				A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
@@ -572,6 +591,7 @@
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
+				A5F2918421CEF05600FF57A5 /* beachball.mtl in Resources */,
 				A57506B321CD646900C63081 /* oilcan.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
