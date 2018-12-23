@@ -31,8 +31,8 @@ final class GameScene: Scene {
         add(node: car)
 
 //        lantern.rotation = [0, radians(fromDegrees: 0), 0]
-        lantern.position = [0, 1, 3]
-        add(node: lantern, parent: nil, render: true)
+        lantern.position = [2, 1, 3]
+        add(node: lantern, parent: camera, render: true)
 
 //        skeleton.position = [-0.35, -0.2, -0.35]
 //        add(node: skeleton, parent: car)
@@ -45,7 +45,7 @@ final class GameScene: Scene {
     override func updateScene(deltaTime: Float) {
 
         guard let index = lights.lastIndex (where: { (light) -> Bool in
-            return light.type == Spotlight || light.type == Pointlight
+            return light.type == Spotlight
         }) else { return }
 
 

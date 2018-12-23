@@ -99,8 +99,7 @@ extension Prop: Renderable {
                                      index: Int(BufferIndexUniforms.rawValue))
 
         for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
-            renderEncoder.setVertexBuffer(vertexBuffer.buffer,
-                                          offset: 0, index: index)
+            renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
         }
 
         renderEncoder.setFragmentBytes(&tiling, length: MemoryLayout<UInt32>.stride, index: 22)

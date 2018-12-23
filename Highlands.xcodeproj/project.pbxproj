@@ -109,6 +109,7 @@
 		A5F2918421CEF05600FF57A5 /* beachball.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918121CEF05600FF57A5 /* beachball.mtl */; };
 		A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918221CEF05600FF57A5 /* beachball.obj */; };
 		A5F2918621CEF05600FF57A5 /* beachball.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918221CEF05600FF57A5 /* beachball.obj */; };
+		A5F6ABB421CF292E0027D425 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = A5F6ABB321CF292D0027D425 /* Notes */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -200,6 +201,7 @@
 		A5F2916F21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SA_LD_Medieval_Horn_Lantern.obj; sourceTree = "<group>"; };
 		A5F2918121CEF05600FF57A5 /* beachball.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beachball.mtl; sourceTree = "<group>"; };
 		A5F2918221CEF05600FF57A5 /* beachball.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beachball.obj; sourceTree = "<group>"; };
+		A5F6ABB321CF292D0027D425 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,6 +378,7 @@
 				A551AE0721C9A4E700FA207B /* Animation.swift */,
 				A588D83921CAE1A300652FC2 /* Character.swift */,
 				A57506CF21CD680E00C63081 /* Renderable.swift */,
+				A5F6ABB321CF292D0027D425 /* Notes */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
 				A57506B021CD646900C63081 /* oilcan.mtl in Resources */,
+				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
 				A5C952CD21CEA53000B23364 /* ground.png in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,

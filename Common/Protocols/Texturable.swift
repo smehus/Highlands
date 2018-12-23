@@ -17,17 +17,15 @@ extension Texturable {
             [.origin: MTKTextureLoader.Origin.bottomLeft,
              .SRGB: false,
              .generateMipmaps: NSNumber(booleanLiteral: true)]
-        let fileExtension =
-            URL(fileURLWithPath: imageName).pathExtension.isEmpty ?
-                "png" : nil
-        guard let url = Bundle.main.url(forResource: imageName,
-                                        withExtension: fileExtension)
-            else {
-                return try textureLoader.newTexture(name: imageName, scaleFactor: 1.0,
-                                                    bundle: Bundle.main, options: nil)
+
+        let fileExtension = URL(fileURLWithPath: imageName).pathExtension.isEmpty ? "png" : nil
+
+        guard let url = Bundle.main.url(forResource: imageName, withExtension: fileExtension) else {
+            return try textureLoader.newTexture(name: imageName, scaleFactor: 1.0, bundle: Bundle.main, options: nil)
         }
-        let texture = try textureLoader.newTexture(URL: url,
-                                                   options: textureLoaderOptions)
+
+        print("Loaded texture: \(imageName)")
+        let texture = try textureLoader.newTexture(URL: url, options: textureLoaderOptions)
         return texture
     }
 }

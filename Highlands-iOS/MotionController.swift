@@ -56,7 +56,7 @@ class MotionController {
       self.previousAcceleration = self.acceleration
       self.acceleration.x = (Float(acceleration.x) * 0.75) + (self.acceleration.x * 0.25)
       self.acceleration.y = (Float(acceleration.y) * 0.75) + (self.acceleration.y * 0.25)
-      self.acceleration.z = (Float(acceleration.z) * 0.75) + (self.acceleration.z * 0.25)
+//      self.acceleration.z = (Float(acceleration.z) * 0.75) + (self.acceleration.z * 0.25)
     })
   }
 }
