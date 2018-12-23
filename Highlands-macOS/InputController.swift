@@ -1,18 +1,18 @@
 
 import Cocoa
 
-protocol KeyboardDelegate {
+protocol KeyboardDelegate: class {
     func keyPressed(key: KeyboardControl, state: InputState) -> Bool
 }
 
-protocol MouseDelegate {
+protocol MouseDelegate: class {
     func mouseEvent(mouse: MouseControl, state: InputState, delta: float3, location: float2)
 }
 
 class InputController {
 
     var player: Node?
-    var keyboardDelegate: KeyboardDelegate?
+    weak var keyboardDelegate: KeyboardDelegate?
     var directionKeysDown: Set<KeyboardControl> = []
 
     var mouseDelegate: MouseDelegate?

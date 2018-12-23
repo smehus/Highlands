@@ -149,3 +149,17 @@ extension GameScene: KeyboardDelegate {
 }
 
 #endif
+
+#if os(iOS)
+
+extension GameScene: KeyboardDelegate {
+    func didStartMove() {
+        skeleton.resumeAnimation()
+    }
+
+    func didEndMove() {
+        skeleton.pauseAnimation()
+    }
+}
+
+#endif
