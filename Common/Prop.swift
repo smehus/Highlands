@@ -90,7 +90,7 @@ extension Prop: Renderable {
 
         var uniforms = vertex
         uniforms.modelMatrix = worldTransform
-        uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
 
         renderEncoder.setFragmentSamplerState(samplerState, index: 0)
 
