@@ -55,6 +55,7 @@ final class GameScene: Scene {
     }
 }
 
+#if os(macOS)
 extension GameScene: KeyboardDelegate {
     func keyPressed(key: KeyboardControl, state: InputState) -> Bool {
         switch key {
@@ -86,3 +87,5 @@ extension GameScene: KeyboardDelegate {
         return true
     }
 }
+
+#endif
