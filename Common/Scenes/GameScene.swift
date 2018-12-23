@@ -14,7 +14,7 @@ final class GameScene: Scene {
     let ground = Prop(name: "large-plane", isGround: true)
     let car = Prop(name: "racing-car")
     let skeleton = Character(name: "skeleton")
-    let lantern = Prop(name: "beachball")
+    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern")
 
     override func setupScene() {
 
