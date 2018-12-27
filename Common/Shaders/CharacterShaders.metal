@@ -73,6 +73,7 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
 }
 
 fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
+                                        sampler textureSampler [[ sampler(0) ]],
                                         texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
     float4 color;

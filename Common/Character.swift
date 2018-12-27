@@ -34,6 +34,7 @@ class Character: Node {
     var currentTime: Float = 0
     var currentAnimation: AnimationClip?
     var currentAnimationPlaying = false
+    var samplerState: MTLSamplerState
 
     init(name: String) {
         let asset = GLTFAsset(filename: name)
@@ -45,11 +46,14 @@ class Character: Node {
         meshNodes = asset.scenes[0].meshNodes
         
         nodes = asset.scenes[0].nodes
+
+        samplerState = Character.buildSamplerState()
+
         super.init()
         self.name = name
     }
 
-    private func buildSamplerState() -> MTLSamplerState {
+    private static func buildSamplerState() -> MTLSamplerState {
         let descriptor = MTLSamplerDescriptor()
         descriptor.sAddressMode = .repeat
         descriptor.tAddressMode = .repeat
@@ -144,13 +148,15 @@ extension Character: Renderable {
             uniforms.modelMatrix = worldTransform
             uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
-            renderEncoder.setVertexBytes(&uniforms,
-                                         length: MemoryLayout<Uniforms>.stride,
-                                         index: Int(BufferIndexUniforms.rawValue))
+            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
             for submesh in mesh.submeshes {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
 
+                // Set the texture
+                renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+
+                // Set Material
                 var material = submesh.material
                 renderEncoder.setFragmentBytes(&material,
                                                length: MemoryLayout<Material>.stride,
