@@ -57,22 +57,23 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     float4x4 modelMatrix = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
 
     // skinning code
-    float4 weights = vertexIn.weights;
-    ushort4 joints = vertexIn.joints;
-    float4x4 skinMatrix =
-    weights.x * jointMatrices[joints.x] +
-    weights.y * jointMatrices[joints.y] +
-    weights.z * jointMatrices[joints.z] +
-    weights.w * jointMatrices[joints.w];
+//    float4 weights = vertexIn.weights;
+//    ushort4 joints = vertexIn.joints;
+//    float4x4 skinMatrix =
+//    weights.x * jointMatrices[joints.x] +
+//    weights.y * jointMatrices[joints.y] +
+//    weights.z * jointMatrices[joints.z] +
+//    weights.w * jointMatrices[joints.w];
 
-    out.position = modelMatrix * skinMatrix * vertexIn.position;
+    out.position = modelMatrix/* * skinMatrix * */ * vertexIn.position;
     out.worldNormal = uniforms.normalMatrix *
-    (skinMatrix * float4(vertexIn.normal, 1)).xyz;
+    (/*skinMatrix * */float4(vertexIn.normal, 1)).xyz;
 
     return out;
 }
 
 fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
+                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
     float4 color;
     float3 normalDirection = normalize(in.worldNormal);

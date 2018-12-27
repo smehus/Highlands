@@ -49,6 +49,19 @@ class Character: Node {
         self.name = name
     }
 
+    private func buildSamplerState() -> MTLSamplerState {
+        let descriptor = MTLSamplerDescriptor()
+        descriptor.sAddressMode = .repeat
+        descriptor.tAddressMode = .repeat
+        descriptor.mipFilter = .linear
+        descriptor.maxAnisotropy = 0
+        guard let state = Renderer.device.makeSamplerState(descriptor: descriptor) else {
+            fatalError()
+        }
+
+        return state
+    }
+
     override func update(deltaTime: Float) {
         guard let animation = currentAnimation, currentAnimationPlaying == true else {
             return
