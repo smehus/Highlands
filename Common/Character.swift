@@ -148,6 +148,8 @@ extension Character: Renderable {
             uniforms.modelMatrix = worldTransform
             uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
+            renderEncoder.setFragmentSamplerState(samplerState, index: 0)
+
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
             for submesh in mesh.submeshes {
