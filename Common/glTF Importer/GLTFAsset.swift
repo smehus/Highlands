@@ -758,7 +758,7 @@ extension GLTFAsset {
     do {
       let library = Renderer.device.makeDefaultLibrary()
       let vertexFunction = try library?.makeFunction(name: "character_vertex_main", constantValues: functionConstants)
-      let fragmentFunction =  library?.makeFunction(name: "character_fragment_main")
+      let fragmentFunction =  library?.makeFunction(name: "character_fragment_main" /* Need to create function constants for fragment shader */)
       let descriptor = MTLRenderPipelineDescriptor()
       descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
       descriptor.vertexFunction = vertexFunction
