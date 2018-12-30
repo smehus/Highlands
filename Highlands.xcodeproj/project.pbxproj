@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A551AE0921C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
+		A55EFC4521D96E86008DAD22 /* xbot.bin in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC4321D96E85008DAD22 /* xbot.bin */; };
+		A55EFC4621D96E86008DAD22 /* xbot.bin in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC4321D96E85008DAD22 /* xbot.bin */; };
+		A55EFC4721D96E86008DAD22 /* xbot.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC4421D96E85008DAD22 /* xbot.gltf */; };
+		A55EFC4821D96E86008DAD22 /* xbot.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC4421D96E85008DAD22 /* xbot.gltf */; };
 		A56ACB5421C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A56ACB5521C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A575069F21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
@@ -137,6 +141,8 @@
 
 /* Begin PBXFileReference section */
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		A55EFC4321D96E85008DAD22 /* xbot.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = xbot.bin; sourceTree = "<group>"; };
+		A55EFC4421D96E85008DAD22 /* xbot.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = xbot.gltf; sourceTree = "<group>"; };
 		A56ACB5321C728750069962B /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Textures.xcassets; sourceTree = "<group>"; };
 		A575069C21CD63E100C63081 /* InputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
 		A575069D21CD63E200C63081 /* PhysicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsController.swift; sourceTree = "<group>"; };
@@ -225,6 +231,8 @@
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
+				A55EFC4321D96E85008DAD22 /* xbot.bin */,
+				A55EFC4421D96E85008DAD22 /* xbot.gltf */,
 				A57506C021CD65A400C63081 /* Skeleton */,
 			);
 			path = Characters;
@@ -549,6 +557,7 @@
 				A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
+				A55EFC4721D96E86008DAD22 /* xbot.gltf in Resources */,
 				A57506B021CD646900C63081 /* oilcan.mtl in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
@@ -562,6 +571,7 @@
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				A5F2917221CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
+				A55EFC4521D96E86008DAD22 /* xbot.bin in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
 				A57506BE21CD646900C63081 /* racing-car.obj in Resources */,
@@ -584,6 +594,8 @@
 				A5F2917721CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A57506BB21CD646900C63081 /* treefir.obj in Resources */,
 				A5F2918621CEF05600FF57A5 /* beachball.obj in Resources */,
+				A55EFC4821D96E86008DAD22 /* xbot.gltf in Resources */,
+				A55EFC4621D96E86008DAD22 /* xbot.bin in Resources */,
 				A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
