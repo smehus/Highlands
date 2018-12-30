@@ -12,10 +12,10 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let ground = Prop(name: "large-plane", isGround: true)
-    let car = Prop(name: "racing-car")
+//    let ground = Prop(name: "large-plane", isGround: true)
+//    let car = Prop(name: "racing-car")
     let skeleton = Character(name: "skeleton")
-    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
+//    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
     var inCar = false
 
     override func setupScene() {
@@ -25,24 +25,24 @@ final class GameScene: Scene {
         lights = lighting()
         camera.position = [0, 1.2, -4]
 
-        ground.tiling = 32
-        add(node: ground)
-
-        for _ in 0..<50 {
-            let tree = Prop(name: "treefir")
-            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-            add(node: tree)
-            physicsController.addStaticBody(node: tree)
-        }
-
-
-        car.rotation = [0, radians(fromDegrees: 90), 0]
-        car.position = [-2, 0, 0]
-        add(node: car)
-        physicsController.addStaticBody(node: car)
-
-        lantern.position = [2.5, 2.5, 1]
-        add(node: lantern, parent: skeleton, render: true)
+//        ground.tiling = 32
+//        add(node: ground)
+//
+//        for _ in 0..<50 {
+//            let tree = Prop(name: "treefir")
+//            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+//            add(node: tree)
+//            physicsController.addStaticBody(node: tree)
+//        }
+//
+//
+//        car.rotation = [0, radians(fromDegrees: 90), 0]
+//        car.position = [-2, 0, 0]
+//        add(node: car)
+//        physicsController.addStaticBody(node: car)
+//
+//        lantern.position = [2.5, 2.5, 1]
+//        add(node: lantern, parent: skeleton, render: true)
 
         skeleton.position = [1.2, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
@@ -60,12 +60,12 @@ final class GameScene: Scene {
         orthoCamera.rotation.x = .pi / 2
         cameras.append(orthoCamera)
 
-
-        let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 10
-        tpCamera.focusDistance = 5
-        cameras.append(tpCamera)
-        currentCameraIndex = 2
+//
+//        let tpCamera = ThirdPersonCamera(focus: skeleton)
+//        tpCamera.focusHeight = 10
+//        tpCamera.focusDistance = 5
+//        cameras.append(tpCamera)
+//        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {
@@ -108,21 +108,21 @@ extension GameScene: KeyboardDelegate {
         case .c where state == .ended:
             let camera = cameras[0]
 
-            if inCar {
-                remove(node: car)
-                add(node: car)
-                car.position = camera.position + (camera.rightVector * 1.3)
-                car.position.y = 0
-                car.rotation = camera.rotation
-                inputController.translationSpeed = 2.0
-            } else {
-                remove(node: skeleton)
-                remove(node: car)
-                add(node: car, parent: camera)
-                car.position = [0.35, -1, 0.1]
-                car.rotation = [0, 0, 0]
-                inputController.translationSpeed = 10.0
-            }
+//            if inCar {
+//                remove(node: car)
+//                add(node: car)
+//                car.position = camera.position + (camera.rightVector * 1.3)
+//                car.position.y = 0
+//                car.rotation = camera.rotation
+//                inputController.translationSpeed = 2.0
+//            } else {
+//                remove(node: skeleton)
+//                remove(node: car)
+//                add(node: car, parent: camera)
+//                car.position = [0.35, -1, 0.1]
+//                car.rotation = [0, 0, 0]
+//                inputController.translationSpeed = 10.0
+//            }
 
             inCar = !inCar
             return false
