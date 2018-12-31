@@ -2,8 +2,6 @@
 using namespace metal;
 #import "Common.h"
 
-constant bool hasColorTexture [[ function_constant(0) ]];
-
 struct VertexIn {
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];
@@ -47,18 +45,19 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
 
 fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
-                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture), function_constant(hasColorTexture) ]],
+                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
 
 
     float4 color;
     float3 baseColor = baseColorTexture.sample(textureSampler, in.uv).rgb;
-    float3 normalDirection = normalize(in.worldNormal);
-    float3 lightPosition = float3(1, 2, -2);
-    float3 lightDirection = normalize(lightPosition);
-    float nDotl = max(0.001, saturate(dot(normalDirection, lightDirection)));
-    float3 diffuseColor = baseColor + pow(baseColor * nDotl,  3);
-    color = float4(diffuseColor, 1);
+
+//    float3 normalDirection = normalize(in.worldNormal);
+//    float3 lightPosition = float3(1, 2, -2);
+//    float3 lightDirection = normalize(lightPosition);
+//    float nDotl = max(0.001, saturate(dot(normalDirection, lightDirection)));
+//    float3 diffuseColor = baseColor + pow(baseColor * nDotl,  3);
+    color = float4(baseColor, 1);
     return color;
 }
 

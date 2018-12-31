@@ -12,9 +12,9 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-//    let ground = Prop(name: "large-plane", isGround: true)
+    let ground = Prop(name: "large-plane", isGround: true)
 //    let car = Prop(name: "racing-car")
-    let skeleton = Character(name: "skeleton")
+    let skeleton = Character(name: "claire")
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
     var inCar = false
 
@@ -25,8 +25,8 @@ final class GameScene: Scene {
         lights = lighting()
         camera.position = [0, 1.2, -4]
 
-//        ground.tiling = 32
-//        add(node: ground)
+        ground.tiling = 32
+        add(node: ground)
 //
 //        for _ in 0..<50 {
 //            let tree = Prop(name: "treefir")
@@ -44,17 +44,19 @@ final class GameScene: Scene {
 //        lantern.position = [2.5, 2.5, 1]
 //        add(node: lantern, parent: skeleton, render: true)
 
-        skeleton.position = [1.2, 0, 0]
-        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+        skeleton.scale = [0.02, 0.02, 0.02]
+//        skeleton.position = [1.2, 0, 100]
+//        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         add(node: skeleton)
-        skeleton.runAnimation(name: "Armature_walk")
-        skeleton.currentAnimation?.speed = 3.0
-        skeleton.pauseAnimation()
+//        skeleton.runAnimation(name: "Armature_walk")
+//        skeleton.currentAnimation?.speed = 3.0
+//        skeleton.pauseAnimation()
 
         physicsController.dynamicBody = skeleton
 
 
-        inputController.player = skeleton
+        inputController.player = camera
 
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2
