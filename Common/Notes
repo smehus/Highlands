@@ -16,3 +16,7 @@ Got claires textures working except the mouth because it should be transparent.
 The black parts should be baseColor.a == 0
 Works when I check when r == 0, g == 0, b == 0 and then discard fragment
 But that .a should come back as 0, so blender is exporting incorreclty or we're interrupting it incorrectly
+
+
+
+Try importing a claire with animations and run one of the animations...
