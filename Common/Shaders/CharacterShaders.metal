@@ -50,14 +50,27 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 
 
     float4 color;
-    float3 baseColor = baseColorTexture.sample(textureSampler, in.uv).rgb;
+    constexpr sampler s(filter::linear);
+    float4 baseColor = baseColorTexture.sample(s, in.uv);
+
+    
+    if (baseColor.a < 0.1) {
+        discard_fragment();
+    }
+
+    if (baseColor.r == 0 && baseColor.g == 0 && baseColor.b == 0) {
+        discard_fragment();
+    }
+
+
+    
 
 //    float3 normalDirection = normalize(in.worldNormal);
 //    float3 lightPosition = float3(1, 2, -2);
 //    float3 lightDirection = normalize(lightPosition);
 //    float nDotl = max(0.001, saturate(dot(normalDirection, lightDirection)));
 //    float3 diffuseColor = baseColor + pow(baseColor * nDotl,  3);
-    color = float4(baseColor, 1);
-    return color;
+
+    return baseColor;
 }
 
