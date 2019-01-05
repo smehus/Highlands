@@ -281,9 +281,9 @@ enum GLTFAttribute: String {
     case position = "POSITION",
     normal = "NORMAL",
     texCoord_zero = "TEXCOORD_0",
-    texCoord_one = "TEXCOORD_1",
-    texCoord_two = "TEXCOORD_2",
-    texCoord_three = "TEXCOORD_3",
+//    texCoord_one = "TEXCOORD_1",
+//    texCoord_two = "TEXCOORD_2",
+//    texCoord_three = "TEXCOORD_3",
     joints = "JOINTS_0",
     weights = "WEIGHTS_0",
     tangent = "TANGENT",
@@ -298,22 +298,22 @@ enum GLTFAttribute: String {
             return 1
         case .texCoord_zero:
             return 2
-        case .texCoord_one:
-            return 3
-        case .texCoord_two:
-            return 4
-        case .texCoord_three:
-            return 5
+//        case .texCoord_one:
+//            return 2
+//        case .texCoord_two:
+//            return 2
+//        case .texCoord_three:
+//            return 2
         case .joints:
-            return 6
+            return 3
         case .weights:
-            return 7
+            return 4
         case .tangent:
-            return 8
+            return 5
         case .bitangent:
-            return 9
+            return 6
         case .color:
-            return 10
+            return 7
         }
     }
 }

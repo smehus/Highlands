@@ -172,6 +172,7 @@ class GLTFAsset {
           attrib.offset = offset
           gltfSubmesh.attributes.append(attrib)
         }
+
         let submesh = Character.CharacterSubmesh(pipelineState: gltfSubmesh.pipelineState!, material: gltfSubmesh.material)
         submesh.attributes = gltfSubmesh.attributes
         submesh.indexCount = gltfSubmesh.indexCount
@@ -189,6 +190,7 @@ class GLTFAsset {
       layouts.add(MDLVertexBufferLayout(stride: 0))
     }
     let vertexDescriptor = GLTFMakeVertexDescriptor()
+    
     for accessorAttribute in submesh.accessorsForAttribute {
       let accessor = accessorAttribute.value
       var attributeName = "Untitled"
@@ -208,6 +210,8 @@ class GLTFAsset {
         hasNormal = true
       case .texCoord_zero:
         attributeName = MDLVertexAttributeTextureCoordinate
+//      case .texCoord_one:
+//        attributeName = MDLVertexAttributeTextureCoordinate
       case .joints:
         attributeName = MDLVertexAttributeJointIndices
         hasJoints = true
@@ -236,13 +240,16 @@ class GLTFAsset {
                                          format: format,
                                          offset: offset,
                                          bufferIndex: layoutIndex)
+
       vertexDescriptor.addOrReplaceAttribute(attribute)
       
       // update the layout
       var stride = bufferView.byteStride
+
       if stride <= 0 {
         stride = GLTFStrideOf(vertexFormat: format)
       }
+
       layouts[layoutIndex] = MDLVertexBufferLayout(stride: stride);
     }
     vertexDescriptor.layouts  = layouts
