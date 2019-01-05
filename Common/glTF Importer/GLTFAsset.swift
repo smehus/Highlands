@@ -193,10 +193,12 @@ class GLTFAsset {
       let accessor = accessorAttribute.value
       var attributeName = "Untitled"
       var layoutIndex = 0
+
       guard let key = GLTFAttribute(rawValue: accessorAttribute.key) else {
         print("WARNING! - Attribute: \(accessorAttribute.key) not supported")
         continue
       }
+
       switch key {
       case .position:
         attributeName = MDLVertexAttributePosition
@@ -204,7 +206,7 @@ class GLTFAsset {
       case .normal:
         attributeName = MDLVertexAttributeNormal
         hasNormal = true
-      case .texCoord:
+      case .texCoord_zero:
         attributeName = MDLVertexAttributeTextureCoordinate
       case .joints:
         attributeName = MDLVertexAttributeJointIndices
@@ -221,6 +223,7 @@ class GLTFAsset {
       case .color:
         attributeName = MDLVertexAttributeColor
         hasColor = true
+      default: continue
       }
       layoutIndex = key.bufferIndex()
       
@@ -344,11 +347,13 @@ class GLTFAsset {
   }
   
   private func getImage(dictionary: [String: Any]) -> String? {
+
     if let texCoord = dictionary["texCoord"] as? Int {
       if texCoord != 0 {
         fatalError("only texCoord 0 is currently supported")
       }
     }
+
     if let index = dictionary["index"] as? Int {
       let textureDictionary = textures[index]
       if let imageIndex = textureDictionary["source"] as? Int {
@@ -383,21 +388,24 @@ class GLTFAsset {
       if property.key == "normalTexture" {
         var materialProperty: MDLMaterialProperty?
         if let dictionary = property.value as? [String: Any] {
+
           if let imageName = getImage(dictionary: dictionary) {
             materialProperty = MDLMaterialProperty(name: property.key, semantic: .tangentSpaceNormal, string: imageName)
           }
+
           if let scale = dictionary["scale"] as? Float {
             materialProperty = MDLMaterialProperty(name: "normalScale", semantic: .userDefined, float: scale)
           }
         }
+
         if let materialProperty = materialProperty {
           material.setProperty(materialProperty)
         }
       }
+
       if property.key == "pbrMetallicRoughness" {
-        guard let properties = property.value as? [String: Any] else {
-          continue
-        }
+        guard let properties = property.value as? [String: Any] else { continue }
+
         for property in properties {
           var materialProperty: MDLMaterialProperty?
           switch property.key {
@@ -481,6 +489,7 @@ class GLTFAsset {
         
         // Create material
         if let materialIndex = primitive["material"] as? Int {
+
           submesh.material = createMaterial(index: materialIndex)
         }
         
