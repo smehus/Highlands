@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
+		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A551AE0921C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A55EFC6C21D9B4DF008DAD22 /* file14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC6621D9B4DE008DAD22 /* file14.jpg */; };
@@ -113,18 +115,10 @@
 		A5CBD0F321E2697B001D77EF /* claire_idle.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD0F021E2697A001D77EF /* claire_idle.gltf */; };
 		A5CBD0F421E2697B001D77EF /* claire_idle.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD0F121E2697A001D77EF /* claire_idle.bin */; };
 		A5CBD0F521E2697B001D77EF /* claire_idle.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD0F121E2697A001D77EF /* claire_idle.bin */; };
-		A5CBD1A221E28D75001D77EF /* animated_ball.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A021E28D75001D77EF /* animated_ball.gltf */; };
-		A5CBD1A321E28D75001D77EF /* animated_ball.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A021E28D75001D77EF /* animated_ball.gltf */; };
-		A5CBD1A421E28D75001D77EF /* animated_ball.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A121E28D75001D77EF /* animated_ball.bin */; };
-		A5CBD1A521E28D75001D77EF /* animated_ball.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A121E28D75001D77EF /* animated_ball.bin */; };
-		A5CBD1A821E28DD2001D77EF /* animated_ball_morph.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A621E28DD1001D77EF /* animated_ball_morph.bin */; };
-		A5CBD1A921E28DD2001D77EF /* animated_ball_morph.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A621E28DD1001D77EF /* animated_ball_morph.bin */; };
-		A5CBD1AA21E28DD2001D77EF /* animated_ball_morph.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A721E28DD1001D77EF /* animated_ball_morph.gltf */; };
-		A5CBD1AB21E28DD2001D77EF /* animated_ball_morph.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A721E28DD1001D77EF /* animated_ball_morph.gltf */; };
-		A5CBD1AE21E28DFE001D77EF /* animated_ball_morph_1.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1AC21E28DFE001D77EF /* animated_ball_morph_1.gltf */; };
-		A5CBD1AF21E28DFE001D77EF /* animated_ball_morph_1.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1AC21E28DFE001D77EF /* animated_ball_morph_1.gltf */; };
-		A5CBD1B021E28DFE001D77EF /* animated_ball_morph_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1AD21E28DFE001D77EF /* animated_ball_morph_1.bin */; };
-		A5CBD1B121E28DFE001D77EF /* animated_ball_morph_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1AD21E28DFE001D77EF /* animated_ball_morph_1.bin */; };
+		A5CBD1BA21E29B3C001D77EF /* animated_ball_texture.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1B821E29B3C001D77EF /* animated_ball_texture.bin */; };
+		A5CBD1BB21E29B3C001D77EF /* animated_ball_texture.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1B821E29B3C001D77EF /* animated_ball_texture.bin */; };
+		A5CBD1BC21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */; };
+		A5CBD1BD21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */; };
 		A5F2917221CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */; };
 		A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */; };
 		A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */; };
@@ -164,6 +158,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A55EFC6621D9B4DE008DAD22 /* file14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file14.jpg; sourceTree = "<group>"; };
 		A55EFC6721D9B4DE008DAD22 /* MouthMAP1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MouthMAP1.png; sourceTree = "<group>"; };
@@ -231,12 +226,8 @@
 		A5CBD0E721E26767001D77EF /* BrowsMAP1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrowsMAP1.png; sourceTree = "<group>"; };
 		A5CBD0F021E2697A001D77EF /* claire_idle.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = claire_idle.gltf; sourceTree = "<group>"; };
 		A5CBD0F121E2697A001D77EF /* claire_idle.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = claire_idle.bin; sourceTree = "<group>"; };
-		A5CBD1A021E28D75001D77EF /* animated_ball.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball.gltf; sourceTree = "<group>"; };
-		A5CBD1A121E28D75001D77EF /* animated_ball.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball.bin; sourceTree = "<group>"; };
-		A5CBD1A621E28DD1001D77EF /* animated_ball_morph.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball_morph.bin; sourceTree = "<group>"; };
-		A5CBD1A721E28DD1001D77EF /* animated_ball_morph.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball_morph.gltf; sourceTree = "<group>"; };
-		A5CBD1AC21E28DFE001D77EF /* animated_ball_morph_1.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball_morph_1.gltf; sourceTree = "<group>"; };
-		A5CBD1AD21E28DFE001D77EF /* animated_ball_morph_1.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball_morph_1.bin; sourceTree = "<group>"; };
+		A5CBD1B821E29B3C001D77EF /* animated_ball_texture.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball_texture.bin; sourceTree = "<group>"; };
+		A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball_texture.gltf; sourceTree = "<group>"; };
 		A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SA_LD_Medieval_Horn_Lantern.mtl; sourceTree = "<group>"; };
 		A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_NM.bmp; sourceTree = "<group>"; };
 		A5F2916E21CEDFB000FF57A5 /* HRN_LMP_CM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_CM.bmp; sourceTree = "<group>"; };
@@ -505,12 +496,9 @@
 		A5CBD16321E27FC0001D77EF /* Door */ = {
 			isa = PBXGroup;
 			children = (
-				A5CBD1AD21E28DFE001D77EF /* animated_ball_morph_1.bin */,
-				A5CBD1AC21E28DFE001D77EF /* animated_ball_morph_1.gltf */,
-				A5CBD1A621E28DD1001D77EF /* animated_ball_morph.bin */,
-				A5CBD1A721E28DD1001D77EF /* animated_ball_morph.gltf */,
-				A5CBD1A121E28D75001D77EF /* animated_ball.bin */,
-				A5CBD1A021E28D75001D77EF /* animated_ball.gltf */,
+				A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */,
+				A5CBD1B821E29B3C001D77EF /* animated_ball_texture.bin */,
+				A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */,
 			);
 			path = Door;
 			sourceTree = "<group>";
@@ -616,42 +604,39 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5CBD1B021E28DFE001D77EF /* animated_ball_morph_1.bin in Resources */,
 				A55EFC6C21D9B4DF008DAD22 /* file14.jpg in Resources */,
 				A5F2917821CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A57506C521CD65A400C63081 /* buffer_skeleton.bin in Resources */,
 				A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
-				A5CBD1A221E28D75001D77EF /* animated_ball.gltf in Resources */,
+				A5CBD1BA21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A55EFC6E21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
 				A57506B021CD646900C63081 /* oilcan.mtl in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
-				A5CBD1A421E28D75001D77EF /* animated_ball.bin in Resources */,
 				A5C952CD21CEA53000B23364 /* ground.png in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
 				A57506BC21CD646900C63081 /* racing-car.mtl in Resources */,
 				A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */,
-				A5CBD1A821E28DD2001D77EF /* animated_ball_morph.bin in Resources */,
 				A5CBD0DD21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A5CBD0DF21E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */,
 				A5CBD0F421E2697B001D77EF /* claire_idle.bin in Resources */,
+				A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A5CBD0F221E2697B001D77EF /* claire_idle.gltf in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
+				A5CBD1BC21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */,
 				A5F2917221CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
 				A57506BE21CD646900C63081 /* racing-car.obj in Resources */,
 				A57506B221CD646900C63081 /* oilcan.obj in Resources */,
-				A5CBD1AE21E28DFE001D77EF /* animated_ball_morph_1.gltf in Resources */,
 				A5CBD0E821E26767001D77EF /* BrowsMAP1.png in Resources */,
 				A5F2917621CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
-				A5CBD1AA21E28DD2001D77EF /* animated_ball_morph.gltf in Resources */,
 				A55EFC7221D9B4DF008DAD22 /* file15.jpg in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
 			);
@@ -663,10 +648,10 @@
 			files = (
 				A57506BD21CD646900C63081 /* racing-car.mtl in Resources */,
 				A5CBD0F521E2697B001D77EF /* claire_idle.bin in Resources */,
-				A5CBD1B121E28DFE001D77EF /* animated_ball_morph_1.bin in Resources */,
-				A5CBD1A321E28D75001D77EF /* animated_ball.gltf in Resources */,
+				A5CBD1BD21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */,
 				A5CBD0F321E2697B001D77EF /* claire_idle.gltf in Resources */,
 				A5F2917521CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
+				A5CBD1BB21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A57506C621CD65A400C63081 /* buffer_skeleton.bin in Resources */,
 				A5C952CC21CEA53000B23364 /* plane.mtl in Resources */,
 				A5C952CA21CEA53000B23364 /* plane.obj in Resources */,
@@ -677,23 +662,20 @@
 				A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
-				A5CBD1AB21E28DD2001D77EF /* animated_ball_morph.gltf in Resources */,
 				A57506B121CD646900C63081 /* oilcan.mtl in Resources */,
 				A57506C421CD65A400C63081 /* skeleton.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
 				A57506BF21CD646900C63081 /* racing-car.obj in Resources */,
 				A5CBD0E021E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A57506B521CD646900C63081 /* large-plane.mtl in Resources */,
-				A5CBD1A521E28D75001D77EF /* animated_ball.bin in Resources */,
 				A5CBD0E921E26767001D77EF /* BrowsMAP1.png in Resources */,
 				A55EFC6F21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
 				A5CBD0DE21E16FC1001D77EF /* claire_waking.gltf in Resources */,
-				A5CBD1A921E28DD2001D77EF /* animated_ball_morph.bin in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
 				A5F2918421CEF05600FF57A5 /* beachball.mtl in Resources */,
-				A5CBD1AF21E28DFE001D77EF /* animated_ball_morph_1.gltf in Resources */,
+				A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */,
 				A55EFC7321D9B4DF008DAD22 /* file15.jpg in Resources */,
 				A55EFC6D21D9B4DF008DAD22 /* file14.jpg in Resources */,
 				A57506B321CD646900C63081 /* oilcan.obj in Resources */,

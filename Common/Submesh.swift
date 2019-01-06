@@ -102,17 +102,12 @@ private extension Submesh.Textures {
             }
 
             guard let texture = try? Submesh.loadTexture(imageName: filename) else {
-//                assertionFailure("Failed to load texture \(filename)")
                 print("😡 Failed to load texture")
                 return nil
             }
 
             return texture
         }
-
-//        guard let b = property(with: .baseColor) else {
-//            fatalError()
-//        }
 
         baseColor = property(with: .baseColor)
         normal = nil
@@ -133,10 +128,14 @@ private extension Material {
 
         if let shininess = material?.property(with: .specularExponent), shininess.type == .float {
             self.shininess = shininess.floatValue
+        } else {
+            self.shininess = 0.5
         }
 
         if let roughness = material?.property(with: .roughness), roughness.type == .float {
             self.roughness = roughness.floatValue
+        } else {
+            self.roughness = 0.5
         }
     }
 }

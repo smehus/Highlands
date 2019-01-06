@@ -173,8 +173,8 @@ class GLTFAsset {
           gltfSubmesh.attributes.append(attrib)
         }
 
-        guard let _ = gltfSubmesh.material else {
-            fatalError()
+        if gltfSubmesh.material == nil {
+            print("😡 Missing material")
         }
 
         let submesh = Character.CharacterSubmesh(pipelineState: gltfSubmesh.pipelineState!, material: gltfSubmesh.material)
@@ -428,14 +428,14 @@ class GLTFAsset {
           var materialProperty: MDLMaterialProperty?
           switch property.key {
 
-          case "baseColorFactor":
-            if let value = property.value as? [Float] {
-              let color = float4(array: value)
-              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
-            } else if let value = property.value as? [Double] {
-              let color = float4(array: value)
-              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
-            }
+//          case "baseColorFactor":
+//            if let value = property.value as? [Float] {
+//              let color = float4(array: value)
+//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
+//            } else if let value = property.value as? [Double] {
+//              let color = float4(array: value)
+//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
+//            }
 
           case "metallicFactor":
             if let value = property.value as? Float {
@@ -521,8 +521,9 @@ class GLTFAsset {
         
         // Create material
         if let materialIndex = primitive["material"] as? Int {
-
           submesh.material = createMaterial(index: materialIndex)
+        } else {
+            print("😡 COULDN'T CREATE MATERIAL")
         }
         
         if let indexAccessorIndex = primitive["indices"] as? Int {

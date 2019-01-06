@@ -13,7 +13,7 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
-    let skeleton = Character(name: "animated_ball_morph_1")
+    let skeleton = Character(name: "animated_ball_texture")
 //    let car = Prop(name: "racing-car")
 
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
@@ -146,9 +146,11 @@ extension GameScene: KeyboardDelegate {
 //            }
 
         case .left:
-            skeleton.runAnimation(name: "LeftRight")
+            break
+//            skeleton.runAnimation(name: "LeftRight")
         case .up:
-            skeleton.runAnimation(name: "UpDown")
+            break
+//            skeleton.runAnimation(name: "UpDown")
         default:
             break
         }
