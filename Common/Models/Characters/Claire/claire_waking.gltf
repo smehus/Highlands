@@ -8938,6 +8938,10 @@
         {
             "name" : "file15",
             "uri" : "file15.jpg"
+        },
+        {
+        "name" : "MouthMAP1",
+        "uri" : "MouthMAP1.png"
         }
     ],
     "materials" : [
@@ -8969,6 +8973,9 @@
                     0.800000011920929,
                     0.0
                 ],
+                "baseColorTexture" : {
+                "index" : 2
+                },
                 "metallicFactor" : 0.0
             }
         },
@@ -8982,6 +8989,9 @@
                     0.800000011920929,
                     0.0
                 ],
+                "baseColorTexture" : {
+                "index" : 2
+                },
                 "metallicFactor" : 0.0
             }
         },
@@ -8995,6 +9005,9 @@
                     0.800000011920929,
                     0.0
                 ],
+                "baseColorTexture" : {
+                "index" : 2
+                },
                 "metallicFactor" : 0.0
             }
         }
@@ -11710,6 +11723,10 @@
         {
             "sampler" : 0,
             "source" : 1
+        },
+        {
+        "sampler" : 0,
+        "source" : 2
         }
     ]
 }

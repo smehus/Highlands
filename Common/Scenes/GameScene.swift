@@ -52,7 +52,7 @@ final class GameScene: Scene {
 //            DispatchQueue.main.async {
                 skeleton.scale = [0.02, 0.02, 0.02]
                 //        skeleton.position = [1.2, 0, 100]
-                        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+                        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
                 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
                 print("*** ADDING CLAIRE")
                 self.add(node: skeleton)
@@ -75,11 +75,11 @@ final class GameScene: Scene {
         cameras.append(orthoCamera)
 
 //
-        let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 10
-        tpCamera.focusDistance = 5
-        cameras.append(tpCamera)
-        currentCameraIndex = 2
+//        let tpCamera = ThirdPersonCamera(focus: skeleton)
+//        tpCamera.focusHeight = 10
+//        tpCamera.focusDistance = 5
+//        cameras.append(tpCamera)
+//        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {
