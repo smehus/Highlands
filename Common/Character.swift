@@ -156,6 +156,7 @@ extension Character: Renderable {
             for submesh in mesh.submeshes {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
 
+
                 // Set the texture
                 renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
 

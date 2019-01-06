@@ -173,6 +173,10 @@ class GLTFAsset {
           gltfSubmesh.attributes.append(attrib)
         }
 
+        guard let _ = gltfSubmesh.material else {
+            fatalError()
+        }
+
         let submesh = Character.CharacterSubmesh(pipelineState: gltfSubmesh.pipelineState!, material: gltfSubmesh.material)
         submesh.attributes = gltfSubmesh.attributes
         submesh.indexCount = gltfSubmesh.indexCount
@@ -210,8 +214,8 @@ class GLTFAsset {
         hasNormal = true
       case .texCoord_zero:
         attributeName = MDLVertexAttributeTextureCoordinate
-//      case .texCoord_one:
-//        attributeName = MDLVertexAttributeTextureCoordinate
+      case .texCoord_one:
+        attributeName = MDLVertexAttributeTextureCoordinate
       case .joints:
         attributeName = MDLVertexAttributeJointIndices
         hasJoints = true
@@ -229,6 +233,7 @@ class GLTFAsset {
         hasColor = true
       default: continue
       }
+
       layoutIndex = key.bufferIndex()
       
       let bufferView = accessor.bufferView!
@@ -363,8 +368,11 @@ class GLTFAsset {
 
     if let index = dictionary["index"] as? Int {
       let textureDictionary = textures[index]
+
       if let imageIndex = textureDictionary["source"] as? Int {
+
         let imageDictionary = images[imageIndex]
+
         if let imageName = imageDictionary["uri"] as? String {
           print("Image name: \(imageName)")
           return imageName
@@ -376,6 +384,7 @@ class GLTFAsset {
   
   private func createMaterial(index: Int) -> MDLMaterial {
     let material = MDLMaterial()
+
     let materialDictionary = materials[index]
     for property in materialDictionary {
       if property.key == "occlusionTexture" {
@@ -388,6 +397,7 @@ class GLTFAsset {
             materialProperty = MDLMaterialProperty(name: "occlusionStrength", semantic: .ambientOcclusionScale, float: strength)
           }
         }
+
         if let materialProperty = materialProperty {
           material.setProperty(materialProperty)
         }
@@ -416,52 +426,59 @@ class GLTFAsset {
         for property in properties {
           var materialProperty: MDLMaterialProperty?
           switch property.key {
-          case "baseColorFactor":
-            if let value = property.value as? [Float] {
-              let color = float4(array: value)
-              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
-            } else if let value = property.value as? [Double] {
-              let color = float4(array: value)
-              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
-            }
-          case "metallicFactor":
-            if let value = property.value as? Float {
-              materialProperty = MDLMaterialProperty(name: property.key, semantic: .metallic, float: value)
-            }
-          case "roughnessFactor":
-            if let value = property.value as? Float {
-              materialProperty = MDLMaterialProperty(name: property.key, semantic: .roughness, float: value)
-            }
-          case "emissiveFactor":
-            if let value = property.value as? Float {
-              materialProperty = MDLMaterialProperty(name: property.key, semantic: .emission, float: value)
-            }
+
+//          case "baseColorFactor":
+//            if let value = property.value as? [Float] {
+//              let color = float4(array: value)
+//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
+//            } else if let value = property.value as? [Double] {
+//              let color = float4(array: value)
+//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
+//            }
+//
+//          case "metallicFactor":
+//            if let value = property.value as? Float {
+//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .metallic, float: value)
+//            }
+//          case "roughnessFactor":
+//            if let value = property.value as? Float {
+//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .roughness, float: value)
+//            }
+//          case "emissiveFactor":
+//            if let value = property.value as? Float {
+//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .emission, float: value)
+//            }
           case "baseColorTexture":
             if let dictionary = property.value as? [String: Any] {
-              if let imageName = getImage(dictionary: dictionary) {
+              guard let imageName = getImage(dictionary: dictionary) else  {
+                fatalError()
+              }
+
                 materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, string: imageName)
-              }
             }
-          case "metallicRoughnessTexture":
-            if let dictionary = property.value as? [String: Any] {
-              if let imageName = getImage(dictionary: dictionary) {
-                materialProperty = MDLMaterialProperty(name: property.key, semantic: .userDefined, string: imageName)
-              }
-            }
-          case "emissiveTexture":
-            if let dictionary = property.value as? [String: Any] {
-              if let imageName = getImage(dictionary: dictionary) {
-                materialProperty = MDLMaterialProperty(name: property.key, semantic: .emission, string: imageName)
-              }
-            }
+//          case "metallicRoughnessTexture":
+//            if let dictionary = property.value as? [String: Any] {
+//              if let imageName = getImage(dictionary: dictionary) {
+//                materialProperty = MDLMaterialProperty(name: property.key, semantic: .userDefined, string: imageName)
+//              }
+//            }
+//          case "emissiveTexture":
+//            if let dictionary = property.value as? [String: Any] {
+//              if let imageName = getImage(dictionary: dictionary) {
+//                materialProperty = MDLMaterialProperty(name: property.key, semantic: .emission, string: imageName)
+//              }
+//            }
+
           default: break
           }
+
           if let materialProperty = materialProperty {
             material.setProperty(materialProperty)
           }
         }
       }
     }
+
     return material
   }
   
@@ -473,18 +490,24 @@ class GLTFAsset {
   private func loadMeshes() {
     guard let meshesMap = glTFJSON["meshes"] as? [[String: Any]] else { return }
     meshes.reserveCapacity(meshesMap.count)
+
     for properties in meshesMap {
+
       let mesh = GLTFMesh()
       mesh.name = properties["name"] as? String ?? "untitled"
       mesh.extensions = properties["extensions"]
       mesh.extras = properties["extras"]
+
       let primitives = properties["primitives"] as? [Any] ?? [Any]()
+
       for primitive in primitives {
         guard let primitive = primitive as? [String: Any] else { continue }
+
         let submesh = GLTFSubmesh()
         
         let attributes = primitive["attributes"] as? [String: Any] ?? [String: Any]()
         var attributeAccessors = [String: GLTFAccessor]()
+
         for attribute in attributes {
           let attributeName = attribute.key
           let accessorIndex = attribute.value as? Int ?? 0
@@ -492,6 +515,7 @@ class GLTFAsset {
           let accessor = accessors[accessorIndex]
           attributeAccessors[attributeName] = accessor
         }
+
         submesh.accessorsForAttribute = attributeAccessors
         
         // Create material
@@ -592,6 +616,7 @@ class GLTFAsset {
   private func loadAnimations() {
     guard let animationsMap = glTFJSON["animations"] as? [[String: Any]] else { return }
     gltfAnimations.reserveCapacity(animationsMap.count)
+
     for properties in animationsMap {
       let animation = GLTFAnimation()
       animation.name = properties["name"] as? String ?? "untitled"
@@ -599,10 +624,12 @@ class GLTFAsset {
       for samplerMap in samplersMap {
         guard let samplerMap = samplerMap as? [String: Any] else { continue }
         var sampler = GLTFSampler()
+
         if let inputIndex = samplerMap["input"] as? Int {
           sampler.input = accessors[inputIndex]
           sampler.inputAccessorIndex = inputIndex
         }
+
         sampler.interpolation = samplerMap["interpolation"] as? String ?? "untitled"
         if let outputIndex = samplerMap["output"] as? Int {
           sampler.output = accessors[outputIndex]
@@ -610,7 +637,9 @@ class GLTFAsset {
         }
         animation.samplers.append(sampler)
       }
+        
       let channelsMap = properties["channels"] as? [Any] ?? [Any]()
+
       for channelMap in channelsMap {
         guard let channelMap = channelMap as? [String: Any] else { continue }
         var channel = GLTFChannel()
@@ -625,6 +654,8 @@ class GLTFAsset {
         animation.channels.append(channel)
         
       }
+
+
       gltfAnimations.append(animation)
     }
   }

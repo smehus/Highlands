@@ -14,7 +14,7 @@ final class GameScene: Scene {
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
 //    let car = Prop(name: "racing-car")
-    let skeleton = Character(name: "claire")
+
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
     var inCar = false
 
@@ -44,30 +44,42 @@ final class GameScene: Scene {
 //        lantern.position = [2.5, 2.5, 1]
 //        add(node: lantern, parent: skeleton, render: true)
 
-        skeleton.scale = [0.02, 0.02, 0.02]
-//        skeleton.position = [1.2, 0, 100]
-        skeleton.rotation = [0, radians(fromDegrees: 180), 0]
-//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
-        add(node: skeleton)
-//        skeleton.runAnimation(name: "Armature_walk")
+
+//        DispatchQueue.global().async {
+
+            let skeleton = Character(name: "claire_waking")
+
+//            DispatchQueue.main.async {
+                skeleton.scale = [0.02, 0.02, 0.02]
+                //        skeleton.position = [1.2, 0, 100]
+                        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+                //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+                print("*** ADDING CLAIRE")
+                self.add(node: skeleton)
+                skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
+                self.physicsController.dynamicBody = skeleton
+                self.inputController.player = skeleton
+//            }
+//        }
+
 //        skeleton.currentAnimation?.speed = 3.0
 //        skeleton.pauseAnimation()
 
-        physicsController.dynamicBody = skeleton
 
 
-        inputController.player = camera
+
+
 
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2
         cameras.append(orthoCamera)
 
 //
-//        let tpCamera = ThirdPersonCamera(focus: skeleton)
-//        tpCamera.focusHeight = 10
-//        tpCamera.focusDistance = 5
-//        cameras.append(tpCamera)
-//        currentCameraIndex = 2
+        let tpCamera = ThirdPersonCamera(focus: skeleton)
+        tpCamera.focusHeight = 10
+        tpCamera.focusDistance = 5
+        cameras.append(tpCamera)
+        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {
@@ -134,10 +146,10 @@ extension GameScene: KeyboardDelegate {
             currentCameraIndex = 1
         case .w, .s, .a, .d, .left, .right, .up, .down:
             if state == .began {
-                skeleton.resumeAnimation()
+//                skeleton.resumeAnimation()
             }
             if state == .ended {
-                skeleton.pauseAnimation()
+//                skeleton.pauseAnimation()
             }
         default:
             break

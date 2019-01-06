@@ -56,7 +56,7 @@ class ThirdPersonCamera: Camera {
 
     var focus: Node
     var focusDistance: Float = 3
-    var focusHeight: Float = 1.2
+    var focusHeight: Float = 1.5
 
     init(focus: Node) {
         self.focus = focus

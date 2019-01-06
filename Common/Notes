@@ -20,3 +20,6 @@ But that .a should come back as 0, so blender is exporting incorreclty or we're 
 
 
 Try importing a claire with animations and run one of the animations...
+
+
+Claires textures are backwards compaired to mixamo
