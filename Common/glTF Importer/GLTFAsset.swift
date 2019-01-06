@@ -362,7 +362,8 @@ class GLTFAsset {
 
     if let texCoord = dictionary["texCoord"] as? Int {
       if texCoord != 0 {
-        fatalError("only texCoord 0 is currently supported")
+        print("😡 'GetImage' in gltfAsset does not support texCoord \(texCoord)")
+        return nil
       }
     }
 

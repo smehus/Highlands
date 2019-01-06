@@ -47,14 +47,14 @@ final class GameScene: Scene {
 
 
 
-        let skeleton = Character(name: "claire_waking")
+        let skeleton = Character(name: "scene")
 
         skeleton.scale = [0.02, 0.02, 0.02]
 //        skeleton.position = [1.2, 0, 100]
-        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
+        skeleton.rotation = [0, 0, 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
-        skeleton.runAnimation(name: "walking")
+        skeleton.runAnimation(name: "idle0518")
         self.physicsController.dynamicBody = skeleton
         self.inputController.player = camera
 //        skeleton.currentAnimation?.speed = 3.0
