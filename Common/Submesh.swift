@@ -102,7 +102,7 @@ private extension Submesh.Textures {
             }
 
             guard let texture = try? Submesh.loadTexture(imageName: filename) else {
-                assertionFailure("Failed to load texture \(filename)")
+//                assertionFailure("Failed to load texture \(filename)")
                 return nil
             }
 

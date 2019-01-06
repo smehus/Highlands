@@ -45,28 +45,20 @@ final class GameScene: Scene {
 //        add(node: lantern, parent: skeleton, render: true)
 
 
-//        DispatchQueue.global().async {
 
-            let skeleton = Character(name: "claire_waking")
 
-//            DispatchQueue.main.async {
-                skeleton.scale = [0.02, 0.02, 0.02]
-                //        skeleton.position = [1.2, 0, 100]
-                        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
-                //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
-                print("*** ADDING CLAIRE")
-                self.add(node: skeleton)
-                skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
-                self.physicsController.dynamicBody = skeleton
-                self.inputController.player = skeleton
-//            }
-//        }
+        let skeleton = Character(name: "claire_waking")
 
+        skeleton.scale = [0.02, 0.02, 0.02]
+//        skeleton.position = [1.2, 0, 100]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
+//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+        self.add(node: skeleton)
+        skeleton.runAnimation(name: "walking")
+        self.physicsController.dynamicBody = skeleton
+        self.inputController.player = camera
 //        skeleton.currentAnimation?.speed = 3.0
 //        skeleton.pauseAnimation()
-
-
-
 
 
 

@@ -6436,7 +6436,7 @@
                     }
                 }
             ],
-            "name" : "Armature|mixamo.com|Layer0",
+            "name" : "walking",
             "samplers" : [
                 {
                     "input" : 63,
