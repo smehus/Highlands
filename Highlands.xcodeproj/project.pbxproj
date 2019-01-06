@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
+		A539CEAC21E2CA2E004FD174 /* character.bin in Resources */ = {isa = PBXBuildFile; fileRef = A539CEA921E2CA2D004FD174 /* character.bin */; };
+		A539CEAD21E2CA2E004FD174 /* character.bin in Resources */ = {isa = PBXBuildFile; fileRef = A539CEA921E2CA2D004FD174 /* character.bin */; };
+		A539CEAE21E2CA2E004FD174 /* character.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A539CEAA21E2CA2E004FD174 /* character.gltf */; };
+		A539CEAF21E2CA2E004FD174 /* character.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A539CEAA21E2CA2E004FD174 /* character.gltf */; };
+		A539CEB021E2CA2E004FD174 /* character.png in Resources */ = {isa = PBXBuildFile; fileRef = A539CEAB21E2CA2E004FD174 /* character.png */; };
+		A539CEB121E2CA2E004FD174 /* character.png in Resources */ = {isa = PBXBuildFile; fileRef = A539CEAB21E2CA2E004FD174 /* character.png */; };
 		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A551AE0921C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A55EFC6C21D9B4DF008DAD22 /* file14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC6621D9B4DE008DAD22 /* file14.jpg */; };
@@ -159,6 +165,9 @@
 
 /* Begin PBXFileReference section */
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
+		A539CEA921E2CA2D004FD174 /* character.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = character.bin; sourceTree = "<group>"; };
+		A539CEAA21E2CA2E004FD174 /* character.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = character.gltf; sourceTree = "<group>"; };
+		A539CEAB21E2CA2E004FD174 /* character.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = character.png; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A55EFC6621D9B4DE008DAD22 /* file14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file14.jpg; sourceTree = "<group>"; };
 		A55EFC6721D9B4DE008DAD22 /* MouthMAP1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MouthMAP1.png; sourceTree = "<group>"; };
@@ -255,9 +264,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A539CE8D21E2C855004FD174 /* Character */ = {
+			isa = PBXGroup;
+			children = (
+				A539CEA921E2CA2D004FD174 /* character.bin */,
+				A539CEAA21E2CA2E004FD174 /* character.gltf */,
+				A539CEAB21E2CA2E004FD174 /* character.png */,
+			);
+			path = Character;
+			sourceTree = "<group>";
+		};
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
+				A539CE8D21E2C855004FD174 /* Character */,
 				A5CBD16321E27FC0001D77EF /* Door */,
 				A55EFC4921D9725A008DAD22 /* Claire */,
 				A57506C021CD65A400C63081 /* Skeleton */,
@@ -621,12 +641,15 @@
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
 				A57506BC21CD646900C63081 /* racing-car.mtl in Resources */,
 				A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */,
+				A539CEAC21E2CA2E004FD174 /* character.bin in Resources */,
 				A5CBD0DD21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A5CBD0DF21E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */,
 				A5CBD0F421E2697B001D77EF /* claire_idle.bin in Resources */,
 				A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
+				A539CEAE21E2CA2E004FD174 /* character.gltf in Resources */,
+				A539CEB021E2CA2E004FD174 /* character.png in Resources */,
 				A5CBD0F221E2697B001D77EF /* claire_idle.gltf in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				A5CBD1BC21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */,
@@ -648,8 +671,10 @@
 			files = (
 				A57506BD21CD646900C63081 /* racing-car.mtl in Resources */,
 				A5CBD0F521E2697B001D77EF /* claire_idle.bin in Resources */,
+				A539CEAF21E2CA2E004FD174 /* character.gltf in Resources */,
 				A5CBD1BD21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */,
 				A5CBD0F321E2697B001D77EF /* claire_idle.gltf in Resources */,
+				A539CEB121E2CA2E004FD174 /* character.png in Resources */,
 				A5F2917521CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
 				A5CBD1BB21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A57506C621CD65A400C63081 /* buffer_skeleton.bin in Resources */,
@@ -663,6 +688,7 @@
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
 				A57506B121CD646900C63081 /* oilcan.mtl in Resources */,
+				A539CEAD21E2CA2E004FD174 /* character.bin in Resources */,
 				A57506C421CD65A400C63081 /* skeleton.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
 				A57506BF21CD646900C63081 /* racing-car.obj in Resources */,

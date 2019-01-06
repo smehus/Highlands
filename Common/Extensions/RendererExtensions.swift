@@ -9,7 +9,7 @@ func lighting() -> [Light] {
 
     var light = buildDefaultLight()
     light.position = [1, 2, -2]
-//    lights.append(light)
+    lights.append(light)
 
 
     lights.append(spotlight())
