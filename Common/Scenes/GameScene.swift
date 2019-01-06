@@ -15,9 +15,7 @@ final class GameScene: Scene {
     let ground = Prop(name: "large-plane", isGround: true)
     let skeleton = Character(name: "animated_ball_texture")
     let car = Prop(name: "racing-car")
-
     let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
-    var inCar = false
 
     override func setupScene() {
 
@@ -64,8 +62,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 10
-        tpCamera.focusDistance = 5
+        tpCamera.focusHeight = 5
+        tpCamera.focusDistance = 8
         cameras.append(tpCamera)
         currentCameraIndex = 2
     }

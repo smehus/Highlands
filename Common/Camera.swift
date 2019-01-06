@@ -68,7 +68,7 @@ class ThirdPersonCamera: Camera {
         position = float3(focus.position.x, focus.position.y - focusDistance, focus.position.z - focusDistance)
         position.y = focusHeight
 //        rotation.y = focus.rotation.y
-        rotation.x = -5
+        rotation.x = -6
 //        rotation.z = focus.rotation.z
         return super.viewMatrix
     }
