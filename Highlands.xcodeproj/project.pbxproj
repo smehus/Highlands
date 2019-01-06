@@ -113,70 +113,18 @@
 		A5CBD0F321E2697B001D77EF /* claire_idle.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD0F021E2697A001D77EF /* claire_idle.gltf */; };
 		A5CBD0F421E2697B001D77EF /* claire_idle.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD0F121E2697A001D77EF /* claire_idle.bin */; };
 		A5CBD0F521E2697B001D77EF /* claire_idle.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD0F121E2697A001D77EF /* claire_idle.bin */; };
-		A5CBD12321E2702F001D77EF /* scene.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10221E2702C001D77EF /* scene.gltf */; };
-		A5CBD12421E2702F001D77EF /* scene.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10221E2702C001D77EF /* scene.gltf */; };
-		A5CBD12521E2702F001D77EF /* scene.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10321E2702E001D77EF /* scene.bin */; };
-		A5CBD12621E2702F001D77EF /* scene.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10321E2702E001D77EF /* scene.bin */; };
-		A5CBD12721E2702F001D77EF /* material_11_emissive.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10521E2702F001D77EF /* material_11_emissive.jpeg */; };
-		A5CBD12821E2702F001D77EF /* material_11_emissive.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10521E2702F001D77EF /* material_11_emissive.jpeg */; };
-		A5CBD12921E2702F001D77EF /* Tongue_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10621E2702F001D77EF /* Tongue_baseColor.jpeg */; };
-		A5CBD12A21E2702F001D77EF /* Tongue_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10621E2702F001D77EF /* Tongue_baseColor.jpeg */; };
-		A5CBD12B21E2702F001D77EF /* Lower_Teeth_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10721E2702F001D77EF /* Lower_Teeth_baseColor.jpeg */; };
-		A5CBD12C21E2702F001D77EF /* Lower_Teeth_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10721E2702F001D77EF /* Lower_Teeth_baseColor.jpeg */; };
-		A5CBD12D21E2702F001D77EF /* Boots_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10821E2702F001D77EF /* Boots_normal.png */; };
-		A5CBD12E21E2702F001D77EF /* Boots_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10821E2702F001D77EF /* Boots_normal.png */; };
-		A5CBD12F21E2702F001D77EF /* Upper_Teeth_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10921E2702F001D77EF /* Upper_Teeth_normal.png */; };
-		A5CBD13021E2702F001D77EF /* Upper_Teeth_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10921E2702F001D77EF /* Upper_Teeth_normal.png */; };
-		A5CBD13121E2702F001D77EF /* low_pony_tail_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10A21E2702F001D77EF /* low_pony_tail_baseColor.png */; };
-		A5CBD13221E2702F001D77EF /* low_pony_tail_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10A21E2702F001D77EF /* low_pony_tail_baseColor.png */; };
-		A5CBD13321E2702F001D77EF /* Skin_Body_metallicRoughness.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10B21E2702F001D77EF /* Skin_Body_metallicRoughness.png */; };
-		A5CBD13421E2702F001D77EF /* Skin_Body_metallicRoughness.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10B21E2702F001D77EF /* Skin_Body_metallicRoughness.png */; };
-		A5CBD13521E2702F001D77EF /* Skin_Head_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10C21E2702F001D77EF /* Skin_Head_normal.png */; };
-		A5CBD13621E2702F001D77EF /* Skin_Head_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10C21E2702F001D77EF /* Skin_Head_normal.png */; };
-		A5CBD13721E2702F001D77EF /* material_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10D21E2702F001D77EF /* material_baseColor.png */; };
-		A5CBD13821E2702F001D77EF /* material_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10D21E2702F001D77EF /* material_baseColor.png */; };
-		A5CBD13921E2702F001D77EF /* Fingernail_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10E21E2702F001D77EF /* Fingernail_baseColor.jpeg */; };
-		A5CBD13A21E2702F001D77EF /* Fingernail_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10E21E2702F001D77EF /* Fingernail_baseColor.jpeg */; };
-		A5CBD13B21E2702F001D77EF /* Cornea_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10F21E2702F001D77EF /* Cornea_normal.png */; };
-		A5CBD13C21E2702F001D77EF /* Cornea_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD10F21E2702F001D77EF /* Cornea_normal.png */; };
-		A5CBD13D21E2702F001D77EF /* Skin_Body_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11021E2702F001D77EF /* Skin_Body_baseColor.jpeg */; };
-		A5CBD13E21E2702F001D77EF /* Skin_Body_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11021E2702F001D77EF /* Skin_Body_baseColor.jpeg */; };
-		A5CBD13F21E2702F001D77EF /* Cornea_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11121E2702F001D77EF /* Cornea_baseColor.jpeg */; };
-		A5CBD14021E2702F001D77EF /* Cornea_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11121E2702F001D77EF /* Cornea_baseColor.jpeg */; };
-		A5CBD14121E2702F001D77EF /* Cornea_metallicRoughness.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11221E2702F001D77EF /* Cornea_metallicRoughness.png */; };
-		A5CBD14221E2702F001D77EF /* Cornea_metallicRoughness.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11221E2702F001D77EF /* Cornea_metallicRoughness.png */; };
-		A5CBD14321E2702F001D77EF /* Lower_Teeth_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11321E2702F001D77EF /* Lower_Teeth_normal.png */; };
-		A5CBD14421E2702F001D77EF /* Lower_Teeth_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11321E2702F001D77EF /* Lower_Teeth_normal.png */; };
-		A5CBD14521E2702F001D77EF /* Eyelash_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11421E2702F001D77EF /* Eyelash_baseColor.png */; };
-		A5CBD14621E2702F001D77EF /* Eyelash_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11421E2702F001D77EF /* Eyelash_baseColor.png */; };
-		A5CBD14721E2702F001D77EF /* Skin_Head_metallicRoughness.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11521E2702F001D77EF /* Skin_Head_metallicRoughness.png */; };
-		A5CBD14821E2702F001D77EF /* Skin_Head_metallicRoughness.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11521E2702F001D77EF /* Skin_Head_metallicRoughness.png */; };
-		A5CBD14921E2702F001D77EF /* material_emissive.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11621E2702F001D77EF /* material_emissive.jpeg */; };
-		A5CBD14A21E2702F001D77EF /* material_emissive.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11621E2702F001D77EF /* material_emissive.jpeg */; };
-		A5CBD14B21E2702F001D77EF /* Tongue_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11721E2702F001D77EF /* Tongue_normal.png */; };
-		A5CBD14C21E2702F001D77EF /* Tongue_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11721E2702F001D77EF /* Tongue_normal.png */; };
-		A5CBD14D21E2702F001D77EF /* material_metallicRoughness.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11821E2702F001D77EF /* material_metallicRoughness.png */; };
-		A5CBD14E21E2702F001D77EF /* material_metallicRoughness.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11821E2702F001D77EF /* material_metallicRoughness.png */; };
-		A5CBD14F21E2702F001D77EF /* Fingernail_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11921E2702F001D77EF /* Fingernail_normal.png */; };
-		A5CBD15021E2702F001D77EF /* Fingernail_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11921E2702F001D77EF /* Fingernail_normal.png */; };
-		A5CBD15121E2702F001D77EF /* material_11_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11A21E2702F001D77EF /* material_11_baseColor.png */; };
-		A5CBD15221E2702F001D77EF /* material_11_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11A21E2702F001D77EF /* material_11_baseColor.png */; };
-		A5CBD15321E2702F001D77EF /* Skin_Head_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11B21E2702F001D77EF /* Skin_Head_baseColor.jpeg */; };
-		A5CBD15421E2702F001D77EF /* Skin_Head_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11B21E2702F001D77EF /* Skin_Head_baseColor.jpeg */; };
-		A5CBD15521E2702F001D77EF /* Boots_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11C21E2702F001D77EF /* Boots_baseColor.jpeg */; };
-		A5CBD15621E2702F001D77EF /* Boots_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11C21E2702F001D77EF /* Boots_baseColor.jpeg */; };
-		A5CBD15721E2702F001D77EF /* Upper_Teeth_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11D21E2702F001D77EF /* Upper_Teeth_baseColor.jpeg */; };
-		A5CBD15821E2702F001D77EF /* Upper_Teeth_baseColor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11D21E2702F001D77EF /* Upper_Teeth_baseColor.jpeg */; };
-		A5CBD15921E2702F001D77EF /* short_jeans_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11E21E2702F001D77EF /* short_jeans_normal.png */; };
-		A5CBD15A21E2702F001D77EF /* short_jeans_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11E21E2702F001D77EF /* short_jeans_normal.png */; };
-		A5CBD15B21E2702F001D77EF /* material_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11F21E2702F001D77EF /* material_normal.png */; };
-		A5CBD15C21E2702F001D77EF /* material_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD11F21E2702F001D77EF /* material_normal.png */; };
-		A5CBD15D21E2702F001D77EF /* material_11_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD12021E2702F001D77EF /* material_11_normal.png */; };
-		A5CBD15E21E2702F001D77EF /* material_11_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD12021E2702F001D77EF /* material_11_normal.png */; };
-		A5CBD15F21E2702F001D77EF /* Skin_Body_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD12121E2702F001D77EF /* Skin_Body_normal.png */; };
-		A5CBD16021E2702F001D77EF /* Skin_Body_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD12121E2702F001D77EF /* Skin_Body_normal.png */; };
-		A5CBD16121E2702F001D77EF /* short_jeans_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD12221E2702F001D77EF /* short_jeans_baseColor.png */; };
-		A5CBD16221E2702F001D77EF /* short_jeans_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD12221E2702F001D77EF /* short_jeans_baseColor.png */; };
+		A5CBD1A221E28D75001D77EF /* animated_ball.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A021E28D75001D77EF /* animated_ball.gltf */; };
+		A5CBD1A321E28D75001D77EF /* animated_ball.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A021E28D75001D77EF /* animated_ball.gltf */; };
+		A5CBD1A421E28D75001D77EF /* animated_ball.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A121E28D75001D77EF /* animated_ball.bin */; };
+		A5CBD1A521E28D75001D77EF /* animated_ball.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A121E28D75001D77EF /* animated_ball.bin */; };
+		A5CBD1A821E28DD2001D77EF /* animated_ball_morph.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A621E28DD1001D77EF /* animated_ball_morph.bin */; };
+		A5CBD1A921E28DD2001D77EF /* animated_ball_morph.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A621E28DD1001D77EF /* animated_ball_morph.bin */; };
+		A5CBD1AA21E28DD2001D77EF /* animated_ball_morph.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A721E28DD1001D77EF /* animated_ball_morph.gltf */; };
+		A5CBD1AB21E28DD2001D77EF /* animated_ball_morph.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1A721E28DD1001D77EF /* animated_ball_morph.gltf */; };
+		A5CBD1AE21E28DFE001D77EF /* animated_ball_morph_1.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1AC21E28DFE001D77EF /* animated_ball_morph_1.gltf */; };
+		A5CBD1AF21E28DFE001D77EF /* animated_ball_morph_1.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1AC21E28DFE001D77EF /* animated_ball_morph_1.gltf */; };
+		A5CBD1B021E28DFE001D77EF /* animated_ball_morph_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1AD21E28DFE001D77EF /* animated_ball_morph_1.bin */; };
+		A5CBD1B121E28DFE001D77EF /* animated_ball_morph_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1AD21E28DFE001D77EF /* animated_ball_morph_1.bin */; };
 		A5F2917221CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */; };
 		A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */; };
 		A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */; };
@@ -283,38 +231,12 @@
 		A5CBD0E721E26767001D77EF /* BrowsMAP1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrowsMAP1.png; sourceTree = "<group>"; };
 		A5CBD0F021E2697A001D77EF /* claire_idle.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = claire_idle.gltf; sourceTree = "<group>"; };
 		A5CBD0F121E2697A001D77EF /* claire_idle.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = claire_idle.bin; sourceTree = "<group>"; };
-		A5CBD10221E2702C001D77EF /* scene.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene.gltf; sourceTree = "<group>"; };
-		A5CBD10321E2702E001D77EF /* scene.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = scene.bin; sourceTree = "<group>"; };
-		A5CBD10521E2702F001D77EF /* material_11_emissive.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = material_11_emissive.jpeg; sourceTree = "<group>"; };
-		A5CBD10621E2702F001D77EF /* Tongue_baseColor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Tongue_baseColor.jpeg; sourceTree = "<group>"; };
-		A5CBD10721E2702F001D77EF /* Lower_Teeth_baseColor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Lower_Teeth_baseColor.jpeg; sourceTree = "<group>"; };
-		A5CBD10821E2702F001D77EF /* Boots_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Boots_normal.png; sourceTree = "<group>"; };
-		A5CBD10921E2702F001D77EF /* Upper_Teeth_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Upper_Teeth_normal.png; sourceTree = "<group>"; };
-		A5CBD10A21E2702F001D77EF /* low_pony_tail_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = low_pony_tail_baseColor.png; sourceTree = "<group>"; };
-		A5CBD10B21E2702F001D77EF /* Skin_Body_metallicRoughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Skin_Body_metallicRoughness.png; sourceTree = "<group>"; };
-		A5CBD10C21E2702F001D77EF /* Skin_Head_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Skin_Head_normal.png; sourceTree = "<group>"; };
-		A5CBD10D21E2702F001D77EF /* material_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = material_baseColor.png; sourceTree = "<group>"; };
-		A5CBD10E21E2702F001D77EF /* Fingernail_baseColor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Fingernail_baseColor.jpeg; sourceTree = "<group>"; };
-		A5CBD10F21E2702F001D77EF /* Cornea_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cornea_normal.png; sourceTree = "<group>"; };
-		A5CBD11021E2702F001D77EF /* Skin_Body_baseColor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Skin_Body_baseColor.jpeg; sourceTree = "<group>"; };
-		A5CBD11121E2702F001D77EF /* Cornea_baseColor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Cornea_baseColor.jpeg; sourceTree = "<group>"; };
-		A5CBD11221E2702F001D77EF /* Cornea_metallicRoughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cornea_metallicRoughness.png; sourceTree = "<group>"; };
-		A5CBD11321E2702F001D77EF /* Lower_Teeth_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lower_Teeth_normal.png; sourceTree = "<group>"; };
-		A5CBD11421E2702F001D77EF /* Eyelash_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Eyelash_baseColor.png; sourceTree = "<group>"; };
-		A5CBD11521E2702F001D77EF /* Skin_Head_metallicRoughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Skin_Head_metallicRoughness.png; sourceTree = "<group>"; };
-		A5CBD11621E2702F001D77EF /* material_emissive.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = material_emissive.jpeg; sourceTree = "<group>"; };
-		A5CBD11721E2702F001D77EF /* Tongue_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tongue_normal.png; sourceTree = "<group>"; };
-		A5CBD11821E2702F001D77EF /* material_metallicRoughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = material_metallicRoughness.png; sourceTree = "<group>"; };
-		A5CBD11921E2702F001D77EF /* Fingernail_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fingernail_normal.png; sourceTree = "<group>"; };
-		A5CBD11A21E2702F001D77EF /* material_11_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = material_11_baseColor.png; sourceTree = "<group>"; };
-		A5CBD11B21E2702F001D77EF /* Skin_Head_baseColor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Skin_Head_baseColor.jpeg; sourceTree = "<group>"; };
-		A5CBD11C21E2702F001D77EF /* Boots_baseColor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Boots_baseColor.jpeg; sourceTree = "<group>"; };
-		A5CBD11D21E2702F001D77EF /* Upper_Teeth_baseColor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Upper_Teeth_baseColor.jpeg; sourceTree = "<group>"; };
-		A5CBD11E21E2702F001D77EF /* short_jeans_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = short_jeans_normal.png; sourceTree = "<group>"; };
-		A5CBD11F21E2702F001D77EF /* material_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = material_normal.png; sourceTree = "<group>"; };
-		A5CBD12021E2702F001D77EF /* material_11_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = material_11_normal.png; sourceTree = "<group>"; };
-		A5CBD12121E2702F001D77EF /* Skin_Body_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Skin_Body_normal.png; sourceTree = "<group>"; };
-		A5CBD12221E2702F001D77EF /* short_jeans_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = short_jeans_baseColor.png; sourceTree = "<group>"; };
+		A5CBD1A021E28D75001D77EF /* animated_ball.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball.gltf; sourceTree = "<group>"; };
+		A5CBD1A121E28D75001D77EF /* animated_ball.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball.bin; sourceTree = "<group>"; };
+		A5CBD1A621E28DD1001D77EF /* animated_ball_morph.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball_morph.bin; sourceTree = "<group>"; };
+		A5CBD1A721E28DD1001D77EF /* animated_ball_morph.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball_morph.gltf; sourceTree = "<group>"; };
+		A5CBD1AC21E28DFE001D77EF /* animated_ball_morph_1.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball_morph_1.gltf; sourceTree = "<group>"; };
+		A5CBD1AD21E28DFE001D77EF /* animated_ball_morph_1.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball_morph_1.bin; sourceTree = "<group>"; };
 		A5F2916C21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SA_LD_Medieval_Horn_Lantern.mtl; sourceTree = "<group>"; };
 		A5F2916D21CEDFB000FF57A5 /* HRN_LMP_NM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_NM.bmp; sourceTree = "<group>"; };
 		A5F2916E21CEDFB000FF57A5 /* HRN_LMP_CM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_CM.bmp; sourceTree = "<group>"; };
@@ -345,9 +267,7 @@
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
-				A5CBD10321E2702E001D77EF /* scene.bin */,
-				A5CBD10221E2702C001D77EF /* scene.gltf */,
-				A5CBD10421E2702F001D77EF /* textures */,
+				A5CBD16321E27FC0001D77EF /* Door */,
 				A55EFC4921D9725A008DAD22 /* Claire */,
 				A57506C021CD65A400C63081 /* Skeleton */,
 			);
@@ -582,41 +502,17 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		A5CBD10421E2702F001D77EF /* textures */ = {
+		A5CBD16321E27FC0001D77EF /* Door */ = {
 			isa = PBXGroup;
 			children = (
-				A5CBD10521E2702F001D77EF /* material_11_emissive.jpeg */,
-				A5CBD10621E2702F001D77EF /* Tongue_baseColor.jpeg */,
-				A5CBD10721E2702F001D77EF /* Lower_Teeth_baseColor.jpeg */,
-				A5CBD10821E2702F001D77EF /* Boots_normal.png */,
-				A5CBD10921E2702F001D77EF /* Upper_Teeth_normal.png */,
-				A5CBD10A21E2702F001D77EF /* low_pony_tail_baseColor.png */,
-				A5CBD10B21E2702F001D77EF /* Skin_Body_metallicRoughness.png */,
-				A5CBD10C21E2702F001D77EF /* Skin_Head_normal.png */,
-				A5CBD10D21E2702F001D77EF /* material_baseColor.png */,
-				A5CBD10E21E2702F001D77EF /* Fingernail_baseColor.jpeg */,
-				A5CBD10F21E2702F001D77EF /* Cornea_normal.png */,
-				A5CBD11021E2702F001D77EF /* Skin_Body_baseColor.jpeg */,
-				A5CBD11121E2702F001D77EF /* Cornea_baseColor.jpeg */,
-				A5CBD11221E2702F001D77EF /* Cornea_metallicRoughness.png */,
-				A5CBD11321E2702F001D77EF /* Lower_Teeth_normal.png */,
-				A5CBD11421E2702F001D77EF /* Eyelash_baseColor.png */,
-				A5CBD11521E2702F001D77EF /* Skin_Head_metallicRoughness.png */,
-				A5CBD11621E2702F001D77EF /* material_emissive.jpeg */,
-				A5CBD11721E2702F001D77EF /* Tongue_normal.png */,
-				A5CBD11821E2702F001D77EF /* material_metallicRoughness.png */,
-				A5CBD11921E2702F001D77EF /* Fingernail_normal.png */,
-				A5CBD11A21E2702F001D77EF /* material_11_baseColor.png */,
-				A5CBD11B21E2702F001D77EF /* Skin_Head_baseColor.jpeg */,
-				A5CBD11C21E2702F001D77EF /* Boots_baseColor.jpeg */,
-				A5CBD11D21E2702F001D77EF /* Upper_Teeth_baseColor.jpeg */,
-				A5CBD11E21E2702F001D77EF /* short_jeans_normal.png */,
-				A5CBD11F21E2702F001D77EF /* material_normal.png */,
-				A5CBD12021E2702F001D77EF /* material_11_normal.png */,
-				A5CBD12121E2702F001D77EF /* Skin_Body_normal.png */,
-				A5CBD12221E2702F001D77EF /* short_jeans_baseColor.png */,
+				A5CBD1AD21E28DFE001D77EF /* animated_ball_morph_1.bin */,
+				A5CBD1AC21E28DFE001D77EF /* animated_ball_morph_1.gltf */,
+				A5CBD1A621E28DD1001D77EF /* animated_ball_morph.bin */,
+				A5CBD1A721E28DD1001D77EF /* animated_ball_morph.gltf */,
+				A5CBD1A121E28D75001D77EF /* animated_ball.bin */,
+				A5CBD1A021E28D75001D77EF /* animated_ball.gltf */,
 			);
-			path = textures;
+			path = Door;
 			sourceTree = "<group>";
 		};
 		A5F2916A21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern_OBJ */ = {
@@ -720,70 +616,44 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5CBD1B021E28DFE001D77EF /* animated_ball_morph_1.bin in Resources */,
 				A55EFC6C21D9B4DF008DAD22 /* file14.jpg in Resources */,
-				A5CBD13521E2702F001D77EF /* Skin_Head_normal.png in Resources */,
 				A5F2917821CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
-				A5CBD12D21E2702F001D77EF /* Boots_normal.png in Resources */,
-				A5CBD14721E2702F001D77EF /* Skin_Head_metallicRoughness.png in Resources */,
 				A57506C521CD65A400C63081 /* buffer_skeleton.bin in Resources */,
 				A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
-				A5CBD14521E2702F001D77EF /* Eyelash_baseColor.png in Resources */,
-				A5CBD12B21E2702F001D77EF /* Lower_Teeth_baseColor.jpeg in Resources */,
+				A5CBD1A221E28D75001D77EF /* animated_ball.gltf in Resources */,
 				A55EFC6E21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
-				A5CBD13121E2702F001D77EF /* low_pony_tail_baseColor.png in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
 				A57506B021CD646900C63081 /* oilcan.mtl in Resources */,
-				A5CBD12521E2702F001D77EF /* scene.bin in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
-				A5CBD15D21E2702F001D77EF /* material_11_normal.png in Resources */,
-				A5CBD14121E2702F001D77EF /* Cornea_metallicRoughness.png in Resources */,
-				A5CBD15521E2702F001D77EF /* Boots_baseColor.jpeg in Resources */,
+				A5CBD1A421E28D75001D77EF /* animated_ball.bin in Resources */,
 				A5C952CD21CEA53000B23364 /* ground.png in Resources */,
-				A5CBD12921E2702F001D77EF /* Tongue_baseColor.jpeg in Resources */,
-				A5CBD13921E2702F001D77EF /* Fingernail_baseColor.jpeg in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
-				A5CBD13B21E2702F001D77EF /* Cornea_normal.png in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
-				A5CBD12F21E2702F001D77EF /* Upper_Teeth_normal.png in Resources */,
-				A5CBD15B21E2702F001D77EF /* material_normal.png in Resources */,
-				A5CBD15F21E2702F001D77EF /* Skin_Body_normal.png in Resources */,
-				A5CBD15721E2702F001D77EF /* Upper_Teeth_baseColor.jpeg in Resources */,
-				A5CBD13321E2702F001D77EF /* Skin_Body_metallicRoughness.png in Resources */,
-				A5CBD12721E2702F001D77EF /* material_11_emissive.jpeg in Resources */,
 				A57506BC21CD646900C63081 /* racing-car.mtl in Resources */,
 				A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */,
-				A5CBD13D21E2702F001D77EF /* Skin_Body_baseColor.jpeg in Resources */,
+				A5CBD1A821E28DD2001D77EF /* animated_ball_morph.bin in Resources */,
 				A5CBD0DD21E16FC1001D77EF /* claire_waking.gltf in Resources */,
-				A5CBD16121E2702F001D77EF /* short_jeans_baseColor.png in Resources */,
-				A5CBD14B21E2702F001D77EF /* Tongue_normal.png in Resources */,
 				A5CBD0DF21E16FC1001D77EF /* claire_waking.bin in Resources */,
-				A5CBD14D21E2702F001D77EF /* material_metallicRoughness.png in Resources */,
 				A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */,
 				A5CBD0F421E2697B001D77EF /* claire_idle.bin in Resources */,
-				A5CBD15121E2702F001D77EF /* material_11_baseColor.png in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A5CBD0F221E2697B001D77EF /* claire_idle.gltf in Resources */,
-				A5CBD15321E2702F001D77EF /* Skin_Head_baseColor.jpeg in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
-				A5CBD13F21E2702F001D77EF /* Cornea_baseColor.jpeg in Resources */,
 				A5F2917221CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
-				A5CBD14921E2702F001D77EF /* material_emissive.jpeg in Resources */,
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
-				A5CBD14F21E2702F001D77EF /* Fingernail_normal.png in Resources */,
 				A57506BE21CD646900C63081 /* racing-car.obj in Resources */,
 				A57506B221CD646900C63081 /* oilcan.obj in Resources */,
+				A5CBD1AE21E28DFE001D77EF /* animated_ball_morph_1.gltf in Resources */,
 				A5CBD0E821E26767001D77EF /* BrowsMAP1.png in Resources */,
 				A5F2917621CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
+				A5CBD1AA21E28DD2001D77EF /* animated_ball_morph.gltf in Resources */,
 				A55EFC7221D9B4DF008DAD22 /* file15.jpg in Resources */,
-				A5CBD14321E2702F001D77EF /* Lower_Teeth_normal.png in Resources */,
-				A5CBD13721E2702F001D77EF /* material_baseColor.png in Resources */,
-				A5CBD15921E2702F001D77EF /* short_jeans_normal.png in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
-				A5CBD12321E2702F001D77EF /* scene.gltf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,68 +661,42 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5CBD13821E2702F001D77EF /* material_baseColor.png in Resources */,
-				A5CBD13A21E2702F001D77EF /* Fingernail_baseColor.jpeg in Resources */,
-				A5CBD15C21E2702F001D77EF /* material_normal.png in Resources */,
-				A5CBD15021E2702F001D77EF /* Fingernail_normal.png in Resources */,
-				A5CBD13C21E2702F001D77EF /* Cornea_normal.png in Resources */,
 				A57506BD21CD646900C63081 /* racing-car.mtl in Resources */,
-				A5CBD12421E2702F001D77EF /* scene.gltf in Resources */,
 				A5CBD0F521E2697B001D77EF /* claire_idle.bin in Resources */,
+				A5CBD1B121E28DFE001D77EF /* animated_ball_morph_1.bin in Resources */,
+				A5CBD1A321E28D75001D77EF /* animated_ball.gltf in Resources */,
 				A5CBD0F321E2697B001D77EF /* claire_idle.gltf in Resources */,
-				A5CBD12A21E2702F001D77EF /* Tongue_baseColor.jpeg in Resources */,
-				A5CBD14E21E2702F001D77EF /* material_metallicRoughness.png in Resources */,
-				A5CBD14C21E2702F001D77EF /* Tongue_normal.png in Resources */,
 				A5F2917521CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
 				A57506C621CD65A400C63081 /* buffer_skeleton.bin in Resources */,
-				A5CBD15A21E2702F001D77EF /* short_jeans_normal.png in Resources */,
 				A5C952CC21CEA53000B23364 /* plane.mtl in Resources */,
 				A5C952CA21CEA53000B23364 /* plane.obj in Resources */,
 				A5F2917921CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A5F2917721CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A57506BB21CD646900C63081 /* treefir.obj in Resources */,
-				A5CBD15821E2702F001D77EF /* Upper_Teeth_baseColor.jpeg in Resources */,
-				A5CBD13021E2702F001D77EF /* Upper_Teeth_normal.png in Resources */,
-				A5CBD13621E2702F001D77EF /* Skin_Head_normal.png in Resources */,
 				A5F2918621CEF05600FF57A5 /* beachball.obj in Resources */,
-				A5CBD14821E2702F001D77EF /* Skin_Head_metallicRoughness.png in Resources */,
-				A5CBD14A21E2702F001D77EF /* material_emissive.jpeg in Resources */,
 				A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
+				A5CBD1AB21E28DD2001D77EF /* animated_ball_morph.gltf in Resources */,
 				A57506B121CD646900C63081 /* oilcan.mtl in Resources */,
 				A57506C421CD65A400C63081 /* skeleton.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
-				A5CBD15421E2702F001D77EF /* Skin_Head_baseColor.jpeg in Resources */,
 				A57506BF21CD646900C63081 /* racing-car.obj in Resources */,
-				A5CBD13221E2702F001D77EF /* low_pony_tail_baseColor.png in Resources */,
 				A5CBD0E021E16FC1001D77EF /* claire_waking.bin in Resources */,
-				A5CBD13E21E2702F001D77EF /* Skin_Body_baseColor.jpeg in Resources */,
-				A5CBD15E21E2702F001D77EF /* material_11_normal.png in Resources */,
-				A5CBD14621E2702F001D77EF /* Eyelash_baseColor.png in Resources */,
 				A57506B521CD646900C63081 /* large-plane.mtl in Resources */,
+				A5CBD1A521E28D75001D77EF /* animated_ball.bin in Resources */,
 				A5CBD0E921E26767001D77EF /* BrowsMAP1.png in Resources */,
 				A55EFC6F21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
 				A5CBD0DE21E16FC1001D77EF /* claire_waking.gltf in Resources */,
-				A5CBD15621E2702F001D77EF /* Boots_baseColor.jpeg in Resources */,
-				A5CBD14021E2702F001D77EF /* Cornea_baseColor.jpeg in Resources */,
-				A5CBD13421E2702F001D77EF /* Skin_Body_metallicRoughness.png in Resources */,
+				A5CBD1A921E28DD2001D77EF /* animated_ball_morph.bin in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
-				A5CBD12C21E2702F001D77EF /* Lower_Teeth_baseColor.jpeg in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
 				A5F2918421CEF05600FF57A5 /* beachball.mtl in Resources */,
-				A5CBD16221E2702F001D77EF /* short_jeans_baseColor.png in Resources */,
-				A5CBD14421E2702F001D77EF /* Lower_Teeth_normal.png in Resources */,
+				A5CBD1AF21E28DFE001D77EF /* animated_ball_morph_1.gltf in Resources */,
 				A55EFC7321D9B4DF008DAD22 /* file15.jpg in Resources */,
 				A55EFC6D21D9B4DF008DAD22 /* file14.jpg in Resources */,
-				A5CBD12621E2702F001D77EF /* scene.bin in Resources */,
-				A5CBD16021E2702F001D77EF /* Skin_Body_normal.png in Resources */,
-				A5CBD12821E2702F001D77EF /* material_11_emissive.jpeg in Resources */,
-				A5CBD12E21E2702F001D77EF /* Boots_normal.png in Resources */,
 				A57506B321CD646900C63081 /* oilcan.obj in Resources */,
-				A5CBD14221E2702F001D77EF /* Cornea_metallicRoughness.png in Resources */,
-				A5CBD15221E2702F001D77EF /* material_11_baseColor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

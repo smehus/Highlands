@@ -13,6 +13,7 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
+    let skeleton = Character(name: "animated_ball_morph_1")
 //    let car = Prop(name: "racing-car")
 
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
@@ -47,14 +48,14 @@ final class GameScene: Scene {
 
 
 
-        let skeleton = Character(name: "scene")
 
-        skeleton.scale = [0.02, 0.02, 0.02]
-//        skeleton.position = [1.2, 0, 100]
-        skeleton.rotation = [0, 0, 0]
+
+//        skeleton.scale = [0.02, 0.02, 0.02]
+//        skeleton.position = [1.2, 1, 3]
+//        skeleton.rotation = [0, 0, 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
-        skeleton.runAnimation(name: "idle0518")
+//        skeleton.runAnimation(name: "UpDown")
         self.physicsController.dynamicBody = skeleton
         self.inputController.player = camera
 //        skeleton.currentAnimation?.speed = 3.0
@@ -136,13 +137,18 @@ extension GameScene: KeyboardDelegate {
             currentCameraIndex = 0
         case .key1:
             currentCameraIndex = 1
-        case .w, .s, .a, .d, .left, .right, .up, .down:
-            if state == .began {
-//                skeleton.resumeAnimation()
-            }
-            if state == .ended {
-//                skeleton.pauseAnimation()
-            }
+//        case .w, .s, .a, .d, .left, .right, .up, .down:
+//            if state == .began {
+////                skeleton.resumeAnimation()
+//            }
+//            if state == .ended {
+////                skeleton.pauseAnimation()
+//            }
+
+        case .left:
+            skeleton.runAnimation(name: "LeftRight")
+        case .up:
+            skeleton.runAnimation(name: "UpDown")
         default:
             break
         }

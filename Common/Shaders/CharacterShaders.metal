@@ -8,7 +8,7 @@ struct VertexIn {
     float2 uv [[ attribute(UV) ]];
     float3 tangent [[ attribute(Tangent) ]];
     float3 bitangent [[ attribute(Bitangent) ]];
-    float4 color [[ attribute(Color) ]];
+//    float4 color [[ attribute(Color) ]];
     ushort4 joints [[ attribute(Joints) ]];
     float4 weights [[ attribute(Weights) ]];
 };
@@ -16,7 +16,7 @@ struct VertexIn {
 struct VertexOut {
     float4 position [[ position ]];
     float3 worldNormal;
-    float2 uv;
+//    float2 uv;
 };
 
 vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -38,7 +38,7 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.position = modelMatrix * skinMatrix * vertexIn.position;
     out.worldNormal = uniforms.normalMatrix *
     (skinMatrix * float4(vertexIn.normal, 1)).xyz;
-    out.uv = vertexIn.uv;
+//    out.uv = vertexIn.uv;
 
     return out;
 }
@@ -51,8 +51,8 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 
     float4 color;
     constexpr sampler s(filter::linear);
-    float4 baseColor = baseColorTexture.sample(s, in.uv);
-
+//    float4 baseColor = baseColorTexture.sample(s, in.uv);
+    float4 baseColor = float4(material.baseColor, 1);
     
     if (baseColor.a < 0.1) {
         discard_fragment();

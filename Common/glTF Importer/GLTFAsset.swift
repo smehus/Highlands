@@ -428,27 +428,27 @@ class GLTFAsset {
           var materialProperty: MDLMaterialProperty?
           switch property.key {
 
-//          case "baseColorFactor":
-//            if let value = property.value as? [Float] {
-//              let color = float4(array: value)
-//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
-//            } else if let value = property.value as? [Double] {
-//              let color = float4(array: value)
-//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
-//            }
-//
-//          case "metallicFactor":
-//            if let value = property.value as? Float {
-//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .metallic, float: value)
-//            }
-//          case "roughnessFactor":
-//            if let value = property.value as? Float {
-//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .roughness, float: value)
-//            }
-//          case "emissiveFactor":
-//            if let value = property.value as? Float {
-//              materialProperty = MDLMaterialProperty(name: property.key, semantic: .emission, float: value)
-//            }
+          case "baseColorFactor":
+            if let value = property.value as? [Float] {
+              let color = float4(array: value)
+              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
+            } else if let value = property.value as? [Double] {
+              let color = float4(array: value)
+              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
+            }
+
+          case "metallicFactor":
+            if let value = property.value as? Float {
+              materialProperty = MDLMaterialProperty(name: property.key, semantic: .metallic, float: value)
+            }
+          case "roughnessFactor":
+            if let value = property.value as? Float {
+              materialProperty = MDLMaterialProperty(name: property.key, semantic: .roughness, float: value)
+            }
+          case "emissiveFactor":
+            if let value = property.value as? Float {
+              materialProperty = MDLMaterialProperty(name: property.key, semantic: .emission, float: value)
+            }
           case "baseColorTexture":
             if let dictionary = property.value as? [String: Any] {
               guard let imageName = getImage(dictionary: dictionary) else  {
@@ -457,18 +457,18 @@ class GLTFAsset {
 
                 materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, string: imageName)
             }
-//          case "metallicRoughnessTexture":
-//            if let dictionary = property.value as? [String: Any] {
-//              if let imageName = getImage(dictionary: dictionary) {
-//                materialProperty = MDLMaterialProperty(name: property.key, semantic: .userDefined, string: imageName)
-//              }
-//            }
-//          case "emissiveTexture":
-//            if let dictionary = property.value as? [String: Any] {
-//              if let imageName = getImage(dictionary: dictionary) {
-//                materialProperty = MDLMaterialProperty(name: property.key, semantic: .emission, string: imageName)
-//              }
-//            }
+          case "metallicRoughnessTexture":
+            if let dictionary = property.value as? [String: Any] {
+              if let imageName = getImage(dictionary: dictionary) {
+                materialProperty = MDLMaterialProperty(name: property.key, semantic: .userDefined, string: imageName)
+              }
+            }
+          case "emissiveTexture":
+            if let dictionary = property.value as? [String: Any] {
+              if let imageName = getImage(dictionary: dictionary) {
+                materialProperty = MDLMaterialProperty(name: property.key, semantic: .emission, string: imageName)
+              }
+            }
 
           default: break
           }
