@@ -14,9 +14,9 @@ final class GameScene: Scene {
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
     let skeleton = Character(name: "animated_ball_texture")
-//    let car = Prop(name: "racing-car")
+    let car = Prop(name: "racing-car")
 
-//    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
+    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
     var inCar = false
 
     override func setupScene() {
@@ -28,27 +28,22 @@ final class GameScene: Scene {
 
         ground.tiling = 32
         add(node: ground)
-//
-//        for _ in 0..<50 {
-//            let tree = Prop(name: "treefir")
-//            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-//            add(node: tree)
-//            physicsController.addStaticBody(node: tree)
-//        }
-//
-//
-//        car.rotation = [0, radians(fromDegrees: 90), 0]
-//        car.position = [-2, 0, 0]
-//        add(node: car)
-//        physicsController.addStaticBody(node: car)
-//
-//        lantern.position = [2.5, 2.5, 1]
-//        add(node: lantern, parent: skeleton, render: true)
+
+        for _ in 0..<50 {
+            let tree = Prop(name: "treefir")
+            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+            add(node: tree)
+            physicsController.addStaticBody(node: tree)
+        }
 
 
+        car.rotation = [0, radians(fromDegrees: 90), 0]
+        car.position = [-2, 0, 0]
+        add(node: car)
+        physicsController.addStaticBody(node: car)
 
-
-
+        lantern.position = [2.5, 2.5, 1]
+        add(node: lantern, parent: skeleton, render: true)
 
 //        skeleton.scale = [0.02, 0.02, 0.02]
 //        skeleton.position = [1.2, 1, 3]
@@ -57,7 +52,7 @@ final class GameScene: Scene {
         self.add(node: skeleton)
 //        skeleton.runAnimation(name: "UpDown")
         self.physicsController.dynamicBody = skeleton
-        self.inputController.player = camera
+        self.inputController.player = skeleton
 //        skeleton.currentAnimation?.speed = 3.0
 //        skeleton.pauseAnimation()
 
@@ -67,12 +62,12 @@ final class GameScene: Scene {
         orthoCamera.rotation.x = .pi / 2
         cameras.append(orthoCamera)
 
-//
-//        let tpCamera = ThirdPersonCamera(focus: skeleton)
-//        tpCamera.focusHeight = 10
-//        tpCamera.focusDistance = 5
-//        cameras.append(tpCamera)
-//        currentCameraIndex = 2
+
+        let tpCamera = ThirdPersonCamera(focus: skeleton)
+        tpCamera.focusHeight = 10
+        tpCamera.focusDistance = 5
+        cameras.append(tpCamera)
+        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {
@@ -112,27 +107,6 @@ final class GameScene: Scene {
 extension GameScene: KeyboardDelegate {
     func keyPressed(key: KeyboardControl, state: InputState) -> Bool {
         switch key {
-        case .c where state == .ended:
-            let camera = cameras[0]
-
-//            if inCar {
-//                remove(node: car)
-//                add(node: car)
-//                car.position = camera.position + (camera.rightVector * 1.3)
-//                car.position.y = 0
-//                car.rotation = camera.rotation
-//                inputController.translationSpeed = 2.0
-//            } else {
-//                remove(node: skeleton)
-//                remove(node: car)
-//                add(node: car, parent: camera)
-//                car.position = [0.35, -1, 0.1]
-//                car.rotation = [0, 0, 0]
-//                inputController.translationSpeed = 10.0
-//            }
-
-            inCar = !inCar
-            return false
         case .key0:
             currentCameraIndex = 0
         case .key1:

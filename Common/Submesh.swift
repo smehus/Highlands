@@ -92,12 +92,12 @@ extension Submesh: Texturable {}
 
 private extension Submesh.Textures {
     init(material: MDLMaterial?) {
-        print("ATTEMTING TO LOAD MATERIAL \(material)")
-        func property(with semantic: MDLMaterialSemantic) -> MTLTexture? {
-            guard let property = material?.property(with: semantic),
+        func property(with semantic: MDLMaterialSemantic, name: String) -> MTLTexture? {
+            print("🛠 Loading Material \(name)")
+            guard
+                let property = material?.property(with: semantic),
                 property.type == .string,
                 let filename = property.stringValue else {
-                    print("❌ Something wrong with material property \(material?.property(with: semantic))")
                     return nil
             }
 
@@ -109,9 +109,9 @@ private extension Submesh.Textures {
             return texture
         }
 
-        baseColor = property(with: .baseColor)
-        normal = nil
-        roughness = nil
+        baseColor = property(with: .baseColor, name: "baseColor")
+        normal = property(with: .tangentSpaceNormal, name: "tangentSpaceNormal")
+        roughness = property(with: .roughness, name: "roughness")
     }
 }
 

@@ -39,19 +39,9 @@ class InputController {
             case .d:
                 direction.x += 1
             case .left, .q:
-                if player is Camera {
-                    player.rotation.y -= rotationSpeed
-                } else {
-                    player.rotation.z += rotationSpeed
-                }
-
+                player.rotation.y -= rotationSpeed
             case .right, .e:
-                if player is Camera {
-                    player.rotation.y += rotationSpeed
-                } else {
-                    player.rotation.z -= rotationSpeed
-                }
-
+                player.rotation.y += rotationSpeed
             default:
                 break
             }
