@@ -64,12 +64,19 @@ class ThirdPersonCamera: Camera {
     }
 
     override var viewMatrix: float4x4 {
-//        position = focus.position - focusDistance * focus.forwardVector
+        setRotatingCamera()
+        return super.viewMatrix
+    }
+
+    private func setNonRotatingCamera() {
         position = float3(focus.position.x, focus.position.y - focusDistance, focus.position.z - focusDistance)
         position.y = focusHeight
-//        rotation.y = focus.rotation.y
         rotation.x = -6
-//        rotation.z = focus.rotation.z
-        return super.viewMatrix
+    }
+
+    private func setRotatingCamera() {
+        position = focus.position - focusDistance * focus.forwardVector
+        position.y = focusHeight
+        rotation.y = focus.rotation.y
     }
 }
