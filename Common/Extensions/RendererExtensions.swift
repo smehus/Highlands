@@ -13,7 +13,7 @@ func lighting() -> [Light] {
 
 
 //    lights.append(spotlight())
-//    lights.append(lantern())
+    lights.append(lantern())
 
     return lights
 }
@@ -33,7 +33,7 @@ func spotlight() -> Light {
     var light = buildDefaultLight()
     light.position = [0, 0.5, 0]
     light.color = [1, 1, 1]
-    light.attenuation = float3(1, 0, 0)
+    light.attenuation = float3(2, 0, 0)
     light.type = Spotlight
     light.coneAngle = radians(fromDegrees: 30)
     light.coneDirection = [1, -1, 0]

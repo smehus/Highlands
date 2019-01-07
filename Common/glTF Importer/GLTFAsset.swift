@@ -96,18 +96,13 @@ class GLTFAsset {
     for scene in scenes {
       for node in scene.nodes {
 
-        scene.meshNodes.append(node)
+//        scene.meshNodes.append(node)
 
         // FIXME: Had to alter this for make human format
-//        scene.meshNodes = flatten(root: node, children: { $0.children } ).filter( {
-//          $0.mesh != nil
-//        })
+        scene.meshNodes = flatten(root: node, children: { $0.children } ).filter( {
+          $0.mesh != nil
+        })
       }
-
-        print("wtfff")
-        print("wtfff")
-        print("wtfff")
-        print("wtfff")
     }
   }
   

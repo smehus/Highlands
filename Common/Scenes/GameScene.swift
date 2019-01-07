@@ -13,7 +13,7 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
-    let skeleton = Character(name: "firstHuman")
+    let skeleton = Character(name: "firstHuman_rigged_1")
 //    let car = Prop(name: "racing-car")
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
 
@@ -45,12 +45,12 @@ final class GameScene: Scene {
 
 //        skeleton.scale = [0.1, 0.1, 0.1]
 //        skeleton.position = [1.2, 1, 3]
-//        skeleton.rotation = [0, radians(fromDegrees: 180), 0]
+        skeleton.rotation = [0, radians(fromDegrees: 180), 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
 //        skeleton.runAnimation(name: "UpDown")
         self.physicsController.dynamicBody = skeleton
-        self.inputController.player = skeleton
+        self.inputController.player = camera
 //        skeleton.currentAnimation?.speed = 3.0
 //        skeleton.pauseAnimation()
 
@@ -65,7 +65,7 @@ final class GameScene: Scene {
         tpCamera.focusHeight = 5
         tpCamera.focusDistance = 8
         cameras.append(tpCamera)
-        currentCameraIndex = 2
+//        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {

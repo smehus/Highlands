@@ -9,14 +9,12 @@
 /* Begin PBXBuildFile section */
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
-		A539CEF121E2E800004FD174 /* firstHuman.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A539CEED21E2E7FF004FD174 /* firstHuman.gltf */; };
-		A539CEF221E2E800004FD174 /* firstHuman.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A539CEED21E2E7FF004FD174 /* firstHuman.gltf */; };
-		A539CEF321E2E800004FD174 /* firstHuman.bin in Resources */ = {isa = PBXBuildFile; fileRef = A539CEEE21E2E7FF004FD174 /* firstHuman.bin */; };
-		A539CEF421E2E800004FD174 /* firstHuman.bin in Resources */ = {isa = PBXBuildFile; fileRef = A539CEEE21E2E7FF004FD174 /* firstHuman.bin */; };
-		A539CEF521E2E800004FD174 /* young_lightskinned_female_diffuse2.png in Resources */ = {isa = PBXBuildFile; fileRef = A539CEEF21E2E800004FD174 /* young_lightskinned_female_diffuse2.png */; };
-		A539CEF621E2E800004FD174 /* young_lightskinned_female_diffuse2.png in Resources */ = {isa = PBXBuildFile; fileRef = A539CEEF21E2E800004FD174 /* young_lightskinned_female_diffuse2.png */; };
-		A539CEF721E2E800004FD174 /* brown_eye.png in Resources */ = {isa = PBXBuildFile; fileRef = A539CEF021E2E800004FD174 /* brown_eye.png */; };
-		A539CEF821E2E800004FD174 /* brown_eye.png in Resources */ = {isa = PBXBuildFile; fileRef = A539CEF021E2E800004FD174 /* brown_eye.png */; };
+		A539CF6521E3A352004FD174 /* firstHuman_rigged_1.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A539CF6221E3A351004FD174 /* firstHuman_rigged_1.gltf */; };
+		A539CF6621E3A352004FD174 /* firstHuman_rigged_1.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A539CF6221E3A351004FD174 /* firstHuman_rigged_1.gltf */; };
+		A539CF6721E3A352004FD174 /* young_lightskinned_female_diffuse2.png in Resources */ = {isa = PBXBuildFile; fileRef = A539CF6321E3A351004FD174 /* young_lightskinned_female_diffuse2.png */; };
+		A539CF6821E3A352004FD174 /* young_lightskinned_female_diffuse2.png in Resources */ = {isa = PBXBuildFile; fileRef = A539CF6321E3A351004FD174 /* young_lightskinned_female_diffuse2.png */; };
+		A539CF6921E3A352004FD174 /* firstHuman_rigged_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = A539CF6421E3A352004FD174 /* firstHuman_rigged_1.bin */; };
+		A539CF6A21E3A352004FD174 /* firstHuman_rigged_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = A539CF6421E3A352004FD174 /* firstHuman_rigged_1.bin */; };
 		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A551AE0921C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A55EFC6C21D9B4DF008DAD22 /* file14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC6621D9B4DE008DAD22 /* file14.jpg */; };
@@ -167,10 +165,9 @@
 
 /* Begin PBXFileReference section */
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
-		A539CEED21E2E7FF004FD174 /* firstHuman.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = firstHuman.gltf; sourceTree = "<group>"; };
-		A539CEEE21E2E7FF004FD174 /* firstHuman.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = firstHuman.bin; sourceTree = "<group>"; };
-		A539CEEF21E2E800004FD174 /* young_lightskinned_female_diffuse2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = young_lightskinned_female_diffuse2.png; sourceTree = "<group>"; };
-		A539CEF021E2E800004FD174 /* brown_eye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brown_eye.png; sourceTree = "<group>"; };
+		A539CF6221E3A351004FD174 /* firstHuman_rigged_1.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = firstHuman_rigged_1.gltf; sourceTree = "<group>"; };
+		A539CF6321E3A351004FD174 /* young_lightskinned_female_diffuse2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = young_lightskinned_female_diffuse2.png; sourceTree = "<group>"; };
+		A539CF6421E3A352004FD174 /* firstHuman_rigged_1.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = firstHuman_rigged_1.bin; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A55EFC6621D9B4DE008DAD22 /* file14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file14.jpg; sourceTree = "<group>"; };
 		A55EFC6721D9B4DE008DAD22 /* MouthMAP1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MouthMAP1.png; sourceTree = "<group>"; };
@@ -270,10 +267,9 @@
 		A539CEE021E2DA40004FD174 /* Human */ = {
 			isa = PBXGroup;
 			children = (
-				A539CEF021E2E800004FD174 /* brown_eye.png */,
-				A539CEEE21E2E7FF004FD174 /* firstHuman.bin */,
-				A539CEED21E2E7FF004FD174 /* firstHuman.gltf */,
-				A539CEEF21E2E800004FD174 /* young_lightskinned_female_diffuse2.png */,
+				A539CF6421E3A352004FD174 /* firstHuman_rigged_1.bin */,
+				A539CF6221E3A351004FD174 /* firstHuman_rigged_1.gltf */,
+				A539CF6321E3A351004FD174 /* young_lightskinned_female_diffuse2.png */,
 			);
 			path = Human;
 			sourceTree = "<group>";
@@ -630,17 +626,17 @@
 			files = (
 				A55EFC6C21D9B4DF008DAD22 /* file14.jpg in Resources */,
 				A5F2917821CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
-				A539CEF521E2E800004FD174 /* young_lightskinned_female_diffuse2.png in Resources */,
 				A57506C521CD65A400C63081 /* buffer_skeleton.bin in Resources */,
-				A539CEF121E2E800004FD174 /* firstHuman.gltf in Resources */,
 				A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
 				A5CBD1BA21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A55EFC6E21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
+				A539CF6721E3A352004FD174 /* young_lightskinned_female_diffuse2.png in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
 				A57506B021CD646900C63081 /* oilcan.mtl in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
+				A539CF6921E3A352004FD174 /* firstHuman_rigged_1.bin in Resources */,
 				A5C952CD21CEA53000B23364 /* ground.png in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
@@ -661,10 +657,9 @@
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
 				A57506BE21CD646900C63081 /* racing-car.obj in Resources */,
 				A57506B221CD646900C63081 /* oilcan.obj in Resources */,
-				A539CEF721E2E800004FD174 /* brown_eye.png in Resources */,
-				A539CEF321E2E800004FD174 /* firstHuman.bin in Resources */,
 				A5CBD0E821E26767001D77EF /* BrowsMAP1.png in Resources */,
 				A5F2917621CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
+				A539CF6521E3A352004FD174 /* firstHuman_rigged_1.gltf in Resources */,
 				A55EFC7221D9B4DF008DAD22 /* file15.jpg in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
 			);
@@ -687,25 +682,24 @@
 				A5F2917721CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A57506BB21CD646900C63081 /* treefir.obj in Resources */,
 				A5F2918621CEF05600FF57A5 /* beachball.obj in Resources */,
+				A539CF6621E3A352004FD174 /* firstHuman_rigged_1.gltf in Resources */,
 				A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
-				A539CEF821E2E800004FD174 /* brown_eye.png in Resources */,
 				A57506B121CD646900C63081 /* oilcan.mtl in Resources */,
 				A57506C421CD65A400C63081 /* skeleton.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
 				A57506BF21CD646900C63081 /* racing-car.obj in Resources */,
-				A539CEF421E2E800004FD174 /* firstHuman.bin in Resources */,
+				A539CF6821E3A352004FD174 /* young_lightskinned_female_diffuse2.png in Resources */,
 				A5CBD0E021E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A57506B521CD646900C63081 /* large-plane.mtl in Resources */,
+				A539CF6A21E3A352004FD174 /* firstHuman_rigged_1.bin in Resources */,
 				A5CBD0E921E26767001D77EF /* BrowsMAP1.png in Resources */,
-				A539CEF221E2E800004FD174 /* firstHuman.gltf in Resources */,
 				A55EFC6F21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
 				A5CBD0DE21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
-				A539CEF621E2E800004FD174 /* young_lightskinned_female_diffuse2.png in Resources */,
 				A5F2918421CEF05600FF57A5 /* beachball.mtl in Resources */,
 				A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */,
 				A55EFC7321D9B4DF008DAD22 /* file15.jpg in Resources */,
