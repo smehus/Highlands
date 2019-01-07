@@ -13,9 +13,9 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
-    let skeleton = Character(name: "character")
-    let car = Prop(name: "racing-car")
-    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
+    let skeleton = Character(name: "firstHuman")
+//    let car = Prop(name: "racing-car")
+//    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
 
     override func setupScene() {
 
@@ -27,30 +27,30 @@ final class GameScene: Scene {
         ground.tiling = 32
         add(node: ground)
 
-        for _ in 0..<50 {
-            let tree = Prop(name: "treefir")
-            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-            add(node: tree)
-            physicsController.addStaticBody(node: tree)
-        }
+//        for _ in 0..<50 {
+//            let tree = Prop(name: "treefir")
+//            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+//            add(node: tree)
+//            physicsController.addStaticBody(node: tree)
+//        }
 
 
-        car.rotation = [0, radians(fromDegrees: 90), 0]
-        car.position = [-2, 0, 0]
-        add(node: car)
-        physicsController.addStaticBody(node: car)
+//        car.rotation = [0, radians(fromDegrees: 90), 0]
+//        car.position = [-2, 0, 0]
+//        add(node: car)
+//        physicsController.addStaticBody(node: car)
 
-        lantern.position = [2.5, 2.5, 1]
-        add(node: lantern, parent: skeleton, render: true)
+//        lantern.position = [2.5, 2.5, 1]
+//        add(node: lantern, parent: skeleton, render: true)
 
-//        skeleton.scale = [0.02, 0.02, 0.02]
+//        skeleton.scale = [0.1, 0.1, 0.1]
 //        skeleton.position = [1.2, 1, 3]
-//        skeleton.rotation = [0, 0, 0]
+//        skeleton.rotation = [0, radians(fromDegrees: 180), 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
 //        skeleton.runAnimation(name: "UpDown")
         self.physicsController.dynamicBody = skeleton
-        self.inputController.player = camera
+        self.inputController.player = skeleton
 //        skeleton.currentAnimation?.speed = 3.0
 //        skeleton.pauseAnimation()
 
@@ -65,7 +65,7 @@ final class GameScene: Scene {
         tpCamera.focusHeight = 5
         tpCamera.focusDistance = 8
         cameras.append(tpCamera)
-//        currentCameraIndex = 2
+        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {

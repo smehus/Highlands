@@ -8,19 +8,19 @@ struct VertexIn {
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];
     float2 uv [[ attribute(UV) ]];
-    float4 tangent [[ attribute(Tangent) ]];
+//    float4 tangent [[ attribute(Tangent) ]];
 //    float3 bitangent [[ attribute(Bitangent) ]];
     float4 color [[ attribute(Color) ]];
-    ushort4 joints [[ attribute(Joints) ]];
-    float4 weights [[ attribute(Weights) ]];
+//    ushort4 joints [[ attribute(Joints) ]];
+//    float4 weights [[ attribute(Weights) ]];
 };
 
 struct VertexOut {
     float4 position [[ position ]];
     float4 worldPosition;
     float3 worldNormal;
-    float3 worldTangent;
-    float3 worldBitangent;
+//    float3 worldTangent;
+//    float3 worldBitangent;
     float2 uv;
 };
 
@@ -31,23 +31,23 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     VertexOut out;
 
     // skinning code
-    float4 weights = vertexIn.weights;
-    ushort4 joints = vertexIn.joints;
-    float4x4 skinMatrix =
-    weights.x * jointMatrices[joints.x] +
-    weights.y * jointMatrices[joints.y] +
-    weights.z * jointMatrices[joints.z] +
-    weights.w * jointMatrices[joints.w];
+//    float4 weights = vertexIn.weights;
+//    ushort4 joints = vertexIn.joints;
+//    float4x4 skinMatrix =
+//    weights.x * jointMatrices[joints.x] +
+//    weights.y * jointMatrices[joints.y] +
+//    weights.z * jointMatrices[joints.z] +
+//    weights.w * jointMatrices[joints.w];
 
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
-    out.worldPosition = uniforms.modelMatrix * skinMatrix * vertexIn.position;
-    out.worldNormal = uniforms.normalMatrix * (skinMatrix * float4(vertexIn.normal, 1)).xyz;
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * /*skinMatrix **/ vertexIn.position;
+    out.worldPosition = uniforms.modelMatrix /** skinMatrix*/ * vertexIn.position;
+    out.worldNormal = uniforms.normalMatrix * (/*skinMatrix **/ float4(vertexIn.normal, 1)).xyz;
     out.uv = vertexIn.uv;
 
 
-    out.worldTangent = uniforms.normalMatrix * (skinMatrix * vertexIn.tangent).xyz;
-    float3 bitangent = cross(vertexIn.normal, vertexIn.tangent.xyz) * vertexIn.tangent.w;
-    out.worldBitangent = uniforms.normalMatrix * (skinMatrix * float4(bitangent, 1)).xyz;
+//    out.worldTangent = uniforms.normalMatrix * (skinMatrix * vertexIn.tangent).xyz;
+//    float3 bitangent = cross(vertexIn.normal, vertexIn.tangent.xyz) * vertexIn.tangent.w;
+//    out.worldBitangent = uniforms.normalMatrix * (skinMatrix * float4(bitangent, 1)).xyz;
 
     return out;
 }

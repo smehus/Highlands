@@ -93,7 +93,7 @@ extension Submesh: Texturable {}
 private extension Submesh.Textures {
     init(material: MDLMaterial?) {
         func property(with semantic: MDLMaterialSemantic, name: String) -> MTLTexture? {
-            print("🛠 Loading Material \(name)")
+//            print("🛠 Loading Material \(name)")
             guard
                 let property = material?.property(with: semantic),
                 property.type == .string,

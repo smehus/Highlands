@@ -12,8 +12,8 @@ func lighting() -> [Light] {
     lights.append(light)
 
 
-    lights.append(spotlight())
-    lights.append(lantern())
+//    lights.append(spotlight())
+//    lights.append(lantern())
 
     return lights
 }

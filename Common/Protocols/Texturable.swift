@@ -15,7 +15,7 @@ extension Texturable {
         let textureLoader = MTKTextureLoader(device: Renderer.device)
         let textureLoaderOptions: [MTKTextureLoader.Option: Any] =
             // TODO: WHAT THE FUCK? gltf textures are loading upside down you dumbass
-            [.origin: MTKTextureLoader.Origin.bottomLeft,
+            [/*.origin: MTKTextureLoader.Origin.bottomLeft,*/
              .SRGB: false,
              .generateMipmaps: NSNumber(booleanLiteral: true)]
 
