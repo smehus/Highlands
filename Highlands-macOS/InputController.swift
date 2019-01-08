@@ -2,7 +2,7 @@
 import Cocoa
 
 protocol KeyboardDelegate: class {
-    func keyPressed(key: KeyboardControl, state: InputState) -> Bool
+    func keyPressed(key: KeyboardControl, keysDown: Set<KeyboardControl>, state: InputState) -> Bool
 }
 
 protocol MouseDelegate: class {
@@ -54,16 +54,15 @@ class InputController {
     }
 
     func processEvent(key inKey: KeyboardControl, state: InputState) {
-        let key = inKey
-        if !(keyboardDelegate?.keyPressed(key: key, state: state) ?? true) {
-            return
-        }
+
         if state == .began {
-            directionKeysDown.insert(key)
+            directionKeysDown.insert(inKey)
         }
         if state == .ended {
-            directionKeysDown.remove(key)
+            directionKeysDown.remove(inKey)
         }
+
+        keyboardDelegate?.keyPressed(key: inKey, keysDown: directionKeysDown, state: state)
     }
 
     func processEvent(mouse: MouseControl, state: InputState, event: NSEvent) {

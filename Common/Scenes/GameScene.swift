@@ -13,7 +13,7 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
-    let skeleton = Character(name: "firstHuman_rigged_1")
+    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let car = Prop(name: "racing-car")
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
 
@@ -48,11 +48,11 @@ final class GameScene: Scene {
         skeleton.rotation = [0, radians(fromDegrees: 180), 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
-//        skeleton.runAnimation(name: "UpDown")
+        skeleton.runAnimation(name: "walking")
         self.physicsController.dynamicBody = skeleton
-        self.inputController.player = camera
+        self.inputController.player = skeleton
 //        skeleton.currentAnimation?.speed = 3.0
-//        skeleton.pauseAnimation()
+        skeleton.pauseAnimation()
 
 
 
@@ -65,7 +65,7 @@ final class GameScene: Scene {
         tpCamera.focusHeight = 5
         tpCamera.focusDistance = 8
         cameras.append(tpCamera)
-//        currentCameraIndex = 2
+        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {
@@ -79,9 +79,9 @@ final class GameScene: Scene {
             let dir = inputController.player!.forwardVector
 
 
-            lights[index].position = float3(pos.x, pos.y + 1, pos.z)
-            lights[index].position += (inputController.player!.forwardVector * 1.2)
-            lights[index].coneDirection = float3(dir.x, -0.7, dir.z)
+            lights[index].position = float3(pos.x, pos.y + 7, pos.z)
+            lights[index].position += (inputController.player!.forwardVector * -2.5)
+            lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
         }
     }
 
@@ -102,26 +102,20 @@ final class GameScene: Scene {
 
 #if os(macOS)
 extension GameScene: KeyboardDelegate {
-    func keyPressed(key: KeyboardControl, state: InputState) -> Bool {
+    func keyPressed(key: KeyboardControl, keysDown: Set<KeyboardControl>, state: InputState) -> Bool {
         switch key {
         case .key0:
             currentCameraIndex = 0
         case .key1:
             currentCameraIndex = 1
-//        case .w, .s, .a, .d, .left, .right, .up, .down:
-//            if state == .began {
-////                skeleton.resumeAnimation()
-//            }
-//            if state == .ended {
-////                skeleton.pauseAnimation()
-//            }
+        case .w, .s, .a, .d, .left, .right, .up, .down:
+            if state == .began {
+                skeleton.resumeAnimation()
+            }
 
-        case .left:
-            break
-//            skeleton.runAnimation(name: "LeftRight")
-        case .up:
-            break
-//            skeleton.runAnimation(name: "UpDown")
+            if state == .ended, keysDown.isEmpty {
+                skeleton.pauseAnimation()
+            }
         default:
             break
         }

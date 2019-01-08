@@ -129,7 +129,7 @@ private extension Material {
         if let shininess = material?.property(with: .specularExponent), shininess.type == .float {
             self.shininess = shininess.floatValue
         } else {
-            self.shininess = 0.5
+            self.shininess = 1.0
         }
 
         if let roughness = material?.property(with: .roughness), roughness.type == .float {
