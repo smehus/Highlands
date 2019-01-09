@@ -38,10 +38,14 @@ class InputController {
                 direction.z -= 1
             case .d:
                 direction.x += 1
+//            case .left, .q:
+//                player.rotation.y -= rotationSpeed
+//            case .right, .e:
+//                player.rotation.y += rotationSpeed
             case .left, .q:
-                player.rotation.y -= rotationSpeed
+                player.rotation.z += rotationSpeed
             case .right, .e:
-                player.rotation.y += rotationSpeed
+                player.rotation.z -= rotationSpeed
             default:
                 break
             }

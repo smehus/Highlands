@@ -45,12 +45,12 @@ final class GameScene: Scene {
 
         skeleton.scale = [0.02, 0.02, 0.02]
 //        skeleton.position = [1.2, 1, 3]
-        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
         skeleton.runAnimation(name: "walking")
         self.physicsController.dynamicBody = skeleton
-        self.inputController.player = camera
+        self.inputController.player = skeleton
 //        skeleton.currentAnimation?.speed = 3.0
         skeleton.pauseAnimation()
 

@@ -14,7 +14,7 @@ func lighting() -> [Light] {
     light = buildDefaultLight()
     light.type = Ambientlight
     light.intensity = 0.1
-    lights.append(light)
+//    lights.append(light)
 
 
 //    lights.append(spotlight())

@@ -42,7 +42,7 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
     // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
     out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
-    out.worldNormal = uniforms.normalMatrix * (skinMatrix * float4(vertexIn.normal, 1)).xyz;
+    out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
     out.uv = vertexIn.uv;
 
 
