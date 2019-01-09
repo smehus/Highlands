@@ -78,6 +78,12 @@
 		A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A2621B8A901002C0632 /* Shaders.metal */; };
 		A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
 		A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
+		A5819C5B21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5821E59CB300E724BE /* young_lightskinned_female_diffuse2.png */; };
+		A5819C5C21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5821E59CB300E724BE /* young_lightskinned_female_diffuse2.png */; };
+		A5819C5D21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5921E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin */; };
+		A5819C5E21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5921E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin */; };
+		A5819C5F21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5A21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf */; };
+		A5819C6021E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5A21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf */; };
 		A588D83A21CAE1A300652FC2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		A588D83B21CAE1A300652FC2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
@@ -98,12 +104,6 @@
 		A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */; };
 		A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
 		A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
-		A5AF83AE21E435E90096099C /* firstHuman_rigged_1_working_walk.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5AF83AB21E435E80096099C /* firstHuman_rigged_1_working_walk.bin */; };
-		A5AF83AF21E435E90096099C /* firstHuman_rigged_1_working_walk.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5AF83AB21E435E80096099C /* firstHuman_rigged_1_working_walk.bin */; };
-		A5AF83B021E435E90096099C /* firstHuman_rigged_1_working_walk.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5AF83AC21E435E80096099C /* firstHuman_rigged_1_working_walk.gltf */; };
-		A5AF83B121E435E90096099C /* firstHuman_rigged_1_working_walk.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5AF83AC21E435E80096099C /* firstHuman_rigged_1_working_walk.gltf */; };
-		A5AF83B221E435E90096099C /* young_lightskinned_female_diffuse2.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AF83AD21E435E80096099C /* young_lightskinned_female_diffuse2.png */; };
-		A5AF83B321E435E90096099C /* young_lightskinned_female_diffuse2.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AF83AD21E435E80096099C /* young_lightskinned_female_diffuse2.png */; };
 		A5C952C521CE952D00B23364 /* MotionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C952C421CE952D00B23364 /* MotionController.swift */; };
 		A5C952C921CEA53000B23364 /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5C952C621CEA53000B23364 /* plane.obj */; };
 		A5C952CA21CEA53000B23364 /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5C952C621CEA53000B23364 /* plane.obj */; };
@@ -212,6 +212,9 @@
 		A57F6A5321B8CBA8002C0632 /* Highlands_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Highlands_macOS.entitlements; sourceTree = "<group>"; };
 		A57F6A6221B978E3002C0632 /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
 		A57F6A6521B9795D002C0632 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		A5819C5821E59CB300E724BE /* young_lightskinned_female_diffuse2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = young_lightskinned_female_diffuse2.png; sourceTree = "<group>"; };
+		A5819C5921E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = firstHuman_rigged_1_working_walk.bin; sourceTree = "<group>"; };
+		A5819C5A21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = firstHuman_rigged_1_working_walk.gltf; sourceTree = "<group>"; };
 		A588D83921CAE1A300652FC2 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CharacterShaders.metal; sourceTree = "<group>"; };
 		A5A1CD1721B9EC5D002F6F35 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
@@ -223,9 +226,6 @@
 		A5A1CD2821BA2887002F6F35 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererExtensions.swift; sourceTree = "<group>"; };
 		A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texturable.swift; sourceTree = "<group>"; };
-		A5AF83AB21E435E80096099C /* firstHuman_rigged_1_working_walk.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = firstHuman_rigged_1_working_walk.bin; sourceTree = "<group>"; };
-		A5AF83AC21E435E80096099C /* firstHuman_rigged_1_working_walk.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = firstHuman_rigged_1_working_walk.gltf; sourceTree = "<group>"; };
-		A5AF83AD21E435E80096099C /* young_lightskinned_female_diffuse2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = young_lightskinned_female_diffuse2.png; sourceTree = "<group>"; };
 		A5C952C421CE952D00B23364 /* MotionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionController.swift; sourceTree = "<group>"; };
 		A5C952C621CEA53000B23364 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
 		A5C952C721CEA53000B23364 /* plane.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.mtl; sourceTree = "<group>"; };
@@ -267,9 +267,9 @@
 		A539CEE021E2DA40004FD174 /* Human */ = {
 			isa = PBXGroup;
 			children = (
-				A5AF83AB21E435E80096099C /* firstHuman_rigged_1_working_walk.bin */,
-				A5AF83AC21E435E80096099C /* firstHuman_rigged_1_working_walk.gltf */,
-				A5AF83AD21E435E80096099C /* young_lightskinned_female_diffuse2.png */,
+				A5819C5921E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin */,
+				A5819C5A21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf */,
+				A5819C5821E59CB300E724BE /* young_lightskinned_female_diffuse2.png */,
 			);
 			path = Human;
 			sourceTree = "<group>";
@@ -626,12 +626,12 @@
 			files = (
 				A55EFC6C21D9B4DF008DAD22 /* file14.jpg in Resources */,
 				A5F2917821CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
-				A5AF83B221E435E90096099C /* young_lightskinned_female_diffuse2.png in Resources */,
 				A57506C521CD65A400C63081 /* buffer_skeleton.bin in Resources */,
 				A5F2917421CEDFB000FF57A5 /* HRN_LMP_NM.bmp in Resources */,
 				A5CBD1BA21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A55EFC6E21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
+				A5819C5D21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
 				A57506B021CD646900C63081 /* oilcan.mtl in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
@@ -640,9 +640,9 @@
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
-				A5AF83AE21E435E90096099C /* firstHuman_rigged_1_working_walk.bin in Resources */,
 				A57506BC21CD646900C63081 /* racing-car.mtl in Resources */,
 				A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */,
+				A5819C5F21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A5CBD0DD21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A5CBD0DF21E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */,
@@ -656,12 +656,12 @@
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
 				A57506BE21CD646900C63081 /* racing-car.obj in Resources */,
+				A5819C5B21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
 				A57506B221CD646900C63081 /* oilcan.obj in Resources */,
 				A5CBD0E821E26767001D77EF /* BrowsMAP1.png in Resources */,
 				A5F2917621CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A55EFC7221D9B4DF008DAD22 /* file15.jpg in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
-				A5AF83B021E435E90096099C /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,6 +685,7 @@
 				A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
+				A5819C6021E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A57506B121CD646900C63081 /* oilcan.mtl in Resources */,
 				A57506C421CD65A400C63081 /* skeleton.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
@@ -696,15 +697,14 @@
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
 				A5CBD0DE21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
-				A5AF83B121E435E90096099C /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
 				A5F2918421CEF05600FF57A5 /* beachball.mtl in Resources */,
-				A5AF83B321E435E90096099C /* young_lightskinned_female_diffuse2.png in Resources */,
 				A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */,
+				A5819C5C21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
 				A55EFC7321D9B4DF008DAD22 /* file15.jpg in Resources */,
 				A55EFC6D21D9B4DF008DAD22 /* file14.jpg in Resources */,
+				A5819C5E21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */,
 				A57506B321CD646900C63081 /* oilcan.obj in Resources */,
-				A5AF83AF21E435E90096099C /* firstHuman_rigged_1_working_walk.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

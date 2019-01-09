@@ -40,7 +40,8 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     weights.w * jointMatrices[joints.w];
 
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
-    out.worldPosition = uniforms.modelMatrix * skinMatrix * vertexIn.position;
+    // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
+    out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
     out.worldNormal = uniforms.normalMatrix * (skinMatrix * float4(vertexIn.normal, 1)).xyz;
     out.uv = vertexIn.uv;
 
@@ -120,7 +121,8 @@ float3 characterDiffuseLighting(VertexOut in,
             float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
 
             // Angle between light direction & normal
-            float diffuseIntensity = saturate(dot(lightDirection, normalDirection));
+            float dotProd = dot(lightDirection, normalDirection);
+            float diffuseIntensity = saturate(dotProd);
 
             // Color with out light drop off
             float3 color = light.color * baseColor * diffuseIntensity;
