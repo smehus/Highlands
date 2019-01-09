@@ -38,14 +38,10 @@ class InputController {
                 direction.z -= 1
             case .d:
                 direction.x += 1
-//            case .left, .q:
-//                player.rotation.y -= rotationSpeed
-//            case .right, .e:
-//                player.rotation.y += rotationSpeed
             case .left, .q:
-                player.rotation.z += rotationSpeed
+                player.rotation.y -= rotationSpeed
             case .right, .e:
-                player.rotation.z -= rotationSpeed
+                player.rotation.y += rotationSpeed
             default:
                 break
             }
@@ -66,7 +62,7 @@ class InputController {
             directionKeysDown.remove(inKey)
         }
 
-        keyboardDelegate?.keyPressed(key: inKey, keysDown: directionKeysDown, state: state)
+        let _ = keyboardDelegate?.keyPressed(key: inKey, keysDown: directionKeysDown, state: state)
     }
 
     func processEvent(mouse: MouseControl, state: InputState, event: NSEvent) {

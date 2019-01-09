@@ -13,7 +13,7 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
-    let skeleton = Character(name: "claire_waking")
+    let skeleton = Character(name: "claire_zup")
 //    let car = Prop(name: "racing-car")
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
 
@@ -45,7 +45,7 @@ final class GameScene: Scene {
 
         skeleton.scale = [0.02, 0.02, 0.02]
 //        skeleton.position = [1.2, 1, 3]
-        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+//        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
         skeleton.runAnimation(name: "walking")
