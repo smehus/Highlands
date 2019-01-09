@@ -9,7 +9,7 @@ Then i can treat them like model matrixs
 
 // Scene graph - if the car lighting looks weird, its becuase we're moving the lights in GameScene.
 
-// This calculates the flaot3 position of the node
+// This calculates the flaot3 position of the nodeg
 let nodePosition = node.worldTransform.columns.3.xyz
 
 Got claires textures working except the mouth because it should be transparent.
@@ -23,3 +23,6 @@ Try importing a claire with animations and run one of the animations...
 
 
 Claires textures are backwards compaired to mixamo
+
+
+claire zup isn't actually right - blender is just rotated 90

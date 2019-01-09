@@ -17,10 +17,14 @@
 		A55EFC6F21D9B4DF008DAD22 /* MouthMAP1.png in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC6721D9B4DE008DAD22 /* MouthMAP1.png */; };
 		A55EFC7221D9B4DF008DAD22 /* file15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC6921D9B4DE008DAD22 /* file15.jpg */; };
 		A55EFC7321D9B4DF008DAD22 /* file15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A55EFC6921D9B4DE008DAD22 /* file15.jpg */; };
-		A563DEE421E6AFFF00563EA9 /* claire_zup.bin in Resources */ = {isa = PBXBuildFile; fileRef = A563DEE221E6AFFF00563EA9 /* claire_zup.bin */; };
-		A563DEE521E6AFFF00563EA9 /* claire_zup.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A563DEE321E6AFFF00563EA9 /* claire_zup.gltf */; };
-		A563DEE621E6B07900563EA9 /* claire_zup.bin in Resources */ = {isa = PBXBuildFile; fileRef = A563DEE221E6AFFF00563EA9 /* claire_zup.bin */; };
-		A563DEE721E6B07900563EA9 /* claire_zup.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A563DEE321E6AFFF00563EA9 /* claire_zup.gltf */; };
+		A563DEFC21E6B2CD00563EA9 /* claire_zup_2.bin in Resources */ = {isa = PBXBuildFile; fileRef = A563DEFA21E6B2CD00563EA9 /* claire_zup_2.bin */; };
+		A563DEFD21E6B2CD00563EA9 /* claire_zup_2.bin in Resources */ = {isa = PBXBuildFile; fileRef = A563DEFA21E6B2CD00563EA9 /* claire_zup_2.bin */; };
+		A563DEFE21E6B2CD00563EA9 /* claire_zup_2.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A563DEFB21E6B2CD00563EA9 /* claire_zup_2.gltf */; };
+		A563DEFF21E6B2CD00563EA9 /* claire_zup_2.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A563DEFB21E6B2CD00563EA9 /* claire_zup_2.gltf */; };
+		A563DF0221E6B30400563EA9 /* claire_zup.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0021E6B30400563EA9 /* claire_zup.gltf */; };
+		A563DF0321E6B30400563EA9 /* claire_zup.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0021E6B30400563EA9 /* claire_zup.gltf */; };
+		A563DF0421E6B30400563EA9 /* claire_zup.bin in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0121E6B30400563EA9 /* claire_zup.bin */; };
+		A563DF0521E6B30400563EA9 /* claire_zup.bin in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0121E6B30400563EA9 /* claire_zup.bin */; };
 		A56ACB5421C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A56ACB5521C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A575069F21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
@@ -173,8 +177,10 @@
 		A55EFC6621D9B4DE008DAD22 /* file14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file14.jpg; sourceTree = "<group>"; };
 		A55EFC6721D9B4DE008DAD22 /* MouthMAP1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MouthMAP1.png; sourceTree = "<group>"; };
 		A55EFC6921D9B4DE008DAD22 /* file15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file15.jpg; sourceTree = "<group>"; };
-		A563DEE221E6AFFF00563EA9 /* claire_zup.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = claire_zup.bin; sourceTree = "<group>"; };
-		A563DEE321E6AFFF00563EA9 /* claire_zup.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = claire_zup.gltf; sourceTree = "<group>"; };
+		A563DEFA21E6B2CD00563EA9 /* claire_zup_2.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = claire_zup_2.bin; path = ../../../../../../../claire_zup_2.bin; sourceTree = "<group>"; };
+		A563DEFB21E6B2CD00563EA9 /* claire_zup_2.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = claire_zup_2.gltf; path = ../../../../../../../claire_zup_2.gltf; sourceTree = "<group>"; };
+		A563DF0021E6B30400563EA9 /* claire_zup.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = claire_zup.gltf; path = ../../../../../../../../Desktop/claire_zup.gltf; sourceTree = "<group>"; };
+		A563DF0121E6B30400563EA9 /* claire_zup.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = claire_zup.bin; path = ../../../../../../../../Desktop/claire_zup.bin; sourceTree = "<group>"; };
 		A56ACB5321C728750069962B /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Textures.xcassets; sourceTree = "<group>"; };
 		A575069C21CD63E100C63081 /* InputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
 		A575069D21CD63E200C63081 /* PhysicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsController.swift; sourceTree = "<group>"; };
@@ -307,8 +313,10 @@
 		A55EFC4921D9725A008DAD22 /* Claire */ = {
 			isa = PBXGroup;
 			children = (
-				A563DEE221E6AFFF00563EA9 /* claire_zup.bin */,
-				A563DEE321E6AFFF00563EA9 /* claire_zup.gltf */,
+				A563DF0121E6B30400563EA9 /* claire_zup.bin */,
+				A563DF0021E6B30400563EA9 /* claire_zup.gltf */,
+				A563DEFA21E6B2CD00563EA9 /* claire_zup_2.bin */,
+				A563DEFB21E6B2CD00563EA9 /* claire_zup_2.gltf */,
 				A5CBD0F121E2697A001D77EF /* claire_idle.bin */,
 				A5CBD0F021E2697A001D77EF /* claire_idle.gltf */,
 				A5CBD0DC21E16FC0001D77EF /* claire_waking.bin */,
@@ -639,8 +647,11 @@
 				A5CBD1BA21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A55EFC6E21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
+				A563DF0221E6B30400563EA9 /* claire_zup.gltf in Resources */,
+				A563DEFC21E6B2CD00563EA9 /* claire_zup_2.bin in Resources */,
 				A5819C5D21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
+				A563DF0421E6B30400563EA9 /* claire_zup.bin in Resources */,
 				A57506B021CD646900C63081 /* oilcan.mtl in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
@@ -649,14 +660,12 @@
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
 				A57506BC21CD646900C63081 /* racing-car.mtl in Resources */,
-				A563DEE421E6AFFF00563EA9 /* claire_zup.bin in Resources */,
 				A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */,
 				A5819C5F21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A5CBD0DD21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A5CBD0DF21E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */,
 				A5CBD0F421E2697B001D77EF /* claire_idle.bin in Resources */,
-				A563DEE521E6AFFF00563EA9 /* claire_zup.gltf in Resources */,
 				A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A5CBD0F221E2697B001D77EF /* claire_idle.gltf in Resources */,
@@ -668,6 +677,7 @@
 				A57506BE21CD646900C63081 /* racing-car.obj in Resources */,
 				A5819C5B21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
 				A57506B221CD646900C63081 /* oilcan.obj in Resources */,
+				A563DEFE21E6B2CD00563EA9 /* claire_zup_2.gltf in Resources */,
 				A5CBD0E821E26767001D77EF /* BrowsMAP1.png in Resources */,
 				A5F2917621CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A55EFC7221D9B4DF008DAD22 /* file15.jpg in Resources */,
@@ -698,12 +708,15 @@
 				A5819C6021E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A57506B121CD646900C63081 /* oilcan.mtl in Resources */,
 				A57506C421CD65A400C63081 /* skeleton.gltf in Resources */,
+				A563DEFF21E6B2CD00563EA9 /* claire_zup_2.gltf in Resources */,
+				A563DEFD21E6B2CD00563EA9 /* claire_zup_2.bin in Resources */,
+				A563DF0321E6B30400563EA9 /* claire_zup.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
-				A563DEE721E6B07900563EA9 /* claire_zup.gltf in Resources */,
 				A57506BF21CD646900C63081 /* racing-car.obj in Resources */,
 				A5CBD0E021E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A57506B521CD646900C63081 /* large-plane.mtl in Resources */,
 				A5CBD0E921E26767001D77EF /* BrowsMAP1.png in Resources */,
+				A563DF0521E6B30400563EA9 /* claire_zup.bin in Resources */,
 				A55EFC6F21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
 				A5CBD0DE21E16FC1001D77EF /* claire_waking.gltf in Resources */,
@@ -715,7 +728,6 @@
 				A55EFC7321D9B4DF008DAD22 /* file15.jpg in Resources */,
 				A55EFC6D21D9B4DF008DAD22 /* file14.jpg in Resources */,
 				A5819C5E21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */,
-				A563DEE621E6B07900563EA9 /* claire_zup.bin in Resources */,
 				A57506B321CD646900C63081 /* oilcan.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
