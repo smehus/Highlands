@@ -177,9 +177,17 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
 
     constexpr sampler s(filter::linear);
-    float3 baseColor = baseColorTexture.sample(s, in.uv).rgb;
+    float4 baseColor = baseColorTexture.sample(s, in.uv);
 
-    float3 color = characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
+    if (baseColor.a < 0.1) {
+        discard_fragment();
+    }
+
+    if (baseColor.r == 0 && baseColor.g == 0 && baseColor.b == 0) {
+        discard_fragment();
+    }
+
+    float3 color = characterDiffuseLighting(in, baseColor.rgb, normalize(in.worldNormal), material, fragmentUniforms, lights);
     return float4(color, 1);
 
 //

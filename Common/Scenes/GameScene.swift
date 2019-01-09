@@ -13,7 +13,7 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let ground = Prop(name: "large-plane", isGround: true)
-    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
+    let skeleton = Character(name: "claire_waking")
 //    let car = Prop(name: "racing-car")
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
 
@@ -43,14 +43,14 @@ final class GameScene: Scene {
 //        lantern.position = [2.5, 2.5, 1]
 //        add(node: lantern, parent: skeleton, render: true)
 
-//        skeleton.scale = [0.1, 0.1, 0.1]
+        skeleton.scale = [0.02, 0.02, 0.02]
 //        skeleton.position = [1.2, 1, 3]
-        skeleton.rotation = [0, radians(fromDegrees: 180), 0]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
         skeleton.runAnimation(name: "walking")
         self.physicsController.dynamicBody = skeleton
-        self.inputController.player = skeleton
+        self.inputController.player = camera
 //        skeleton.currentAnimation?.speed = 3.0
         skeleton.pauseAnimation()
 
