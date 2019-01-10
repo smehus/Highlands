@@ -82,7 +82,7 @@ final class GameScene: Scene {
 
 
             lights[index].position = float3(pos.x, pos.y + 1, pos.z)
-            lights[index].position += (inputController.player!.forwardVector * -2.5)
+            lights[index].position += (inputController.player!.forwardVector)
             lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
         }
     }
