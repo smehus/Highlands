@@ -33,6 +33,8 @@
 		A563DF0F21E6C3FE00563EA9 /* windowColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0921E6C3FD00563EA9 /* windowColor.png */; };
 		A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
 		A563DF1321E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
+		A563DF1521E7999F00563EA9 /* Skybox.metal in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1421E7999F00563EA9 /* Skybox.metal */; };
+		A563DF1621E7999F00563EA9 /* Skybox.metal in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1421E7999F00563EA9 /* Skybox.metal */; };
 		A56ACB5421C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A56ACB5521C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A575069F21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
@@ -193,6 +195,7 @@
 		A563DF0821E6C3FD00563EA9 /* window.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = window.obj; sourceTree = "<group>"; };
 		A563DF0921E6C3FD00563EA9 /* windowColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = windowColor.png; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
+		A563DF1421E7999F00563EA9 /* Skybox.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Skybox.metal; sourceTree = "<group>"; };
 		A56ACB5321C728750069962B /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Textures.xcassets; sourceTree = "<group>"; };
 		A575069C21CD63E100C63081 /* InputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
 		A575069D21CD63E200C63081 /* PhysicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsController.swift; sourceTree = "<group>"; };
@@ -433,6 +436,7 @@
 				A57506C821CD669700C63081 /* DebugBoundingBox.metal */,
 				A57F6A2621B8A901002C0632 /* Shaders.metal */,
 				A57F6A6521B9795D002C0632 /* Common.h */,
+				A563DF1421E7999F00563EA9 /* Skybox.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -782,6 +786,7 @@
 				A5A1CD1E21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
 				A57506E221CDA2C600C63081 /* GameScene.swift in Sources */,
+				A563DF1521E7999F00563EA9 /* Skybox.metal in Sources */,
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57506DF21CD970B00C63081 /* Scene.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
@@ -819,6 +824,7 @@
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				A57506D821CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */,
+				A563DF1621E7999F00563EA9 /* Skybox.metal in Sources */,
 				A57F6A5821B8CBD8002C0632 /* Renderer.swift in Sources */,
 				A588D83B21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2521BA2833002F6F35 /* ViewController.swift in Sources */,

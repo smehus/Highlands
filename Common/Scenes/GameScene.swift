@@ -19,6 +19,8 @@ final class GameScene: Scene {
 
     override func setupScene() {
 
+        skybox = Skybox(textureName: nil)
+
         inputController.keyboardDelegate = self
 
         lights = lighting()
