@@ -164,7 +164,7 @@ float3 diffuseLighting(VertexOut in,
 
 float4 fog(float4 position, float4 color) {
     float distance = position.z / position.w;
-    float density = 0.2;
+    float density = 0.05;
     float fog = 1.0 - clamp(exp(-density * distance), 0.0, 1.0);
     float4 fogColor = float4(1.0);
     color = mix(color, fogColor, fog);

@@ -31,6 +31,8 @@
 		A563DF0D21E6C3FE00563EA9 /* window.obj in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0821E6C3FD00563EA9 /* window.obj */; };
 		A563DF0E21E6C3FE00563EA9 /* windowColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0921E6C3FD00563EA9 /* windowColor.png */; };
 		A563DF0F21E6C3FE00563EA9 /* windowColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0921E6C3FD00563EA9 /* windowColor.png */; };
+		A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
+		A563DF1321E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
 		A56ACB5421C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A56ACB5521C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A575069F21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
@@ -190,6 +192,7 @@
 		A563DF0721E6C3FD00563EA9 /* window.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = window.mtl; sourceTree = "<group>"; };
 		A563DF0821E6C3FD00563EA9 /* window.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = window.obj; sourceTree = "<group>"; };
 		A563DF0921E6C3FD00563EA9 /* windowColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = windowColor.png; sourceTree = "<group>"; };
+		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
 		A56ACB5321C728750069962B /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Textures.xcassets; sourceTree = "<group>"; };
 		A575069C21CD63E100C63081 /* InputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
 		A575069D21CD63E200C63081 /* PhysicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsController.swift; sourceTree = "<group>"; };
@@ -349,9 +352,18 @@
 			path = Window;
 			sourceTree = "<group>";
 		};
+		A563DF1021E6EB9E00563EA9 /* Skybox */ = {
+			isa = PBXGroup;
+			children = (
+				A563DF1121E6EBBE00563EA9 /* Skybox.swift */,
+			);
+			path = Skybox;
+			sourceTree = "<group>";
+		};
 		A56ACB3A21C727970069962B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A563DF1021E6EB9E00563EA9 /* Skybox */,
 				A551AE0621C997C600FA207B /* Props */,
 				A551ADFE21C997C000FA207B /* Characters */,
 			);
@@ -766,6 +778,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A57506D721CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */,
+				A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */,
 				A5A1CD1E21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
 				A57506E221CDA2C600C63081 /* GameScene.swift in Sources */,
@@ -818,6 +831,7 @@
 				A57506DC21CD6C9200C63081 /* GLTFTypes.swift in Sources */,
 				A57506DA21CD6C9200C63081 /* GLTFAsset.swift in Sources */,
 				A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
+				A563DF1321E6EBBE00563EA9 /* Skybox.swift in Sources */,
 				A57506A121CD63E200C63081 /* PhysicsController.swift in Sources */,
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,
 				A57506CB21CD669700C63081 /* DebugBoundingBox.metal in Sources */,
