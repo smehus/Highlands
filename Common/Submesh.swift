@@ -21,21 +21,25 @@ class Submesh {
         self.pipelineState = pipelineState
     }
 
-    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, isGround: Bool = false, lighting: Bool = true) {
+    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, isGround: Bool = false, lighting: Bool = true, blending: Bool = false) {
         self.submesh = submesh
         textures = Textures(material: mdlSubmesh.material)
         material = Material(material: mdlSubmesh.material)
-        pipelineState = Submesh.makePipelineState(textures: textures, isGround: isGround, lighting: lighting)
+        pipelineState = Submesh.makePipelineState(textures: textures,
+                                                  isGround: isGround,
+                                                  lighting: lighting,
+                                                  blending: blending)
     }
 }
 
 // Pipeline state
 private extension Submesh {
-    static func makeFunctionConstants(textures: Textures, isGround: Bool, lighting: Bool) -> MTLFunctionConstantValues {
+    static func makeFunctionConstants(textures: Textures, isGround: Bool, lighting: Bool, blending: Bool) -> MTLFunctionConstantValues {
         let functionConstants = MTLFunctionConstantValues()
 
         var isGround = isGround
         var lighting = lighting
+        var blending = blending
         var property = textures.baseColor != nil
         functionConstants.setConstantValue(&property, type: .bool, index: 0)
 
@@ -53,12 +57,17 @@ private extension Submesh {
 
         functionConstants.setConstantValue(&lighting, type: .bool, index: 6)
 
+        // ShouldBlend
+        functionConstants.setConstantValue(&blending, type: .bool, index: 7)
 
         return functionConstants
     }
 
-    static func makePipelineState(textures: Textures, isGround: Bool, lighting: Bool) -> MTLRenderPipelineState {
-        let functionConstants = makeFunctionConstants(textures: textures, isGround: isGround, lighting: lighting)
+    static func makePipelineState(textures: Textures, isGround: Bool, lighting: Bool, blending: Bool) -> MTLRenderPipelineState {
+        let functionConstants = makeFunctionConstants(textures: textures,
+                                                      isGround: isGround,
+                                                      lighting: lighting,
+                                                      blending: blending)
 
         let library = Renderer.library
         let vertexFunction = library?.makeFunction(name: "vertex_main")
@@ -77,6 +86,11 @@ private extension Submesh {
 
         pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
         pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        pipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+        pipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
+        pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+        pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
 
         do {

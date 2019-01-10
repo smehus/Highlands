@@ -27,12 +27,12 @@ final class GameScene: Scene {
         ground.tiling = 32
         add(node: ground)
 
-//        for _ in 0..<50 {
-//            let tree = Prop(name: "treefir")
-//            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-//            add(node: tree)
-//            physicsController.addStaticBody(node: tree)
-//        }
+        for _ in 0..<50 {
+            let tree = Prop(name: "treefir")
+            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+            add(node: tree)
+            physicsController.addStaticBody(node: tree)
+        }
 
 
 //        car.rotation = [0, radians(fromDegrees: 90), 0]
@@ -43,7 +43,7 @@ final class GameScene: Scene {
 //        lantern.position = [2.5, 2.5, 1]
 //        add(node: lantern, parent: skeleton, render: true)
 
-//        skeleton.scale = [0.02, 0.02, 0.02]
+        skeleton.scale = [0.2, 0.2, 0.2]
 //        skeleton.position = [1.2, 1, 3]
 //        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
@@ -62,8 +62,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 2
-        tpCamera.focusDistance = 4
+        tpCamera.focusHeight = 1
+        tpCamera.focusDistance = 2
         cameras.append(tpCamera)
         currentCameraIndex = 2
     }
@@ -79,7 +79,7 @@ final class GameScene: Scene {
             let dir = inputController.player!.forwardVector
 
 
-            lights[index].position = float3(pos.x, pos.y + 7, pos.z)
+            lights[index].position = float3(pos.x, pos.y + 1, pos.z)
             lights[index].position += (inputController.player!.forwardVector * -2.5)
             lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
         }

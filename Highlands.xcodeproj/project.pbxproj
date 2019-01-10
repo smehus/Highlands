@@ -25,6 +25,12 @@
 		A563DF0321E6B30400563EA9 /* claire_zup.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0021E6B30400563EA9 /* claire_zup.gltf */; };
 		A563DF0421E6B30400563EA9 /* claire_zup.bin in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0121E6B30400563EA9 /* claire_zup.bin */; };
 		A563DF0521E6B30400563EA9 /* claire_zup.bin in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0121E6B30400563EA9 /* claire_zup.bin */; };
+		A563DF0A21E6C3FE00563EA9 /* window.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0721E6C3FD00563EA9 /* window.mtl */; };
+		A563DF0B21E6C3FE00563EA9 /* window.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0721E6C3FD00563EA9 /* window.mtl */; };
+		A563DF0C21E6C3FE00563EA9 /* window.obj in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0821E6C3FD00563EA9 /* window.obj */; };
+		A563DF0D21E6C3FE00563EA9 /* window.obj in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0821E6C3FD00563EA9 /* window.obj */; };
+		A563DF0E21E6C3FE00563EA9 /* windowColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0921E6C3FD00563EA9 /* windowColor.png */; };
+		A563DF0F21E6C3FE00563EA9 /* windowColor.png in Resources */ = {isa = PBXBuildFile; fileRef = A563DF0921E6C3FD00563EA9 /* windowColor.png */; };
 		A56ACB5421C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A56ACB5521C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A575069F21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
@@ -181,6 +187,9 @@
 		A563DEFB21E6B2CD00563EA9 /* claire_zup_2.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = claire_zup_2.gltf; path = ../../../../../../../claire_zup_2.gltf; sourceTree = "<group>"; };
 		A563DF0021E6B30400563EA9 /* claire_zup.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = claire_zup.gltf; path = ../../../../../../../../Desktop/claire_zup.gltf; sourceTree = "<group>"; };
 		A563DF0121E6B30400563EA9 /* claire_zup.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = claire_zup.bin; path = ../../../../../../../../Desktop/claire_zup.bin; sourceTree = "<group>"; };
+		A563DF0721E6C3FD00563EA9 /* window.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = window.mtl; sourceTree = "<group>"; };
+		A563DF0821E6C3FD00563EA9 /* window.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = window.obj; sourceTree = "<group>"; };
+		A563DF0921E6C3FD00563EA9 /* windowColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = windowColor.png; sourceTree = "<group>"; };
 		A56ACB5321C728750069962B /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Textures.xcassets; sourceTree = "<group>"; };
 		A575069C21CD63E100C63081 /* InputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
 		A575069D21CD63E200C63081 /* PhysicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsController.swift; sourceTree = "<group>"; };
@@ -300,6 +309,7 @@
 		A551AE0621C997C600FA207B /* Props */ = {
 			isa = PBXGroup;
 			children = (
+				A563DF0621E6C3BF00563EA9 /* Window */,
 				A5F2918021CEF05600FF57A5 /* Beachball */,
 				A5F2916A21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern_OBJ */,
 				A57506AD21CD646900C63081 /* Car */,
@@ -327,6 +337,16 @@
 				A5CBD0E721E26767001D77EF /* BrowsMAP1.png */,
 			);
 			path = Claire;
+			sourceTree = "<group>";
+		};
+		A563DF0621E6C3BF00563EA9 /* Window */ = {
+			isa = PBXGroup;
+			children = (
+				A563DF0721E6C3FD00563EA9 /* window.mtl */,
+				A563DF0821E6C3FD00563EA9 /* window.obj */,
+				A563DF0921E6C3FD00563EA9 /* windowColor.png */,
+			);
+			path = Window;
 			sourceTree = "<group>";
 		};
 		A56ACB3A21C727970069962B /* Models */ = {
@@ -660,9 +680,11 @@
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
 				A57506BC21CD646900C63081 /* racing-car.mtl in Resources */,
+				A563DF0E21E6C3FE00563EA9 /* windowColor.png in Resources */,
 				A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */,
 				A5819C5F21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A5CBD0DD21E16FC1001D77EF /* claire_waking.gltf in Resources */,
+				A563DF0C21E6C3FE00563EA9 /* window.obj in Resources */,
 				A5CBD0DF21E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */,
 				A5CBD0F421E2697B001D77EF /* claire_idle.bin in Resources */,
@@ -681,6 +703,7 @@
 				A5CBD0E821E26767001D77EF /* BrowsMAP1.png in Resources */,
 				A5F2917621CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
 				A55EFC7221D9B4DF008DAD22 /* file15.jpg in Resources */,
+				A563DF0A21E6C3FE00563EA9 /* window.mtl in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -697,6 +720,7 @@
 				A5CBD1BB21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A57506C621CD65A400C63081 /* buffer_skeleton.bin in Resources */,
 				A5C952CC21CEA53000B23364 /* plane.mtl in Resources */,
+				A563DF0F21E6C3FE00563EA9 /* windowColor.png in Resources */,
 				A5C952CA21CEA53000B23364 /* plane.obj in Resources */,
 				A5F2917921CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A5F2917721CEDFB000FF57A5 /* HRN_LMP_CM.bmp in Resources */,
@@ -704,6 +728,7 @@
 				A5F2918621CEF05600FF57A5 /* beachball.obj in Resources */,
 				A5F2917321CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
+				A563DF0B21E6C3FE00563EA9 /* window.mtl in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
 				A5819C6021E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A57506B121CD646900C63081 /* oilcan.mtl in Resources */,
@@ -719,6 +744,7 @@
 				A563DF0521E6B30400563EA9 /* claire_zup.bin in Resources */,
 				A55EFC6F21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
+				A563DF0D21E6C3FE00563EA9 /* window.obj in Resources */,
 				A5CBD0DE21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,

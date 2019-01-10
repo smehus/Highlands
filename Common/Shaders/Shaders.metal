@@ -14,6 +14,7 @@ constant bool hasColorTexture [[ function_constant(0) ]];
 constant bool hasNormalTexture [[ function_constant(1) ]];
 constant bool isGroundTexture [[ function_constant(5) ]];
 constant bool includeLighting [[ function_constant(6) ]];
+constant bool includeBlending [[ function_constant(7) ]];
 
 struct VertexIn {
     float4 position [[ attribute(Position) ]];
@@ -161,6 +162,15 @@ float3 diffuseLighting(VertexOut in,
 
 }
 
+float4 fog(float4 position, float4 color) {
+    float distance = position.z / position.w;
+    float density = 0.2;
+    float fog = 1.0 - clamp(exp(-density * distance), 0.0, 1.0);
+    float4 fogColor = float4(1.0);
+    color = mix(color, fogColor, fog);
+    return color;
+}
+
 fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant Light *lights [[ buffer(BufferIndexLights) ]],
                               sampler textureSampler [[ sampler(0) ]],
@@ -171,14 +181,14 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant uint &tiling [[ buffer(22) ]])
 
 {
-    float3 baseColor;
+    float4 baseColor;
     // Uses function constants to check if the model
     // has map_kd aka Color texture.
     // Basically checks the submesh was able to load the texture in map_kd
     if (hasColorTexture) {
-        baseColor = baseColorTexture.sample(textureSampler, in.uv * tiling).rgb;
+        baseColor = baseColorTexture.sample(textureSampler, in.uv * tiling);
     } else {
-        baseColor = material.baseColor;
+        baseColor = float4(material.baseColor, 1);
     }
 
     float3 normalValue;
@@ -197,13 +207,17 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
     normalValue = normalize(normalValue);
 
+    baseColor = fog(in.position, baseColor);
+
     float3 color;
 
     if (includeLighting) {
-        color = diffuseLighting(in, baseColor, normalValue, material, fragmentUniforms, lights);
+        color = diffuseLighting(in, baseColor.xyz, normalValue, material, fragmentUniforms, lights);
     } else {
-        color = baseColor;
+        color = baseColor.xyz;
     }
+
+//    float4 finalColor = fog(in.position, float4(color, 1));
 
     return float4(color, 1);
 }

@@ -59,7 +59,7 @@ class Prop: Node {
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
-            return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh, isGround: isGround, lighting: lighting)
+            return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh, isGround: isGround, lighting: lighting, blending: name == "window")
         } ?? []
 
         samplerState = Prop.buildSamplerState()
@@ -110,6 +110,7 @@ extension Prop: Renderable {
             renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
             renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
             renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: 2)
+            
 
             var material = modelSubmesh.material
             renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))

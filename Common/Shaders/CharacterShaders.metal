@@ -168,6 +168,14 @@ float3 characterDiffuseLighting(VertexOut in,
 
 }
 
+float4 characterFog(float4 position, float4 color) {
+    float distance = position.z / position.w;
+    float density = 0.2;
+    float fog = 1.0 - clamp(exp(-density * distance), 0.0, 1.0);
+    float4 fogColor = float4(1.0);
+    color = mix(color, fogColor, fog);
+    return color;
+}
 
 fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
@@ -188,6 +196,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     }
 
     float3 color = characterDiffuseLighting(in, baseColor.rgb, normalize(in.worldNormal), material, fragmentUniforms, lights);
+    
     return float4(color, 1);
 
 //
