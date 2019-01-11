@@ -42,7 +42,11 @@ class Prop: Node {
     let samplerState: MTLSamplerState?
     let debugBoundingBox: DebugBoundingBox
 
-    init(name: String, isGround: Bool = false, lighting: Bool = true) {
+    private var transforms: [Transform]
+    let instanceCount: Int
+    var instanceBuffer: MTLBuffer
+
+    init(name: String, instanceCount: Int = 1) {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
@@ -59,14 +63,49 @@ class Prop: Node {
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
-            return Submesh(submesh: mesh.submeshes[index], mdlSubmesh: submesh, isGround: isGround, lighting: lighting, blending: name == "window")
+            return Submesh(submesh: mesh.submeshes[index],
+                           mdlSubmesh: submesh,
+                           isGround: name == "large-plane",
+                           blending: name == "window")
         } ?? []
 
         samplerState = Prop.buildSamplerState()
         debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
+
+        self.instanceCount = instanceCount
+        transforms = Prop.buildTransforms(instanceCount: instanceCount)
+        instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
+
         super.init()
 
         boundingBox = mdlMesh.boundingBox
+
+    }
+
+    static func buildInstanceBuffer(transforms: [Transform]) -> MTLBuffer {
+        let instances = transforms.map { Instances(modelMatrix: $0.modelMatrix, normalMatrix: $0.normalMatrix) }
+
+        guard
+            let instanceBuffer = Renderer.device
+                .makeBuffer(bytes: instances, length: MemoryLayout<Instances>.stride * instances.count)
+        else {
+            fatalError()
+        }
+
+        return instanceBuffer
+    }
+
+    static func buildTransforms(instanceCount: Int) -> [Transform] {
+        return [Transform](repeatElement(Transform(), count: instanceCount))
+    }
+
+    func updateBuffer(instance: Int, transform: Transform) {
+        transforms[instance] = transform
+
+        var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
+        pointer = pointer.advanced(by: instance)
+        pointer.pointee.modelMatrix = transforms[instance].modelMatrix
+        pointer.pointee.normalMatrix = transforms[instance].normalMatrix
     }
 
     private static func buildSamplerState() -> MTLSamplerState? {
@@ -98,6 +137,7 @@ extension Prop: Renderable {
                                      length: MemoryLayout<Uniforms>.stride,
                                      index: Int(BufferIndexUniforms.rawValue))
 
+        renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
         for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
             renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
         }
@@ -121,7 +161,8 @@ extension Prop: Renderable {
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
-                                                indexBufferOffset: submesh.indexBuffer.offset)
+                                                indexBufferOffset: submesh.indexBuffer.offset,
+                                                instanceCount: instanceCount)
             
             if debugRenderBoundingBox {
                 debugBoundingBox.render(renderEncoder: renderEncoder, uniforms: uniforms)

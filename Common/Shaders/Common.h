@@ -42,6 +42,7 @@ typedef enum {
     BufferIndexLights = 12,
     BufferIndexFragmentUniforms = 13,
     BufferIndexMaterials = 14,
+    BufferIndexInstances = 15,
     BufferIndexSkybox = 20,
     BufferIndexSkyboxDiffuse = 21,
     BufferIndexBRDFLut = 22
@@ -71,4 +72,10 @@ struct Material {
     vector_float3 ambientOcclusion;
     float shininess;
 };
+
+struct Instances {
+    matrix_float4x4 modelMatrix;
+    matrix_float3x3 normalMatrix;
+};
+
 #endif /* Common_h */

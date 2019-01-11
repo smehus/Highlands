@@ -12,7 +12,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let ground = Prop(name: "large-plane", isGround: true)
+    let ground = Prop(name: "large-plane")
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let car = Prop(name: "racing-car")
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
@@ -29,13 +29,15 @@ final class GameScene: Scene {
         ground.tiling = 32
         add(node: ground)
 
-        for _ in 0..<50 {
-            let tree = Prop(name: "treefir")
-            tree.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-            add(node: tree)
-            physicsController.addStaticBody(node: tree)
+        let tree = Prop(name: "treefir", instanceCount: 50)
+        add(node: tree)
+        // TODO: Figure out a way to handle physics with instancing
+//        physicsController.addStaticBody(node: tree)
+        for i in 0..<50 {
+            var transform = Transform()
+            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+            tree.updateBuffer(instance: i, transform: transform)
         }
-
 
 //        car.rotation = [0, radians(fromDegrees: 90), 0]
 //        car.position = [-2, 0, 0]

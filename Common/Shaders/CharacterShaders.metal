@@ -2,8 +2,6 @@
 using namespace metal;
 #import "Common.h"
 
-constant bool hasJionts [[ function_constant(1) ]];
-
 struct VertexIn {
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];

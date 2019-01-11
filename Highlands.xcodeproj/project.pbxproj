@@ -35,6 +35,8 @@
 		A563DF1321E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
 		A563DF1521E7999F00563EA9 /* Skybox.metal in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1421E7999F00563EA9 /* Skybox.metal */; };
 		A563DF1621E7999F00563EA9 /* Skybox.metal in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1421E7999F00563EA9 /* Skybox.metal */; };
+		A563DF1C21E8035200563EA9 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1B21E8035200563EA9 /* Transform.swift */; };
+		A563DF1D21E8035200563EA9 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1B21E8035200563EA9 /* Transform.swift */; };
 		A56ACB5421C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A56ACB5521C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A575069F21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
@@ -196,6 +198,7 @@
 		A563DF0921E6C3FD00563EA9 /* windowColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = windowColor.png; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
 		A563DF1421E7999F00563EA9 /* Skybox.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Skybox.metal; sourceTree = "<group>"; };
+		A563DF1B21E8035200563EA9 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		A56ACB5321C728750069962B /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Textures.xcassets; sourceTree = "<group>"; };
 		A575069C21CD63E100C63081 /* InputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
 		A575069D21CD63E200C63081 /* PhysicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsController.swift; sourceTree = "<group>"; };
@@ -501,6 +504,7 @@
 				A588D83921CAE1A300652FC2 /* Character.swift */,
 				A57506CF21CD680E00C63081 /* Renderable.swift */,
 				A5F6ABB321CF292D0027D425 /* Notes */,
+				A563DF1B21E8035200563EA9 /* Transform.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -787,6 +791,7 @@
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
 				A57506E221CDA2C600C63081 /* GameScene.swift in Sources */,
 				A563DF1521E7999F00563EA9 /* Skybox.metal in Sources */,
+				A563DF1C21E8035200563EA9 /* Transform.swift in Sources */,
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57506DF21CD970B00C63081 /* Scene.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
@@ -842,6 +847,7 @@
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,
 				A57506CB21CD669700C63081 /* DebugBoundingBox.metal in Sources */,
 				A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */,
+				A563DF1D21E8035200563EA9 /* Transform.swift in Sources */,
 				A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */,
 				A57506D121CD680E00C63081 /* Renderable.swift in Sources */,
 				A575069F21CD63E200C63081 /* InputController.swift in Sources */,

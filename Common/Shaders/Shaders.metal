@@ -34,16 +34,21 @@ struct VertexOut {
 };
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
-                          constant Uniforms & uniforms [[ buffer(BufferIndexUniforms) ]]) {
+                             constant Instances *instances [[ buffer(BufferIndexInstances) ]],
+                             uint instanceID [[ instance_id ]],
+                             constant Uniforms & uniforms [[ buffer(BufferIndexUniforms) ]]) {
 
     VertexOut out;
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertexIn.position;
-    out.worldPosition = uniforms.modelMatrix * vertexIn.position;
-    out.worldNormal = uniforms.normalMatrix * vertexIn.normal;
+
+    Instances instance = instances[instanceID];
+
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
+    out.worldPosition = uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
+    out.worldNormal = uniforms.normalMatrix * instance.normalMatrix * vertexIn.normal;
     out.uv = vertexIn.uv;
     // Normal matrix is the same as world space aka model matrix
-    out.worldTangent = uniforms.normalMatrix * vertexIn.tangent;
-    out.worldBitangent = uniforms.normalMatrix * vertexIn.bitangent;
+    out.worldTangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.tangent;
+    out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;
     return out;
 }
 
