@@ -31,7 +31,7 @@ final class GameScene: Scene {
 
         let tree = Prop(name: "treefir", instanceCount: 50)
         add(node: tree)
-        // TODO: Figure out a way to handle physics with instancing
+//         TODO: Figure out a way to handle physics with instancing
 //        physicsController.addStaticBody(node: tree)
         for i in 0..<50 {
             var transform = Transform()
@@ -43,12 +43,12 @@ final class GameScene: Scene {
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(name: "rock2", vertexFunction: "", fragmentFunction: "", instanceCount: 200)
-//        add(node: rock)
-        for i in 0..<200 {
+        let rock = Morph(name: "Rocks", instanceCount: 20, textureNames: textureNames, morphTargetNames: morphTargetNames)
+        add(node: rock)
+        for i in 0..<20 {
             var transform = Transform()
             transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-            transform.scale = [0.2, 0.2, 0.2]
+            transform.scale = [0.5, 0.5, 0.5]
             rock.updateBuffer(instance: i, transform: transform)
         }
 

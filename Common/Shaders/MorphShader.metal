@@ -11,9 +11,9 @@ using namespace metal;
 #import "Common.h"
 
 struct VertexIn {
-    float4 position [[ attribute(Position) ]];
-    float3 normal [[ attribute(Normal) ]];
-    float2 uv [[ attribute(UV) ]];
+    packed_float3 position;
+    packed_float3 normal;
+    float2 uv;
 };
 
 struct VertexOut {
@@ -23,18 +23,20 @@ struct VertexOut {
     float2 uv;
 };
 
-vertex VertexOut vertex_nature(const VertexIn vertexIn [[ stage_in ]],
+vertex VertexOut vertex_morph(constant VertexIn *in [[ buffer(0) ]],
+                               uint vertexID [[ vertex_id]],
                                constant Uniforms &uniforms [[ buffer(BufferIndexUniforms) ]],
                                constant MorphInstance *instances [[ buffer(BufferIndexInstances) ]],
                                uint instanceID [[ instance_id ]]  ) {
+
+    VertexIn vertexIn = in[vertexID];
     MorphInstance instance = instances[instanceID];
 
     VertexOut out;
-    float4 position = vertexIn.position;
+    float4 position = float4(vertexIn.position, 1);
     float3 normal = vertexIn.normal;
 
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix
-    * uniforms.modelMatrix * instance.modelMatrix * position;
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix * position;
     out.worldPosition = (uniforms.modelMatrix * position * instance.modelMatrix).xyz;
     out.worldNormal = uniforms.normalMatrix * instance.normalMatrix * normal;
     out.uv = vertexIn.uv;
@@ -43,7 +45,7 @@ vertex VertexOut vertex_nature(const VertexIn vertexIn [[ stage_in ]],
 
 constant float3 sunlight = float3(2, 4, -4);
 
-fragment float4 fragment_nature(VertexOut in [[ stage_in ]],
+fragment float4 fragment_morph(VertexOut in [[ stage_in ]],
                                 texture2d<float> baseColorTexture [[ texture(0) ]],
                                 constant FragmentUniforms &fragmentUniforms [[buffer(BufferIndexFragmentUniforms)]]){
 
