@@ -46,7 +46,7 @@ class Prop: Node {
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
 
-    init(name: String, instanceCount: Int = 1) {
+    init(name: String, instanceCount: Int = 1, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main") {
 
         let mdlMesh = Prop.loadMesh(name: name)
         // Add tangent and bit tangent
@@ -62,6 +62,8 @@ class Prop: Node {
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
             return Submesh(submesh: mesh.submeshes[index],
                            mdlSubmesh: submesh,
+                           vertexFunction: vertexFunction,
+                           fragmentFunction: fragmentFunction,
                            isGround: name == "large-plane",
                            blending: name == "window")
         } ?? []

@@ -21,11 +21,13 @@ class Submesh {
         self.pipelineState = pipelineState
     }
 
-    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, isGround: Bool = false, blending: Bool = false) {
+    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
         self.submesh = submesh
         textures = Textures(material: mdlSubmesh.material)
         material = Material(material: mdlSubmesh.material)
         pipelineState = Submesh.makePipelineState(textures: textures,
+                                                  vertexFunction: vertexFunction,
+                                                  fragmentFunctionName: fragmentFunction,
                                                   isGround: isGround,
                                                   blending: blending)
     }
@@ -62,17 +64,17 @@ private extension Submesh {
         return functionConstants
     }
 
-    static func makePipelineState(textures: Textures, isGround: Bool, blending: Bool) -> MTLRenderPipelineState {
+    static func makePipelineState(textures: Textures, vertexFunction: String, fragmentFunctionName: String, isGround: Bool, blending: Bool) -> MTLRenderPipelineState {
         let functionConstants = makeFunctionConstants(textures: textures,
                                                       isGround: isGround,
                                                       blending: blending)
 
         let library = Renderer.library
-        let vertexFunction = library?.makeFunction(name: "vertex_main")
+        let vertexFunction = library?.makeFunction(name: vertexFunction)
         let fragmentFunction: MTLFunction?
 
         do {
-            fragmentFunction = try library?.makeFunction(name: "fragment_main", constantValues: functionConstants)
+            fragmentFunction = try library?.makeFunction(name: fragmentFunctionName, constantValues: functionConstants)
         } catch {
             fatalError("No Metal function exists")
         }
