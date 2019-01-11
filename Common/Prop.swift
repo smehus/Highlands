@@ -47,11 +47,8 @@ class Prop: Node {
     var instanceBuffer: MTLBuffer
 
     init(name: String, instanceCount: Int = 1) {
-        let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
-        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
-        let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
-        let mdlMesh = asset.object(at: 0) as! MDLMesh
 
+        let mdlMesh = Prop.loadMesh(name: name)
         // Add tangent and bit tangent
         mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
                                 tangentAttributeNamed: MDLVertexAttributeTangent,
@@ -80,6 +77,13 @@ class Prop: Node {
 
         boundingBox = mdlMesh.boundingBox
 
+    }
+
+    static func loadMesh(name: String) -> MDLMesh {
+        let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
+        return asset.object(at: 0) as! MDLMesh
     }
 
     static func buildInstanceBuffer(transforms: [Transform]) -> MTLBuffer {

@@ -39,6 +39,20 @@ final class GameScene: Scene {
             tree.updateBuffer(instance: i, transform: transform)
         }
 
+
+
+        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
+        let morphTargetNames = ["rock1", "rock2", "rock3"]
+        let rock = Prop(name: "rock2", instanceCount: 200)
+        add(node: rock)
+        for i in 0..<200 {
+            var transform = Transform()
+            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+            transform.scale = [0.2, 0.2, 0.2]
+            rock.updateBuffer(instance: i, transform: transform)
+        }
+
+
 //        car.rotation = [0, radians(fromDegrees: 90), 0]
 //        car.position = [-2, 0, 0]
 //        add(node: car)
