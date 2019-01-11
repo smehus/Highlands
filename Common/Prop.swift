@@ -32,6 +32,7 @@ class Prop: Node {
                                                                            offset: 24,
                                                                            bufferIndex: 0)
 
+        // The vertex descriptor stride describes the number of bytes between the start of one vertex and the start of the next.
         vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: 32)
         return vertexDescriptor
     }()
@@ -46,7 +47,7 @@ class Prop: Node {
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
 
-    init(name: String, instanceCount: Int = 1, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main") {
+    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
 
         let mdlMesh = Prop.loadMesh(name: name)
         // Add tangent and bit tangent
@@ -60,6 +61,7 @@ class Prop: Node {
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
+
             return Submesh(submesh: mesh.submeshes[index],
                            mdlSubmesh: submesh,
                            vertexFunction: vertexFunction,

@@ -43,8 +43,8 @@ final class GameScene: Scene {
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(name: "rock2", instanceCount: 200)
-        add(node: rock)
+        let rock = Prop(name: "rock2", vertexFunction: "", fragmentFunction: "", instanceCount: 200)
+//        add(node: rock)
         for i in 0..<200 {
             var transform = Transform()
             transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]

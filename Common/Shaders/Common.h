@@ -78,4 +78,11 @@ struct Instances {
     matrix_float3x3 normalMatrix;
 };
 
+struct MorphInstance {
+    uint textureID;
+    uint morphTargetID;
+    matrix_float4x4 modelMatrix;
+    matrix_float3x3 normalMatrix;
+};
+
 #endif /* Common_h */
