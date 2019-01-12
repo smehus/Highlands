@@ -26,7 +26,7 @@ func lighting() -> [Light] {
 func lantern() -> Light {
     let pos: float3 = [0, 1, 0]
     var light = buildDefaultLight()
-    light.color = [1, 1, 1]
+    light.color = [1, 1, 0.3]
     light.position = pos
     light.attenuation = float3(0.3, 0.3, 0.3)
     light.type = Pointlight
@@ -37,7 +37,7 @@ func lantern() -> Light {
 func spotlight() -> Light {
     var light = buildDefaultLight()
     light.position = [0, 0.5, 0]
-    light.color = [1, 1, 1]
+    light.color = [1, 0, 0]
     light.attenuation = float3(2, 0, 0)
     light.type = Spotlight
     light.coneAngle = radians(fromDegrees: 30)

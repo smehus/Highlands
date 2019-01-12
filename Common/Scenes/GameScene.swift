@@ -12,10 +12,10 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-//    let ground = Prop(type: .base(name: "large-plane"))
+    let ground = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let car = Prop(name: "racing-car")
-//    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
+    let lantern = Prop(type: PropType.base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
     override func setupScene() {
 
@@ -26,26 +26,33 @@ final class GameScene: Scene {
         lights = lighting()
         camera.position = [0, 1.2, -4]
 
-//        ground.tiling = 32
-//        add(node: ground)
-//
-//        let tree = Prop(name: "treefir", instanceCount: 50)
-//        add(node: tree)
-////         TODO: Figure out a way to handle physics with instancing
-////        physicsController.addStaticBody(node: tree)
-//        for i in 0..<50 {
-//            var transform = Transform()
-//            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-//            tree.updateBuffer(instance: i, transform: transform)
-//        }
+        ground.tiling = 32
+        add(node: ground)
+
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 50))
+        add(node: tree)
+//         TODO: Figure out a way to handle physics with instancing
+//        physicsController.addStaticBody(node: tree)
+        for i in 0..<50 {
+            var transform = Transform()
+            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+            tree.updateBuffer(instance: i, transform: transform)
+        }
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
         let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
+//        let rock = Prop(type: .instanced(name: "rock1", instanceCount: 20))
         add(node: rock)
         for i in 0..<20 {
             var transform = Transform()
-            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+
+            if i == 0 {
+                transform.position = [0, 0, 3]
+            } else {
+                transform.position = [Float(Int.random(in: -10...10)), 0, Float(Int.random(in: -10...10))]
+            }
+
             transform.scale = [0.5, 0.5, 0.5]
             rock.updateBuffer(instance: i, transform: transform)
         }
@@ -56,8 +63,9 @@ final class GameScene: Scene {
 //        add(node: car)
 //        physicsController.addStaticBody(node: car)
 
-//        lantern.position = [2.5, 2.5, 1]
-//        add(node: lantern, parent: skeleton, render: true)
+        lantern.position = [0, 0, 1]
+        lantern.rotation = [0, radians(fromDegrees: 90), 0]
+        add(node: lantern, parent: camera, render: true)
 
         skeleton.scale = [0.2, 0.2, 0.2]
 //        skeleton.position = [1.2, 1, 3]
@@ -81,7 +89,7 @@ final class GameScene: Scene {
         tpCamera.focusHeight = 1
         tpCamera.focusDistance = 2
         cameras.append(tpCamera)
-        currentCameraIndex = 2
+//        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {

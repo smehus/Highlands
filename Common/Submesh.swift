@@ -32,12 +32,7 @@ class Submesh {
 
         material = Material(material: mdlSubmesh.material)
 
-        pipelineState = Submesh.makePipelineState(textures: textures,
-                                                  vertexFunction: type.vertexFunctionName,
-                                                  fragmentFunctionName: type.fragmentFunctionName,
-                                                  isGround: type.isGround,
-                                                  blending: type.blending)
-
+        pipelineState = Submesh.makePipelineState(textures: textures, type: type)
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
@@ -54,13 +49,14 @@ class Submesh {
 
 // Pipeline state
 private extension Submesh {
-    static func makeFunctionConstants(textures: Textures, isGround: Bool, blending: Bool) -> MTLFunctionConstantValues {
+    static func makeFunctionConstants(textures: Textures, type: PropType) -> MTLFunctionConstantValues {
         let functionConstants = MTLFunctionConstantValues()
 
-        var isGround = isGround
-        var lighting = true
-        var blending = blending
+        var isGround = type.isGround
+        var lighting = type.lighting
+        var blending = type.blending
         var property = textures.baseColor != nil
+
         functionConstants.setConstantValue(&property, type: .bool, index: 0)
 
         property = textures.normal != nil
@@ -75,6 +71,7 @@ private extension Submesh {
 
         functionConstants.setConstantValue(&isGround, type: .bool, index: 5)
 
+        // Lighting
         functionConstants.setConstantValue(&lighting, type: .bool, index: 6)
 
         // ShouldBlend
@@ -83,17 +80,15 @@ private extension Submesh {
         return functionConstants
     }
 
-    static func makePipelineState(textures: Textures, vertexFunction: String, fragmentFunctionName: String, isGround: Bool, blending: Bool) -> MTLRenderPipelineState {
-        let functionConstants = makeFunctionConstants(textures: textures,
-                                                      isGround: isGround,
-                                                      blending: blending)
+    static func makePipelineState(textures: Textures, type: PropType) -> MTLRenderPipelineState {
+        let functionConstants = makeFunctionConstants(textures: textures, type: type)
 
         let library = Renderer.library
-        let vertexFunction = library?.makeFunction(name: vertexFunction)
+        let vertexFunction = library?.makeFunction(name: type.vertexFunctionName)
         let fragmentFunction: MTLFunction?
 
         do {
-            fragmentFunction = try library?.makeFunction(name: fragmentFunctionName, constantValues: functionConstants)
+            fragmentFunction = try library?.makeFunction(name: type.fragmentFunctionName, constantValues: functionConstants)
         } catch {
             fatalError("No Metal function exists")
         }
@@ -139,7 +134,7 @@ private extension Submesh.Textures {
                 return nil
             }
 
-            print("🛠 Loaded Texture \(name)")
+            print("🛠 Loaded Texture \(filename)")
             return texture
         }
 

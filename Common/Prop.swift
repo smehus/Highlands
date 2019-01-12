@@ -9,14 +9,14 @@
 import MetalKit
 
 enum PropType {
-    case base(name: String)
+    case base(name: String, lighting: Bool)
     case instanced(name: String, instanceCount: Int)
     case ground(name: String)
     case morph(textures: [String], morphTargets: [String], instanceCount: Int)
 
     var name: String {
         switch self {
-        case .base(let name): return name
+        case .base(let name, _): return name
         case .ground(let name): return name
         case .morph(_, let targets, _): return targets.first!
         case .instanced(let name, _): return name
@@ -37,7 +37,7 @@ enum PropType {
         case .base, .instanced, .ground:
             return "fragment_main"
         case .morph:
-            return "fragment_morph"
+            return "fragment_main"
         }
     }
 
@@ -61,6 +61,13 @@ enum PropType {
 
     var blending: Bool {
         return false
+    }
+
+    var lighting: Bool {
+        switch self {
+        case .base(_, let lighting): return lighting
+        default: return true
+        }
     }
 }
 
@@ -122,7 +129,7 @@ class Prop: Node {
         samplerState = Prop.buildSamplerState()
         debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
 
-        self.instanceCount = type.instanceCount
+        instanceCount = type.instanceCount
         transforms = Prop.buildTransforms(instanceCount: instanceCount)
         instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
 
