@@ -12,7 +12,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let ground = Prop(name: "large-plane")
+    let ground = Prop(type: .base(name: "large-plane"))
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let car = Prop(name: "racing-car")
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
@@ -25,9 +25,9 @@ final class GameScene: Scene {
 
         lights = lighting()
         camera.position = [0, 1.2, -4]
-//
-//        ground.tiling = 32
-//        add(node: ground)
+
+        ground.tiling = 32
+        add(node: ground)
 //
 //        let tree = Prop(name: "treefir", instanceCount: 50)
 //        add(node: tree)
@@ -41,8 +41,7 @@ final class GameScene: Scene {
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
-//        let rock = Morph(name: "Rocks", instanceCount: 20, textureNames: textureNames, morphTargetNames: morphTargetNames)
-        let rock = Prop(name: "rock2", vertexFunction: "vertex_morph", fragmentFunction: "fragment_morph", instanceCount: 20)
+        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
         add(node: rock)
         for i in 0..<20 {
             var transform = Transform()

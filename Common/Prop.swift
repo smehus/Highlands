@@ -8,6 +8,51 @@
 
 import MetalKit
 
+enum PropType {
+    case base(name: String)
+    case instanced(name: String, instanceCount: Int)
+    case ground(name: String)
+    case morph(textures: [String], morphTargets: [String], instanceCount: Int)
+
+    var name: String {
+        switch self {
+        case .base(let name): return name
+        case .ground(let name): return name
+        case .morph(_, let targets, _): return targets.first!
+        case .instanced(let name, _): return name
+        }
+    }
+
+    var vertexFunctionName: String {
+        switch self {
+        case .base, .instanced, .ground:
+            return "vertex_main"
+        case .morph:
+            return "vertex_morph"
+        }
+    }
+
+    var fragmentFunctionName: String {
+        switch self {
+        case .base, .instanced, .ground:
+            return "fragment_main"
+        case .morph:
+            return "fragment_morph"
+        }
+    }
+
+    var instanceCount: Int {
+        switch self {
+        case .morph(_, _, let count):
+            return count
+        case .instanced(_, let instanceCount):
+            return instanceCount
+        default:
+            return 1
+        }
+    }
+}
+
 enum ModelError: Error {
     case missingVertexBuffer
 }
@@ -47,41 +92,68 @@ class Prop: Node {
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
 
-    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
-
-        let mdlMesh = Prop.loadMesh(name: name)
-        // Add tangent and bit tangent
+    init(type: PropType) {
+        // MDLMesh: Load model from bundle
+        let mdlMesh = Prop.loadMesh(name: type.name)
         mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
                                 tangentAttributeNamed: MDLVertexAttributeTangent,
                                 bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
         Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
-        self.mesh = mesh
+        let mtkMesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+        mesh = mtkMesh
 
-        submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
+        submeshes = mdlMesh.submeshes?.enumerated().compactMap { index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
+            return Submesh(base: (mtkMesh.submeshes[index], submesh, type.vertexFunctionName, type.fragmentFunctionName),
+                           isGround: type.name == "large-plane",
+                           blending: type.name == "window")
 
-            return Submesh(submesh: mesh.submeshes[index],
-                           mdlSubmesh: submesh,
-                           vertexFunction: vertexFunction,
-                           fragmentFunction: fragmentFunction,
-                           isGround: name == "large-plane",
-                           blending: name == "window")
-        } ?? []
+            } ?? []
 
         samplerState = Prop.buildSamplerState()
         debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
 
-        self.instanceCount = instanceCount
+        self.instanceCount = type.instanceCount
         transforms = Prop.buildTransforms(instanceCount: instanceCount)
         instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
 
         super.init()
 
         boundingBox = mdlMesh.boundingBox
-
     }
+
+//    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
+//
+//        let mdlMesh = Prop.loadMesh(name: name)
+//        // Add tangent and bit tangent
+//        mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
+//                                tangentAttributeNamed: MDLVertexAttributeTangent,
+//                                bitangentAttributeNamed: MDLVertexAttributeBitangent)
+//
+//        Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
+//        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+//        self.mesh = mesh
+//
+//        submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
+//            guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
+//            return Submesh(base: (mesh.submeshes[index], submesh, vertexFunction, fragmentFunction),
+//                           isGround: name == "large-plane",
+//                           blending: name == "window")
+//        } ?? []
+//
+//        samplerState = Prop.buildSamplerState()
+//        debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
+//
+//        self.instanceCount = instanceCount
+//        transforms = Prop.buildTransforms(instanceCount: instanceCount)
+//        instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
+//
+//        super.init()
+//
+//        boundingBox = mdlMesh.boundingBox
+//
+//    }
 
     static func loadMesh(name: String) -> MDLMesh {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")

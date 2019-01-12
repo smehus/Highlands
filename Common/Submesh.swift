@@ -1,6 +1,8 @@
 
 import MetalKit
 
+typealias BaseParameters = (submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String)
+
 class Submesh {
 
     var submesh: MTKSubmesh?
@@ -21,13 +23,13 @@ class Submesh {
         self.pipelineState = pipelineState
     }
 
-    init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
-        self.submesh = submesh
-        textures = Textures(material: mdlSubmesh.material)
-        material = Material(material: mdlSubmesh.material)
+    required init(base: BaseParameters, isGround: Bool = false, blending: Bool = false) {
+        self.submesh = base.submesh
+        textures = Textures(material: base.mdlSubmesh.material)
+        material = Material(material: base.mdlSubmesh.material)
         pipelineState = Submesh.makePipelineState(textures: textures,
-                                                  vertexFunction: vertexFunction,
-                                                  fragmentFunctionName: fragmentFunction,
+                                                  vertexFunction: base.vertexFunction,
+                                                  fragmentFunctionName: base.fragmentFunction,
                                                   isGround: isGround,
                                                   blending: blending)
     }
@@ -120,6 +122,7 @@ private extension Submesh.Textures {
                 return nil
             }
 
+            print("🛠 Loaded Texture \(name)")
             return texture
         }
 
