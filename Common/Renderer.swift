@@ -12,6 +12,10 @@ final class Renderer: NSObject {
 
     private var depthStencilState: MTLDepthStencilState!
 
+    lazy var lightPipelineState: MTLRenderPipelineState = {
+        return buildLightPipelineState()
+    }()
+
     init(metalView: MTKView) {
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("GPU not available")
@@ -81,11 +85,17 @@ extension Renderer: MTKViewDelegate {
 
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
+        drawDebug(encoder: renderEncoder)
+
         renderEncoder.endEncoding()
 
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
         commandBuffer.commit()
+    }
+
+    private func drawDebug(encoder: MTLRenderCommandEncoder) {
+        debugLights(renderEncoder: encoder, lightType: Pointlight)
     }
 }
 

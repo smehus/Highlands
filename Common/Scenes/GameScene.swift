@@ -15,7 +15,7 @@ final class GameScene: Scene {
     let ground = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let car = Prop(name: "racing-car")
-    let lantern = Prop(type: .instanced(name: "SA_LD_Medieval_Horn_Lantern", instanceCount: 1))
+    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
     override func setupScene() {
 
@@ -42,7 +42,6 @@ final class GameScene: Scene {
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
         let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
-//        let rock = Prop(type: .instanced(name: "rock1", instanceCount: 20))
         add(node: rock)
         for i in 0..<20 {
             var transform = Transform()
@@ -63,9 +62,8 @@ final class GameScene: Scene {
 //        add(node: car)
 //        physicsController.addStaticBody(node: car)
 
-        lantern.position = [0, 0, 1]
-        lantern.rotation = [0, radians(fromDegrees: 90), 0]
-        add(node: lantern, parent: camera, render: true)
+        lantern.position = [2.5, 3, 1]
+        add(node: lantern, parent: skeleton, render: true)
 
         skeleton.scale = [0.2, 0.2, 0.2]
 //        skeleton.position = [1.2, 1, 3]
@@ -89,7 +87,7 @@ final class GameScene: Scene {
         tpCamera.focusHeight = 1
         tpCamera.focusDistance = 2
         cameras.append(tpCamera)
-//        currentCameraIndex = 2
+        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {
@@ -103,9 +101,13 @@ final class GameScene: Scene {
             let dir = inputController.player!.forwardVector
 
 
-            lights[index].position = float3(pos.x, pos.y + 1, pos.z)
-            lights[index].position += (inputController.player!.forwardVector)
-            lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
+            lights[index].position = inputController.player!.position
+            lights[index].position.y = 0.5
+            lights[index].position += inputController.player!.forwardVector / 4
+
+//            lights[index].position = float3(pos.x, pos.y + 0.3, pos.z)
+//            lights[index].position += (inputController.player!.forwardVector.x)
+//            lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
         }
     }
 
