@@ -11,11 +11,11 @@ import MetalKit
 protocol Texturable { }
 
 extension Texturable {
-    static func loadTexture(imageName: String) throws -> MTLTexture? {
+    static func loadTexture(imageName: String, origin: MTKTextureLoader.Origin = .topLeft) throws -> MTLTexture? {
         let textureLoader = MTKTextureLoader(device: Renderer.device)
         let textureLoaderOptions: [MTKTextureLoader.Option: Any] =
             // TODO: WHAT THE FUCK? gltf textures are loading upside down you dumbass
-            [.origin: MTKTextureLoader.Origin.bottomLeft,
+            [.origin: origin,
              .SRGB: false,
              .generateMipmaps: NSNumber(booleanLiteral: true)]
 

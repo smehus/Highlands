@@ -25,9 +25,9 @@ class Submesh {
         self.submesh = submesh
         switch type {
         case .morph(let texNames, _, _):
-            textures = Textures(material: mdlSubmesh.material, overrideTexture: texNames.first!)
+            textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin, overrideTexture: texNames.first!)
         default:
-            textures = Textures(material: mdlSubmesh.material)
+            textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin)
         }
 
         material = Material(material: mdlSubmesh.material)
@@ -119,7 +119,7 @@ private extension Submesh {
 extension Submesh: Texturable {}
 
 private extension Submesh.Textures {
-    init(material: MDLMaterial?, overrideTexture: String? = nil) {
+    init(material: MDLMaterial?, origin: MTKTextureLoader.Origin = .topLeft, overrideTexture: String? = nil) {
         func property(with semantic: MDLMaterialSemantic, name: String) -> MTLTexture? {
 //            print("🛠 Loading Material \(name)")
             guard
@@ -129,7 +129,7 @@ private extension Submesh.Textures {
                     return nil
             }
 
-            guard let texture = try? Submesh.loadTexture(imageName: filename) else {
+            guard let texture = try? Submesh.loadTexture(imageName: filename, origin: origin) else {
                 print("😡 Failed to load texture")
                 return nil
             }

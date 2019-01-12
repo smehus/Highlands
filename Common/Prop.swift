@@ -69,6 +69,10 @@ enum PropType {
         default: return true
         }
     }
+
+    var textureOrigin: MTKTextureLoader.Origin {
+        return .bottomLeft
+    }
 }
 
 enum ModelError: Error {

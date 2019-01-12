@@ -26,3 +26,9 @@ Claires textures are backwards compaired to mixamo
 
 
 claire zup isn't actually right - blender is just rotated 90
+
+
+IMPORTANT: need to pass along where the texture uv begins -> OBJ is bottom left?
+This is in texturable
+This is what made the lantern seem to break
+Although the car did not?
