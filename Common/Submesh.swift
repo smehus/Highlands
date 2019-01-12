@@ -1,8 +1,6 @@
 
 import MetalKit
 
-typealias BaseParameters = ()
-
 class Submesh {
 
     var submesh: MTKSubmesh?
@@ -23,25 +21,35 @@ class Submesh {
         self.pipelineState = pipelineState
     }
 
-    convenience init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: PropType) {
-        self.init(submesh: submesh,
-                  mdlSubmesh: mdlSubmesh,
-                  vertexFunction: type.vertexFunctionName,
-                  fragmentFunction: type.fragmentFunctionName,
-                  isGround: type.isGround,
-                  blending: type.blending)
+    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: PropType) {
+        self.submesh = submesh
+        switch type {
+        case .morph(let texNames, _, _):
+            textures = Textures(material: mdlSubmesh.material, overrideTexture: texNames.first!)
+        default:
+            textures = Textures(material: mdlSubmesh.material)
+        }
+
+        material = Material(material: mdlSubmesh.material)
+
+        pipelineState = Submesh.makePipelineState(textures: textures,
+                                                  vertexFunction: type.vertexFunctionName,
+                                                  fragmentFunctionName: type.fragmentFunctionName,
+                                                  isGround: type.isGround,
+                                                  blending: type.blending)
+
     }
 
-    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
-        self.submesh = submesh
-        textures = Textures(material: mdlSubmesh.material)
-        material = Material(material: mdlSubmesh.material)
-        pipelineState = Submesh.makePipelineState(textures: textures,
-                                                  vertexFunction: vertexFunction,
-                                                  fragmentFunctionName: fragmentFunction,
-                                                  isGround: isGround,
-                                                  blending: blending)
-    }
+//    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
+//        self.submesh = submesh
+//        textures = Textures(material: mdlSubmesh.material)
+//        material = Material(material: mdlSubmesh.material)
+//        pipelineState = Submesh.makePipelineState(textures: textures,
+//                                                  vertexFunction: vertexFunction,
+//                                                  fragmentFunctionName: fragmentFunction,
+//                                                  isGround: isGround,
+//                                                  blending: blending)
+//    }
 }
 
 // Pipeline state
@@ -116,7 +124,7 @@ private extension Submesh {
 extension Submesh: Texturable {}
 
 private extension Submesh.Textures {
-    init(material: MDLMaterial?) {
+    init(material: MDLMaterial?, overrideTexture: String? = nil) {
         func property(with semantic: MDLMaterialSemantic, name: String) -> MTLTexture? {
 //            print("🛠 Loading Material \(name)")
             guard
@@ -135,7 +143,11 @@ private extension Submesh.Textures {
             return texture
         }
 
-        baseColor = property(with: .baseColor, name: "baseColor")
+        if let texName = overrideTexture {
+            baseColor = try! Submesh.loadTexture(imageName: texName)
+        } else {
+            baseColor = property(with: .baseColor, name: "baseColor")
+        }
         normal = property(with: .tangentSpaceNormal, name: "tangentSpaceNormal")
         roughness = property(with: .roughness, name: "roughness")
     }
