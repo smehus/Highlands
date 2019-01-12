@@ -25,25 +25,24 @@ final class GameScene: Scene {
 
         lights = lighting()
         camera.position = [0, 1.2, -4]
-
-        ground.tiling = 32
-        add(node: ground)
-
-        let tree = Prop(name: "treefir", instanceCount: 50)
-        add(node: tree)
-//         TODO: Figure out a way to handle physics with instancing
-//        physicsController.addStaticBody(node: tree)
-        for i in 0..<50 {
-            var transform = Transform()
-            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-            tree.updateBuffer(instance: i, transform: transform)
-        }
-
-
+//
+//        ground.tiling = 32
+//        add(node: ground)
+//
+//        let tree = Prop(name: "treefir", instanceCount: 50)
+//        add(node: tree)
+////         TODO: Figure out a way to handle physics with instancing
+////        physicsController.addStaticBody(node: tree)
+//        for i in 0..<50 {
+//            var transform = Transform()
+//            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+//            tree.updateBuffer(instance: i, transform: transform)
+//        }
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
         let rock = Morph(name: "Rocks", instanceCount: 20, textureNames: textureNames, morphTargetNames: morphTargetNames)
+//        let rock = Prop(name: "rock2", vertexFunction: "vertex_morph", fragmentFunction: "fragment_morph", instanceCount: 20)
         add(node: rock)
         for i in 0..<20 {
             var transform = Transform()

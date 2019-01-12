@@ -49,9 +49,14 @@ class Morph: Node {
 
         // load up the first morph target into a buffer
         // assume only one vertex buffer and one material submesh for simplicity
-        guard let mesh = Morph.loadMesh(name: morphTargetNames[0]) else {
+        guard let mdlMesh = Morph.loadMesh(name: morphTargetNames[0]) else {
             fatalError("morph target not loaded")
         }
+
+        guard let mesh = try? MTKMesh(mesh: mdlMesh, device: Renderer.device) else {
+            fatalError()
+        }
+
         submesh = Morph.loadSubmesh(mesh: mesh)
         vertexBuffer = mesh.vertexBuffers[0].buffer
 
@@ -107,14 +112,14 @@ class Morph: Node {
         pointer.pointee.normalMatrix = transform.normalMatrix
     }
 
-    static func loadMesh(name: String) -> MTKMesh? {
+    static func loadMesh(name: String) -> MDLMesh? {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")!
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL,
                              vertexDescriptor: mdlVertexDescriptor,
                              bufferAllocator: allocator)
         let mdlMesh = asset.object(at: 0) as! MDLMesh
-        return try? MTKMesh(mesh: mdlMesh, device: Renderer.device)
+        return mdlMesh
     }
 
     static func makePipelineState(vertex: MTLFunction,
