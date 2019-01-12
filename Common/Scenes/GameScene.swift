@@ -15,7 +15,7 @@ final class GameScene: Scene {
     let ground = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let car = Prop(name: "racing-car")
-    let lantern = Prop(type: PropType.base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
+    let lantern = Prop(type: .instanced(name: "SA_LD_Medieval_Horn_Lantern", instanceCount: 1))
 
     override func setupScene() {
 
