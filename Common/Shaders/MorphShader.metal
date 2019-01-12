@@ -10,6 +10,8 @@
 using namespace metal;
 #import "Common.h"
 
+constant bool hasColorTexture [[ function_constant(0) ]];
+
 struct VertexIn {
     packed_float3 position;
     packed_float3 normal;
@@ -26,11 +28,11 @@ struct VertexOut {
 vertex VertexOut vertex_morph(constant VertexIn *in [[ buffer(0) ]],
                                uint vertexID [[ vertex_id]],
                                constant Uniforms &uniforms [[ buffer(BufferIndexUniforms) ]],
-                               constant MorphInstance *instances [[ buffer(BufferIndexInstances) ]],
+                               constant Instances *instances [[ buffer(BufferIndexInstances) ]],
                                uint instanceID [[ instance_id ]]  ) {
 
     VertexIn vertexIn = in[vertexID];
-    MorphInstance instance = instances[instanceID];
+    Instances instance = instances[instanceID];
 
     VertexOut out;
     float4 position = float4(vertexIn.position, 1);
@@ -47,10 +49,19 @@ constant float3 sunlight = float3(2, 4, -4);
 
 fragment float4 fragment_morph(VertexOut in [[ stage_in ]],
                                 texture2d<float> baseColorTexture [[ texture(0) ]],
+                                constant Material &material [[ buffer(BufferIndexMaterials) ]],
                                 constant FragmentUniforms &fragmentUniforms [[buffer(BufferIndexFragmentUniforms)]]){
 
-    constexpr sampler s(filter::linear);
-    float4 baseColor = baseColorTexture.sample(s, in.uv);
+
+
+    float4 baseColor;
+    if (hasColorTexture) {
+        constexpr sampler s(filter::linear);
+        baseColor = baseColorTexture.sample(s, in.uv);
+    } else {
+        baseColor = float4(material.baseColor, 1);
+    }
+
     float3 normal = normalize(in.worldNormal);
 
     float3 lightDirection = normalize(sunlight);

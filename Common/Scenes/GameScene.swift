@@ -41,8 +41,8 @@ final class GameScene: Scene {
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Morph(name: "Rocks", instanceCount: 20, textureNames: textureNames, morphTargetNames: morphTargetNames)
-//        let rock = Prop(name: "rock2", vertexFunction: "vertex_morph", fragmentFunction: "fragment_morph", instanceCount: 20)
+//        let rock = Morph(name: "Rocks", instanceCount: 20, textureNames: textureNames, morphTargetNames: morphTargetNames)
+        let rock = Prop(name: "rock2", vertexFunction: "vertex_morph", fragmentFunction: "fragment_morph", instanceCount: 20)
         add(node: rock)
         for i in 0..<20 {
             var transform = Transform()
