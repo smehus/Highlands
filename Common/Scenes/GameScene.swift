@@ -12,7 +12,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let ground = Prop(type: .base(name: "large-plane"))
+//    let ground = Prop(type: .base(name: "large-plane"))
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let car = Prop(name: "racing-car")
 //    let lantern = Prop(name: "SA_LD_Medieval_Horn_Lantern", isGround: false, lighting: false)
@@ -26,8 +26,8 @@ final class GameScene: Scene {
         lights = lighting()
         camera.position = [0, 1.2, -4]
 
-        ground.tiling = 32
-        add(node: ground)
+//        ground.tiling = 32
+//        add(node: ground)
 //
 //        let tree = Prop(name: "treefir", instanceCount: 50)
 //        add(node: tree)

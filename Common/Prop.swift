@@ -51,6 +51,17 @@ enum PropType {
             return 1
         }
     }
+
+    var isGround: Bool {
+        switch self {
+        case .ground: return true
+        default: return false
+        }
+    }
+
+    var blending: Bool {
+        return false
+    }
 }
 
 enum ModelError: Error {
@@ -105,10 +116,7 @@ class Prop: Node {
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap { index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
-            return Submesh(base: (mtkMesh.submeshes[index], submesh, type.vertexFunctionName, type.fragmentFunctionName),
-                           isGround: type.name == "large-plane",
-                           blending: type.name == "window")
-
+            return Submesh(submesh: mtkMesh.submeshes[index], mdlSubmesh: submesh, type: type)
             } ?? []
 
         samplerState = Prop.buildSamplerState()

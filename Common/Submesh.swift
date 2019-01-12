@@ -1,7 +1,7 @@
 
 import MetalKit
 
-typealias BaseParameters = (submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String)
+typealias BaseParameters = ()
 
 class Submesh {
 
@@ -23,13 +23,22 @@ class Submesh {
         self.pipelineState = pipelineState
     }
 
-    required init(base: BaseParameters, isGround: Bool = false, blending: Bool = false) {
-        self.submesh = base.submesh
-        textures = Textures(material: base.mdlSubmesh.material)
-        material = Material(material: base.mdlSubmesh.material)
+    convenience init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: PropType) {
+        self.init(submesh: submesh,
+                  mdlSubmesh: mdlSubmesh,
+                  vertexFunction: type.vertexFunctionName,
+                  fragmentFunction: type.fragmentFunctionName,
+                  isGround: type.isGround,
+                  blending: type.blending)
+    }
+
+    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
+        self.submesh = submesh
+        textures = Textures(material: mdlSubmesh.material)
+        material = Material(material: mdlSubmesh.material)
         pipelineState = Submesh.makePipelineState(textures: textures,
-                                                  vertexFunction: base.vertexFunction,
-                                                  fragmentFunctionName: base.fragmentFunction,
+                                                  vertexFunction: vertexFunction,
+                                                  fragmentFunctionName: fragmentFunction,
                                                   isGround: isGround,
                                                   blending: blending)
     }
