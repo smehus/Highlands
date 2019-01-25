@@ -24,7 +24,7 @@ final class GameScene: Scene {
         inputController.keyboardDelegate = self
 
         lights = lighting()
-        camera.position = [0, 1.2, -4]
+        camera.position = [0, 0.5, -4]
 
         ground.tiling = 32
         add(node: ground)

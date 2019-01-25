@@ -85,7 +85,7 @@ extension Renderer: MTKViewDelegate {
 
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
-        drawDebug(encoder: renderEncoder)
+//        drawDebug(encoder: renderEncoder)
 
         renderEncoder.endEncoding()
 
