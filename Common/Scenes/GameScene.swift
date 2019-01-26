@@ -65,7 +65,7 @@ final class GameScene: Scene {
         lantern.position = [2.5, 3, 1]
         add(node: lantern, parent: skeleton, render: true)
 
-        skeleton.scale = [0.2, 0.2, 0.2]
+        skeleton.scale = [0.5, 0.5, 0.5]
 //        skeleton.position = [1.2, 1, 3]
 //        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])

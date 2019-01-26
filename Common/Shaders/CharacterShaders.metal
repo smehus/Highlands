@@ -208,7 +208,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     float current_sample = in.shadowPosition.z / in.shadowPosition.w;
 
     if (current_sample > shadow_sample ) {
-        color *= 0.5;
+//        color *= 0.5;
     }
     
     return float4(color, 1);
