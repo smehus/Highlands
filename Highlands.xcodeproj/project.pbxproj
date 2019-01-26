@@ -122,8 +122,6 @@
 		A58F1A0F21E931E5003F6F1F /* rock3.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A58F1A0321E931E5003F6F1F /* rock3.mtl */; };
 		A58F1A1121E94112003F6F1F /* MorphShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = A58F1A1021E94112003F6F1F /* MorphShader.metal */; };
 		A58F1A1221E94112003F6F1F /* MorphShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = A58F1A1021E94112003F6F1F /* MorphShader.metal */; };
-		A58F1A1421E94B4F003F6F1F /* Morph.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58F1A1321E94B4E003F6F1F /* Morph.swift */; };
-		A58F1A1521E94B4F003F6F1F /* Morph.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58F1A1321E94B4E003F6F1F /* Morph.swift */; };
 		A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */; };
@@ -274,7 +272,6 @@
 		A58F1A0221E931E5003F6F1F /* rock2.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock2.mtl; sourceTree = "<group>"; };
 		A58F1A0321E931E5003F6F1F /* rock3.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock3.mtl; sourceTree = "<group>"; };
 		A58F1A1021E94112003F6F1F /* MorphShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MorphShader.metal; sourceTree = "<group>"; };
-		A58F1A1321E94B4E003F6F1F /* Morph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Morph.swift; sourceTree = "<group>"; };
 		A5A1CD1721B9EC5D002F6F35 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		A5A1CD1D21B9F332002F6F35 /* Prop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prop.swift; sourceTree = "<group>"; };
@@ -539,7 +536,6 @@
 				A57506CF21CD680E00C63081 /* Renderable.swift */,
 				A5F6ABB321CF292D0027D425 /* Notes */,
 				A563DF1B21E8035200563EA9 /* Transform.swift */,
-				A58F1A1321E94B4E003F6F1F /* Morph.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -858,7 +854,6 @@
 				A5CB1EA021EA848E002CCB94 /* DebugLights.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
 				A57506CA21CD669700C63081 /* DebugBoundingBox.metal in Sources */,
-				A58F1A1421E94B4F003F6F1F /* Morph.swift in Sources */,
 				A57F6A5721B8CBD7002C0632 /* Renderer.swift in Sources */,
 				A588D83A21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
@@ -891,7 +886,6 @@
 				A5A1CD1F21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
-				A58F1A1521E94B4F003F6F1F /* Morph.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				A57506D821CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */,
 				A5CB1E9F21EA848E002CCB94 /* DebugLights.metal in Sources */,

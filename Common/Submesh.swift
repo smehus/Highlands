@@ -25,7 +25,7 @@ class Submesh {
         self.submesh = submesh
         switch type {
         case .morph(let texNames, _, _):
-            textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin, overrideTexture: texNames.first!)
+            textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin, overrideTextures: texNames)
         default:
             textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin)
         }
@@ -55,7 +55,7 @@ private extension Submesh {
         var isGround = type.isGround
         var lighting = type.lighting
         var blending = type.blending
-        var property = textures.baseColor != nil
+        var property = (textures.baseColor != nil && !type.isTextureArray)
 
         functionConstants.setConstantValue(&property, type: .bool, index: 0)
 
@@ -76,6 +76,9 @@ private extension Submesh {
 
         // ShouldBlend
         functionConstants.setConstantValue(&blending, type: .bool, index: 7)
+
+        var isTextureArray = type.isTextureArray
+        functionConstants.setConstantValue(&isTextureArray, type: .bool, index: 8)
 
         return functionConstants
     }
@@ -119,7 +122,7 @@ private extension Submesh {
 extension Submesh: Texturable {}
 
 private extension Submesh.Textures {
-    init(material: MDLMaterial?, origin: MTKTextureLoader.Origin = .topLeft, overrideTexture: String? = nil) {
+    init(material: MDLMaterial?, origin: MTKTextureLoader.Origin = .topLeft, overrideTextures: [String]? = nil) {
         func property(with semantic: MDLMaterialSemantic, name: String) -> MTLTexture? {
 //            print("🛠 Loading Material \(name)")
             guard
@@ -138,8 +141,8 @@ private extension Submesh.Textures {
             return texture
         }
 
-        if let texName = overrideTexture {
-            baseColor = try! Submesh.loadTexture(imageName: texName)
+        if let texNames = overrideTextures {
+            baseColor = Submesh.loadTextureArray(textureNames: texNames)
         } else {
             baseColor = property(with: .baseColor, name: "baseColor")
         }

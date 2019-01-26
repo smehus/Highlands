@@ -41,6 +41,13 @@ enum PropType {
         }
     }
 
+    var isTextureArray: Bool {
+        switch self {
+        case .morph: return true
+        default: return false
+        }
+    }
+
     var instanceCount: Int {
         switch self {
         case .morph(_, _, let count):
@@ -182,7 +189,7 @@ class Prop: Node {
     }
 
     static func buildInstanceBuffer(transforms: [Transform]) -> MTLBuffer {
-        let instances = transforms.map { Instances(modelMatrix: $0.modelMatrix, normalMatrix: $0.normalMatrix) }
+        let instances = transforms.map { Instances(modelMatrix: $0.modelMatrix, normalMatrix: $0.normalMatrix, textureID: 0) }
 
         guard
             let instanceBuffer = Renderer.device
@@ -198,13 +205,14 @@ class Prop: Node {
         return [Transform](repeatElement(Transform(), count: instanceCount))
     }
 
-    func updateBuffer(instance: Int, transform: Transform) {
+    func updateBuffer(instance: Int, transform: Transform, textureID: Int) {
         transforms[instance] = transform
 
         var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
         pointer = pointer.advanced(by: instance)
         pointer.pointee.modelMatrix = transforms[instance].modelMatrix
         pointer.pointee.normalMatrix = transforms[instance].normalMatrix
+        pointer.pointee.textureID = UInt32(textureID)
     }
 
     private static func buildSamplerState() -> MTLSamplerState? {

@@ -15,6 +15,7 @@ constant bool hasNormalTexture [[ function_constant(1) ]];
 constant bool isGroundTexture [[ function_constant(5) ]];
 constant bool includeLighting [[ function_constant(6) ]];
 constant bool includeBlending [[ function_constant(7) ]];
+constant bool hasColorTextureArray [[ function_constant(8) ]];
 
 struct VertexIn {
     float4 position [[ attribute(Position) ]];
@@ -31,6 +32,7 @@ struct VertexOut {
     float2 uv;
     float3 worldTangent;
     float3 worldBitangent;
+    uint textureID [[ flat ]];
 };
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -49,6 +51,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     // Normal matrix is the same as world space aka model matrix
     out.worldTangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.tangent;
     out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;
+    out.textureID = instance.textureID;
     return out;
 }
 
@@ -182,6 +185,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant Material &material [[ buffer(BufferIndexMaterials) ]],
                               constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                               texture2d<float> baseColorTexture [[ texture(BaseColorTexture), function_constant(hasColorTexture) ]],
+                              texture2d_array<float> baseColorTextureArray [[ texture(BaseColorTexture), function_constant(hasColorTextureArray) ]],
                               texture2d<float> normalTexture [[ texture(NormalTexture), function_constant(hasNormalTexture) ]],
                               constant uint &tiling [[ buffer(22) ]])
 
@@ -190,7 +194,9 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     // Uses function constants to check if the model
     // has map_kd aka Color texture.
     // Basically checks the submesh was able to load the texture in map_kd
-    if (hasColorTexture) {
+    if (hasColorTextureArray) {
+        baseColor = baseColorTextureArray.sample(textureSampler, in.uv, in.textureID);
+    } else if (hasColorTexture) {
         baseColor = baseColorTexture.sample(textureSampler, in.uv * tiling);
     } else {
         baseColor = float4(material.baseColor, 1);

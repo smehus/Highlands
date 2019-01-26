@@ -36,7 +36,7 @@ final class GameScene: Scene {
         for i in 0..<50 {
             var transform = Transform()
             transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-            tree.updateBuffer(instance: i, transform: transform)
+            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
@@ -53,7 +53,7 @@ final class GameScene: Scene {
             }
 
             transform.scale = [0.5, 0.5, 0.5]
-            rock.updateBuffer(instance: i, transform: transform)
+            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
 
 
