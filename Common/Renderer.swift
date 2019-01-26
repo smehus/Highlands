@@ -131,8 +131,8 @@ extension Renderer: MTKViewDelegate {
         // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
         // goodddddddd damniiitttttt
 //        scene.uniforms = previousUniforms
-        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
-        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
+//        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
+//        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
         scene.uniforms.viewMatrix = previousUniforms.viewMatrix
         scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 
@@ -173,8 +173,8 @@ extension Renderer: MTKViewDelegate {
 
         renderEncoder.setDepthBias(0.01, slopeScale: 1.0, clamp: 0.01)
 
-        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
-        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
+        let rect = Rectangle(left: -20, right: 20, top: 20, bottom: -20)
+        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 300)
 
         let sunlight = scene.lights.first!
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]

@@ -20,6 +20,7 @@ struct VertexOut {
 //    float3 worldTangent;
 //    float3 worldBitangent;
     float2 uv;
+    float4 shadowPosition;
 };
 
 vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -43,6 +44,8 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
     out.uv = vertexIn.uv;
 
+    float4x4 shadowMatrix = uniforms.shadowMatrix;
+    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * vertexIn.position;
 
 //    out.worldTangent = uniforms.normalMatrix * (skinMatrix * vertexIn.tangent).xyz;
 //    float3 bitangent = cross(vertexIn.normal, vertexIn.tangent.xyz) * vertexIn.tangent.w;
@@ -180,6 +183,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                         constant Light *lights [[ buffer(BufferIndexLights) ]],
                                         texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
+                                        depth2d<float> shadowTexture [[ texture(ShadowTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
 
     constexpr sampler s(filter::linear);
@@ -194,6 +198,18 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     }
 
     float3 color = characterDiffuseLighting(in, baseColor.rgb, normalize(in.worldNormal), material, fragmentUniforms, lights);
+
+    float2 xy = in.shadowPosition.xy;
+    xy = xy * 0.5 + 0.5;
+    xy.y = 1 - xy.y;
+
+    constexpr sampler shadowSample(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
+    float shadow_sample = shadowTexture.sample(shadowSample, xy);
+    float current_sample = in.shadowPosition.z / in.shadowPosition.w;
+
+    if (current_sample > shadow_sample ) {
+        color *= 0.5;
+    }
     
     return float4(color, 1);
 
