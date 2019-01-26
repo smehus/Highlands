@@ -32,3 +32,7 @@ IMPORTANT: need to pass along where the texture uv begins -> OBJ is bottom left?
 This is in texturable
 This is what made the lantern seem to break
 Although the car did not?
+
+
+***** If you get a blue screen thats half black and all fucked up ****
+- Its probably because theres a nil texture somewhere in the shaders

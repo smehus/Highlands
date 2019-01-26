@@ -119,13 +119,22 @@ extension Renderer: MTKViewDelegate {
             return 
         }
 
+        renderEncoder.pushDebugGroup("Main pass")
+        renderEncoder.label = "Main encoder"
         renderEncoder.setDepthStencilState(depthStencilState)
 
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
         fragmentUniforms.lightCount = UInt32(scene.lights.count)
 
-        scene.uniforms = previousUniforms
+        // Reset uniforms so projection is correct
+        // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
+        // goodddddddd damniiitttttt
+//        scene.uniforms = previousUniforms
+        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
+        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
+        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
+        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 
         renderEncoder.setFragmentBytes(&fragmentUniforms,
                                        length: MemoryLayout<FragmentUniforms>.stride,
@@ -136,9 +145,11 @@ extension Renderer: MTKViewDelegate {
                                        length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
+        renderEncoder.setFragmentTexture(shadowTexture, index: Int(ShadowTexture.rawValue))
+
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
-            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms, pipeline: nil)
+            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
             renderEncoder.popDebugGroup()
         }
 
@@ -174,11 +185,11 @@ extension Renderer: MTKViewDelegate {
         scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 7]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
 
-//        renderEncoder.setRenderPipelineState(shadowPipelineState)
+        renderEncoder.setRenderPipelineState(shadowPipelineState)
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
-            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms, pipeline: shadowPipelineState)
+            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms)
             renderEncoder.popDebugGroup()
         }
 

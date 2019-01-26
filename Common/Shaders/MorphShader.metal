@@ -24,6 +24,7 @@ struct VertexOut {
     float3 worldNormal;
     float2 uv;
     uint textureID [[ flat ]];
+    float4 shadowPosition;
 };
 
 vertex VertexOut vertex_morph(constant VertexIn *in [[ buffer(0) ]],
@@ -56,6 +57,8 @@ vertex VertexOut vertex_morph(constant VertexIn *in [[ buffer(0) ]],
     out.worldNormal = uniforms.normalMatrix * instance.normalMatrix * float3(vertexIn.normal);
     out.uv = vertexIn.uv;
     out.textureID = instance.textureID;
+    out.shadowPosition = uniforms.shadowMatrix * uniforms.modelMatrix * float4(vertexIn.position, 1);
+
     // Normal matrix is the same as world space aka model matrix
 //    out.worldTangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.tangent;
 //    out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;

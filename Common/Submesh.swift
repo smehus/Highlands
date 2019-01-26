@@ -141,11 +141,13 @@ private extension Submesh.Textures {
             return texture
         }
 
-        if let texNames = overrideTextures {
-            baseColor = Submesh.loadTextureArray(textureNames: texNames)
-        } else {
-            baseColor = property(with: .baseColor, name: "baseColor")
-        }
+//        if let texNames = overrideTextures {
+//            baseColor = Submesh.loadTextureArray(textureNames: texNames)
+//        } else {
+//            baseColor = property(with: .baseColor, name: "baseColor")
+//        }
+
+        baseColor = property(with: .baseColor, name: "baseColor")
         normal = property(with: .tangentSpaceNormal, name: "tangentSpaceNormal")
         roughness = property(with: .roughness, name: "roughness")
     }

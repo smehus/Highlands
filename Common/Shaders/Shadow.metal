@@ -13,9 +13,14 @@ using namespace metal;
 struct VertexIn {
     float4 position [[ attribute(0) ]];
 };
-vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]], constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
+vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
+                           constant Instances *instances [[ buffer(BufferIndexInstances) ]],
+                           uint instanceID [[ instance_id ]],
+                           constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
 
-    matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
+    Instances instance = instances[instanceID];
+
+    matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix;
     float4 position = mvp * vertexIn.position;
     
     return position;

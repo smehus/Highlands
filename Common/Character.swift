@@ -131,8 +131,8 @@ extension Character: Renderable {
         currentAnimationPlaying = false
     }
 
-    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, pipeline: MTLRenderPipelineState?) {
-        guard pipeline == nil else { return }
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+        
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 
@@ -188,4 +188,6 @@ extension Character: Renderable {
             }
         }
     }
+
+    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) { }
 }

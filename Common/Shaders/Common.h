@@ -47,6 +47,7 @@ typedef enum {
     BufferIndexSkybox = 20,
     BufferIndexSkyboxDiffuse = 21,
     BufferIndexBRDFLut = 22
+
 } BufferIndices;
 
 typedef enum {
@@ -62,7 +63,9 @@ typedef enum {
 
 typedef enum {
     BaseColorTexture = 0,
-    NormalTexture = 1
+    NormalTexture = 1,
+    RoughnessTexture = 2,
+    ShadowTexture = 3
 } Textures;
 
 struct Material {

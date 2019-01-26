@@ -33,6 +33,7 @@ struct VertexOut {
     float3 worldTangent;
     float3 worldBitangent;
     uint textureID [[ flat ]];
+    float4 shadowPosition;
 };
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -52,6 +53,9 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.worldTangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.tangent;
     out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;
     out.textureID = instance.textureID;
+    float4x4 shadowMatrix = uniforms.shadowMatrix;
+    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
+    
     return out;
 }
 
@@ -186,6 +190,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                               texture2d<float> baseColorTexture [[ texture(BaseColorTexture), function_constant(hasColorTexture) ]],
                               texture2d_array<float> baseColorTextureArray [[ texture(BaseColorTexture), function_constant(hasColorTextureArray) ]],
+                              depth2d<float> shadowTexture [[ texture(ShadowTexture) ]],
                               texture2d<float> normalTexture [[ texture(NormalTexture), function_constant(hasNormalTexture) ]],
                               constant uint &tiling [[ buffer(22) ]])
 
@@ -227,6 +232,20 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     } else {
         color = baseColor.xyz;
     }
+
+    // Shadows
+    float2 xy = in.shadowPosition.xy;
+    xy = xy * 0.5 + 0.5;
+    xy.y = 1 - xy.y;
+
+    constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
+    float shadow_sample = shadowTexture.sample(s, xy);
+    float current_sample = in.shadowPosition.z / in.shadowPosition.w;
+//
+    if (current_sample > shadow_sample ) {
+        color *= 0.5;
+    }
+
 
 //    float4 finalColor = fog(in.position, float4(color, 1));
 

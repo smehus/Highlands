@@ -122,6 +122,7 @@ class Prop: Node {
     var instanceBuffer: MTLBuffer
 
     init(type: PropType) {
+
         // MDLMesh: Load model from bundle
         let mdlMesh = Prop.loadMesh(name: type.name)
         mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
@@ -145,7 +146,7 @@ class Prop: Node {
         instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
 
         super.init()
-
+        self.name = type.name
         boundingBox = mdlMesh.boundingBox
     }
 
@@ -232,7 +233,7 @@ class Prop: Node {
 extension Prop: Renderable {
 
 
-    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, pipeline: MTLRenderPipelineState? = nil) {
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 
         var uniforms = vertex
         uniforms.modelMatrix = worldTransform
@@ -253,12 +254,8 @@ extension Prop: Renderable {
 
 
         for modelSubmesh in submeshes {
-            if let state = pipeline {
-                renderEncoder.setRenderPipelineState(state)
-            } else {
-                renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
-            }
-
+            
+            renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
             renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
             renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
             renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: 2)
@@ -280,6 +277,34 @@ extension Prop: Renderable {
                 debugBoundingBox.render(renderEncoder: renderEncoder, uniforms: uniforms)
             }
         }
+    }
 
+    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+
+        var uniforms = uniforms
+        uniforms.modelMatrix = worldTransform
+        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
+
+        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+
+        renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
+
+        for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+            renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
+        }
+
+        for modelSubmesh in submeshes {
+            let submesh = modelSubmesh.submesh!
+            renderEncoder.setFragmentBytes(&modelSubmesh.material,
+                                           length: MemoryLayout<Material>.stride,
+                                           index: 1)
+
+            renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                indexCount: submesh.indexCount,
+                                                indexType: submesh.indexType,
+                                                indexBuffer: submesh.indexBuffer.buffer,
+                                                indexBufferOffset: submesh.indexBuffer.offset,
+                                                instanceCount: instanceCount)
+        }
     }
 }

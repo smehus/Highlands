@@ -39,22 +39,22 @@ final class GameScene: Scene {
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
 
-        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
-        let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
-        add(node: rock)
-        for i in 0..<20 {
-            var transform = Transform()
-
-            if i == 0 {
-                transform.position = [0, 0, 3]
-            } else {
-                transform.position = [Float(Int.random(in: -10...10)), 0, Float(Int.random(in: -10...10))]
-            }
-
-            transform.scale = [0.5, 0.5, 0.5]
-            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-        }
+//        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
+//        let morphTargetNames = ["rock1", "rock2", "rock3"]
+//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
+//        add(node: rock)
+//        for i in 0..<20 {
+//            var transform = Transform()
+//
+//            if i == 0 {
+//                transform.position = [0, 0, 3]
+//            } else {
+//                transform.position = [Float(Int.random(in: -10...10)), 0, Float(Int.random(in: -10...10))]
+//            }
+//
+//            transform.scale = [0.5, 0.5, 0.5]
+//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+//        }
 
 
 //        car.rotation = [0, radians(fromDegrees: 90), 0]
