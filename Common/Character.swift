@@ -190,7 +190,7 @@ extension Character: Renderable {
     }
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
-        /*
+
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 
@@ -213,7 +213,7 @@ extension Character: Renderable {
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
             for submesh in mesh.submeshes {
-//                renderEncoder.setRenderPipelineState(submesh.pipelineState)
+                renderEncoder.setRenderPipelineState(submesh.shadowPipelineSTate)
 
                 if submesh.textures.baseColor == nil {
                     print("🧲 TEXTURE BASE COLOR NIL")
@@ -242,6 +242,5 @@ extension Character: Renderable {
             }
 
         }
- */
     }
 }
