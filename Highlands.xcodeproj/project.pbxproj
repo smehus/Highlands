@@ -171,6 +171,8 @@
 		A5CBD1BB21E29B3C001D77EF /* animated_ball_texture.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1B821E29B3C001D77EF /* animated_ball_texture.bin */; };
 		A5CBD1BC21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */; };
 		A5CBD1BD21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */; };
+		A5F08F3D21FCC7A0007E276F /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5F08F3C21FCC7A0007E276F /* Shadow.metal */; };
+		A5F08F3E21FCC7A0007E276F /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5F08F3C21FCC7A0007E276F /* Shadow.metal */; };
 		A5F2918321CEF05600FF57A5 /* beachball.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918121CEF05600FF57A5 /* beachball.mtl */; };
 		A5F2918421CEF05600FF57A5 /* beachball.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918121CEF05600FF57A5 /* beachball.mtl */; };
 		A5F2918521CEF05600FF57A5 /* beachball.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5F2918221CEF05600FF57A5 /* beachball.obj */; };
@@ -298,6 +300,7 @@
 		A5CBD0F121E2697A001D77EF /* claire_idle.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = claire_idle.bin; sourceTree = "<group>"; };
 		A5CBD1B821E29B3C001D77EF /* animated_ball_texture.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball_texture.bin; sourceTree = "<group>"; };
 		A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball_texture.gltf; sourceTree = "<group>"; };
+		A5F08F3C21FCC7A0007E276F /* Shadow.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shadow.metal; sourceTree = "<group>"; };
 		A5F2918121CEF05600FF57A5 /* beachball.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beachball.mtl; sourceTree = "<group>"; };
 		A5F2918221CEF05600FF57A5 /* beachball.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = beachball.obj; sourceTree = "<group>"; };
 		A5F6ABB321CF292D0027D425 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
@@ -471,6 +474,7 @@
 				A57F6A6521B9795D002C0632 /* Common.h */,
 				A563DF1421E7999F00563EA9 /* Skybox.metal */,
 				A58F1A1021E94112003F6F1F /* MorphShader.metal */,
+				A5F08F3C21FCC7A0007E276F /* Shadow.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -848,6 +852,7 @@
 				A57506E221CDA2C600C63081 /* GameScene.swift in Sources */,
 				A563DF1521E7999F00563EA9 /* Skybox.metal in Sources */,
 				A563DF1C21E8035200563EA9 /* Transform.swift in Sources */,
+				A5F08F3D21FCC7A0007E276F /* Shadow.metal in Sources */,
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A58F1A1121E94112003F6F1F /* MorphShader.metal in Sources */,
 				A57506DF21CD970B00C63081 /* Scene.swift in Sources */,
@@ -914,6 +919,7 @@
 				A57506D121CD680E00C63081 /* Renderable.swift in Sources */,
 				A575069F21CD63E200C63081 /* InputController.swift in Sources */,
 				A57506CD21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
+				A5F08F3E21FCC7A0007E276F /* Shadow.metal in Sources */,
 				A57506A321CD641300C63081 /* GameView.swift in Sources */,
 				A57506E321CDA2C600C63081 /* GameScene.swift in Sources */,
 				A57506E021CD970B00C63081 /* Scene.swift in Sources */,

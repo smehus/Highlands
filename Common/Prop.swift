@@ -232,7 +232,7 @@ class Prop: Node {
 extension Prop: Renderable {
 
 
-    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, pipeline: MTLRenderPipelineState? = nil) {
 
         var uniforms = vertex
         uniforms.modelMatrix = worldTransform
@@ -253,7 +253,12 @@ extension Prop: Renderable {
 
 
         for modelSubmesh in submeshes {
-            renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
+            if let state = pipeline {
+                renderEncoder.setRenderPipelineState(state)
+            } else {
+                renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
+            }
+
             renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
             renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
             renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: 2)

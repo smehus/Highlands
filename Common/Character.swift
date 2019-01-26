@@ -131,7 +131,8 @@ extension Character: Renderable {
         currentAnimationPlaying = false
     }
 
-    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, pipeline: MTLRenderPipelineState?) {
+        guard pipeline == nil else { return }
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 
