@@ -190,6 +190,7 @@ extension Character: Renderable {
     }
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+        /*
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 
@@ -241,5 +242,6 @@ extension Character: Renderable {
             }
 
         }
+ */
     }
 }

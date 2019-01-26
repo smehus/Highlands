@@ -14,11 +14,13 @@ class Submesh {
     var material: Material
 
     let pipelineState: MTLRenderPipelineState!
+    let shadowPipelineSTate: MTLRenderPipelineState!
 
-    init(pipelineState: MTLRenderPipelineState, material: MDLMaterial?) {
+    init(pipelineState: MTLRenderPipelineState, shadowPipelineState: MTLRenderPipelineState, material: MDLMaterial?) {
         textures = Textures(material: material)
         self.material = Material(material: material)
         self.pipelineState = pipelineState
+        self.shadowPipelineSTate = shadowPipelineState
     }
 
     required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: PropType) {
@@ -33,6 +35,7 @@ class Submesh {
         material = Material(material: mdlSubmesh.material)
 
         pipelineState = Submesh.makePipelineState(textures: textures, type: type)
+        shadowPipelineSTate = Submesh.buildShadowPipelineState()
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
@@ -115,6 +118,31 @@ private extension Submesh {
         } catch let error {
             fatalError(error.localizedDescription)
         }
+        return pipelineState
+    }
+
+    static func buildShadowPipelineState() -> MTLRenderPipelineState {
+
+        let constants = MTLFunctionConstantValues()
+        var isSkinned = false
+        constants.setConstantValue(&isSkinned, type: .bool, index: 0)
+        var isInstanced = true
+        constants.setConstantValue(&isInstanced, type: .bool, index: 1)
+
+
+        var pipelineState: MTLRenderPipelineState
+        do {
+            let pipelineDescriptor = MTLRenderPipelineDescriptor()
+            pipelineDescriptor.vertexFunction = try Renderer.library!.makeFunction(name: "vertex_depth", constantValues: constants)
+            pipelineDescriptor.fragmentFunction = nil
+            pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
+            pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
+            pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+            pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+        } catch let error {
+            fatalError(error.localizedDescription)
+        }
+
         return pipelineState
     }
 }

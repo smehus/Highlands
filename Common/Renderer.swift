@@ -16,7 +16,7 @@ final class Renderer: NSObject {
         return buildLightPipelineState()
     }()
 
-    var shadowPipelineState: MTLRenderPipelineState!
+    
     var shadowTexture: MTLTexture!
     let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
 
@@ -40,23 +40,7 @@ final class Renderer: NSObject {
 
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
-        buildShadowPipelineState()
-    }
 
-    func buildShadowPipelineState() {
-
-        let pipelineDescriptor = MTLRenderPipelineDescriptor()
-        pipelineDescriptor.vertexFunction = Renderer.library!.makeFunction( name: "vertex_depth")
-        pipelineDescriptor.fragmentFunction = nil
-        pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
-        pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-
-        do {
-            shadowPipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-        } catch let error {
-            fatalError(error.localizedDescription)
-        }
     }
 
     func buildTexture(pixelFormat: MTLPixelFormat, size: CGSize, label: String) -> MTLTexture {
@@ -184,8 +168,6 @@ extension Renderer: MTKViewDelegate {
 
         scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 7]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
-
-        renderEncoder.setRenderPipelineState(shadowPipelineState)
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)

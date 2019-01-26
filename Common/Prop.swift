@@ -148,6 +148,7 @@ class Prop: Node {
         super.init()
         self.name = type.name
         boundingBox = mdlMesh.boundingBox
+
     }
 
 //    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
@@ -232,7 +233,6 @@ class Prop: Node {
 
 extension Prop: Renderable {
 
-
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 
         var uniforms = vertex
@@ -294,6 +294,7 @@ extension Prop: Renderable {
         }
 
         for modelSubmesh in submeshes {
+            renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineSTate)
             let submesh = modelSubmesh.submesh!
             renderEncoder.setFragmentBytes(&modelSubmesh.material,
                                            length: MemoryLayout<Material>.stride,
