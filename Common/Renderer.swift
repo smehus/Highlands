@@ -3,6 +3,8 @@ import MetalKit
 
 final class Renderer: NSObject {
 
+    static let sampleCount = 1
+
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
     static var colorPixelFormat: MTLPixelFormat!
@@ -25,6 +27,7 @@ final class Renderer: NSObject {
             fatalError("GPU not available")
         }
 
+        metalView.sampleCount = Renderer.sampleCount
         metalView.depthStencilPixelFormat = .depth32Float
         metalView.device = device
         Renderer.device = device

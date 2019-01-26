@@ -822,6 +822,7 @@ extension GLTFAsset {
             descriptor.fragmentFunction = fragmentFunction
             descriptor.vertexDescriptor = vertexDescriptor
             descriptor.depthAttachmentPixelFormat = .depth32Float
+            descriptor.sampleCount = Renderer.sampleCount
             try pipelineState = Renderer.device.makeRenderPipelineState(descriptor: descriptor)
         } catch let error {
             fatalError(error.localizedDescription)

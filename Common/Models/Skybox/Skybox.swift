@@ -77,6 +77,7 @@ class Skybox {
         let descriptor = MTLRenderPipelineDescriptor()
         descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
         descriptor.depthAttachmentPixelFormat = .depth32Float
+        descriptor.sampleCount = Renderer.sampleCount
         descriptor.vertexFunction = Renderer.library?.makeFunction(name: "vertexSkybox")
         descriptor.fragmentFunction = Renderer.library?.makeFunction(name: "fragmentSkybox")
         descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)

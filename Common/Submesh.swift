@@ -110,7 +110,7 @@ private extension Submesh {
         pipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
         pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
         pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
-
+        pipelineDescriptor.sampleCount = Renderer.sampleCount
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
 
         do {
