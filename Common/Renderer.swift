@@ -100,7 +100,7 @@ extension Renderer: MTKViewDelegate {
             return
         }
 
-        renderShadowPass(renderEncoder: shadowEncoder)
+        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else {
             return 
@@ -151,7 +151,7 @@ extension Renderer: MTKViewDelegate {
         commandBuffer.commit()
     }
 
-    func renderShadowPass(renderEncoder: MTLRenderCommandEncoder) {
+    func renderShadowPass(renderEncoder: MTLRenderCommandEncoder, view: MTKView) {
         guard let scene = scene else { return }
         renderEncoder.pushDebugGroup("Shadow pass")
         renderEncoder.label = "Shadow encoder"
@@ -160,15 +160,20 @@ extension Renderer: MTKViewDelegate {
 
         renderEncoder.setDepthBias(0.01, slopeScale: 1.0, clamp: 0.01)
 
-        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
-        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
-
         let sunlight = scene.lights.first!
+
+//        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
+//        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
+
+//        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
+//        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: sunlight.coneAngle), near: 0.1, far: 16, aspect: aspect)
+
+
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
         let center: float3 = [0, 0, 0]
         let lookAt = float4x4(eye: position, center: center, up: [0,1,0])
 
-        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 7]) * lookAt
+        scene.uniforms.viewMatrix = /*float4x4(translation: [0, 0, 7]) **/ lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
 
         for renderable in scene.renderables {
