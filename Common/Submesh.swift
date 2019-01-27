@@ -38,7 +38,7 @@ class Submesh {
 
         pipelineState = Submesh.makePipelineState(textures: textures, type: type)
         shadowPipelineSTate = Submesh.buildShadowPipelineState()
-        gBufferPipelineState = Submesh.buildGbufferPipelineState()
+        gBufferPipelineState = Submesh.buildGbufferPipelineState(textures: textures, type: type)
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
@@ -149,17 +149,23 @@ private extension Submesh {
         return pipelineState
     }
 
-    static func buildGbufferPipelineState() -> MTLRenderPipelineState {
-        
+    static func buildGbufferPipelineState(textures: Textures, type: PropType) -> MTLRenderPipelineState {
+
+        let functionConstants = makeFunctionConstants(textures: textures, type: type)
+
         let descriptor = MTLRenderPipelineDescriptor()
         descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
         descriptor.colorAttachments[1].pixelFormat = .rgba16Float
         descriptor.colorAttachments[2].pixelFormat = .rgba16Float
         descriptor.depthAttachmentPixelFormat = .depth32Float
+        descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
         descriptor.label = "GBuffer state"
         descriptor.vertexFunction = Renderer.library!.makeFunction(name: "vertex_main")
-        descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "gBufferFragment")
-        descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
+        do {
+            descriptor.fragmentFunction = try Renderer.library!.makeFunction(name: "gBufferFragment", constantValues: functionConstants)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
 
         let buffer: MTLRenderPipelineState
 

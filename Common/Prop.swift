@@ -310,6 +310,43 @@ extension Prop: Renderable {
     }
 
     func renderGBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+        var uniforms = uniforms
+        uniforms.modelMatrix = worldTransform
+        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
 
+        renderEncoder.setFragmentSamplerState(samplerState, index: 0)
+
+        renderEncoder.setVertexBytes(&uniforms,
+                                     length: MemoryLayout<Uniforms>.stride,
+                                     index: Int(BufferIndexUniforms.rawValue))
+
+        renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
+        for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+            renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
+        }
+
+        renderEncoder.setFragmentBytes(&tiling, length: MemoryLayout<UInt32>.stride, index: 22)
+
+
+        for modelSubmesh in submeshes {
+
+            renderEncoder.setRenderPipelineState(modelSubmesh.gBufferPipelineState)
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
+            renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: 2)
+
+
+            var material = modelSubmesh.material
+            renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
+
+            guard let submesh = modelSubmesh.submesh else { continue }
+
+            renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                indexCount: submesh.indexCount,
+                                                indexType: submesh.indexType,
+                                                indexBuffer: submesh.indexBuffer.buffer,
+                                                indexBufferOffset: submesh.indexBuffer.offset,
+                                                instanceCount: instanceCount)
+        }
     }
 }

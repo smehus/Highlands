@@ -870,7 +870,7 @@ extension GLTFAsset {
         descriptor.depthAttachmentPixelFormat = .depth32Float
         descriptor.label = "GBuffer state"
         descriptor.vertexFunction = Renderer.library!.makeFunction(name: "character_vertex_main")
-        descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "gBufferFragment")
+        descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "character_fragment_gbuffer")
         descriptor.vertexDescriptor = vertexDescriptor
 
         let buffer: MTLRenderPipelineState

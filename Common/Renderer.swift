@@ -207,14 +207,15 @@ extension Renderer: MTKViewDelegate {
     }
 
     func renderGbufferPass(renderEncoder: MTLRenderCommandEncoder) {
+        guard let scene = scene else { fatalError() }
         renderEncoder.pushDebugGroup("Gbuffer pass")
         renderEncoder.label = "Gbuffer encoder"
 
         renderEncoder.setDepthStencilState(depthStencilState)
 
         var fragmentUniforms = FragmentUniforms()
-        fragmentUniforms.cameraPosition = scene!.camera.position
-        fragmentUniforms.lightCount = UInt32(scene!.lights.count)
+        fragmentUniforms.cameraPosition = scene.camera.position
+        fragmentUniforms.lightCount = UInt32(scene.lights.count)
         renderEncoder.setFragmentBytes(&fragmentUniforms,
                                        length: MemoryLayout<FragmentUniforms>.stride,
                                        index: Int(BufferIndexFragmentUniforms.rawValue))
@@ -222,6 +223,11 @@ extension Renderer: MTKViewDelegate {
 
         renderEncoder.setFragmentTexture(shadowTexture, index: Int(ShadowTexture.rawValue))
 
+        for renderable in scene.renderables {
+            renderEncoder.pushDebugGroup(renderable.name)
+            renderable.renderGBuffer(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+            renderEncoder.popDebugGroup()
+        }
 
 
         renderEncoder.endEncoding()
