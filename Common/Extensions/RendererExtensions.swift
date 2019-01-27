@@ -8,7 +8,7 @@ func lighting() -> [Light] {
     var lights: [Light] = []
 
 
-    lights.append(spotlight())
+//    lights.append(spotlight())
     //    lights.append(lantern())
 
     var light = buildDefaultLight()

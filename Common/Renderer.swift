@@ -162,8 +162,8 @@ extension Renderer: MTKViewDelegate {
 
         let sunlight = scene.lights.first!
 
-//        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
-//        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
+        let rect = Rectangle(left: -20, right: 20, top: 20, bottom: -20)
+        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
 //        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
 //        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: sunlight.coneAngle), near: 0.1, far: 16, aspect: aspect)
