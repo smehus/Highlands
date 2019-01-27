@@ -3,7 +3,7 @@ import MetalKit
 
 final class Renderer: NSObject {
 
-    static let sampleCount = 4
+    static let sampleCount = 1
 
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
@@ -30,6 +30,26 @@ final class Renderer: NSObject {
     var shadowTexture: MTLTexture!
     let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
 
+    var compositionPipelineState: MTLRenderPipelineState!
+    var quadVerticesBuffer: MTLBuffer!
+    var quadTexCoordsBuffer: MTLBuffer!
+
+    let quadVertices: [Float] = [
+        -1.0,  1.0,
+        1.0, -1.0,
+        -1.0, -1.0,
+        -1.0,  1.0,
+        1.0, 1.0,
+        1.0, -1.0, ]
+    let quadTexCoords: [Float] = [
+        0.0, 0.0,
+        1.0, 1.0,
+        0.0, 1.0,
+        0.0, 0.0,
+        1.0, 0.0,
+        1.0, 1.0
+    ]
+
     init(metalView: MTKView) {
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("GPU not available")
@@ -51,6 +71,18 @@ final class Renderer: NSObject {
 
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
+
+
+        quadVerticesBuffer = Renderer.device.makeBuffer(bytes: quadVertices,
+                                                        length: MemoryLayout<Float>.size * quadVertices.count,
+                                                        options: [])
+        quadVerticesBuffer.label = "Quad vertices"
+        quadTexCoordsBuffer = Renderer.device.makeBuffer(bytes: quadTexCoords,
+                                                         length: MemoryLayout<Float>.size * quadTexCoords.count,
+                                                         options: [])
+        quadTexCoordsBuffer.label = "Quad texCoords"
+
+        buildCompositionPipelineState()
     }
 
     func buildShadowTexture(size: CGSize) {
@@ -83,6 +115,21 @@ final class Renderer: NSObject {
         normalTexture = buildTexture(pixelFormat: .rgba16Float, size: size, label: "Normal texture")
         positionTexture = buildTexture(pixelFormat: .rgba16Float, size: size, label: "Position texture")
         depthTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Depth texture")
+    }
+
+    func buildCompositionPipelineState() {
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        descriptor.depthAttachmentPixelFormat = .depth32Float
+        descriptor.label = "Composition state"
+
+        descriptor.vertexFunction = Renderer.library!.makeFunction( name: "compositionVert")
+        descriptor.fragmentFunction = Renderer.library!.makeFunction( name: "compositionFrag")
+        do {
+            compositionPipelineState = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+        } catch let error {
+            fatalError(error.localizedDescription)
+        }
     }
 }
 
@@ -118,14 +165,10 @@ extension Renderer: MTKViewDelegate {
 
         /// **** MAIN RENDER PASS *** \\\\
 
-        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
-        renderEncoder.pushDebugGroup("Main pass")
-        renderEncoder.label = "Main encoder"
-        renderEncoder.setDepthStencilState(depthStencilState)
-
-        var fragmentUniforms = FragmentUniforms()
-        fragmentUniforms.cameraPosition = scene.camera.position
-        fragmentUniforms.lightCount = UInt32(scene.lights.count)
+//        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
+//        renderEncoder.pushDebugGroup("Main pass")
+//        renderEncoder.label = "Main encoder"
+//        renderEncoder.setDepthStencilState(depthStencilState)
 
         // Reset uniforms so projection is correct
         // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
@@ -136,31 +179,20 @@ extension Renderer: MTKViewDelegate {
         scene.uniforms.viewMatrix = previousUniforms.viewMatrix
         scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 
-        renderEncoder.setFragmentBytes(&fragmentUniforms,
-                                       length: MemoryLayout<FragmentUniforms>.stride,
-                                       index: Int(BufferIndexFragmentUniforms.rawValue))
-
-        
-        renderEncoder.setFragmentBytes(&scene.lights,
-                                       length: MemoryLayout<Light>.stride * scene.lights.count,
-                                       index: Int(BufferIndexLights.rawValue))
-
-        renderEncoder.setFragmentTexture(shadowTexture, index: Int(ShadowTexture.rawValue))
-
-        for renderable in scene.renderables {
-            renderEncoder.pushDebugGroup(renderable.name)
-            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-            renderEncoder.popDebugGroup()
-        }
-
-        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-
-        renderEncoder.endEncoding()
-        renderEncoder.popDebugGroup()
+//        renderEncoder.setFragmentTexture(shadowTexture, index: Int(ShadowTexture.rawValue))
+//
+//        for renderable in scene.renderables {
+//            renderEncoder.pushDebugGroup(renderable.name)
+//            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+//            renderEncoder.popDebugGroup()
+//        }
+//
+////        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+//
+//        renderEncoder.endEncoding()
+//        renderEncoder.popDebugGroup()
 
         /// **** MAIN RENDER PASS  ENDDD *** \\\\
-
-
 
         // G-Buffer
         guard let gBufferEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: gBufferRenderPassDescriptor) else {
@@ -169,6 +201,12 @@ extension Renderer: MTKViewDelegate {
 
         renderGbufferPass(renderEncoder: gBufferEncoder)
 
+
+
+        // Composition!!
+
+        guard let compositionEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
+        renderCompositionPass(renderEncoder: compositionEncoder)
 
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
@@ -229,6 +267,40 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
+
+        renderEncoder.endEncoding()
+        renderEncoder.popDebugGroup()
+    }
+
+    func renderCompositionPass(renderEncoder: MTLRenderCommandEncoder) {
+        guard let scene = scene else { return }
+        renderEncoder.pushDebugGroup("Composition pass")
+        renderEncoder.label = "Composition encoder"
+
+        renderEncoder.setRenderPipelineState(compositionPipelineState)
+        renderEncoder.setDepthStencilState(depthStencilState)
+
+        renderEncoder.setVertexBuffer(quadVerticesBuffer, offset: 0, index: 0)
+        renderEncoder.setVertexBuffer(quadTexCoordsBuffer, offset: 0, index: 1)
+
+        renderEncoder.setFragmentTexture(albedoTexture, index: 0)
+        renderEncoder.setFragmentTexture(normalTexture, index: 1)
+        renderEncoder.setFragmentTexture(positionTexture, index: 2)
+
+        var fragmentUniforms = FragmentUniforms()
+        fragmentUniforms.cameraPosition = scene.camera.position
+        fragmentUniforms.lightCount = UInt32(scene.lights.count)
+
+        renderEncoder.setFragmentBytes(&fragmentUniforms,
+                                       length: MemoryLayout<FragmentUniforms>.stride,
+                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+
+
+        renderEncoder.setFragmentBytes(&scene.lights,
+                                       length: MemoryLayout<Light>.stride * scene.lights.count,
+                                       index: Int(BufferIndexLights.rawValue))
+
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: quadVertices.count)
 
         renderEncoder.endEncoding()
         renderEncoder.popDebugGroup()
