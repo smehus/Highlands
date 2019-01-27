@@ -14,6 +14,14 @@ final class Renderer: NSObject {
 
     private var depthStencilState: MTLDepthStencilState!
 
+    var albedoTexture: MTLTexture!
+    var normalTexture: MTLTexture!
+    var positionTexture: MTLTexture!
+    var depthTexture: MTLTexture!
+
+    var gBufferPipelineState: MTLRenderPipelineState!
+    var gBufferRenderPassDescriptor: MTLRenderPassDescriptor!
+
     lazy var lightPipelineState: MTLRenderPipelineState = {
         return buildLightPipelineState()
     }()
@@ -46,24 +54,6 @@ final class Renderer: NSObject {
 
     }
 
-    func buildTexture(pixelFormat: MTLPixelFormat, size: CGSize, label: String) -> MTLTexture {
-        let descriptor = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: pixelFormat,
-            width: Int(size.width),
-            height: Int(size.height),
-            mipmapped: false)
-
-        descriptor.usage = [.shaderRead, .renderTarget]
-        descriptor.storageMode = .private
-
-        guard let texture = Renderer.device.makeTexture(descriptor: descriptor) else {
-            fatalError()
-        }
-
-        texture.label = "\(label) texture"
-        return texture
-    }
-
     func buildShadowTexture(size: CGSize) {
         shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
         shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
@@ -74,6 +64,26 @@ final class Renderer: NSObject {
         descriptor.depthCompareFunction = .less
         descriptor.isDepthWriteEnabled = true
         depthStencilState = Renderer.device.makeDepthStencilState(descriptor: descriptor)
+    }
+
+    func buildGBufferRenderPassDescriptor(size: CGSize) {
+        gBufferRenderPassDescriptor = MTLRenderPassDescriptor()
+        buildGbufferTextures(size: size)
+        let textures: [MTLTexture] = [albedoTexture, normalTexture, positionTexture]
+
+        for (position, texture) in textures.enumerated() {
+            gBufferRenderPassDescriptor.setUpColorAttachment(position: position, texture: texture)
+        }
+
+        gBufferRenderPassDescriptor.setUpDepthAttachment(texture: depthTexture)
+    }
+
+
+    func buildGbufferTextures(size: CGSize) {
+        albedoTexture = buildTexture(pixelFormat: .bgra8Unorm, size: size, label: "Albedo texture")
+        normalTexture = buildTexture(pixelFormat: .rgba16Float, size: size, label: "Normal texture")
+        positionTexture = buildTexture(pixelFormat: .rgba16Float, size: size, label: "Position texture")
+        depthTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Depth texture")
     }
 }
 
@@ -191,11 +201,41 @@ extension Renderer: MTKViewDelegate {
     }
 }
 
+private extension Renderer {
+    func buildTexture(pixelFormat: MTLPixelFormat, size: CGSize, label: String) -> MTLTexture {
+        let descriptor = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: pixelFormat,
+            width: Int(size.width),
+            height: Int(size.height),
+            mipmapped: false)
+
+        descriptor.usage = [.shaderRead, .renderTarget]
+        descriptor.storageMode = .private
+
+        guard let texture = Renderer.device.makeTexture(descriptor: descriptor) else {
+            fatalError()
+        }
+
+        texture.label = "\(label) texture"
+        return texture
+    }
+}
+
+// Renderers to a texture off screen
 private extension MTLRenderPassDescriptor {
     func setUpDepthAttachment(texture: MTLTexture) {
         depthAttachment.texture = texture
         depthAttachment.loadAction = .clear
         depthAttachment.storeAction = .store
         depthAttachment.clearDepth = 1
-    } }
+    }
+
+    func setUpColorAttachment(position: Int, texture: MTLTexture) {
+        let attachment: MTLRenderPassColorAttachmentDescriptor = colorAttachments[position]
+        attachment.texture = texture
+        attachment.loadAction = .clear
+        attachment.storeAction = .store
+        attachment.clearColor = MTLClearColorMake(0.73, 0.92, 1, 1)
+    }
+}
 
