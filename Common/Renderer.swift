@@ -162,7 +162,7 @@ extension Renderer: MTKViewDelegate {
 
         let sunlight = scene.lights.first!
 
-        let rect = Rectangle(left: -20, right: 20, top: 20, bottom: -20)
+        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
         scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
 //        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
@@ -173,7 +173,8 @@ extension Renderer: MTKViewDelegate {
         let center: float3 = [0, 0, 0]
         let lookAt = float4x4(eye: position, center: center, up: [0,1,0])
 
-        scene.uniforms.viewMatrix = /*float4x4(translation: [0, 0, 7]) **/ lookAt
+        // they work if this is 7
+        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 7]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
 
         for renderable in scene.renderables {
