@@ -162,45 +162,12 @@ extension Renderer: MTKViewDelegate {
         scene.uniforms.viewMatrix = previousUniforms.viewMatrix
         scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 
-
-        /// **** MAIN RENDER PASS *** \\\\
-
-//        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
-//        renderEncoder.pushDebugGroup("Main pass")
-//        renderEncoder.label = "Main encoder"
-//        renderEncoder.setDepthStencilState(depthStencilState)
-
-        // Reset uniforms so projection is correct
-        // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
-        // goodddddddd damniiitttttt
-//        scene.uniforms = previousUniforms
-//        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
-//        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
-        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
-        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
-
-//        renderEncoder.setFragmentTexture(shadowTexture, index: Int(ShadowTexture.rawValue))
-//
-//        for renderable in scene.renderables {
-//            renderEncoder.pushDebugGroup(renderable.name)
-//            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-//            renderEncoder.popDebugGroup()
-//        }
-//
-////        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-//
-//        renderEncoder.endEncoding()
-//        renderEncoder.popDebugGroup()
-
-        /// **** MAIN RENDER PASS  ENDDD *** \\\\
-
         // G-Buffer
         guard let gBufferEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: gBufferRenderPassDescriptor) else {
             return
         }
 
         renderGbufferPass(renderEncoder: gBufferEncoder)
-
 
 
         // Composition!!

@@ -30,6 +30,7 @@ float3 compositeLighting(float3 normal,
                        constant FragmentUniforms &fragmentUniforms,
                        constant Light *lights,
                        float3 baseColor) {
+
     float3 diffuseColor = 0;
     float3 normalDirection = normalize(normal);
     for (uint i = 0; i < fragmentUniforms.lightCount; i++) {
