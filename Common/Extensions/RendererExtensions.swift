@@ -7,6 +7,10 @@ extension Renderer {
 func lighting() -> [Light] {
     var lights: [Light] = []
 
+
+    lights.append(spotlight())
+    //    lights.append(lantern())
+
     var light = buildDefaultLight()
     light.position = [1, 2, -2]
     lights.append(light)
@@ -17,8 +21,6 @@ func lighting() -> [Light] {
 //    lights.append(light)
 
 
-//    lights.append(spotlight())
-//    lights.append(lantern())
 
     return lights
 }
@@ -37,7 +39,7 @@ func lantern() -> Light {
 func spotlight() -> Light {
     var light = buildDefaultLight()
     light.position = [0, 0.5, 0]
-    light.color = [1, 0, 0]
+    light.color = [1, 1, 0.7]
     light.attenuation = float3(2, 0, 0)
     light.type = Spotlight
     light.coneAngle = radians(fromDegrees: 30)
