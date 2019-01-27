@@ -136,6 +136,8 @@
 		A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2821BA2887002F6F35 /* ViewControllerExtension.swift */; };
 		A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */; };
 		A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */; };
+		A5A1FDFD21FE5C9100A749FD /* GBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5A1FDFC21FE5C9100A749FD /* GBuffer.metal */; };
+		A5A1FDFE21FE5C9100A749FD /* GBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5A1FDFC21FE5C9100A749FD /* GBuffer.metal */; };
 		A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
 		A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
 		A5C952C521CE952D00B23364 /* MotionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C952C421CE952D00B23364 /* MotionController.swift */; };
@@ -282,6 +284,7 @@
 		A5A1CD2621BA2880002F6F35 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		A5A1CD2821BA2887002F6F35 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererExtensions.swift; sourceTree = "<group>"; };
+		A5A1FDFC21FE5C9100A749FD /* GBuffer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = GBuffer.metal; sourceTree = "<group>"; };
 		A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texturable.swift; sourceTree = "<group>"; };
 		A5C952C421CE952D00B23364 /* MotionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionController.swift; sourceTree = "<group>"; };
 		A5C952C621CEA53000B23364 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
@@ -475,6 +478,7 @@
 				A563DF1421E7999F00563EA9 /* Skybox.metal */,
 				A58F1A1021E94112003F6F1F /* MorphShader.metal */,
 				A5F08F3C21FCC7A0007E276F /* Shadow.metal */,
+				A5A1FDFC21FE5C9100A749FD /* GBuffer.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -850,6 +854,7 @@
 				A5A1CD1E21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */,
 				A57506E221CDA2C600C63081 /* GameScene.swift in Sources */,
+				A5A1FDFD21FE5C9100A749FD /* GBuffer.metal in Sources */,
 				A563DF1521E7999F00563EA9 /* Skybox.metal in Sources */,
 				A563DF1C21E8035200563EA9 /* Transform.swift in Sources */,
 				A5F08F3D21FCC7A0007E276F /* Shadow.metal in Sources */,
@@ -891,6 +896,7 @@
 				A5A1CD1F21B9F332002F6F35 /* Prop.swift in Sources */,
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
+				A5A1FDFE21FE5C9100A749FD /* GBuffer.metal in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				A57506D821CD6C9200C63081 /* GLTFMathLibrary.swift in Sources */,
 				A5CB1E9F21EA848E002CCB94 /* DebugLights.metal in Sources */,

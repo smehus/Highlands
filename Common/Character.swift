@@ -240,7 +240,10 @@ extension Character: Renderable {
                                                     indexBuffer: submesh.indexBuffer!,
                                                     indexBufferOffset: submesh.indexBufferOffset)
             }
-
         }
+    }
+
+    func renderGBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+        
     }
 }

@@ -308,4 +308,8 @@ extension Prop: Renderable {
                                                 instanceCount: instanceCount)
         }
     }
+
+    func renderGBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+
+    }
 }

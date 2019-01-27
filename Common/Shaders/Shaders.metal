@@ -53,6 +53,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.worldTangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.tangent;
     out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;
     out.textureID = instance.textureID;
+
     float4x4 shadowMatrix = uniforms.shadowMatrix;
     out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
     

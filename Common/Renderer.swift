@@ -19,7 +19,7 @@ final class Renderer: NSObject {
     var positionTexture: MTLTexture!
     var depthTexture: MTLTexture!
 
-    var gBufferPipelineState: MTLRenderPipelineState!
+    
     var gBufferRenderPassDescriptor: MTLRenderPassDescriptor!
 
     lazy var lightPipelineState: MTLRenderPipelineState = {
@@ -51,7 +51,6 @@ final class Renderer: NSObject {
 
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
-
     }
 
     func buildShadowTexture(size: CGSize) {
@@ -91,6 +90,7 @@ extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         scene?.sceneSizeWillChange(to: size)
         buildShadowTexture(size: size)
+        buildGBufferRenderPassDescriptor(size: size)
     }
 
     func draw(in view: MTKView) {
@@ -112,10 +112,13 @@ extension Renderer: MTKViewDelegate {
 
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
-        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else {
-            return 
-        }
+        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
+        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 
+
+        /// **** MAIN RENDER PASS *** \\\\
+
+        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { return }
         renderEncoder.pushDebugGroup("Main pass")
         renderEncoder.label = "Main encoder"
         renderEncoder.setDepthStencilState(depthStencilState)
@@ -152,9 +155,20 @@ extension Renderer: MTKViewDelegate {
 
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
-//        drawDebug(encoder: renderEncoder)
-
         renderEncoder.endEncoding()
+        renderEncoder.popDebugGroup()
+
+        /// **** MAIN RENDER PASS  ENDDD *** \\\\
+
+
+
+        // G-Buffer
+        guard let gBufferEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: gBufferRenderPassDescriptor) else {
+            return
+        }
+
+        renderGbufferPass(renderEncoder: gBufferEncoder)
+
 
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
@@ -175,10 +189,6 @@ extension Renderer: MTKViewDelegate {
         let rect = Rectangle(left: -20, right: 20, top: 20, bottom: -20)
         scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
-//        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-//        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: sunlight.coneAngle), near: 0.1, far: 16, aspect: aspect)
-
-
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
         let center: float3 = [0, 0, 0]
         let lookAt = float4x4(eye: position, center: center, up: [0,1,0])
@@ -195,6 +205,29 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.endEncoding()
         renderEncoder.popDebugGroup()
     }
+
+    func renderGbufferPass(renderEncoder: MTLRenderCommandEncoder) {
+        renderEncoder.pushDebugGroup("Gbuffer pass")
+        renderEncoder.label = "Gbuffer encoder"
+
+        renderEncoder.setDepthStencilState(depthStencilState)
+
+        var fragmentUniforms = FragmentUniforms()
+        fragmentUniforms.cameraPosition = scene!.camera.position
+        fragmentUniforms.lightCount = UInt32(scene!.lights.count)
+        renderEncoder.setFragmentBytes(&fragmentUniforms,
+                                       length: MemoryLayout<FragmentUniforms>.stride,
+                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+
+
+        renderEncoder.setFragmentTexture(shadowTexture, index: Int(ShadowTexture.rawValue))
+
+
+
+        renderEncoder.endEncoding()
+        renderEncoder.popDebugGroup()
+    }
+
 
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
         debugLights(renderEncoder: encoder, lightType: Pointlight)

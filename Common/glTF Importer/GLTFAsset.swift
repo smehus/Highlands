@@ -149,7 +149,8 @@ class GLTFAsset {
                 let mtkVertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)!
                 gltfSubmesh.pipelineState = createPipelineState(vertexDescriptor: mtkVertexDescriptor)
                 let shadowPipeline = createShadowPipelineState(vertexDescriptor: mtkVertexDescriptor)
-
+                let gBufferPipeline = buildGbufferPipelineState(vertexDescriptor: mtkVertexDescriptor)
+                
                 let indexAccessor = gltfSubmesh.indexAccessor!
                 let bufferView = indexAccessor.bufferView!
                 let indexCount = indexAccessor.count
@@ -184,6 +185,7 @@ class GLTFAsset {
 
                 let submesh = Character.CharacterSubmesh(pipelineState: gltfSubmesh.pipelineState!,
                                                          shadowPipelineState: shadowPipeline,
+                                                         gBufferPipelineState: gBufferPipeline,
                                                          material: gltfSubmesh.material)
 
                 submesh.attributes = gltfSubmesh.attributes
@@ -857,6 +859,29 @@ extension GLTFAsset {
         }
 
         return pipelineState
+    }
+
+    func buildGbufferPipelineState(vertexDescriptor: MTLVertexDescriptor) -> MTLRenderPipelineState {
+
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        descriptor.colorAttachments[1].pixelFormat = .rgba16Float
+        descriptor.colorAttachments[2].pixelFormat = .rgba16Float
+        descriptor.depthAttachmentPixelFormat = .depth32Float
+        descriptor.label = "GBuffer state"
+        descriptor.vertexFunction = Renderer.library!.makeFunction(name: "character_vertex_main")
+        descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "gBufferFragment")
+        descriptor.vertexDescriptor = vertexDescriptor
+
+        let buffer: MTLRenderPipelineState
+
+        do {
+            buffer = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+        } catch let error {
+            fatalError(error.localizedDescription)
+        }
+
+        return buffer
     }
 
 //    static func buildShadowPipelineState() -> MTLRenderPipelineState {

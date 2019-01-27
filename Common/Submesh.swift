@@ -15,12 +15,14 @@ class Submesh {
 
     let pipelineState: MTLRenderPipelineState!
     let shadowPipelineSTate: MTLRenderPipelineState!
+    let gBufferPipelineState: MTLRenderPipelineState!
 
-    init(pipelineState: MTLRenderPipelineState, shadowPipelineState: MTLRenderPipelineState, material: MDLMaterial?) {
+    init(pipelineState: MTLRenderPipelineState, shadowPipelineState: MTLRenderPipelineState, gBufferPipelineState: MTLRenderPipelineState, material: MDLMaterial?) {
         textures = Textures(material: material)
         self.material = Material(material: material)
         self.pipelineState = pipelineState
         self.shadowPipelineSTate = shadowPipelineState
+        self.gBufferPipelineState = gBufferPipelineState
     }
 
     required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: PropType) {
@@ -36,6 +38,7 @@ class Submesh {
 
         pipelineState = Submesh.makePipelineState(textures: textures, type: type)
         shadowPipelineSTate = Submesh.buildShadowPipelineState()
+        gBufferPipelineState = Submesh.buildGbufferPipelineState()
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
@@ -144,6 +147,29 @@ private extension Submesh {
         }
 
         return pipelineState
+    }
+
+    static func buildGbufferPipelineState() -> MTLRenderPipelineState {
+        
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        descriptor.colorAttachments[1].pixelFormat = .rgba16Float
+        descriptor.colorAttachments[2].pixelFormat = .rgba16Float
+        descriptor.depthAttachmentPixelFormat = .depth32Float
+        descriptor.label = "GBuffer state"
+        descriptor.vertexFunction = Renderer.library!.makeFunction(name: "vertex_main")
+        descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "gBufferFragment")
+        descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
+
+        let buffer: MTLRenderPipelineState
+
+        do {
+            buffer = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+        } catch let error {
+            fatalError(error.localizedDescription)
+        }
+
+        return buffer
     }
 }
 
