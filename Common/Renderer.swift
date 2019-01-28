@@ -3,7 +3,7 @@ import MetalKit
 
 final class Renderer: NSObject {
 
-    static let sampleCount = 4
+    static let sampleCount = 1
 
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
@@ -142,7 +142,7 @@ extension Renderer: MTKViewDelegate {
 
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
-//        drawDebug(encoder: renderEncoder)
+        drawDebug(encoder: renderEncoder)
 
         renderEncoder.endEncoding()
 
@@ -162,24 +162,35 @@ extension Renderer: MTKViewDelegate {
 
         let sunlight = scene.lights.first!
 
-        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
-        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
+//        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
+//        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
-//        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-//        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: sunlight.coneAngle), near: 0.1, far: 16, aspect: aspect)
+        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 30), near: 0.1, far: 16, aspect: aspect)
 
 
-        let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
+        let position: float3 = [-sunlight.position.x, sunlight.position.y, -sunlight.position.z]
         let center: float3 = [0, 0, 0]
-        let lookAt = float4x4(eye: position, center: center, up: [0,1,0])
+        let lookAt = float4x4(eye: [0, 1, 1], center: [0, 0, 0], up: [0,1,0])
 
         // they work if this is 7
-        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 7]) * lookAt
+        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, -1]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
+
+//        var camera = Camera()
+//        camera.fovDegrees = 80
+//        camera.position = [0, sunlight.position.y, -10]
+//        camera.rotation = [0, radians(fromDegrees: 90), 0]
+        var camera = scene.camera
+
+        var blash = Uniforms()
+        blash.modelMatrix = camera.modelMatrix
+        blash.viewMatrix = camera.viewMatrix
+        blash.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 30), near: 0.1, far: 16, aspect: aspect)
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
-            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: blash)
             renderEncoder.popDebugGroup()
         }
 
@@ -188,7 +199,7 @@ extension Renderer: MTKViewDelegate {
     }
 
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
-        debugLights(renderEncoder: encoder, lightType: Pointlight)
+        debugLights(renderEncoder: encoder, lightType: Spotlight)
     }
 }
 

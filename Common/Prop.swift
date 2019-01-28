@@ -282,12 +282,10 @@ extension Prop: Renderable {
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
 
         var uniforms = uniforms
-        uniforms.modelMatrix = worldTransform
-        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
+        uniforms.modelMatrix = modelMatrix
+        uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
-
-        renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
 
         for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
             renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
@@ -296,16 +294,12 @@ extension Prop: Renderable {
         for modelSubmesh in submeshes {
             renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineSTate)
             let submesh = modelSubmesh.submesh!
-            renderEncoder.setFragmentBytes(&modelSubmesh.material,
-                                           length: MemoryLayout<Material>.stride,
-                                           index: 1)
 
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
-                                                indexBufferOffset: submesh.indexBuffer.offset,
-                                                instanceCount: instanceCount)
+                                                indexBufferOffset: submesh.indexBuffer.offset)
         }
     }
 }

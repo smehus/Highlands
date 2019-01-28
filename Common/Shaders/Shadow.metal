@@ -39,10 +39,7 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
 
         return position;
     } else {
-
-        Instances instance = instances[instanceID];
-
-        matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix;
+        matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
         float4 position = mvp * vertexIn.position;
 
         return position;
