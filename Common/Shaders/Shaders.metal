@@ -54,6 +54,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;
     out.textureID = instance.textureID;
     float4x4 shadowMatrix = uniforms.shadowMatrix;
+
     out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
     
     return out;
@@ -234,7 +235,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     }
 
     // Shadows
-    float2 xy = in.shadowPosition.xy;
+    float2 xy = in.shadowPosition.xy / in.shadowPosition.w;
     xy = xy * 0.5 + 0.5;
     xy.y = 1 - xy.y;
 

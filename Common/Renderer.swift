@@ -162,19 +162,19 @@ extension Renderer: MTKViewDelegate {
 
         let sunlight = scene.lights.first!
 
-//        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
+        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
 //        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 30), near: 0.1, far: 16, aspect: aspect)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.1, far: 16, aspect: aspect)
 
 
-        let position: float3 = [-sunlight.position.x, sunlight.position.y, -sunlight.position.z]
+        let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
         let center: float3 = [0, 0, 0]
-        let lookAt = float4x4(eye: [0, 1, 1], center: [0, 0, 0], up: [0,1,0])
+        let lookAt = float4x4(eye: position, center: position - sunlight.coneDirection, up: [0,1,0])
 
         // they work if this is 7
-        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, -1]) * lookAt
+        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 12]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
 
 //        var camera = Camera()
@@ -184,13 +184,13 @@ extension Renderer: MTKViewDelegate {
         var camera = scene.camera
 
         var blash = Uniforms()
-        blash.modelMatrix = camera.modelMatrix
-        blash.viewMatrix = camera.viewMatrix
-        blash.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 30), near: 0.1, far: 16, aspect: aspect)
+//        blash.modelMatrix = camera.modelMatrix
+//        blash.viewMatrix = camera.viewMatrix
+//        blash.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.1, far: 16, aspect: 1)
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
-            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: blash)
+            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms)
             renderEncoder.popDebugGroup()
         }
 
