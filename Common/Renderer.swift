@@ -160,13 +160,13 @@ extension Renderer: MTKViewDelegate {
 
         renderEncoder.setDepthBias(0.01, slopeScale: 1.0, clamp: 0.01)
 
-        let sunlight = scene.lights.first!
+        var sunlight = scene.lights.first!
 
         let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
 //        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.1, far: 16, aspect: aspect)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: sunlight.coneAngle, near: 0.1, far: 16, aspect: aspect)
 
 
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
@@ -176,6 +176,8 @@ extension Renderer: MTKViewDelegate {
         // they work if this is 7
         scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 12]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
+
+        renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
