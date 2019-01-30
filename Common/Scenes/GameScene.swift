@@ -24,8 +24,8 @@ final class GameScene: Scene {
         inputController.keyboardDelegate = self
 
         lights = lighting()
-        camera.position = [-2, 3, -4]
-        camera.rotation = [radians(fromDegrees: 30), radians(fromDegrees: 20), 0]
+        camera.position = [0, 2, -4]
+        camera.rotation = [0, 0, 0]
 
         ground.tiling = 32
         add(node: ground)
@@ -113,9 +113,9 @@ final class GameScene: Scene {
 //            lights[index].position += inputController.player!.forwardVector / 4
 
             // Spotlight
-//            lights[index].position = float3(pos.x, pos.y + 1, pos.z)
-//            lights[index].position += (inputController.player!.forwardVector * 1.2)
-//            lights[index].coneDirection = float3(dir.x, -0.8, dir.z)
+            lights[index].position = float3(pos.x, pos.y + 1, pos.z)
+            lights[index].position += (inputController.player!.forwardVector * 1.2)
+            lights[index].coneDirection = float3(dir.x, -0.8, dir.z)
 
 
 
