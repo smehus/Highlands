@@ -65,7 +65,8 @@ float3 diffuseLighting(VertexOut in,
                        float3 normalValue,
                        constant Material &material,
                        constant FragmentUniforms &fragmentUniforms,
-                       constant Light *lights)
+                       constant Light *lights,
+                       depth2d<float> shadowTexture [[ texture(ShadowTexture) ]])
 {
     float materialShininess = material.shininess;
     float3 materialSpecularColor = material.specularColor;
@@ -229,7 +230,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     float3 color;
 
     if (includeLighting) {
-        color = diffuseLighting(in, baseColor.xyz, normalValue, material, fragmentUniforms, lights);
+        color = diffuseLighting(in, baseColor.xyz, normalValue, material, fragmentUniforms, lights, shadowTexture);
     } else {
         color = baseColor.xyz;
     }
@@ -242,7 +243,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
     float shadow_sample = shadowTexture.sample(s, xy);
     float current_sample = in.shadowPosition.z / in.shadowPosition.w;
-//
+
     if (current_sample > shadow_sample ) {
         color *= 0.5;
     }

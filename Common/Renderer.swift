@@ -177,17 +177,6 @@ extension Renderer: MTKViewDelegate {
         scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 12]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
 
-//        var camera = Camera()
-//        camera.fovDegrees = 80
-//        camera.position = [0, sunlight.position.y, -10]
-//        camera.rotation = [0, radians(fromDegrees: 90), 0]
-        var camera = scene.camera
-
-        var blash = Uniforms()
-//        blash.modelMatrix = camera.modelMatrix
-//        blash.viewMatrix = camera.viewMatrix
-//        blash.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.1, far: 16, aspect: 1)
-
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
             renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms)
