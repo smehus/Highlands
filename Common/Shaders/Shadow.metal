@@ -41,6 +41,7 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
         return position;
     } else {
 
+
         float4 worldPosition = uniforms.modelMatrix * vertexIn.position;
         float3 lighPosition = light.position;
         float d = distance(lighPosition, worldPosition.xyz);
@@ -50,12 +51,14 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
         float spotResult = dot(directionFromLightToFragment, coneDirection);
         float coneAngle = cos(light.coneAngle);
 
-        if (spotResult > coneAngle) {
-
-        }
 
         matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
         float4 position = mvp * vertexIn.position;
+        if (spotResult > coneAngle) {
+
+        } else {
+            position.z = 0;
+        }
 
         return position;
     }
