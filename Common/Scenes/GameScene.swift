@@ -32,7 +32,7 @@ final class GameScene: Scene {
 
 
         let singleTree = Prop(type: .base(name: "treefir", lighting: true))
-        singleTree.position = [0, 0, 0]
+        singleTree.position = [0, 0, 2]
         add(node: singleTree)
 
 //        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 50))
@@ -78,7 +78,7 @@ final class GameScene: Scene {
         self.add(node: skeleton)
         skeleton.runAnimation(name: "walking")
         self.physicsController.dynamicBody = skeleton
-        self.inputController.player = camera
+        self.inputController.player = skeleton
 //        skeleton.currentAnimation?.speed = 3.0
         skeleton.pauseAnimation()
 
@@ -93,7 +93,7 @@ final class GameScene: Scene {
         tpCamera.focusHeight = 1
         tpCamera.focusDistance = 2
         cameras.append(tpCamera)
-//        currentCameraIndex = 2
+        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {
@@ -113,9 +113,9 @@ final class GameScene: Scene {
 //            lights[index].position += inputController.player!.forwardVector / 4
 
             // Spotlight
-            lights[index].position = float3(pos.x, pos.y + 1, pos.z)
-            lights[index].position += (inputController.player!.forwardVector * 1.2)
-            lights[index].coneDirection = float3(dir.x, -0.8, dir.z)
+            lights[index].position = float3(pos.x, pos.y + 3.0, pos.z)
+//            lights[index].position += (inputController.player!.forwardVector * 1.2)
+            lights[index].coneDirection = float3(dir.x, radians(fromDegrees: -120), dir.z)
 
 
 

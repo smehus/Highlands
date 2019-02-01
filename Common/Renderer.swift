@@ -46,6 +46,23 @@ final class Renderer: NSObject {
 
     }
 
+    func buildCubeTexture(size: Int) -> MTLTexture {
+        let descriptor = MTLTextureDescriptor
+            .textureCubeDescriptor(pixelFormat: .depth32Float,
+                                   size: size,
+                                   mipmapped: false)
+
+        descriptor.usage = [.shaderRead, .renderTarget]
+        descriptor.storageMode = .private
+
+        guard let texture = Renderer.device.makeTexture(descriptor: descriptor) else {
+            fatalError()
+        }
+
+        texture.label = "CUBE POINTLIGHT texture"
+        return texture
+    }
+
     func buildTexture(pixelFormat: MTLPixelFormat, size: CGSize, label: String) -> MTLTexture {
         let descriptor = MTLTextureDescriptor.texture2DDescriptor(
             pixelFormat: pixelFormat,
@@ -162,9 +179,30 @@ extension Renderer: MTKViewDelegate {
 
         var sunlight = scene.lights.first!
 
-        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
+//        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
 //        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
+        setSpotlight(view: view, sunlight: sunlight)
+//        setLantern(sunlight: sunlight)
+
+        renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
+
+        for renderable in scene.renderables {
+            renderEncoder.pushDebugGroup(renderable.name)
+            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+            renderEncoder.popDebugGroup()
+        }
+
+        renderEncoder.endEncoding()
+        renderEncoder.popDebugGroup()
+    }
+
+    private func setLantern(view: MTKView, sunlight: Light) {
+
+    }
+
+    private func setSpotlight(view: MTKView, sunlight: Light) {
+        guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
         scene.uniforms.projectionMatrix = float4x4(projectionFov: sunlight.coneAngle, near: 0.1, far: 16, aspect: aspect)
 
@@ -177,16 +215,6 @@ extension Renderer: MTKViewDelegate {
         scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 12]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
 
-        renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
-
-        for renderable in scene.renderables {
-            renderEncoder.pushDebugGroup(renderable.name)
-            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-            renderEncoder.popDebugGroup()
-        }
-
-        renderEncoder.endEncoding()
-        renderEncoder.popDebugGroup()
     }
 
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
