@@ -16,10 +16,10 @@ class MotionController {
         motionManager.accelerometerUpdateInterval = 0.2
         let queue = OperationQueue()
 
-//        motionManager.startDeviceMotionUpdates(to: queue, withHandler: {
-//            motion, error in
-//            self.motionClosure?(motion, error)
-//        })
+        motionManager.startDeviceMotionUpdates(to: queue, withHandler: {
+            motion, error in
+            self.motionClosure?(motion, error)
+        })
         
 //        motionManager.startAccelerometerUpdates(to: queue, withHandler: {
 //            accelerometerData, error in

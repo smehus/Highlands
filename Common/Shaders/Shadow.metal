@@ -54,10 +54,9 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
 
         matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
         float4 position = mvp * vertexIn.position;
-        if (spotResult > coneAngle) {
 
-        } else {
-            position.z = 0;
+        if (spotResult < coneAngle) {
+            position = position.xyww;
         }
 
         return position;
