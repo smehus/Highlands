@@ -82,8 +82,8 @@ final class Renderer: NSObject {
     }
 
     func buildShadowTexture(size: CGSize) {
-        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
-//        shadowTexture = buildCubeTexture(size: Int(size.width))
+//        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
+        shadowTexture = buildCubeTexture(size: Int(size.width))
         shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
     }
 
@@ -219,7 +219,7 @@ extension Renderer: MTKViewDelegate {
     }
 
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
-        debugLights(renderEncoder: encoder, lightType: Spotlight)
+        debugLights(renderEncoder: encoder, lightType: Pointlight)
     }
 }
 

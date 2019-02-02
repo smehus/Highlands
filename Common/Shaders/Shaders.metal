@@ -65,8 +65,7 @@ float3 diffuseLighting(VertexOut in,
                        float3 normalValue,
                        constant Material &material,
                        constant FragmentUniforms &fragmentUniforms,
-                       constant Light *lights,
-                       depth2d<float> shadowTexture [[ texture(ShadowTexture) ]])
+                       constant Light *lights)
 {
     float materialShininess = material.shininess;
     float3 materialSpecularColor = material.specularColor;
@@ -192,7 +191,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                               texture2d<float> baseColorTexture [[ texture(BaseColorTexture), function_constant(hasColorTexture) ]],
                               texture2d_array<float> baseColorTextureArray [[ texture(BaseColorTexture), function_constant(hasColorTextureArray) ]],
-                              depth2d<float> shadowTexture [[ texture(ShadowTexture) ]],
+                              depthcube<float> shadowTexture [[ texture(ShadowTexture) ]],
                               texture2d<float> normalTexture [[ texture(NormalTexture), function_constant(hasNormalTexture) ]],
                               constant uint &tiling [[ buffer(22) ]])
 
@@ -230,23 +229,31 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     float3 color;
 
     if (includeLighting) {
-        color = diffuseLighting(in, baseColor.xyz, normalValue, material, fragmentUniforms, lights, shadowTexture);
+        color = diffuseLighting(in, baseColor.xyz, normalValue, material, fragmentUniforms, lights);
     } else {
         color = baseColor.xyz;
     }
 
-    // Shadows
-    float2 xy = in.shadowPosition.xy / in.shadowPosition.w;
-    xy = xy * 0.5 + 0.5;
-    xy.y = 1 - xy.y;
 
-    constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
-    float shadow_sample = shadowTexture.sample(s, xy);
-    float current_sample = in.shadowPosition.z / in.shadowPosition.w;
+    if (lights[0].type == Spotlight) {
+        /*
+        // SPOTLIGHT SHADOW MAP
+        float2 xy = in.shadowPosition.xy / in.shadowPosition.w;
+        xy = xy * 0.5 + 0.5;
+        xy.y = 1 - xy.y;
 
-    if (current_sample > shadow_sample ) {
-        color *= 0.5;
+        constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
+        float shadow_sample = shadowTexture.sample(s, xy);
+        float current_sample = in.shadowPosition.z / in.shadowPosition.w;
+
+        if (current_sample > shadow_sample ) {
+            color *= 0.5;
+        }
+         */
+    } else if (lights[0].type == Pointlight) {
+
     }
+
 
 
 //    float4 finalColor = fog(in.position, float4(color, 1));

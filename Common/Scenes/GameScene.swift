@@ -108,14 +108,14 @@ final class GameScene: Scene {
 
 
             // Lantern
-//            lights[index].position = inputController.player!.position
-//            lights[index].position.y = 0.5
-//            lights[index].position += inputController.player!.forwardVector / 4
+            lights[index].position = inputController.player!.position
+            lights[index].position.y = 1.0
+            lights[index].position += inputController.player!.forwardVector / 4
 
             // Spotlight
-            lights[index].position = float3(pos.x, pos.y + 3.0, pos.z)
-//            lights[index].position += (inputController.player!.forwardVector * 1.2)
-            lights[index].coneDirection = float3(dir.x, radians(fromDegrees: -120), dir.z)
+//            lights[index].position = float3(pos.x, pos.y + 3.0, pos.z)
+////            lights[index].position += (inputController.player!.forwardVector * 1.2)
+//            lights[index].coneDirection = float3(dir.x, radians(fromDegrees: -120), dir.z)
 
 
 
