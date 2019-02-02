@@ -82,7 +82,8 @@ final class Renderer: NSObject {
     }
 
     func buildShadowTexture(size: CGSize) {
-        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
+//        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
+        shadowTexture = buildCubeTexture(size: Int(size.width))
         shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
     }
 
