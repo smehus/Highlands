@@ -41,23 +41,29 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
         return position;
     } else {
 
-
-        float4 worldPosition = uniforms.modelMatrix * vertexIn.position;
-        float3 lighPosition = light.position;
-        float d = distance(lighPosition, worldPosition.xyz);
-        float3 directionFromLightToFragment = normalize(light.position - worldPosition.xyz);
-        float3 tConeDirection = light.coneDirection;
-        float3 coneDirection = normalize(-tConeDirection);
-        float spotResult = dot(directionFromLightToFragment, coneDirection);
-        float coneAngle = cos(light.coneAngle);
-
-
         matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
         float4 position = mvp * vertexIn.position;
+
+
+
+        //// SPOTLIGHT SHADOW \\\\
+
+         float4 worldPosition = uniforms.modelMatrix * vertexIn.position;
+         float3 lighPosition = light.position;
+         float d = distance(lighPosition, worldPosition.xyz);
+         float3 directionFromLightToFragment = normalize(light.position - worldPosition.xyz);
+         float3 tConeDirection = light.coneDirection;
+         float3 coneDirection = normalize(-tConeDirection);
+         float spotResult = dot(directionFromLightToFragment, coneDirection);
+         float coneAngle = cos(light.coneAngle);
+
 
         if (spotResult < coneAngle) {
             position = position.xyww;
         }
+        
+
+
 
         return position;
     }

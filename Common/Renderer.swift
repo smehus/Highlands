@@ -82,8 +82,8 @@ final class Renderer: NSObject {
     }
 
     func buildShadowTexture(size: CGSize) {
-//        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
-        shadowTexture = buildCubeTexture(size: Int(size.width))
+        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
+//        shadowTexture = buildCubeTexture(size: Int(size.width))
         shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
     }
 
@@ -205,7 +205,7 @@ extension Renderer: MTKViewDelegate {
     private func setSpotlight(view: MTKView, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: sunlight.coneAngle, near: 0.1, far: 16, aspect: aspect)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.01, far: 16, aspect: aspect)
 
 
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
@@ -213,7 +213,7 @@ extension Renderer: MTKViewDelegate {
         let lookAt = float4x4(eye: position, center: position - sunlight.coneDirection, up: [0,1,0])
 
         // they work if this is 7
-        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 12]) * lookAt
+        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 7]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
 
     }
