@@ -183,8 +183,8 @@ extension Renderer: MTKViewDelegate {
 //        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
 //        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
-        setSpotlight(view: view, sunlight: sunlight)
-//        setLantern(sunlight: sunlight)
+//        setSpotlight(view: view, sunlight: sunlight)
+        setLantern(view: view, sunlight: sunlight)
 
         renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
 
@@ -199,7 +199,13 @@ extension Renderer: MTKViewDelegate {
     }
 
     private func setLantern(view: MTKView, sunlight: Light) {
+        guard let scene = scene else { return }
+        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.01, far: 16, aspect: aspect)
 
+        let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
+        scene.uniforms.viewMatrix = float4x4(translation: position)
+        scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
     }
 
     private func setSpotlight(view: MTKView, sunlight: Light) {
@@ -209,13 +215,11 @@ extension Renderer: MTKViewDelegate {
 
 
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
-        let center: float3 = [0, 0, 0]
         let lookAt = float4x4(eye: position, center: position - sunlight.coneDirection, up: [0,1,0])
 
         // they work if this is 7
         scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 7]) * lookAt
         scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
-
     }
 
     private func drawDebug(encoder: MTLRenderCommandEncoder) {

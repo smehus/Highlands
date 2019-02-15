@@ -256,7 +256,9 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     } else if (lights[0].type == Pointlight) {
         constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
         // Point light - not standard UV Coordinates - accessed with 3d vector
-        float shadow_sample = shadowTexture.sample(s, in.shadowPosition.xyz);
+        float shadow_sample = shadowTexture.sample(s, in.shadowPosition.xyw);
+
+        
     }
 
 //    float4 finalColor = fog(in.position, float4(color, 1));
