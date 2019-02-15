@@ -236,25 +236,28 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
 
     if (lights[0].type == Spotlight) {
-        /*
+    
         // SPOTLIGHT SHADOW MAP
+        // Commented out cause the texture is now a cube yo
+        /*
         float2 xy = in.shadowPosition.xy / in.shadowPosition.w;
         xy = xy * 0.5 + 0.5;
         xy.y = 1 - xy.y;
 
         constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
-        float shadow_sample = shadowTexture.sample(s, xy);
+        float shadow_sample = shadowTexture.sample(s, xy); // failing cause its a cube yo
         float current_sample = in.shadowPosition.z / in.shadowPosition.w;
 
         if (current_sample > shadow_sample ) {
             color *= 0.5;
         }
          */
+
     } else if (lights[0].type == Pointlight) {
-
+        constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
+        // Point light - not standard UV Coordinates - accessed with 3d vector
+        float shadow_sample = shadowTexture.sample(s, in.shadowPosition.xyz);
     }
-
-
 
 //    float4 finalColor = fog(in.position, float4(color, 1));
 
