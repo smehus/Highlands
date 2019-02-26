@@ -59,9 +59,12 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
                 position = position.xyww;
             }
         } else if (light.type == Pointlight) {
-            float d = distance(lighPosition, worldPosition.xyz);
-            float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
-            position = position * attenuation;
+            // idk this is from a website
+//            float d = distance(lighPosition, worldPosition.xyz);
+//            float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
+//            position.w = 1.0;
+
+            return float4(-directionFromLightToFragment, 1);
         }
 
         return position;

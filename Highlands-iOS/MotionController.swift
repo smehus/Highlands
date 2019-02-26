@@ -18,7 +18,7 @@ class MotionController {
 
         motionManager.startDeviceMotionUpdates(to: queue, withHandler: {
             motion, error in
-            self.motionClosure?(motion, error)
+            //self.motionClosure?(motion, error)
         })
         
 //        motionManager.startAccelerometerUpdates(to: queue, withHandler: {

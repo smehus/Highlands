@@ -59,7 +59,7 @@ final class Renderer: NSObject {
             fatalError()
         }
 
-        texture.label = "CUBE POINTLIGHT texture"
+        texture.label = "CUBE POINTLIGHT TEXTURE"
         return texture
     }
 
