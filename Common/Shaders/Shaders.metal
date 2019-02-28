@@ -53,8 +53,8 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.worldTangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.tangent;
     out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;
     out.textureID = instance.textureID;
-    float4x4 shadowMatrix = uniforms.shadowMatrix;
 
+    float4x4 shadowMatrix = uniforms.shadowMatrix;
     out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
     
     return out;
@@ -259,13 +259,18 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         float3 lightDirection = normalize(lights[0].position - in.worldPosition.xyz);
         // Point light - not standard UV Coordinates - accessed with 3d vector
         float shadow_sample = shadowTexture.sample(s, lightDirection);
+        float d = length(lightDirection);
 
-        // Still seems like the shadow map is being rendered as if it were a regular map... not 3d xyz thing
-        float3 normalizedLight = normalize(-lights[0].position);
-        float d = distance(normalizedLight, in.worldPosition.xyz);
         if (d > shadow_sample) {
             color *= 0.5;
         }
+
+        // Still seems like the shadow map is being rendered as if it were a regular map... not 3d xyz thing
+//        float3 normalizedLight = normalize(-lights[0].position);
+//        float d = distance(normalizedLight, in.worldPosition.xyz);
+//        if (d > shadow_sample) {
+//            color *= 0.5;
+//        }
 
     }
 
