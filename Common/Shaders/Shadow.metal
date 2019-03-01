@@ -18,7 +18,13 @@ struct VertexIn {
     ushort4 joints [[ attribute(Joints) ]];
     float4 weights [[ attribute(Weights) ]];
 };
-vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
+
+struct DepthOut {
+    float4 position [[ position ]];
+    uint   face [[render_target_array_index]];
+};
+
+vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
                            constant Instances *instances [[ buffer(BufferIndexInstances), function_constant(isInstanced) ]],
                            uint instanceID [[ instance_id, function_constant(isInstanced) ]],
                            constant float4x4 *jointMatrices [[ buffer(21), function_constant(isSkinnedModel) ]],
@@ -26,6 +32,7 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
                            constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
                            constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
 
+    DepthOut out;
     if (isSkinnedModel) {
         // skinning code
         float4 weights = vertexIn.weights;
@@ -39,7 +46,10 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
         matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix;
         float4 position = mvp * vertexIn.position;
 
-        return position;
+        out.position = position;
+        out.face = 0;
+
+        return out;
     } else {
 
         matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
@@ -60,14 +70,21 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
             }
         } else if (light.type == Pointlight) {
 
-            CubeMap map = cubeMaps[0];
-            matrix_float4x4 fmvp = uniforms.projectionMatrix * uniforms.viewMatrix * map.faceMatrix * uniforms.modelMatrix;
-            float4 facePos = fmvp * vertexIn.position;
 
-            return facePos;
+            CubeMap map = cubeMaps[0];
+            matrix_float4x4 fmvp = uniforms.projectionMatrix * map.faceMatrix * uniforms.modelMatrix;
+            float4 facePos = fmvp * vertexIn.position;
+            out.position = facePos;
+            out.face = 0;
+
+            return out;
 
         }
 
-        return position;
+        out.position = position;
+        out.face = 0;
+
+
+        return out;
     }
 }

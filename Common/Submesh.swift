@@ -138,6 +138,7 @@ private extension Submesh {
             pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
             pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
             pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+            pipelineDescriptor.inputPrimitiveTopology = .triangle
             pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         } catch let error {
             fatalError(error.localizedDescription)

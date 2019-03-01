@@ -847,7 +847,7 @@ extension GLTFAsset {
             descriptor.colorAttachments[0].pixelFormat = .invalid
             descriptor.vertexFunction = try library?.makeFunction(name: "vertex_depth", constantValues: constants)
             descriptor.fragmentFunction = nil
-
+            descriptor.inputPrimitiveTopology = .triangle
             descriptor.vertexDescriptor = vertexDescriptor
             descriptor.depthAttachmentPixelFormat = .depth32Float
 
