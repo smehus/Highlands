@@ -229,7 +229,7 @@ extension Renderer: MTKViewDelegate {
 
 
         // Build view matrix for each face of the cube map
-        for i in 0...6 {
+        for i in 0..<6 {
             var map = CubeMap()
             let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
             let lookAt = float4x4(eye: position, center: position  + directions[i] , up: ups[i])
@@ -238,6 +238,9 @@ extension Renderer: MTKViewDelegate {
             viewMatrices.append(map)
         }
 
+        renderEncoder.setVertexBytes(&viewMatrices,
+                                     length: MemoryLayout<CubeMap>.stride * viewMatrices.count,
+                                     index: Int(BufferIndexCubeFaces.rawValue))
 
 
         //            let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]

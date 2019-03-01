@@ -50,7 +50,8 @@ typedef enum {
     BufferIndexInstances = 15,
     BufferIndexSkybox = 20,
     BufferIndexSkyboxDiffuse = 21,
-    BufferIndexBRDFLut = 22
+    BufferIndexBRDFLut = 22,
+    BufferIndexCubeFaces = 23
 
 } BufferIndices;
 

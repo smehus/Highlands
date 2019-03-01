@@ -23,6 +23,7 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
                            uint instanceID [[ instance_id, function_constant(isInstanced) ]],
                            constant float4x4 *jointMatrices [[ buffer(21), function_constant(isSkinnedModel) ]],
                            constant Light &light [[ buffer(BufferIndexLights) ]],
+                           constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
                            constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
 
     if (isSkinnedModel) {
@@ -45,7 +46,6 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
         float4 position = mvp * vertexIn.position;
         float4 worldPosition = uniforms.modelMatrix * vertexIn.position;
 
-        float3 lighPosition = light.position;
         float3 directionFromLightToFragment = normalize(light.position - worldPosition.xyz);
 
         if (light.type == Spotlight) {
@@ -60,6 +60,11 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
             }
         } else if (light.type == Pointlight) {
 
+            CubeMap map = cubeMaps[0];
+            matrix_float4x4 fmvp = uniforms.projectionMatrix * uniforms.viewMatrix * map.faceMatrix * uniforms.modelMatrix;
+            float4 facePos = fmvp * vertexIn.position;
+
+            return facePos;
 
         }
 
