@@ -59,39 +59,10 @@ vertex float4 vertex_depth(const VertexIn vertexIn [[ stage_in ]],
                 position = position.xyww;
             }
         } else if (light.type == Pointlight) {
-            // idk this is from a website
-//            float d = distance(lighPosition, worldPosition.xyz);
-//            float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
-//            position.w = 1.0;
 
-            return float4(-directionFromLightToFragment, 1);
+
         }
 
         return position;
     }
 }
-
-
-
-
-
-//
-//    // Find angle (dot product) between direction from light to fragment & the direction of the cone
-
-//    if (spotResult > coneAngle) {
-//        // Standard formulat for attenuation
-//        float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
-//
-//        // Adding attenuation for distance from center of the cone
-//        attenuation *= pow(spotResult, light.coneAttenuation);
-//
-//        // Inverting the normal direction will flip the 'black section of the light '
-//        // When pointing backwards
-//        float dotProd = dot(directionFromLightToFragment, normalDirection);
-//        float diffuseIntensity = saturate(dotProd);
-//        float3 color = light.color * baseColor * diffuseIntensity;
-//        color *= attenuation;
-//
-//        diffuseColor += color;
-//    }
-

@@ -83,8 +83,12 @@ final class Renderer: NSObject {
 
     func buildShadowTexture(size: CGSize) {
 //        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
+//        shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
+
+        // Pointlights
         shadowTexture = buildCubeTexture(size: Int(size.width))
-        shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
+        shadowRenderPassDescriptor.setUpCubeDepthAttachment(texture: shadowTexture)
+
     }
 
     func buildDepthStencilState() {
@@ -201,11 +205,43 @@ extension Renderer: MTKViewDelegate {
     private func setLantern(view: MTKView, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.01, far: 16, aspect: aspect)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: .pi / 2), near: 0.01, far: 300, aspect: aspect)
 
-        let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
-        scene.uniforms.viewMatrix = float4x4(translation: position)
-        scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
+        var viewMatrices = [matrix_float4x4]()
+
+        let directions: [float3] = [
+            [ 1,  0,  0], // Right
+            [-1,  0,  0], // Left
+            [ 0,  1,  0], // Top
+            [ 0, -1,  0], // Down
+            [ 0,  0,  1], // Front
+            [ 0,  0, -1]  // Back
+        ]
+
+        let ups: [float3] = [
+            [0, 1,  0],
+            [0, 1,  0],
+            [0, 0, -1],
+            [0, 0,  1],
+            [0, 1,  0],
+            [0, 1,  0]
+        ]
+
+
+        for i in 0...6 {
+
+            let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
+            let lookAt = float4x4(eye: position, center: position  + directions[i] , up: ups[i])
+            let matrix = float4x4(translation: position) * lookAt
+
+            viewMatrices.append(matrix)
+        }
+
+
+
+        //            let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
+        //            scene.uniforms.viewMatrix = float4x4(translation: position)
+        //            scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
     }
 
     private func setSpotlight(view: MTKView, sunlight: Light) {
@@ -233,5 +269,15 @@ private extension MTLRenderPassDescriptor {
         depthAttachment.loadAction = .clear
         depthAttachment.storeAction = .store
         depthAttachment.clearDepth = 1
-    } }
+    }
+
+
+    func setUpCubeDepthAttachment(texture: MTLTexture) {
+        depthAttachment.texture = texture
+        depthAttachment.loadAction = .clear
+        depthAttachment.storeAction = .store
+        renderTargetArrayLength = 6
+        depthAttachment.clearDepth = 1
+    }
+}
 
