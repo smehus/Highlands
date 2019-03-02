@@ -205,7 +205,7 @@ extension Renderer: MTKViewDelegate {
     private func setLantern(view: MTKView, renderEncoder: MTLRenderCommandEncoder, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90), near: 0.01, far: 16, aspect: 1)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90), near: 0.01, far: 16, aspect: aspect)
 
         var viewMatrices = [CubeMap]()
 

@@ -77,7 +77,7 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
             float4 worldPos = uniforms.modelMatrix * vertexIn.position;
             float4 screenPos = uniforms.projectionMatrix * map.faceViewMatrix * worldPos;
 
-            out.position = float4(screenPos.xyz, 1.0);
+            out.position = float4(screenPos.xyz, screenPos.w);
             out.face = instanceID;
 
             return out;
