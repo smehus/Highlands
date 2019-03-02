@@ -70,14 +70,17 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
             }
         } else if (light.type == Pointlight) {
 
-            // I need to do what they do in apple demo..
-            // basically determine which faces each fragment needs to get drawn to
+            if (instanceID == 5) {
+                CubeMap map = cubeMaps[instanceID];
+                float4 worldPos = uniforms.modelMatrix * vertexIn.position;
+                float4 screenPos = uniforms.projectionMatrix * map.faceViewMatrix * worldPos;
 
-            CubeMap map = cubeMaps[instanceID];
-            float4 worldPos = uniforms.modelMatrix * vertexIn.position;
-            float4 screenPos = uniforms.projectionMatrix * map.faceViewMatrix * worldPos;
+                out.position = float4(screenPos.xyz - light.position, screenPos.w);
+            } else {
+                out.position = position.xyww;
+            }
 
-            out.position = float4(screenPos.xyz, screenPos.w);
+
             out.face = instanceID;
 
             return out;

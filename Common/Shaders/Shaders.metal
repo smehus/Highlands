@@ -260,7 +260,6 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         // Point light - not standard UV Coordinates - accessed with 3d vector
         float shadow_sample = shadowTexture.sample(s, lightDirection);
         float d = length(lightDirection);
-
         if (d > shadow_sample) {
             color *= 0.5;
         }
