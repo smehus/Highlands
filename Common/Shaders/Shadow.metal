@@ -26,7 +26,7 @@ struct DepthOut {
 
 vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
                            constant Instances *instances [[ buffer(BufferIndexInstances), function_constant(isInstanced) ]],
-                           uint instanceID [[ instance_id, function_constant(isInstanced) ]],
+                           uint instanceID [[ instance_id ]],
                            constant float4x4 *jointMatrices [[ buffer(21), function_constant(isSkinnedModel) ]],
                            constant Light &light [[ buffer(BufferIndexLights) ]],
                            constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
@@ -70,12 +70,15 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
             }
         } else if (light.type == Pointlight) {
 
+            // I need to do what they do in apple demo..
+            // basically determine which faces each fragment needs to get drawn to
 
-            CubeMap map = cubeMaps[0];
-            matrix_float4x4 fmvp = uniforms.projectionMatrix * map.faceMatrix * uniforms.modelMatrix;
-            float4 facePos = fmvp * vertexIn.position;
-            out.position = facePos;
-            out.face = 0;
+            CubeMap map = cubeMaps[instanceID];
+            float4 worldPos = uniforms.modelMatrix * vertexIn.position;
+            float4 screenPos = uniforms.projectionMatrix * map.faceViewMatrix * worldPos;
+
+            out.position = float4(screenPos.xyz, 1.0);
+            out.face = instanceID;
 
             return out;
 

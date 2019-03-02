@@ -21,7 +21,9 @@ typedef enum {
 } LightType;
 
 typedef struct CubeMap {
-    matrix_float4x4 faceMatrix;
+    matrix_float4x4 faceViewMatrix;
+    vector_float3 direction;
+    vector_float3 up;
 };
 
 typedef struct {

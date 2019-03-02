@@ -205,10 +205,11 @@ extension Renderer: MTKViewDelegate {
     private func setLantern(view: MTKView, renderEncoder: MTLRenderCommandEncoder, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: .pi / 2), near: 0.01, far: 300, aspect: aspect)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90), near: 0.01, far: 16, aspect: 1)
 
         var viewMatrices = [CubeMap]()
 
+        // Is this just because the sphere in demo spinning??
         let directions: [float3] = [
             [ 1,  0,  0], // Right
             [-1,  0,  0], // Left
@@ -231,9 +232,13 @@ extension Renderer: MTKViewDelegate {
         // Build view matrix for each face of the cube map
         for i in 0..<6 {
             var map = CubeMap()
-            let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
+            map.direction = directions[i]
+            map.up = ups[i]
+
+            let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
             let lookAt = float4x4(eye: position, center: position  + directions[i] , up: ups[i])
-            map.faceMatrix = float4x4(translation: position) * lookAt
+            map.faceViewMatrix = float4x4(translation: position) * lookAt
+            
 
             viewMatrices.append(map)
         }
@@ -242,10 +247,6 @@ extension Renderer: MTKViewDelegate {
                                      length: MemoryLayout<CubeMap>.stride * viewMatrices.count,
                                      index: Int(BufferIndexCubeFaces.rawValue))
 
-
-        //            let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
-        //            scene.uniforms.viewMatrix = float4x4(translation: position)
-        //            scene.uniforms.shadowMatrix = scene.uniforms.projectionMatrix * scene.uniforms.viewMatrix
     }
 
     private func setSpotlight(view: MTKView, sunlight: Light) {

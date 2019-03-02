@@ -299,7 +299,8 @@ extension Prop: Renderable {
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
-                                                indexBufferOffset: submesh.indexBuffer.offset)
+                                                indexBufferOffset: submesh.indexBuffer.offset,
+                                                instanceCount: 6)
         }
     }
 }
