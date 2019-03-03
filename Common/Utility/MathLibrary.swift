@@ -154,7 +154,7 @@ extension float4 {
     }
 }
 
-
+// Ported from https://developer.apple.com/documentation/metal/reflections_with_layer_selection
 struct FrustumCuller {
 
     var position: vector_float3
