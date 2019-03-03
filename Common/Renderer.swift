@@ -259,9 +259,9 @@ extension Renderer: MTKViewDelegate {
         }
 
 
-
         for renderable in scene.renderables {
             guard let prop = renderable as? Prop else { continue }
+            guard prop.name == "treefir" else { continue }
             var instanceCount = 0
 
             for (idx, probe) in culler_probe.enumerated() {
