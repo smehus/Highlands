@@ -20,11 +20,11 @@ typedef enum {
     Ambientlight = 4
 } LightType;
 
-typedef struct CubeMap {
+typedef struct {
     matrix_float4x4 faceViewMatrix;
     vector_float3 direction;
     vector_float3 up;
-};
+} CubeMap;
 
 typedef struct {
     vector_float3 position;  // for a sunlight, this is direction

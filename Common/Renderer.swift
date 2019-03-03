@@ -228,6 +228,7 @@ extension Renderer: MTKViewDelegate {
             [0, 1,  0]
         ]
 
+        var culler_probe = [FrustumCuller]()
 
         // Build view matrix for each face of the cube map
         for i in 0..<6 {
@@ -238,10 +239,13 @@ extension Renderer: MTKViewDelegate {
             let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
             let lookAt = float4x4(eye: position, center: position  + directions[i] , up: ups[i])
             map.faceViewMatrix = float4x4(translation: position) * lookAt
-            
-
             viewMatrices.append(map)
+
+
         }
+
+
+
 
         renderEncoder.setVertexBytes(&viewMatrices,
                                      length: MemoryLayout<CubeMap>.stride * viewMatrices.count,

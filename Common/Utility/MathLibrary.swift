@@ -1,32 +1,3 @@
-/**
- * Copyright (c) 2018 Razeware LLC
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
- * distribute, sublicense, create a derivative work, and/or sell copies of the
- * Software in any work that is designed, intended, or marketed for pedagogical or
- * instructional purposes related to programming, coding, application development,
- * or information technology.  Permission for such use, copying, modification,
- * merger, publication, distribution, sublicensing, creation of derivative works,
- * or sale is expressly withheld.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 
 import simd
 
@@ -183,3 +154,69 @@ extension float4 {
     }
 }
 
+
+struct FrustumCuller {
+
+    var position: vector_float3
+
+    // planes normals :
+    var norm_NearPlane: vector_float3
+    var norm_LeftPlane: vector_float3
+    var norm_RightPlane: vector_float3
+    var norm_BottomPlane: vector_float3
+    var norm_TopPlane: vector_float3
+
+    // near / far distances from the frustum's origin
+    var dist_Near: Float
+    var dist_Far: Float
+
+    init(viewMatrix: matrix_float4x4,
+                  viewPosition: vector_float3,
+                  aspect: Float,
+                  halfAngleApertureHeight: Float,
+                  nearPlaneDistance: Float,
+                  farPlaneDistance: Float)
+    {
+
+        position = viewPosition
+        dist_Far = farPlaneDistance
+        dist_Near = nearPlaneDistance
+
+        let halfAngleApertureWidth: Float = halfAngleApertureHeight * aspect
+        // TODO: This might be broken
+        let cameraRotationMatrix: matrix_float3x3 = viewMatrix.upperLeft().inverse
+
+        norm_NearPlane = matrix_multiply(cameraRotationMatrix, float3(0, 0, 1))
+        norm_LeftPlane = matrix_multiply(cameraRotationMatrix,
+                                         float3(cosf(halfAngleApertureWidth), 0, sinf(halfAngleApertureWidth)))
+        norm_BottomPlane = matrix_multiply(cameraRotationMatrix,
+                                         float3(0, cosf(halfAngleApertureHeight), sinf(halfAngleApertureHeight)))
+
+        // TODO: This might be wrong too (-norm_LeftPLane etc etc)
+        // we reflect the left plane normal along the view direction (norm_NearPlane) to get the right plane normal :
+        norm_RightPlane = -norm_LeftPlane + norm_NearPlane * (simd_dot(norm_NearPlane, norm_LeftPlane) * 2);
+        // we do the same, to get the top plane normal, from the bottom plane :
+        norm_TopPlane = -norm_BottomPlane + norm_NearPlane * (simd_dot(norm_NearPlane, norm_BottomPlane) * 2);
+    }
+
+    func Intersects (actorPosition: vector_float3, bSphere: vector_float4) -> Bool {
+
+        var bSphere = bSphere
+        let position_f4: vector_float4  = vector_float4(actorPosition.x, actorPosition.y, actorPosition.z, 0.0)
+        bSphere += position_f4;
+
+        let bSphereRadius: Float = bSphere.w;
+        let camToSphere: vector_float3 = bSphere.xyz - position;
+
+        if (simd_dot (camToSphere + norm_NearPlane * (bSphereRadius-dist_Near), norm_NearPlane) < 0) { return false }
+        if (simd_dot (camToSphere - norm_NearPlane * (bSphereRadius+dist_Far),  -norm_NearPlane) < 0) { return false }
+
+        if (simd_dot (camToSphere + norm_LeftPlane * bSphereRadius, norm_LeftPlane) < 0) { return false }
+        if (simd_dot (camToSphere + norm_RightPlane * bSphereRadius, norm_RightPlane) < 0) { return false }
+
+        if (simd_dot (camToSphere + norm_BottomPlane * bSphereRadius, norm_BottomPlane) < 0) { return false }
+        if (simd_dot (camToSphere + norm_TopPlane * bSphereRadius, norm_TopPlane) < 0) { return false }
+
+        return true
+    }
+}
