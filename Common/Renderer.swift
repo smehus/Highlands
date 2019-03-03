@@ -205,7 +205,12 @@ extension Renderer: MTKViewDelegate {
     private func setLantern(view: MTKView, renderEncoder: MTLRenderCommandEncoder, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90), near: 0.01, far: 16, aspect: aspect)
+        let near: Float = 0.01
+        let far: Float = 16
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
+                                                   near: near,
+                                                   far: far,
+                                                   aspect: aspect)
 
         var viewMatrices = [CubeMap]()
 
@@ -241,10 +246,37 @@ extension Renderer: MTKViewDelegate {
             map.faceViewMatrix = float4x4(translation: position) * lookAt
             viewMatrices.append(map)
 
+            // Create frustums
 
+            let cullerProbe = FrustumCuller(viewMatrix: map.faceViewMatrix,
+                                            viewPosition: position,
+                                            aspect: aspect,
+                                            halfAngleApertureHeight: .pi / 4,
+                                            nearPlaneDistance: near,
+                                            farPlaneDistance: far)
+
+            culler_probe.append(cullerProbe)
         }
 
 
+
+        for renderable in scene.renderables {
+            guard let prop = renderable as? Prop else { continue }
+            var instanceCount = 0
+
+            for (idx, probe) in culler_probe.enumerated() {
+
+                let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
+
+                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
+                    instanceCount += 1
+                }
+
+                if instanceCount > 0 {
+                    prop.shadowInstanceCount = instanceCount
+                }
+            }
+        }
 
 
         renderEncoder.setVertexBytes(&viewMatrices,

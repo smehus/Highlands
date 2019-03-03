@@ -35,7 +35,7 @@ class Character: Node {
     var currentAnimation: AnimationClip?
     var currentAnimationPlaying = false
     var samplerState: MTLSamplerState
-
+    var shadowInstanceCount: Int = 0
     init(name: String) {
         let asset = GLTFAsset(filename: name)
         buffers = asset.buffers

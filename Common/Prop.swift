@@ -120,6 +120,7 @@ class Prop: Node {
     private var transforms: [Transform]
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
+    var shadowInstanceCount: Int = 1
 
     init(type: PropType) {
 
@@ -300,7 +301,7 @@ extension Prop: Renderable {
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset,
-                                                instanceCount: 6)
+                                                instanceCount: shadowInstanceCount)
         }
     }
 }
