@@ -109,7 +109,7 @@ final class GameScene: Scene {
 
             // Lantern
             lights[index].position = inputController.player!.position
-            lights[index].position.y = 1.0
+            lights[index].position.y = 3.0
             lights[index].position += inputController.player!.forwardVector / 4
 
             // Spotlight

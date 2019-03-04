@@ -256,13 +256,14 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     } else if (lights[0].type == Pointlight) {
         constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
 
-        float3 lightDirection = normalize(lights[0].position - in.worldPosition.xyz);
-        // Point light - not standard UV Coordinates - accessed with 3d vector
-        float shadow_sample = shadowTexture.sample(s, lightDirection);
-        float d = length(lightDirection);
-        if (d > shadow_sample) {
-            color *= 0.5;
-        }
+//        float3 lightDirection = normalize(lights[0].position - in.worldPosition.xyz);
+//        lightDirection.y = 1 - lightDirection.y;
+//        // Point light - not standard UV Coordinates - accessed with 3d vector
+//        float shadow_sample = shadowTexture.sample(s, lightDirection);
+//        float d = length(lightDirection);
+//        if (d > shadow_sample) {
+//            color *= 0.5;
+//        }
 
         // Still seems like the shadow map is being rendered as if it were a regular map... not 3d xyz thing
 //        float3 normalizedLight = normalize(-lights[0].position);

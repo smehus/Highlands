@@ -117,6 +117,20 @@ extension float4x4 {
         columns = (X, Y, Z, W)
     }
 
+    init(lookAtLHEye eye: vector_float3, target: vector_float3, up: vector_float3) {
+        let z: vector_float3  = simd_normalize(target - eye);
+        let x: vector_float3  = simd_normalize(simd_cross(up, z));
+        let y: vector_float3  = simd_cross(z, x);
+        let t: vector_float3 = vector_float3(-simd_dot(x, eye), -simd_dot(y, eye), -simd_dot(z, eye));
+
+
+        self.init(array: [x.x, y.x, z.x, 0,
+                          x.y, y.y, z.y, 0,
+                          x.z, y.z, z.z, 0,
+                          t.x, t.y, t.z, 1])
+    }
+
+
     init(orthographic rect: Rectangle, near: Float, far: Float) {
         let X = float4(2 / (rect.right - rect.left), 0, 0, 0)
         let Y = float4(0, 2 / (rect.top - rect.bottom), 0, 0)

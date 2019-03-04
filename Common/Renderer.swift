@@ -199,7 +199,7 @@ extension Renderer: MTKViewDelegate {
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
             renderEncoder.pushDebugGroup(renderable.name)
-            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms, startingIndex: 0)
+            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms, startingIndex: actorIdx * renderable.shadowInstanceCount)
             renderEncoder.popDebugGroup()
         }
 
@@ -211,12 +211,14 @@ extension Renderer: MTKViewDelegate {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
         let near: Float = 0.01
-        let far: Float = 16
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
+        let far: Float = 300
+
+        let projection = float4x4(projectionFov: radians(fromDegrees: 90),
                                                    near: near,
                                                    far: far,
                                                    aspect: aspect)
 
+        scene.uniforms.projectionMatrix = projection
         var viewMatrices = [CubeMap]()
 
         // Is this just because the sphere in demo spinning??
@@ -247,8 +249,10 @@ extension Renderer: MTKViewDelegate {
             map.up = ups[i]
 
             let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
-            let lookAt = float4x4(eye: position, center: position  + directions[i] , up: ups[i])
-            map.faceViewMatrix = float4x4(translation: position) * lookAt
+            let lookAt = float4x4(lookAtLHEye: position, target: position + directions[i], up: ups[i])
+            map.faceViewMatrix = matrix_multiply(projection, lookAt)
+//            map.faceViewMatrix = float4x4(translation: position) * lookAt
+
             viewMatrices.append(map)
 
             // Create frustums
@@ -266,26 +270,33 @@ extension Renderer: MTKViewDelegate {
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
             guard let prop = renderable as? Prop else { continue }
-            guard prop.name == "treefir" else { continue }
+
             var instanceCount = 0
 
-            for (faceIdx, probe) in culler_probe.enumerated() {
-
-                let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
-
-                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
-
-                    let params = InstanceParams(viewportIndex: uint(faceIdx))
-                    let pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self, capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
-                    pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
-                    instanceCount += 1
-                }
 
 
-                if instanceCount > 0 {
-                    prop.shadowInstanceCount = instanceCount
-                }
-            }
+//            for (faceIdx, probe) in culler_probe.enumerated() {
+//
+//                let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
+//
+//                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
+//
+//                    let params = InstanceParams(viewportIndex: uint(faceIdx))
+//                    let pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self, capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
+//                    pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
+//                    instanceCount += 1
+//                }
+//
+//
+//                if instanceCount > 0 {
+//                    prop.shadowInstanceCount = instanceCount
+//                }
+//            }
+
+            // front face index
+
+            prop.shadowInstanceCount = 1
+
         }
 
         // setVertexBytes instanceParams

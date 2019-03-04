@@ -296,10 +296,6 @@ extension Prop: Renderable {
             renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineSTate)
             let submesh = modelSubmesh.submesh!
 
-            if name == "treefir" {
-                print("*** instance count \(shadowInstanceCount)")
-            }
-
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,
