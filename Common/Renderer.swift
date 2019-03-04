@@ -9,10 +9,14 @@ final class Renderer: NSObject {
     static var commandQueue: MTLCommandQueue!
     static var colorPixelFormat: MTLPixelFormat!
     static var library: MTLLibrary?
+    static let MaxVisibleFaces = 5
+    static let MaxActors = 32
+
 
     var scene: Scene?
 
     private var depthStencilState: MTLDepthStencilState!
+    private var instanceParamBuffer: MTLBuffer
 
     lazy var lightPipelineState: MTLRenderPipelineState = {
         return buildLightPipelineState()
@@ -34,6 +38,7 @@ final class Renderer: NSObject {
         Renderer.commandQueue = device.makeCommandQueue()!
         Renderer.colorPixelFormat = metalView.colorPixelFormat
         Renderer.library = device.makeDefaultLibrary()
+        instanceParamBuffer = Renderer.device.makeBuffer(length: MemoryLayout<InstanceParams>.stride * (Renderer.MaxVisibleFaces * Renderer.MaxActors), options: .storageModeShared)!
 
         super.init()
         metalView.clearColor = MTLClearColor(red: 0.0, green: 0.5,
@@ -192,9 +197,9 @@ extension Renderer: MTKViewDelegate {
 
         renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
 
-        for renderable in scene.renderables {
+        for (actorIdx, renderable) in scene.renderables.enumerated() {
             renderEncoder.pushDebugGroup(renderable.name)
-            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms, startingIndex: 0)
             renderEncoder.popDebugGroup()
         }
 
@@ -259,18 +264,23 @@ extension Renderer: MTKViewDelegate {
         }
 
 
-        for renderable in scene.renderables {
+        for (actorIdx, renderable) in scene.renderables.enumerated() {
             guard let prop = renderable as? Prop else { continue }
             guard prop.name == "treefir" else { continue }
             var instanceCount = 0
 
-            for (idx, probe) in culler_probe.enumerated() {
+            for (faceIdx, probe) in culler_probe.enumerated() {
 
                 let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
 
                 if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
+
+                    let params = InstanceParams(viewportIndex: uint(faceIdx))
+                    let pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self, capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
+                    pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
                     instanceCount += 1
                 }
+
 
                 if instanceCount > 0 {
                     prop.shadowInstanceCount = instanceCount
@@ -278,10 +288,16 @@ extension Renderer: MTKViewDelegate {
             }
         }
 
+        // setVertexBytes instanceParams
 
         renderEncoder.setVertexBytes(&viewMatrices,
                                      length: MemoryLayout<CubeMap>.stride * viewMatrices.count,
                                      index: Int(BufferIndexCubeFaces.rawValue))
+
+        renderEncoder.setVertexBuffer(instanceParamBuffer,
+                                      offset: 0,
+                                      index: Int(BufferIndexInstanceParams.rawValue))
+
 
     }
 

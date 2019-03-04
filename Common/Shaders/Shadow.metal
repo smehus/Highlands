@@ -25,12 +25,13 @@ struct DepthOut {
 };
 
 vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
-                           constant Instances *instances [[ buffer(BufferIndexInstances), function_constant(isInstanced) ]],
-                           uint instanceID [[ instance_id ]],
-                           constant float4x4 *jointMatrices [[ buffer(21), function_constant(isSkinnedModel) ]],
-                           constant Light &light [[ buffer(BufferIndexLights) ]],
-                           constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
-                           constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
+                             constant Instances *instances [[ buffer(BufferIndexInstances), function_constant(isInstanced) ]],
+                             uint instanceID [[ instance_id ]],
+                             constant float4x4 *jointMatrices [[ buffer(21), function_constant(isSkinnedModel) ]],
+                             constant Light &light [[ buffer(BufferIndexLights) ]],
+                             constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
+                             constant InstanceParams *instanceParams [[ buffer(BufferIndexInstanceParams) ]],
+                             constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
 
     DepthOut out;
     if (isSkinnedModel) {

@@ -280,7 +280,7 @@ extension Prop: Renderable {
         }
     }
 
-    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
 
         var uniforms = uniforms
         uniforms.modelMatrix = modelMatrix
@@ -296,12 +296,18 @@ extension Prop: Renderable {
             renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineSTate)
             let submesh = modelSubmesh.submesh!
 
+            if name == "treefir" {
+                print("*** instance count \(shadowInstanceCount)")
+            }
+
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset,
-                                                instanceCount: shadowInstanceCount)
+                                                instanceCount: shadowInstanceCount,
+                                                baseVertex: 0,
+                                                baseInstance: startingIndex)
         }
     }
 }

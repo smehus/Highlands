@@ -53,7 +53,8 @@ typedef enum {
     BufferIndexSkybox = 20,
     BufferIndexSkyboxDiffuse = 21,
     BufferIndexBRDFLut = 22,
-    BufferIndexCubeFaces = 23
+    BufferIndexCubeFaces = 23,
+    BufferIndexInstanceParams = 24
 
 } BufferIndices;
 
@@ -89,5 +90,9 @@ struct Instances {
     matrix_float3x3 normalMatrix;
     uint textureID;
 };
+
+typedef struct {
+    uint viewportIndex;
+} InstanceParams;
 
 #endif /* Common_h */

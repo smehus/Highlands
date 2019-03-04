@@ -189,7 +189,7 @@ extension Character: Renderable {
         }
     }
 
-    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, startingIndex: Int) {
 /*
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
