@@ -198,6 +198,7 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
+            guard renderable.name != "large-plane" else { continue }
             renderEncoder.pushDebugGroup(renderable.name)
             renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms, startingIndex: actorIdx * renderable.shadowInstanceCount)
             renderEncoder.popDebugGroup()
