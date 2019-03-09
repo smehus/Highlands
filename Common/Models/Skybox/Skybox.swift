@@ -107,5 +107,7 @@ class Skybox {
                                             indexType: submesh.indexType,
                                             indexBuffer: submesh.indexBuffer.buffer,
                                             indexBufferOffset: submesh.indexBuffer.offset)
+
+        renderEncoder.popDebugGroup()
     }
 }

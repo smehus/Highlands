@@ -252,7 +252,7 @@ extension Renderer: MTKViewDelegate {
             map.direction = directions[i]
             map.up = ups[i]
 
-            let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
+            let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
             let lookAt = float4x4(lookAtLHEye: position, target: position + directions[i], up: ups[i])
             map.faceViewMatrix = matrix_multiply(projection, lookAt)
 //            map.faceViewMatrix = float4x4(translation: position) * lookAt
@@ -279,27 +279,23 @@ extension Renderer: MTKViewDelegate {
 
 
 
-//            for (faceIdx, probe) in culler_probe.enumerated() {
-//
-//                let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
-//
+            for (faceIdx, probe) in culler_probe.enumerated() {
+
+                let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
+
 //                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
-//
-//                    let params = InstanceParams(viewportIndex: uint(faceIdx))
-//                    let pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self, capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
-//                    pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
-//                    instanceCount += 1
-//                }
-//
-//
-//                if instanceCount > 0 {
-//                    prop.shadowInstanceCount = instanceCount
-//                }
-//            }
 
-            // front face index
+                    let params = InstanceParams(viewportIndex: uint(faceIdx))
+                    let pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self, capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
+                    pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
+                    instanceCount += 1
+//                }
 
-            prop.shadowInstanceCount = 1
+
+                if instanceCount > 0 {
+                    prop.shadowInstanceCount = instanceCount
+                }
+            }
 
         }
 
@@ -331,7 +327,9 @@ extension Renderer: MTKViewDelegate {
     }
 
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
+        encoder.pushDebugGroup("DEBUG LIGHTS")
         debugLights(renderEncoder: encoder, lightType: Pointlight)
+        encoder.popDebugGroup()
     }
 }
 

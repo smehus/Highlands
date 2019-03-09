@@ -72,9 +72,10 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
         } else if (light.type == Pointlight) {
 
 
-            out.face = 4;
+            out.face = instanceID;
 
             CubeMap map = cubeMaps[out.face];
+            
 
             float4 screenPos = map.faceViewMatrix * uniforms.modelMatrix * vertexIn.position;;
             out.position = screenPos;

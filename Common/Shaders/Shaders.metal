@@ -56,8 +56,8 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
 
     float4x4 shadowMatrix = uniforms.shadowMatrix;
     // Can i get the shadow matrix from the instances here?
-    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
-    
+//    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
+    out.shadowPosition = vertexIn.position;
     return out;
 }
 
@@ -255,7 +255,9 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
          */
 
     } else if (lights[0].type == Pointlight) {
-        constexpr sampler s(filter::linear);
+        constexpr sampler linearSampler (mip_filter::linear,
+                                         mag_filter::linear,
+                                         min_filter::linear);
 
 //        The vertex shader and fragment shader are largely similar to the original shadow mapping shaders: the differences being that the fragment shader no longer requires a fragment position in light space (shadow matrixz) as we can now sample the depth values using a direction vector.
 
@@ -288,8 +290,8 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         // Can probably use this once I figure out wtf im doing wrong...
 //        T sample_compare(sampler s, float3 coord, float compare_value) const
 
-        float3 fragToLight = (light.position - in.worldPosition.xyz);
-        float4 closestDepth = shadowTexture.sample(s, fragToLight);
+        float3 fragToLight = normalize(light.position - in.shadowPosition.xyz);
+        float4 closestDepth = shadowTexture.sample(linearSampler, -fragToLight);
         return closestDepth;
 
 
