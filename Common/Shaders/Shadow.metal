@@ -90,3 +90,10 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
         return out;
     }
 }
+
+fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
+                               constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
+                               depthcube<float> shadowTexture [[ texture(ShadowTexture) ]]) {
+
+    return float4(0);
+}

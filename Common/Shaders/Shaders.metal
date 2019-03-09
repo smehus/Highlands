@@ -55,6 +55,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.textureID = instance.textureID;
 
     float4x4 shadowMatrix = uniforms.shadowMatrix;
+    // Can i get the shadow matrix from the instances here?
     out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
     
     return out;
@@ -256,8 +257,41 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     } else if (lights[0].type == Pointlight) {
         constexpr sampler s(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
 
-        float3 eyeDir = normalize(lights[0].position - in.worldPosition.xyz);
-        float sample = shadowTexture.sample(s, -eyeDir);
+//        The vertex shader and fragment shader are largely similar to the original shadow mapping shaders: the differences being that the fragment shader no longer requires a fragment position in light space (shadow matrixz) as we can now sample the depth values using a direction vector.
+
+        // Can I input the [[render_target_array_index]] here? I don't think so
+        // I need to use shadow matrix instead of the world position
+        // World position doesn't take into account the projection which we need you dumbass
+        // so .w is always 1
+
+        // shadow matrix -> matrix from point of view from light
+        // Light space = shadow matrix !!!!
+
+        Light light = lights[0];
+//        float3 lightDirection = normalize(light.position - in.position.xyz);
+////        lightDirection.y = 1 - lightDirection.y;
+//
+//        // Point light - not standard UV Coordinates - accessed with 3d vector
+//        float shadow_sample = shadowTexture.sample(s, -lightDirection);
+//
+//        float lightDistance = in.position.z / in.position.w;
+//        float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
+////        float attenSample = shadow_sample /* attenuation*/;
+//
+//        if (lightDistance > shadow_sample) {
+//            color *= 0.5;
+//        }
+
+
+
+
+        float3 fragToLight = light.position - in.worldPosition.xyz;
+        float closestDepth = shadowTexture.sample(s, -fragToLight);
+        closestDepth *= in.position.w;
+        float currentDepth = length(fragToLight);
+        
+        float bias = 0.05;
+        float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
 
     }
 
