@@ -140,6 +140,10 @@ extension Renderer: MTKViewDelegate {
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
         fragmentUniforms.lightCount = UInt32(scene.lights.count)
+        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
+                                                          near: 0.01,
+                                                          far: 16,
+                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
 
         // Reset uniforms so projection is correct
         // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
@@ -198,7 +202,6 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
-            guard renderable.name != "large-plane" else { continue }
             renderEncoder.pushDebugGroup(renderable.name)
             renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms, startingIndex: actorIdx * renderable.shadowInstanceCount)
             renderEncoder.popDebugGroup()
@@ -214,7 +217,7 @@ extension Renderer: MTKViewDelegate {
         let near: Float = 0.01
         let far: Float = 300
 
-        let projection = float4x4(projectionFov: radians(fromDegrees: 90),
+        let projection = float4x4(projectionFov: radians(fromDegrees: 30),
                                                    near: near,
                                                    far: far,
                                                    aspect: aspect)
@@ -249,7 +252,7 @@ extension Renderer: MTKViewDelegate {
             map.direction = directions[i]
             map.up = ups[i]
 
-            let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
+            let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
             let lookAt = float4x4(lookAtLHEye: position, target: position + directions[i], up: ups[i])
             map.faceViewMatrix = matrix_multiply(projection, lookAt)
 //            map.faceViewMatrix = float4x4(translation: position) * lookAt
