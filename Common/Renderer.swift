@@ -217,7 +217,7 @@ extension Renderer: MTKViewDelegate {
         let near: Float = 0.01
         let far: Float = 300
 
-        let projection = float4x4(projectionFov: radians(fromDegrees: 30),
+        let projection = float4x4(projectionFov: radians(fromDegrees: 90),
                                                    near: near,
                                                    far: far,
                                                    aspect: aspect)
@@ -227,21 +227,21 @@ extension Renderer: MTKViewDelegate {
 
         // Is this just because the sphere in demo spinning??
         let directions: [float3] = [
-            [ 1,  0,  0], // Right
-            [-1,  0,  0], // Left
-            [ 0,  1,  0], // Top
-            [ 0, -1,  0], // Down
+            [ 0,  0,  1], // Right
+            [ 0,  0,  1], // Left
+            [ 0,  0,  1], // Top
+            [ 0,  0,  1], // Down
             [ 0,  0,  1], // Front
-            [ 0,  0, -1]  // Back
+            [ 0,  0,  1]  // Back
         ]
 
         let ups: [float3] = [
-            [0, 1,  0],
-            [0, 1,  0],
-            [0, 0, -1],
-            [0, 0,  1],
-            [0, 1,  0],
-            [0, 1,  0]
+            [0, 1,  0], // Right
+            [0, 1,  0], // Left
+            [0, 1,  0], // Top
+            [0, 1,  0], // Down
+            [0, 1,  0], // Front
+            [0, 1,  0] // Back
         ]
 
         var culler_probe = [FrustumCuller]()
@@ -290,11 +290,10 @@ extension Renderer: MTKViewDelegate {
                     pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
                     instanceCount += 1
 //                }
+            }
 
-
-                if instanceCount > 0 {
-                    prop.shadowInstanceCount = instanceCount
-                }
+            if instanceCount > 0 {
+                prop.shadowInstanceCount = instanceCount
             }
 
         }

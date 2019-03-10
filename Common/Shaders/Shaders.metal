@@ -58,6 +58,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     // Can i get the shadow matrix from the instances here?
 //    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
     out.shadowPosition = vertexIn.position;
+
     return out;
 }
 
@@ -290,9 +291,11 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         // Can probably use this once I figure out wtf im doing wrong...
 //        T sample_compare(sampler s, float3 coord, float compare_value) const
 
-        float3 fragToLight = normalize(light.position - in.shadowPosition.xyz);
-        float4 closestDepth = shadowTexture.sample(linearSampler, -fragToLight);
-        return closestDepth;
+        float3 lightPosition = float3(in.shadowPosition.x, in.shadowPosition.y, in.shadowPosition.z);
+        float3 fragToLight = saturate(in.worldPosition.xyz - lightPosition);
+
+        float4 closestDepth = shadowTexture.sample(linearSampler, in.position.xyz);
+        return float4(closestDepth.xyz, closestDepth.w);
 
 
 //        closestDepth *= 16;

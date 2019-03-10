@@ -77,7 +77,7 @@ class ThirdPersonCamera: Camera {
 
     private func setRotatingCamera() {
         position = focus.position - focusDistance * focus.forwardVector
-        position.y = focusHeight
+        position.y = focus.position.y + focusHeight
         rotation.y = focus.rotation.y
     }
 }
