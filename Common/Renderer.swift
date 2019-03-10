@@ -229,10 +229,10 @@ extension Renderer: MTKViewDelegate {
 
         // Is this just because the sphere in demo spinning??
         let directions: [float3] = [
-            [ 0,  0,  1], // Right
-            [ 0,  0,  1], // Left
-            [ 0,  0,  1], // Top
-            [ 0,  0,  1], // Down
+            [ 1,  0,  0], // Right
+            [ -1,  0,  0], // Left
+            [0,  1,  0], // Top
+            [ 0, -1,  0], // Down
             [ 0,  0,  1], // Front
             [ 0,  0,  1]  // Back
         ]
@@ -240,8 +240,8 @@ extension Renderer: MTKViewDelegate {
         let ups: [float3] = [
             [0, 1,  0], // Right
             [0, 1,  0], // Left
-            [0, 1,  0], // Top
-            [0, 1,  0], // Down
+            [0, 0, -1], // Top
+            [0, 0,  1], // Down
             [0, 1,  0], // Front
             [0, 1,  0] // Back
         ]
@@ -285,13 +285,13 @@ extension Renderer: MTKViewDelegate {
 
                 let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
 
-//                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
+                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
 
                     let params = InstanceParams(viewportIndex: uint(faceIdx))
                     let pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self, capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
                     pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
                     instanceCount += 1
-//                }
+                }
             }
 
             if instanceCount > 0 {
@@ -343,7 +343,7 @@ private extension MTLRenderPassDescriptor {
 
 
     func setUpCubeDepthAttachment(depthTexture: MTLTexture, colorTexture: MTLTexture) {
-        colorAttachments[0].clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        colorAttachments[0].clearColor = MTLClearColor(red: 1, green: 1, blue: 1, alpha: 1.0)
         colorAttachments[0].loadAction = .clear
         colorAttachments[0].texture = colorTexture
 

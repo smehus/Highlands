@@ -23,6 +23,7 @@ struct DepthOut {
     float4 position [[ position ]];
     uint   face [[render_target_array_index]];
     float4  worldPos;
+    float far_plane;
 };
 
 vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
@@ -81,7 +82,7 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
             float4 screenPos = map.faceViewMatrix * uniforms.modelMatrix * vertexIn.position;;
             out.position = screenPos;
             out.worldPos = worldPosition;
-
+            out.far_plane = map.faceViewMatrix.columns[3].w;
             return out;
 
         }
@@ -99,7 +100,10 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
                                constant Light &light [[ buffer(BufferIndexLights) ]]) {
 
 
-    float3 lightDistance = length(light.position - float3(in.worldPos));
 
-    return float4(lightDistance, 1);
+    // Vector direction between light & fragment
+    float3 lightDirection = length(light.position - in.worldPos.xyz);
+    lightDirection = lightDirection / 16;
+
+    return float4(lightDirection, 1);
 }

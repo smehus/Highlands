@@ -28,18 +28,18 @@ final class GameScene: Scene {
         camera.position = [0, 2, -4]
         camera.rotation = [0, 0, 0]
 
-//        ground.tiling = 32
-//        add(node: ground)
+        ground.tiling = 32
+        add(node: ground)
 
-        plane.position.z = 10
-        plane.rotation.x = radians(fromDegrees: 130)
-        plane.tiling = 1
-        add(node: plane)
+//        plane.position.z = 10
+//        plane.rotation.x = radians(fromDegrees: 130)
+//        plane.tiling = 1
+//        add(node: plane)
 
 
-//        let singleTree = Prop(type: .base(name: "treefir", lighting: true))
-//        singleTree.position = [0, 0, 2]
-//        add(node: singleTree)
+        let singleTree = Prop(type: .base(name: "treefir", lighting: true))
+        singleTree.position = [0, 0, 2]
+        add(node: singleTree)
 
 //        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 50))
 //        add(node: tree)
