@@ -846,7 +846,7 @@ extension GLTFAsset {
             let descriptor = MTLRenderPipelineDescriptor()
             descriptor.colorAttachments[0].pixelFormat = .invalid
             descriptor.vertexFunction = try library?.makeFunction(name: "vertex_depth", constantValues: constants)
-            descriptor.fragmentFunction = nil
+            descriptor.fragmentFunction = try Renderer.library!.makeFunction(name: "fragment_depth", constantValues: constants)
             descriptor.inputPrimitiveTopology = .triangle
             descriptor.vertexDescriptor = vertexDescriptor
             descriptor.depthAttachmentPixelFormat = .depth32Float

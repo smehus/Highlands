@@ -22,6 +22,7 @@ struct VertexIn {
 struct DepthOut {
     float4 position [[ position ]];
     uint   face [[render_target_array_index]];
+    float4  worldPos;
 };
 
 vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
@@ -79,6 +80,7 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
 
             float4 screenPos = map.faceViewMatrix * uniforms.modelMatrix * vertexIn.position;;
             out.position = screenPos;
+            out.worldPos = worldPosition;
 
             return out;
 
@@ -94,7 +96,10 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
 
 fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
                                constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
-                               depthcube<float> shadowTexture [[ texture(ShadowTexture) ]]) {
+                               constant Light &light [[ buffer(BufferIndexLights) ]]) {
 
-    return float4(0);
+
+    float3 lightDistance = length(light.position - float3(in.worldPos));
+
+    return float4(lightDistance, 1);
 }

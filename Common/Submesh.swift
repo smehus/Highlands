@@ -134,8 +134,8 @@ private extension Submesh {
         do {
             let pipelineDescriptor = MTLRenderPipelineDescriptor()
             pipelineDescriptor.vertexFunction = try Renderer.library!.makeFunction(name: "vertex_depth", constantValues: constants)
-            pipelineDescriptor.fragmentFunction = nil
-            pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
+            pipelineDescriptor.fragmentFunction = try Renderer.library!.makeFunction(name: "fragment_depth", constantValues: constants)
+            pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
             pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
             pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
             pipelineDescriptor.inputPrimitiveTopology = .triangle

@@ -23,7 +23,8 @@ final class Renderer: NSObject {
     }()
 
     
-    var shadowTexture: MTLTexture!
+    var shadowDepthTexture: MTLTexture!
+    var shadowColorTexture: MTLTexture!
     let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
 
     init(metalView: MTKView) {
@@ -51,9 +52,9 @@ final class Renderer: NSObject {
 
     }
 
-    func buildCubeTexture(size: Int) -> MTLTexture {
+    func buildCubeTexture(pixelFormat: MTLPixelFormat, size: Int) -> MTLTexture {
         let descriptor = MTLTextureDescriptor
-            .textureCubeDescriptor(pixelFormat: .depth32Float,
+            .textureCubeDescriptor(pixelFormat: pixelFormat,
                                    size: size,
                                    mipmapped: false)
 
@@ -91,9 +92,9 @@ final class Renderer: NSObject {
 //        shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
 
         // Pointlights
-        shadowTexture = buildCubeTexture(size: Int(size.width))
-        shadowRenderPassDescriptor.setUpCubeDepthAttachment(texture: shadowTexture)
-
+        shadowDepthTexture = buildCubeTexture(pixelFormat: .depth32Float, size: Int(size.width))
+        shadowColorTexture = buildCubeTexture(pixelFormat: .bgra8Unorm_srgb, size: Int(size.width))
+        shadowRenderPassDescriptor.setUpCubeDepthAttachment(depthTexture: shadowDepthTexture, colorTexture: shadowColorTexture)
     }
 
     func buildDepthStencilState() {
@@ -163,7 +164,7 @@ extension Renderer: MTKViewDelegate {
                                        length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
-        renderEncoder.setFragmentTexture(shadowTexture, index: Int(ShadowTexture.rawValue))
+        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowTexture.rawValue))
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
@@ -186,7 +187,7 @@ extension Renderer: MTKViewDelegate {
         guard let scene = scene else { return }
         renderEncoder.pushDebugGroup("Shadow pass")
         renderEncoder.label = "Shadow encoder"
-        renderEncoder.setCullMode(.none)
+//        renderEncoder.setCullMode(.none)
         renderEncoder.setDepthStencilState(depthStencilState)
 
         renderEncoder.setDepthBias(0.01, slopeScale: 1.0, clamp: 0.01)
@@ -200,6 +201,7 @@ extension Renderer: MTKViewDelegate {
         setLantern(view: view, renderEncoder: renderEncoder, sunlight: sunlight)
 
         renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
+        renderEncoder.setFragmentBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
             renderEncoder.pushDebugGroup(renderable.name)
@@ -308,7 +310,6 @@ extension Renderer: MTKViewDelegate {
                                       offset: 0,
                                       index: Int(BufferIndexInstanceParams.rawValue))
 
-
     }
 
     private func setSpotlight(view: MTKView, sunlight: Light) {
@@ -341,12 +342,26 @@ private extension MTLRenderPassDescriptor {
     }
 
 
-    func setUpCubeDepthAttachment(texture: MTLTexture) {
-        depthAttachment.texture = texture
+    func setUpCubeDepthAttachment(depthTexture: MTLTexture, colorTexture: MTLTexture) {
+        colorAttachments[0].clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        colorAttachments[0].loadAction = .clear
+        colorAttachments[0].texture = colorTexture
+
+        depthAttachment.texture = depthTexture
         depthAttachment.loadAction = .clear
         depthAttachment.storeAction = .store
-        renderTargetArrayLength = 6
         depthAttachment.clearDepth = 1
+
+        renderTargetArrayLength = 6
+
+//        reflectionPassDesc.colorAttachments[0].clearColor = MTLClearColorMake (0.0, 0.0, 0.0, 1.0);
+//        reflectionPassDesc.colorAttachments[0].loadAction = MTLLoadActionClear;
+//        reflectionPassDesc.depthAttachment.clearDepth     = 1.0;
+//        reflectionPassDesc.depthAttachment.loadAction     = MTLLoadActionClear;
+//
+//        reflectionPassDesc.colorAttachments[0].texture    = _reflectionCubeMap;
+//        reflectionPassDesc.depthAttachment.texture        = _reflectionCubeMapDepth;
+//        reflectionPassDesc.renderTargetArrayLength        = 6;
     }
 }
 

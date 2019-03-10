@@ -31,7 +31,7 @@ final class GameScene: Scene {
 //        ground.tiling = 32
 //        add(node: ground)
 
-        plane.position.z = 6
+        plane.position.z = 10
         plane.rotation.x = radians(fromDegrees: 130)
         plane.tiling = 1
         add(node: plane)
