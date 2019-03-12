@@ -106,12 +106,13 @@ private extension Submesh {
 
         pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
         pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-        pipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
-        pipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
-        pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
-        pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+        pipelineDescriptor.depthAttachmentPixelFormat = Renderer.depthPixelFormat
+//        pipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+//        pipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
+//        pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+//        pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
         pipelineDescriptor.sampleCount = Renderer.sampleCount
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+
 
         do {
             pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)

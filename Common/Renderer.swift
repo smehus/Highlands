@@ -8,6 +8,7 @@ final class Renderer: NSObject {
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
     static var colorPixelFormat: MTLPixelFormat!
+    static var depthPixelFormat: MTLPixelFormat!
     static var library: MTLLibrary?
     static let MaxVisibleFaces = 5
     static let MaxActors = 32
@@ -38,6 +39,7 @@ final class Renderer: NSObject {
         Renderer.device = device
         Renderer.commandQueue = device.makeCommandQueue()!
         Renderer.colorPixelFormat = metalView.colorPixelFormat
+        Renderer.depthPixelFormat = metalView.depthStencilPixelFormat
         Renderer.library = device.makeDefaultLibrary()
         instanceParamBuffer = Renderer.device.makeBuffer(length: MemoryLayout<InstanceParams>.stride * (Renderer.MaxVisibleFaces * Renderer.MaxActors), options: .storageModeShared)!
 
@@ -117,7 +119,7 @@ extension Renderer: MTKViewDelegate {
             let scene = scene
         else {
             return
-        }
+        } 
 
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
@@ -137,14 +139,16 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.pushDebugGroup("Main pass")
         renderEncoder.label = "Main encoder"
         renderEncoder.setDepthStencilState(depthStencilState)
+        renderEncoder.setCullMode(.back)
+        renderEncoder.setFrontFacing(.counterClockwise)
 
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
         fragmentUniforms.lightCount = UInt32(scene.lights.count)
-        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
-                                                          near: 0.01,
-                                                          far: 16,
-                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
+//        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
+//                                                          near: 0.01,
+//                                                          far: 16,
+//                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
 
         // Reset uniforms so projection is correct
         // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
@@ -187,7 +191,7 @@ extension Renderer: MTKViewDelegate {
         guard let scene = scene else { return }
         renderEncoder.pushDebugGroup("Shadow pass")
         renderEncoder.label = "Shadow encoder"
-//        renderEncoder.setCullMode(.none)
+        renderEncoder.setCullMode(.none)
         renderEncoder.setDepthStencilState(depthStencilState)
 
         renderEncoder.setDepthBias(0.01, slopeScale: 1.0, clamp: 0.01)
@@ -219,11 +223,13 @@ extension Renderer: MTKViewDelegate {
         let near: Float = 0.1
         let far: Float = 16
 
-        let projection = float4x4(projectionFov: radians(fromDegrees: 90),
-                                                   near: near,
-                                                   far: far,
-                                                   aspect: aspect)
+//        let projection = float4x4(projectionFov: radians(fromDegrees: 90),
+//                                                   near: near,
+//                                                   far: far,
+//                                                   aspect: aspect)
 
+
+        let projection = float4x4(perspectiveProjectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
         scene.uniforms.projectionMatrix = projection
         var viewMatrices = [CubeMap]()
 
@@ -318,7 +324,8 @@ extension Renderer: MTKViewDelegate {
     private func setSpotlight(view: MTKView, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.01, far: 16, aspect: aspect)
+//        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.01, far: 16, aspect: aspect)
+        scene.uniforms.projectionMatrix = float4x4(perspectiveProjectionFov: radians(fromDegrees: 70), aspectRatio: aspect, nearZ: 0.01, farZ: 16)
 
 
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
@@ -357,14 +364,6 @@ private extension MTLRenderPassDescriptor {
 
         renderTargetArrayLength = 6
 
-//        reflectionPassDesc.colorAttachments[0].clearColor = MTLClearColorMake (0.0, 0.0, 0.0, 1.0);
-//        reflectionPassDesc.colorAttachments[0].loadAction = MTLLoadActionClear;
-//        reflectionPassDesc.depthAttachment.clearDepth     = 1.0;
-//        reflectionPassDesc.depthAttachment.loadAction     = MTLLoadActionClear;
-//
-//        reflectionPassDesc.colorAttachments[0].texture    = _reflectionCubeMap;
-//        reflectionPassDesc.depthAttachment.texture        = _reflectionCubeMapDepth;
-//        reflectionPassDesc.renderTargetArrayLength        = 6;
     }
 }
 

@@ -20,7 +20,8 @@ class Camera: Node {
     var far: Float = 100
 
     var projectionMatrix: float4x4 {
-        return float4x4(projectionFov: fovRadians, near: near, far: far, aspect: aspect)
+//        return float4x4(projectionFov: fovRadians, near: near, far: far, aspect: aspect)
+        return float4x4(perspectiveProjectionFov: fovRadians, aspectRatio: aspect, nearZ: near, farZ: far)
     }
 
     var viewMatrix: float4x4 {

@@ -45,7 +45,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
 
     Instances instance = instances[instanceID];
 
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix * float4(vertexIn.position.xyz, 1);
     out.worldPosition = uniforms.modelMatrix * vertexIn.position;
     out.worldNormal = uniforms.normalMatrix * instance.normalMatrix * vertexIn.normal;
     out.uv = vertexIn.uv;
@@ -254,9 +254,10 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
          */
 
     } else if (lights[0].type == Pointlight) {
-        constexpr sampler linearSampler (mip_filter::linear,
-                                         mag_filter::linear,
-                                         min_filter::linear);
+        constexpr sampler s(coord::normalized,
+                            filter::linear,
+                            address::clamp_to_edge,
+                            compare_func:: less);
 
 //        The vertex shader and fragment shader are largely similar to the original shadow mapping shaders: the differences being that the fragment shader no longer requires a fragment position in light space (shadow matrixz) as we can now sample the depth values using a direction vector.
 
@@ -292,8 +293,8 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
 
         float3 fragToLight = light.position - in.worldPosition.xyz;
-        float closestDepth = shadowTexture.sample(linearSampler, -fragToLight);
-        closestDepth *= in.position.w; // This is from the cameras point of view. Needs to be from light
+        float closestDepth = shadowTexture.sample(s, -fragToLight);
+        //closestDepth /= 16; // This is from the cameras point of view. Needs to be from light
 
         return float4(float3(closestDepth), 1);
 
