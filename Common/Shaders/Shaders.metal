@@ -294,22 +294,13 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
         float3 fragToLight = light.position - in.worldPosition.xyz;
         float closestDepth = shadowTexture.sample(s, -fragToLight);
-        //closestDepth /= 16; // This is from the cameras point of view. Needs to be from light
 
-//        return float4(float3(closestDepth), 1);
+        float currentDepth = length(fragToLight);
+        color = closestDepth;
 
-//        if (closestDepth < 1.0) {
-//            return float4(color, 1);
-//        } else {
-//            return float4(1, 0, 0, 1);
-//        }
-
-
-//        float currentDepth = length(fragToLight);
-//        //float sampleDepth = length(closestDepth);
-//        if (currentDepth > closestDepth.w) {
-//            color *= 0.5;
-//        }
+        if (currentDepth > closestDepth) {
+            color *= 0.5;
+        }
 
 //        return float4(closestDepth, 1);
     }
