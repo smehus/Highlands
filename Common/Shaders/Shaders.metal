@@ -54,10 +54,8 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;
     out.textureID = instance.textureID;
 
-    float4x4 shadowMatrix = uniforms.shadowMatrix;
     // Can i get the shadow matrix from the instances here?
-//    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
-    out.shadowPosition = vertexIn.position;
+    out.shadowPosition = uniforms.shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
 
     return out;
 }
@@ -193,7 +191,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                               texture2d<float> baseColorTexture [[ texture(BaseColorTexture), function_constant(hasColorTexture) ]],
                               texture2d_array<float> baseColorTextureArray [[ texture(BaseColorTexture), function_constant(hasColorTextureArray) ]],
-                              texturecube<float> shadowTexture [[ texture(ShadowTexture) ]],
+                              depthcube<float> shadowTexture [[ texture(ShadowTexture) ]],
                               texture2d<float> normalTexture [[ texture(NormalTexture), function_constant(hasNormalTexture) ]],
                               constant uint &tiling [[ buffer(22) ]])
 
@@ -291,21 +289,28 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         // Can probably use this once I figure out wtf im doing wrong...
 //        T sample_compare(sampler s, float3 coord, float compare_value) const
 
-        float3 lightPosition = float3(in.shadowPosition.x, in.shadowPosition.y, in.shadowPosition.z);
-        float3 fragToLight = lightPosition - in.worldPosition.xyz;
-
-        float closestDepth = shadowTexture.sample(linearSampler, fragToLight).r;
-//        return float4(closestDepth.xyz, closestDepth.w);
 
 
-//        closestDepth *= 16;
-        float currentDepth = length(fragToLight);
-//
-        float bias = 0.05;
-        if (currentDepth -  bias > closestDepth) {
-            color *= 0.5;
-        }
+        float3 fragToLight = light.position - in.worldPosition.xyz;
+        float closestDepth = shadowTexture.sample(linearSampler, -fragToLight);
+        closestDepth /= 4; // This is from the cameras point of view. Needs to be from light
 
+        return float4(float3(closestDepth), 1);
+
+//        if (closestDepth < 1.0) {
+//            return float4(color, 1);
+//        } else {
+//            return float4(1, 0, 0, 1);
+//        }
+
+
+//        float currentDepth = length(fragToLight);
+//        //float sampleDepth = length(closestDepth);
+//        if (currentDepth > closestDepth.w) {
+//            color *= 0.5;
+//        }
+
+//        return float4(closestDepth, 1);
     }
 
 //    float4 finalColor = fog(in.position, float4(color, 1));

@@ -164,7 +164,7 @@ extension Renderer: MTKViewDelegate {
                                        length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
-        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowTexture.rawValue))
+        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowTexture.rawValue))
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
@@ -259,6 +259,9 @@ extension Renderer: MTKViewDelegate {
             map.faceViewMatrix = matrix_multiply(projection, lookAt)
 //            map.faceViewMatrix = float4x4(translation: position) * lookAt
 
+            if i == 4 {
+                scene.uniforms.shadowMatrix = map.faceViewMatrix
+            }
             viewMatrices.append(map)
 
             // Create frustums
