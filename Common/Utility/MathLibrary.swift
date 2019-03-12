@@ -28,11 +28,11 @@ extension Float {
 }
 
 extension float4x4 {
-    init(translation: float3) {
-        self = matrix_identity_float4x4
-        columns.3.x = translation.x
-        columns.3.y = translation.y
-        columns.3.z = translation.z
+    init(translation t: float3) {
+        self.init(float4(   1,    0,    0, 0),
+                  float4(   0,    1,    0, 0),
+                  float4(   0,    0,    1, 0),
+                  float4(t[0], t[1], t[2], 1))
     }
 
     init(scaling: float3) {
@@ -73,7 +73,7 @@ extension float4x4 {
 
     init(rotation angle: float3) {
         let rotationX = float4x4(rotationX: angle.x)
-        let rotationY = float4x4(rotationY: angle.y)
+        let rotationY = float4x4(rotationY: -angle.y)
         let rotationZ = float4x4(rotationZ: angle.z)
         self = rotationX * rotationY * rotationZ
     }
@@ -90,36 +90,53 @@ extension float4x4 {
         return float3x3(columns: (x, y, z))
     }
 
-//    init(projectionFov fov: Float, near: Float, far: Float, aspect: Float, lhs: Bool = true) {
-//        let y = 1 / tan(fov * 0.5)
-//        let x = y / aspect
-//        let z = lhs ? far / (far - near) : far / (near - far)
-//        let X = float4( x,  0,  0,  0)
-//        let Y = float4( 0,  y,  0,  0)
-//        let Z = lhs ? float4( 0,  0,  z, 1) : float4( 0,  0,  z, -1)
-//        let W = lhs ? float4( 0,  0,  z * -near,  0) : float4( 0,  0,  z * near,  0)
-//        self.init()
-//        columns = (X, Y, Z, W)
-//    }
+    init(projectionFov fov: Float, aspectRatio: Float, nearZ: Float, farZ: Float) {
 
-    init(perspectiveProjectionFov fovRadians: Float, aspectRatio aspect: Float, nearZ: Float, farZ: Float) {
-        let yScale = 1 / tan(fovRadians * 0.5)
-        let xScale = yScale / aspect
-        let zRange = farZ - nearZ
-        let zScale = -(farZ + nearZ) / zRange
-        let wzScale = -2 * farZ * nearZ / zRange
+        /*
+         // Apple
+        let ys = 1 / tanf(fov * 0.5)
+        let xs = ys / aspectRatio
+        let zs = farZ / (farZ - nearZ)
 
-        let xx = xScale
-        let yy = yScale
-        let zz = zScale
-        let zw = Float(-1)
-        let wz = wzScale
+        self.init(float4(xs, 0, 0, 0),
+                  float4(0, ys, 0, 0),
+                  float4(0, 0, zs, 1),
+                  float4(0, 0, -nearZ * zs, 0))
+ */
 
-        self.init(float4(xx,  0,  0,  0),
-                  float4( 0, yy,  0,  0),
-                  float4( 0,  0, zz, zw),
-                  float4( 0,  0, wz,  0))
+        let lhs = true
+        let y = 1 / tan(fov * 0.5)
+        let x = y / aspectRatio
+        let z = lhs ? farZ / (farZ - nearZ) : farZ / (nearZ - farZ)
+        let X = float4( x,  0,  0,  0)
+        let Y = float4( 0,  y,  0,  0)
+        let Z = lhs ? float4( 0,  0,  z, 1) : float4( 0,  0,  z, -1)
+        let W = lhs ? float4( 0,  0,  z * -nearZ,  0) : float4( 0,  0,  z * nearZ,  0)
+
+        self.init()
+        columns = (X, Y, Z, W)
+
     }
+
+//    // Right hand? idk
+//    init(perspectiveProjectionFov fovRadians: Float, aspectRatio aspect: Float, nearZ: Float, farZ: Float) {
+//        let yScale = 1 / tan(fovRadians * 0.5)
+//        let xScale = yScale / aspect
+//        let zRange = farZ - nearZ
+//        let zScale = -(farZ + nearZ) / zRange
+//        let wzScale = -2 * farZ * nearZ / zRange
+//
+//        let xx = xScale
+//        let yy = yScale
+//        let zz = zScale
+//        let zw = Float(-1)
+//        let wz = wzScale
+//
+//        self.init(float4(xx,  0,  0,  0),
+//                  float4( 0, yy,  0,  0),
+//                  float4( 0,  0, zz, zw),
+//                  float4( 0,  0, wz,  0))
+//    }
 
     // left-handed LookAt
     init(eye: float3, center: float3, up: float3) {

@@ -223,13 +223,10 @@ extension Renderer: MTKViewDelegate {
         let near: Float = 0.1
         let far: Float = 16
 
-//        let projection = float4x4(projectionFov: radians(fromDegrees: 90),
-//                                                   near: near,
-//                                                   far: far,
-//                                                   aspect: aspect)
+        let projection = float4x4(projectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
 
 
-        let projection = float4x4(perspectiveProjectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
+//        let projection = float4x4(perspectiveProjectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
         scene.uniforms.projectionMatrix = projection
         var viewMatrices = [CubeMap]()
 
@@ -324,8 +321,8 @@ extension Renderer: MTKViewDelegate {
     private func setSpotlight(view: MTKView, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-//        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), near: 0.01, far: 16, aspect: aspect)
-        scene.uniforms.projectionMatrix = float4x4(perspectiveProjectionFov: radians(fromDegrees: 70), aspectRatio: aspect, nearZ: 0.01, farZ: 16)
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), aspectRatio: aspect, nearZ: 0.01, farZ: 16)
+//        scene.uniforms.projectionMatrix = float4x4(perspectiveProjectionFov: radians(fromDegrees: 70), aspectRatio: aspect, nearZ: 0.01, farZ: 16)
 
 
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
