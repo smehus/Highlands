@@ -23,7 +23,6 @@ struct DepthOut {
     float4 position [[ position ]];
     uint   face [[render_target_array_index]];
     float4  worldPos;
-    float far_plane;
 };
 
 vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
@@ -82,7 +81,6 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
             float4 screenPos = map.faceViewMatrix * uniforms.modelMatrix * vertexIn.position;;
             out.position = screenPos;
             out.worldPos = worldPosition;
-            out.far_plane = map.faceViewMatrix.columns[3].w;
             return out;
 
         }

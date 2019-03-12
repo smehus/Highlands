@@ -261,9 +261,6 @@ extension Renderer: MTKViewDelegate {
             map.faceViewMatrix = matrix_multiply(projection, lookAt)
 //            map.faceViewMatrix = float4x4(translation: position) * lookAt
 
-            if i == 4 {
-                scene.uniforms.shadowMatrix = map.faceViewMatrix
-            }
             viewMatrices.append(map)
 
             // Create frustums
