@@ -29,10 +29,10 @@ extension Float {
 
 extension float4x4 {
     init(translation t: float3) {
-        self.init(float4(   1,    0,    0, 0),
-                  float4(   0,    1,    0, 0),
-                  float4(   0,    0,    1, 0),
-                  float4(t[0], t[1], t[2], 1))
+        self = matrix_identity_float4x4
+        columns.3.x = t.x
+        columns.3.y = t.y
+        columns.3.z = t.z
     }
 
     init(scaling: float3) {
@@ -73,7 +73,7 @@ extension float4x4 {
 
     init(rotation angle: float3) {
         let rotationX = float4x4(rotationX: angle.x)
-        let rotationY = float4x4(rotationY: -angle.y)
+        let rotationY = float4x4(rotationY: angle.y)
         let rotationZ = float4x4(rotationZ: angle.z)
         self = rotationX * rotationY * rotationZ
     }
@@ -92,7 +92,7 @@ extension float4x4 {
 
     init(projectionFov fov: Float, aspectRatio: Float, nearZ: Float, farZ: Float) {
 
-        /*
+        
          // Apple
         let ys = 1 / tanf(fov * 0.5)
         let xs = ys / aspectRatio
@@ -100,21 +100,35 @@ extension float4x4 {
 
         self.init(float4(xs, 0, 0, 0),
                   float4(0, ys, 0, 0),
+                  // - here means it is Right handed dawg
                   float4(0, 0, zs, 1),
                   float4(0, 0, -nearZ * zs, 0))
- */
 
-        let lhs = true
-        let y = 1 / tan(fov * 0.5)
-        let x = y / aspectRatio
-        let z = lhs ? farZ / (farZ - nearZ) : farZ / (nearZ - farZ)
-        let X = float4( x,  0,  0,  0)
-        let Y = float4( 0,  y,  0,  0)
-        let Z = lhs ? float4( 0,  0,  z, 1) : float4( 0,  0,  z, -1)
-        let W = lhs ? float4( 0,  0,  z * -nearZ,  0) : float4( 0,  0,  z * nearZ,  0)
+// Ray
+//        let lhs = true
+//        let y = 1 / tan(fov * 0.5)
+//        let x = y / aspectRatio
+//        let z = lhs ? farZ / (farZ - nearZ) : farZ / (nearZ - farZ)
+//        let X = float4( x,  0,  0,  0)
+//        let Y = float4( 0,  y,  0,  0)
+//        let Z = lhs ? float4( 0,  0, z, 1) : float4( 0,  0,  z, -1)
+//        let W = lhs ? float4( 0,  0,  -nearZ * z,  0) : float4( 0,  0,  z * nearZ,  0)
+//
+//        self.init()
+//        columns = (X, Y, Z, W)
 
-        self.init()
-        columns = (X, Y, Z, W)
+
+//        let ys = 1 / tan(fov * 0.5)
+//        let xs = ys / aspectRatio
+//        let zRange = farZ - nearZ
+//
+//        let zs = -(farZ + nearZ) / zRange
+//        let wz = -2 * farZ * nearZ / zRange
+//
+//        self.init(float4(xs,  0,  0,  0),
+//                  float4( 0, ys,  0,  0),
+//                  float4( 0,  0, zs, 1),
+//                  float4( 0,  0, wz,  0))
 
     }
 

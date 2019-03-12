@@ -121,6 +121,7 @@ class Prop: Node {
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
     var shadowInstanceCount: Int = 1
+    var windingOrder: MTLWinding = .counterClockwise
 
     init(type: PropType) {
 
@@ -235,6 +236,7 @@ class Prop: Node {
 extension Prop: Renderable {
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+//        renderEncoder.setFrontFacing(windingOrder)
 
         var uniforms = vertex
         uniforms.modelMatrix = worldTransform

@@ -132,7 +132,8 @@ extension Character: Renderable {
     }
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
-        
+//        renderEncoder.setFrontFacing(.clockwise)
+
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 

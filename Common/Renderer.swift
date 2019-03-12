@@ -140,7 +140,6 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.label = "Main encoder"
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setCullMode(.back)
-        renderEncoder.setFrontFacing(.counterClockwise)
 
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position

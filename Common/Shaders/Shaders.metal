@@ -296,7 +296,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         float closestDepth = shadowTexture.sample(s, -fragToLight);
         //closestDepth /= 16; // This is from the cameras point of view. Needs to be from light
 
-        return float4(float3(closestDepth), 1);
+//        return float4(float3(closestDepth), 1);
 
 //        if (closestDepth < 1.0) {
 //            return float4(color, 1);
