@@ -29,7 +29,6 @@ final class GameScene: Scene {
         camera.rotation = [0, 0, 0]
 
         ground.tiling = 16
-        ground.windingOrder = .clockwise
         add(node: ground)
 
 //        plane.position.z = 10
@@ -38,9 +37,9 @@ final class GameScene: Scene {
 //        add(node: plane)
 
 
-//        let singleTree = Prop(type: .base(name: "treefir", lighting: true))
-//        singleTree.position = [0, 0, 2]
-//        add(node: singleTree)
+        let singleTree = Prop(type: .base(name: "treefir", lighting: true))
+        singleTree.position = [0, 0, 2]
+        add(node: singleTree)
 
 //        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 50))
 //        add(node: tree)

@@ -236,7 +236,7 @@ extension Renderer: MTKViewDelegate {
             [0,  1,  0], // Top
             [ 0, -1,  0], // Down
             [ 0,  0,  1], // Front
-            [ 0,  0,  1]  // Back
+            [ 0,  0,  -1]  // Back
         ]
 
         let ups: [float3] = [
