@@ -293,7 +293,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
         float3 fragToLight = light.position - in.worldPosition.xyz;
         float closestDepth = shadowTexture.sample(linearSampler, -fragToLight);
-        closestDepth /= 4; // This is from the cameras point of view. Needs to be from light
+        closestDepth *= in.position.w; // This is from the cameras point of view. Needs to be from light
 
         return float4(float3(closestDepth), 1);
 

@@ -216,8 +216,8 @@ extension Renderer: MTKViewDelegate {
     private func setLantern(view: MTKView, renderEncoder: MTLRenderCommandEncoder, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        let near: Float = 0.01
-        let far: Float = 300
+        let near: Float = 0.1
+        let far: Float = 16
 
         let projection = float4x4(projectionFov: radians(fromDegrees: 90),
                                                    near: near,
