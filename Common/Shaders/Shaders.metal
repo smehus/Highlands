@@ -297,7 +297,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         float4 closestDepth = shadowTexture.sample(s, -fragToLight);
         float currentDepth = length(fragToLight);
         float b = distance(in.worldPosition.xyz, light.position);
-        closestDepth *= 16;
+        closestDepth *= 25;
 
 
         float epsilon = 0.15;
