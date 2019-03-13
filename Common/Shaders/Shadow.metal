@@ -94,8 +94,8 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
 
 
 //    // Vector direction between light & fragment
-    float3 lightDirection = length(in.worldPos.xyz - light.position);
-    lightDirection = lightDirection / 4;
+    float lightDirection = length(in.worldPos.xyz - light.position);
+    lightDirection /= 16;
 
-    return float4(float3(in.position.w), 1);
+    return float4(0, 0, 0, lightDirection);
 }

@@ -167,7 +167,7 @@ extension Renderer: MTKViewDelegate {
                                        length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
-        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowTexture.rawValue))
+        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowTexture.rawValue))
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
@@ -220,7 +220,7 @@ extension Renderer: MTKViewDelegate {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
         let near: Float = 0.1
-        let far: Float = 100
+        let far: Float = 16
 
         let projection = float4x4(projectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
 
