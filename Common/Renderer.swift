@@ -208,7 +208,7 @@ extension Renderer: MTKViewDelegate {
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
             renderEncoder.pushDebugGroup(renderable.name)
-            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms, startingIndex: actorIdx * renderable.shadowInstanceCount)
+            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: scene.uniforms, startingIndex: actorIdx * Renderer.MaxVisibleFaces)
             renderEncoder.popDebugGroup()
         }
 
@@ -278,28 +278,22 @@ extension Renderer: MTKViewDelegate {
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
             guard let prop = renderable as? Prop else { continue }
-
             var instanceCount = 0
-
-
-
             for (faceIdx, probe) in culler_probe.enumerated() {
 
                 let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
 
-                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
+//                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
 
                     let params = InstanceParams(viewportIndex: uint(faceIdx))
                     let pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self, capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
                     pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
                     instanceCount += 1
-                }
+//                }
             }
 
-            if instanceCount > 0 {
-                prop.shadowInstanceCount = instanceCount
-            }
-
+            guard instanceCount == 6 else { fatalError() }
+            prop.shadowInstanceCount = instanceCount
         }
 
         // setVertexBytes instanceParams
