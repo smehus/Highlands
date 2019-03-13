@@ -283,16 +283,17 @@ extension Renderer: MTKViewDelegate {
 
                 let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
 
-//                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
+                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
 
                     let params = InstanceParams(viewportIndex: uint(faceIdx))
-                    let pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self, capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
-                    pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount).pointee.viewportIndex = params.viewportIndex
+                    var pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self,
+                                                                            capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
+                    pointer = pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount)
+                    pointer.pointee.viewportIndex = params.viewportIndex
                     instanceCount += 1
-//                }
+                }
             }
 
-            guard instanceCount == 6 else { fatalError() }
             prop.shadowInstanceCount = instanceCount
         }
 
