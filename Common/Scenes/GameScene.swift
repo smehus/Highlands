@@ -38,7 +38,7 @@ final class GameScene: Scene {
 
 
         let singleTree = Prop(type: .base(name: "treefir", lighting: true))
-        singleTree.position = [2, 0, 0]
+        singleTree.position = [-2, 0, 0]
         add(node: singleTree)
 
         add(node: ground)
