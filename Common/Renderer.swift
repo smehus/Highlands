@@ -167,7 +167,8 @@ extension Renderer: MTKViewDelegate {
                                        length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
-        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowTexture.rawValue))
+        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
+        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
         
         var farZ = Camera.FarZ
         renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)

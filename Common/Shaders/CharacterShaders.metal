@@ -183,7 +183,8 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                         constant Light *lights [[ buffer(BufferIndexLights) ]],
                                         texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
-                                        depth2d<float> shadowTexture [[ texture(ShadowTexture) ]],
+                                        // currently using omnidirectional shadow map : texturecube
+//                                        texture2d<float> shadowTexture [[ texture(ShadowColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
 
     constexpr sampler s(filter::linear);
@@ -203,6 +204,8 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     xy = xy * 0.5 + 0.5;
     xy.y = 1 - xy.y;
 
+    /*
+     This is for non omnidiretional shadow maps
     constexpr sampler shadowSample(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
     float shadow_sample = shadowTexture.sample(shadowSample, xy);
     float current_sample = in.shadowPosition.z / in.shadowPosition.w;
@@ -210,6 +213,8 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     if (current_sample > shadow_sample ) {
 //        color *= 0.5;
     }
+
+     */
     
     return float4(color, 1);
 
