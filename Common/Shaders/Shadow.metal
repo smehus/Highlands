@@ -75,8 +75,7 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
             out.face = instanceParams[instanceID].viewportIndex;
             CubeMap map = cubeMaps[out.face];
 
-            float4 screenPos = map.faceViewMatrix * uniforms.modelMatrix * vertexIn.position;
-            out.position = screenPos;
+            out.position =  map.faceViewMatrix * worldPosition;
             out.worldPos = worldPosition;
 
             return out;
@@ -93,10 +92,15 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
                                constant Light &light [[ buffer(BufferIndexLights) ]]) {
 
 
+//    if (in.face == 1) {
+//        return float4(1, 0, 0, 1);
+//    } else if (in.face == 4) {
+//        return float4(0, 0, 1, 1);
+//    }
 
 //    // Vector direction between light & fragment
-    float lightDirection = length(in.worldPos.xyz - light.position);
-    lightDirection /= 100;
+    float lightDirection = distance(in.worldPos.xyz, light.position);
+    lightDirection /= Far;
 
     return float4(lightDirection);
 }

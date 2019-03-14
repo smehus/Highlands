@@ -235,12 +235,12 @@ extension Renderer: MTKViewDelegate {
 
         // Is this just because the sphere in demo spinning??
         let directions: [float3] = [
-            [ 1,  0,  0], // Right
-            [ -1,  0,  0], // Left
-            [0,  1,  0], // Top
-            [ 0, -1,  0], // Down
-            [ 0,  0,  1], // Front
-            [ 0,  0,  -1]  // Back
+            [1, 0, 0],  // Right
+            [-1, 0, 0], // Left
+            [0, 1,  0], // Top
+            [0, -1, 0], // Down
+            [0, 0, 1],  // Front
+            [0, 0, -1]  // Back
         ]
 
         let ups: [float3] = [
@@ -249,7 +249,7 @@ extension Renderer: MTKViewDelegate {
             [0, 0, -1], // Top
             [0, 0,  1], // Down
             [0, 1,  0], // Front
-            [0, 1,  0] // Back
+            [0, 1,  0]  // Back
         ]
 
         var culler_probe = [FrustumCuller]()
@@ -263,6 +263,8 @@ extension Renderer: MTKViewDelegate {
             let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
             let lookAt = float4x4(lookAtLHEye: position, target: position + directions[i], up: ups[i])
             map.faceViewMatrix = matrix_multiply(projection, lookAt)
+
+            
 //            map.faceViewMatrix = float4x4(translation: position) * lookAt
 
             viewMatrices.append(map)
