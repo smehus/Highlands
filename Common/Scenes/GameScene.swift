@@ -123,6 +123,9 @@ final class GameScene: Scene {
             lights[index].position.y = 1.0
             lights[index].position += inputController.player!.forwardVector / 4
 
+
+            lights[index].position = camera.position
+
             // Spotlight
 //            lights[index].position = float3(pos.x, pos.y + 3.0, pos.z)
 ////            lights[index].position += (inputController.player!.forwardVector * 1.2)
