@@ -10,14 +10,17 @@ import Foundation
 
 class Camera: Node {
 
+    static var FarZ: Float = 100
+    static var NearZ: Float = 0.1
+
     var fovDegrees: Float = 90
     var fovRadians: Float {
         return radians(fromDegrees: fovDegrees)
     }
 
     var aspect: Float = 1
-    var near: Float = 0.1
-    var far: Float = 25
+    var near: Float = Camera.NearZ
+    var far: Float = Camera.FarZ
 
     var projectionMatrix: float4x4 {
 //        return float4x4(projectionFov: fovRadians, near: near, far: far, aspect: aspect)

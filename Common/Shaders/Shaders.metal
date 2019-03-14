@@ -193,6 +193,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               texture2d_array<float> baseColorTextureArray [[ texture(BaseColorTexture), function_constant(hasColorTextureArray) ]],
                               texturecube<float> shadowTexture [[ texture(ShadowTexture) ]],
                               texture2d<float> normalTexture [[ texture(NormalTexture), function_constant(hasNormalTexture) ]],
+                              constant float &farZ [[ buffer(24) ]],
                               constant uint &tiling [[ buffer(22) ]])
 
 {
@@ -296,11 +297,11 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
         float4 closestDepth = shadowTexture.sample(s, -fragToLight);
         float currentDepth = length(fragToLight);
-        float b = distance(in.worldPosition.xyz, light.position);
-        closestDepth *= 25;
+
+        closestDepth *= farZ;
 
 
-        float epsilon = 0.15;
+        float epsilon = 0.2;
         if (closestDepth.w + epsilon < currentDepth) {
             color *= 0.5;
         }

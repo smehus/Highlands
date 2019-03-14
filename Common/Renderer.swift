@@ -168,6 +168,9 @@ extension Renderer: MTKViewDelegate {
                                        index: Int(BufferIndexLights.rawValue))
 
         renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowTexture.rawValue))
+        
+        var farZ = Camera.FarZ
+        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
@@ -219,8 +222,8 @@ extension Renderer: MTKViewDelegate {
     private func setLantern(view: MTKView, renderEncoder: MTLRenderCommandEncoder, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
-        let near: Float = 0.1
-        let far: Float = 25
+        var near: Float = Camera.NearZ
+        var far: Float = Camera.FarZ
 
         let projection = float4x4(projectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
 
@@ -307,6 +310,8 @@ extension Renderer: MTKViewDelegate {
                                       offset: 0,
                                       index: Int(BufferIndexInstanceParams.rawValue))
 
+        renderEncoder.setFragmentBytes(&far, length: MemoryLayout<Float>.stride, index: 10)
+        renderEncoder.setFragmentBytes(&near, length: MemoryLayout<Float>.stride, index: 11)
     }
 
     private func setSpotlight(view: MTKView, sunlight: Light) {
