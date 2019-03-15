@@ -298,7 +298,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
         float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
         float currentDepth = distance(in.worldPosition.xyz, light.position);
-
+        return closestDepth;
         closestDepth *= farZ;
 
 

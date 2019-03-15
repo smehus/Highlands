@@ -334,7 +334,7 @@ extension Renderer: MTKViewDelegate {
 
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
         encoder.pushDebugGroup("DEBUG LIGHTS")
-        debugLights(renderEncoder: encoder, lightType: Pointlight)
+        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: (scene!.renderables.first as! Prop).position)
         encoder.popDebugGroup()
     }
 }

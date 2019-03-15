@@ -53,9 +53,9 @@ vertex VertexOut vertex_light(constant float3 *vertices [[ buffer(0) ]],
 fragment float4 fragment_light(float2 point [[ point_coord]],
                                constant float3 &color [[ buffer(1) ]]) {
   float d = distance(point, float2(0.5, 0.5));
-  if (d > 0.5) {
-    discard_fragment();
-  }
+//  if (d > 0.5) {
+//    discard_fragment();
+//  }
   return float4(color ,1);
 }
 
