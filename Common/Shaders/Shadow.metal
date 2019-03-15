@@ -102,11 +102,13 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
     float lightDirection = distance(in.worldPos.xyz, light.position);
     lightDirection /= Far;
 
-    if (in.face == 1) {
-        return float4(lightDirection, 0, 0, lightDirection);
-    } else if (in.face == 4) {
-        return float4(0, 0, lightDirection, lightDirection);
-    }
+//    if (in.face == 1 || in.face == 0) {
+//        return float4(lightDirection, 0, 0, lightDirection);
+//    } else if (in.face == 4 || in.face == 5) {
+//        return float4(0, 0, lightDirection, lightDirection);
+//    } else {
+//        return float4(0, lightDirection, 0, lightDirection);
+//    }
 
     return float4(lightDirection);
 }

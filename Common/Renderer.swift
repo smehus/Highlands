@@ -262,7 +262,7 @@ extension Renderer: MTKViewDelegate {
 
             let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
             let lookAt = float4x4(lookAtLHEye: position, target: position + directions[i], up: ups[i])
-            map.faceViewMatrix = matrix_multiply(projection, lookAt)
+            map.faceViewMatrix = projection * lookAt
 
             
 //            map.faceViewMatrix = float4x4(translation: position) * lookAt
@@ -289,6 +289,7 @@ extension Renderer: MTKViewDelegate {
 
                 let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
 
+                // commenting this check out causes the tree not to render in face 6 (back)
                 if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
 
                     let params = InstanceParams(viewportIndex: uint(faceIdx))
@@ -317,6 +318,7 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setFragmentBytes(&near, length: MemoryLayout<Float>.stride, index: 11)
     }
 
+
     private func setSpotlight(view: MTKView, sunlight: Light) {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
@@ -325,7 +327,7 @@ extension Renderer: MTKViewDelegate {
 
 
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
-        let lookAt = float4x4(eye: position, center: position - sunlight.coneDirection, up: [0,1,0])
+        let lookAt = float4x4(lookAtLHEye: position, target: position - sunlight.coneDirection, up: [0, 1, 0])
 
         // they work if this is 7
         scene.uniforms.viewMatrix = float4x4(translation: [0, 0, 7]) * lookAt
