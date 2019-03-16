@@ -222,7 +222,7 @@ extension Renderer: MTKViewDelegate {
 
     private func setLantern(view: MTKView, renderEncoder: MTLRenderCommandEncoder, sunlight: Light) {
         guard let scene = scene else { return }
-        let aspect = Float(view.bounds.width) / Float(view.bounds.height)
+        let aspect: Float = 1
         var near: Float = Camera.NearZ
         var far: Float = Camera.FarZ
 
@@ -273,7 +273,7 @@ extension Renderer: MTKViewDelegate {
 
             let cullerProbe = FrustumCuller(viewMatrix: map.faceViewMatrix,
                                             viewPosition: position,
-                                            aspect: aspect,
+                                            aspect: 1,
                                             halfAngleApertureHeight: .pi / 4,
                                             nearPlaneDistance: near,
                                             farPlaneDistance: far)
