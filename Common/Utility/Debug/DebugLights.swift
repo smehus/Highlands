@@ -60,7 +60,7 @@ extension Renderer {
             switch light.type {
             case Pointlight:
                 drawPointLight(renderEncoder: renderEncoder, position: light.position, color: light.color)
-                drawPointDirectionLight(renderEncoder: renderEncoder, position: light.position, direction: direction, color: float3(1, 1, 0 ))
+//                drawPointDirectionLight(renderEncoder: renderEncoder, position: light.position, direction: direction, color: float3(1, 1, 0 ))
 
             case Spotlight:
                 drawPointLight(renderEncoder: renderEncoder, position: light.position,

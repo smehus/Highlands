@@ -12,7 +12,7 @@ class Skybox {
 
     struct SkySettings {
         var turbidity: Float = 0.28
-        var sunElevation: Float = 0.6
+        var sunElevation: Float = 0.0
         var upperAtmosphereScattering: Float = 0.1
         var groundAlbedo: Float = 4
     }
@@ -56,6 +56,9 @@ class Skybox {
                                            sunElevation: skySettings.sunElevation,
                                            upperAtmosphereScattering: skySettings.upperAtmosphereScattering,
                                            groundAlbedo: skySettings.groundAlbedo)
+
+
+
         do {
             let textureLoader = MTKTextureLoader(device: Renderer.device)
             texture = try textureLoader.newTexture(texture: skyTexture, options: nil)

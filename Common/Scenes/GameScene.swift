@@ -31,6 +31,7 @@ final class GameScene: Scene {
         ground.tiling = 16
 
 
+
 //        plane.position.z = 10
 //        plane.rotation.x = radians(fromDegrees: 130)
 //        plane.tiling = 1
@@ -41,13 +42,17 @@ final class GameScene: Scene {
         singleTree.position = [-2, 0, 0]
         add(node: singleTree)
 
+        let tree2 = Prop(type: .base(name: "treefir", lighting: true))
+        tree2.position = [2, 0, 0]
+        add(node: tree2)
+
+        // Adding this below the trees fixes an issue
+        // where the -z face wasn't rendering the ground depth.
+        // Why you say? IDFK
         add(node: ground)
 
-//        let tree2 = Prop(type: .base(name: "treefir", lighting: true))
-//        tree2.position = [2, 0, 0]
-//        add(node: tree2)
-
 //        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 50))
+//        tree.position = [0, 0, 4]
 //        add(node: tree)
 ////         TODO: Figure out a way to handle physics with instancing
 ////        physicsController.addStaticBody(node: tree)

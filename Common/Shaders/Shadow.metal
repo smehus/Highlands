@@ -25,6 +25,7 @@ struct DepthOut {
     float4  worldPos;
 };
 
+// gotta deal with instancing herer
 vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
                              constant Instances *instances [[ buffer(BufferIndexInstances), function_constant(isInstanced) ]],
                              uint instanceID [[ instance_id ]],
@@ -84,6 +85,27 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
 
         return out;
     }
+}
+
+vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
+                             uint instanceID [[ instance_id ]],
+                             constant Light &light [[ buffer(BufferIndexLights) ]],
+                             constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
+                             constant InstanceParams *instanceParams [[ buffer(BufferIndexInstanceParams) ]],
+                             constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
+
+    float4 position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertexIn.position;
+    float4 worldPosition = uniforms.modelMatrix * vertexIn.position;
+
+    DepthOut out;
+    out.face = instanceParams[instanceID].viewportIndex;
+    CubeMap map = cubeMaps[out.face];
+
+    out.position =  map.faceViewMatrix * worldPosition;
+    out.worldPos = worldPosition;
+
+    return out;
+
 }
 
 fragment float4 fragment_depth(DepthOut in [[ stage_in ]],

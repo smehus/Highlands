@@ -282,6 +282,8 @@ extension Prop: Renderable {
         }
     }
 
+
+    // Instanced trees: Need to add the number of cube map faces by the number of instances?
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
 
         var uniforms = uniforms
