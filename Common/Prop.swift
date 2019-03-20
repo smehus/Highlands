@@ -297,7 +297,7 @@ extension Prop: Renderable {
         }
 
         for modelSubmesh in submeshes {
-            renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineSTate)
+            renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineState)
             let submesh = modelSubmesh.submesh!
 
             renderEncoder.drawIndexedPrimitives(type: .triangle,
@@ -305,7 +305,7 @@ extension Prop: Renderable {
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset,
-                                                instanceCount: shadowInstanceCount,
+                                                instanceCount: shadowInstanceCount * instanceCount,
                                                 baseVertex: 0,
                                                 baseInstance: startingIndex)
         }

@@ -94,7 +94,7 @@ vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
                              constant InstanceParams *instanceParams [[ buffer(BufferIndexInstanceParams) ]],
                              constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
 
-    float4 position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertexIn.position;
+
     float4 worldPosition = uniforms.modelMatrix * vertexIn.position;
 
     DepthOut out;

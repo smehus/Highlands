@@ -14,13 +14,13 @@ class Submesh {
     var material: Material
 
     let pipelineState: MTLRenderPipelineState!
-    let shadowPipelineSTate: MTLRenderPipelineState!
+    let shadowPipelineState: MTLRenderPipelineState!
 
     init(pipelineState: MTLRenderPipelineState, shadowPipelineState: MTLRenderPipelineState, material: MDLMaterial?) {
         textures = Textures(material: material)
         self.material = Material(material: material)
         self.pipelineState = pipelineState
-        self.shadowPipelineSTate = shadowPipelineState
+        self.shadowPipelineState = shadowPipelineState
     }
 
     required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: PropType) {
@@ -35,7 +35,7 @@ class Submesh {
         material = Material(material: mdlSubmesh.material)
 
         pipelineState = Submesh.makePipelineState(textures: textures, type: type)
-        shadowPipelineSTate = Submesh.buildShadowPipelineState()
+        shadowPipelineState = Submesh.buildShadowPipelineState()
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
