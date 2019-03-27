@@ -88,17 +88,23 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
 }
 
 vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
-                             uint instanceID [[ instance_id ]],
-                             constant Light &light [[ buffer(BufferIndexLights) ]],
-                             constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
-                             constant InstanceParams *instanceParams [[ buffer(BufferIndexInstanceParams) ]],
-                             constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
+                                  uint instanceID [[ instance_id ]],
+                                  constant Instances *instances [[ buffer(BufferIndexInstances) ]],
+                                  constant Light &light [[ buffer(BufferIndexLights) ]],
+                                  constant CubeMap *cubeMaps [[ buffer(BufferIndexCubeFaces) ]],
+                                  constant InstanceParams *instanceParams [[ buffer(BufferIndexInstanceParams) ]],
+                                  constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]]) {
 
+
+    // Will need to divide these two instance id by some value
+    // because the instance id will be the number of instances * number of faces ( or something like that )
+    Instances instance = instances[instanceID];
+    InstanceParams ip = instanceParams[instanceID];
 
     float4 worldPosition = uniforms.modelMatrix * vertexIn.position;
 
     DepthOut out;
-    out.face = instanceParams[instanceID].viewportIndex;
+    out.face = ip.viewportIndex;
     CubeMap map = cubeMaps[out.face];
 
     out.position =  map.faceViewMatrix * worldPosition;
