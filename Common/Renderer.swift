@@ -284,24 +284,26 @@ extension Renderer: MTKViewDelegate {
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
             guard let prop = renderable as? Prop else { continue }
+            let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
             var instanceCount = 0
-            for (faceIdx, probe) in culler_probe.enumerated() {
 
-                let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
+            for (transformIdx, transform) in prop.transforms.enumerated() {
+                for (faceIdx, probe) in culler_probe.enumerated() {
 
-                // commenting this check out causes the tree not to render in face 6 (back)
-                if probe.Intersects(actorPosition: prop.position, bSphere: bSphere) {
+                    // commenting this check out causes the tree not to render in face 6 (back)
+                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
 
-                    let params = InstanceParams(viewportIndex: uint(faceIdx))
-                    var pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self,
-                                                                            capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
-                    pointer = pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount)
-                    pointer.pointee.viewportIndex = params.viewportIndex
-                    instanceCount += 1
+                        let params = InstanceParams(viewportIndex: uint(faceIdx))
+                        var pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self,
+                                                                                capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
+                        pointer = pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount)
+                        pointer.pointee.viewportIndex = params.viewportIndex
+                        instanceCount += 1
+                    }
                 }
-            }
 
-            prop.shadowInstanceCount = instanceCount
+                prop.updateBuffer(instanceIndex: transformIdx, shadowInstanceCount: instanceCount)
+            }
         }
 
         // setVertexBytes instanceParams

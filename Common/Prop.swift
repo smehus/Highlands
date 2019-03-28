@@ -117,7 +117,7 @@ class Prop: Node {
     let samplerState: MTLSamplerState?
     let debugBoundingBox: DebugBoundingBox
 
-    private var transforms: [Transform]
+    private(set) var transforms: [Transform]
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
     var shadowInstanceCount: Int = 1
@@ -193,7 +193,14 @@ class Prop: Node {
     }
 
     static func buildInstanceBuffer(transforms: [Transform]) -> MTLBuffer {
-        let instances = transforms.map { Instances(modelMatrix: $0.modelMatrix, normalMatrix: $0.normalMatrix, textureID: 0) }
+        let instances = transforms.map
+        {
+            Instances(modelMatrix: $0.modelMatrix,
+                      normalMatrix: $0.normalMatrix,
+                      textureID: 0,
+                      shadowInstanceCount: 0)
+
+        }
 
         guard
             let instanceBuffer = Renderer.device
@@ -217,6 +224,12 @@ class Prop: Node {
         pointer.pointee.modelMatrix = transforms[instance].modelMatrix
         pointer.pointee.normalMatrix = transforms[instance].normalMatrix
         pointer.pointee.textureID = UInt32(textureID)
+    }
+
+    func updateBuffer(instanceIndex: Int, shadowInstanceCount: Int) {
+        var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
+        pointer = pointer.advanced(by: instanceIndex)
+        pointer.pointee.shadowInstanceCount = UInt32(shadowInstanceCount)
     }
 
     private static func buildSamplerState() -> MTLSamplerState? {

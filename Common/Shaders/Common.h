@@ -91,6 +91,7 @@ struct Instances {
     matrix_float4x4 modelMatrix;
     matrix_float3x3 normalMatrix;
     uint textureID;
+    uint shadowInstanceCount;
 };
 
 typedef struct {
