@@ -31,9 +31,9 @@ func lantern() -> Light {
     var light = buildDefaultLight()
     light.color = [1, 1, 0.7]
     light.position = pos
-    light.attenuation = float3(0.3, 0.1, 0.0)
+    light.attenuation = float3(0.3, 1.0, 0.0)
     light.type = Pointlight
-    light.intensity = 10
+//    light.intensity = 10
     return light
 }
 

@@ -37,30 +37,30 @@ final class GameScene: Scene {
 //        plane.tiling = 1
 //        add(node: plane)
 
-
-        let singleTree = Prop(type: .base(name: "treefir", lighting: true))
-        singleTree.position = [-2, 0, 0]
-        add(node: singleTree)
-
-        let tree2 = Prop(type: .base(name: "treefir", lighting: true))
-        tree2.position = [2, 0, 0]
-        add(node: tree2)
+//
+//        let singleTree = Prop(type: .base(name: "treefir", lighting: true))
+//        singleTree.position = [-2, 0, 0]
+//        add(node: singleTree)
+//
+//        let tree2 = Prop(type: .base(name: "treefir", lighting: true))
+//        tree2.position = [2, 0, 0]
+//        add(node: tree2)
 
         // Adding this below the trees fixes an issue
         // where the -z face wasn't rendering the ground depth.
         // Why you say? IDFK
         add(node: ground)
 
-//        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 50))
-//        tree.position = [0, 0, 4]
-//        add(node: tree)
-////         TODO: Figure out a way to handle physics with instancing
-////        physicsController.addStaticBody(node: tree)
-//        for i in 0..<50 {
-//            var transform = Transform()
-//            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
-//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-//        }
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 50))
+        tree.position = [0, 0, 4]
+        add(node: tree)
+//         TODO: Figure out a way to handle physics with instancing
+//        physicsController.addStaticBody(node: tree)
+        for i in 0..<50 {
+            var transform = Transform()
+            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+        }
 ////
 //        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
 //        let morphTargetNames = ["rock1", "rock2", "rock3"]

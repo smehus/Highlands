@@ -305,7 +305,7 @@ extension Prop: Renderable {
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset,
-                                                instanceCount: shadowInstanceCount * instanceCount,
+                                                instanceCount: shadowInstanceCount,
                                                 baseVertex: 0,
                                                 baseInstance: startingIndex)
         }

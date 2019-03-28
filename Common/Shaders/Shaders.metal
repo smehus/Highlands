@@ -46,7 +46,8 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     Instances instance = instances[instanceID];
 
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix * float4(vertexIn.position.xyz, 1);
-    out.worldPosition = uniforms.modelMatrix * vertexIn.position;
+
+    out.worldPosition = uniforms.modelMatrix * instance.modelMatrix *vertexIn.position;
     out.worldNormal = uniforms.normalMatrix * instance.normalMatrix * vertexIn.normal;
     out.uv = vertexIn.uv;
     // Normal matrix is the same as world space aka model matrix
@@ -55,6 +56,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.textureID = instance.textureID;
 
     // Can i get the shadow matrix from the instances here?
+    // use this for non omni directional shadow
     out.shadowPosition = uniforms.shadowMatrix * uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
 
     return out;
