@@ -11,8 +11,9 @@ final class Renderer: NSObject {
     static var depthPixelFormat: MTLPixelFormat!
     static var library: MTLLibrary?
     static let MaxVisibleFaces = 5
-    static let MaxActors = 32
-
+    static let MaxActors = 5
+    static let MaxActorInstances = 50
+    static let InstanceParamsBufferCapacity = Renderer.MaxActors * Renderer.MaxActorInstances * Renderer.MaxVisibleFaces
 
     var scene: Scene?
 
@@ -41,7 +42,8 @@ final class Renderer: NSObject {
         Renderer.colorPixelFormat = metalView.colorPixelFormat
         Renderer.depthPixelFormat = metalView.depthStencilPixelFormat
         Renderer.library = device.makeDefaultLibrary()
-        instanceParamBuffer = Renderer.device.makeBuffer(length: MemoryLayout<InstanceParams>.stride * (Renderer.MaxVisibleFaces * Renderer.MaxActors), options: .storageModeShared)!
+        instanceParamBuffer = Renderer.device
+            .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
         super.init()
         metalView.clearColor = MTLClearColor(red: 0.0, green: 0.5,
@@ -295,7 +297,7 @@ extension Renderer: MTKViewDelegate {
 
                         let params = InstanceParams(viewportIndex: uint(faceIdx))
                         var pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self,
-                                                                                capacity: Renderer.MaxVisibleFaces * Renderer.MaxActors)
+                                                                                capacity: Renderer.InstanceParamsBufferCapacity)
                         pointer = pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount)
                         pointer.pointee.viewportIndex = params.viewportIndex
                         instanceCount += 1
