@@ -51,14 +51,15 @@ final class GameScene: Scene {
         // Why you say? IDFK
         add(node: ground)
 
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 50))
-        tree.position = [0, 0, 4]
+        let count = 30
+        let offset = 10
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
         add(node: tree)
 //         TODO: Figure out a way to handle physics with instancing
 //        physicsController.addStaticBody(node: tree)
-        for i in 0..<50 {
+        for i in 0..<count {
             var transform = Transform()
-            transform.position = [Float(Int.random(in: -30...30)), 0, Float(Int.random(in: -30...30))]
+            transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
 ////

@@ -286,26 +286,38 @@ extension Renderer: MTKViewDelegate {
 
         for (actorIdx, renderable) in scene.renderables.enumerated() {
             guard let prop = renderable as? Prop else { continue }
+
+            var totalInstanceCount = 0
+
             let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
-            var instanceCount = 0
+            var transformInstanceCount = 0
 
             for (transformIdx, transform) in prop.transforms.enumerated() {
+                // Check if each transform fits into the view port
                 for (faceIdx, probe) in culler_probe.enumerated() {
 
                     // commenting this check out causes the tree not to render in face 6 (back)
-                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
+                    // why is this fucking up the number of transform instance count???
+//                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
 
+                        // Theres an instanceParams for each prop
                         let params = InstanceParams(viewportIndex: uint(faceIdx))
                         var pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self,
                                                                                 capacity: Renderer.InstanceParamsBufferCapacity)
-                        pointer = pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + instanceCount)
+                        pointer = pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + transformInstanceCount)
                         pointer.pointee.viewportIndex = params.viewportIndex
-                        instanceCount += 1
-                    }
+                        transformInstanceCount = 6
+//                    }
                 }
 
-                prop.updateBuffer(instanceIndex: transformIdx, shadowInstanceCount: instanceCount)
+                prop.updateBuffer(instanceIndex: transformIdx, shadowInstanceCount: transformInstanceCount)
+
+                totalInstanceCount += transformInstanceCount
             }
+
+            print("ORIGINAL \(prop.shadowInstanceCount):  ADDIND TRANSFORM \(totalInstanceCount)")
+            /// whyy is this number so high
+            prop.shadowInstanceCount = totalInstanceCount
         }
 
         // setVertexBytes instanceParams
