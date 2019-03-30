@@ -193,12 +193,10 @@ class Prop: Node {
     }
 
     static func buildInstanceBuffer(transforms: [Transform]) -> MTLBuffer {
-        let instances = transforms.map
-        {
-            Instances(modelMatrix: $0.modelMatrix,
-                      normalMatrix: $0.normalMatrix,
-                      textureID: 0)
-
+        let instances = transforms.enumerated().map { (index, transform) -> Instances in
+            Instances(modelMatrix: transform.modelMatrix,
+                      normalMatrix: transform.normalMatrix,
+                      textureID: 0, viewportIndex: 0)
         }
 
         guard
@@ -229,6 +227,12 @@ class Prop: Node {
             pointer = pointer.advanced(by: i)
             pointer.pointee.modelMatrix = transforms[instance].modelMatrix
         }
+    }
+
+    func updateBuffer(baseInstanceIndex: Int, cullIndex: Int, viewPort: Int) {
+        var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
+        pointer = pointer.advanced(by: (baseInstanceIndex * 6) + cullIndex)
+        pointer.pointee.viewportIndex = UInt32(viewPort)
     }
 
     private static func buildSamplerState() -> MTLSamplerState? {

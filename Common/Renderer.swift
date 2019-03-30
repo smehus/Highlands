@@ -290,7 +290,8 @@ extension Renderer: MTKViewDelegate {
             var totalInstanceCount = 0
 
             let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
-            var transformInstanceCount = 0
+
+            var transformInstanceCount = 6
 
             for (transformIdx, transform) in prop.transforms.enumerated() {
                 // Check if each transform fits into the view port
@@ -298,20 +299,11 @@ extension Renderer: MTKViewDelegate {
 
                     // commenting this check out causes the tree not to render in face 6 (back)
                     // why is this fucking up the number of transform instance count???
-                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
-
-                        // Theres an instanceParams for each prop
-                        let params = InstanceParams(viewportIndex: uint(faceIdx))
-                        var pointer = instanceParamBuffer.contents().bindMemory(to: InstanceParams.self,
-                                                                                capacity: Renderer.InstanceParamsBufferCapacity)
-                        pointer = pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + transformInstanceCount)
-                        pointer.pointee.viewportIndex = params.viewportIndex
-                        transformInstanceCount = 6
-                    }
+//                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
+                        prop.updateBuffer(baseInstanceIndex: actorIdx, cullIndex: transformIdx, viewPort: faceIdx)
+//                    }
                 }
 
-
-//                prop.updateBuffer(instanceIndex: transformIdx, shadowInstanceCount: transformInstanceCount)
                 totalInstanceCount += transformInstanceCount
             }
 
