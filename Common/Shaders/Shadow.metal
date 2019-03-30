@@ -101,7 +101,7 @@ vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
     float4 worldPosition = uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
 
     DepthOut out;
-    out.face = 1;
+    out.face = instance.viewportIndex;
     CubeMap map = cubeMaps[out.face];
 
     out.position =  map.faceViewMatrix * worldPosition;

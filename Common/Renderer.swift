@@ -307,7 +307,7 @@ extension Renderer: MTKViewDelegate {
                 totalInstanceCount += transformInstanceCount
             }
 
-            prop.shadowInstanceCount = totalInstanceCount
+            prop.shadowInstanceCount = 180
         }
 
         // setVertexBytes instanceParams
