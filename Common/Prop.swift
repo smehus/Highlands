@@ -197,8 +197,7 @@ class Prop: Node {
         {
             Instances(modelMatrix: $0.modelMatrix,
                       normalMatrix: $0.normalMatrix,
-                      textureID: 0,
-                      shadowInstanceCount: 0)
+                      textureID: 0)
 
         }
 
@@ -213,23 +212,23 @@ class Prop: Node {
     }
 
     static func buildTransforms(instanceCount: Int) -> [Transform] {
-        return [Transform](repeatElement(Transform(), count: instanceCount))
+        return [Transform](repeatElement(Transform(), count: instanceCount * 6))
     }
 
     func updateBuffer(instance: Int, transform: Transform, textureID: Int) {
-        transforms[instance] = transform
+        transforms[instance * 6] = transform
 
         var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
         pointer = pointer.advanced(by: instance)
         pointer.pointee.modelMatrix = transforms[instance].modelMatrix
         pointer.pointee.normalMatrix = transforms[instance].normalMatrix
         pointer.pointee.textureID = UInt32(textureID)
-    }
 
-    func updateBuffer(instanceIndex: Int, shadowInstanceCount: Int) {
-        var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
-        pointer = pointer.advanced(by: instanceIndex)
-        pointer.pointee.shadowInstanceCount = UInt32(shadowInstanceCount)
+        // Update shadow face instances
+        for i in 1...5 {
+            pointer = pointer.advanced(by: i)
+            pointer.pointee.modelMatrix = transforms[instance].modelMatrix
+        }
     }
 
     private static func buildSamplerState() -> MTLSamplerState? {
@@ -303,6 +302,7 @@ extension Prop: Renderable {
         uniforms.modelMatrix = modelMatrix
         uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
+        renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
         for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {

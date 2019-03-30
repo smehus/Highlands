@@ -298,7 +298,7 @@ extension Renderer: MTKViewDelegate {
 
                     // commenting this check out causes the tree not to render in face 6 (back)
                     // why is this fucking up the number of transform instance count???
-//                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
+                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
 
                         // Theres an instanceParams for each prop
                         let params = InstanceParams(viewportIndex: uint(faceIdx))
@@ -307,16 +307,14 @@ extension Renderer: MTKViewDelegate {
                         pointer = pointer.advanced(by: actorIdx * Renderer.MaxVisibleFaces + transformInstanceCount)
                         pointer.pointee.viewportIndex = params.viewportIndex
                         transformInstanceCount = 6
-//                    }
+                    }
                 }
 
-                prop.updateBuffer(instanceIndex: transformIdx, shadowInstanceCount: transformInstanceCount)
 
+//                prop.updateBuffer(instanceIndex: transformIdx, shadowInstanceCount: transformInstanceCount)
                 totalInstanceCount += transformInstanceCount
             }
 
-            print("ORIGINAL \(prop.shadowInstanceCount):  ADDIND TRANSFORM \(totalInstanceCount)")
-            /// whyy is this number so high
             prop.shadowInstanceCount = totalInstanceCount
         }
 
