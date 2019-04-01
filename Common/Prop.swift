@@ -144,7 +144,7 @@ class Prop: Node {
         debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
 
         instanceCount = type.instanceCount
-        transforms = Prop.buildTransforms(instanceCount: instanceCount)
+        transforms = Prop.buildTransforms(instanceCount: instanceCount * 6)
         instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
 
         super.init()
@@ -210,7 +210,7 @@ class Prop: Node {
     }
 
     static func buildTransforms(instanceCount: Int) -> [Transform] {
-        return [Transform](repeatElement(Transform(), count: instanceCount * 6))
+        return [Transform](repeatElement(Transform(), count: instanceCount))
     }
 
     func updateBuffer(instance: Int, transform: Transform, textureID: Int) {
@@ -229,10 +229,10 @@ class Prop: Node {
         }
     }
 
-    func updateBuffer(baseInstanceIndex: Int, cullIndex: Int, viewPort: Int) {
+    func updateBuffer(transformIndex: Int, viewPortIndex: Int) {
         var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
-        pointer = pointer.advanced(by: (baseInstanceIndex * 6) + cullIndex)
-        pointer.pointee.viewportIndex = UInt32(viewPort)
+        pointer = pointer.advanced(by: transformIndex + viewPortIndex)
+        pointer.pointee.viewportIndex = UInt32(viewPortIndex)
     }
 
     private static func buildSamplerState() -> MTLSamplerState? {

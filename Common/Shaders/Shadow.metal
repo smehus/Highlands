@@ -97,7 +97,6 @@ vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
 
 
     Instances instance = instances[instanceID];
-
     float4 worldPosition = uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
 
     DepthOut out;

@@ -10,7 +10,7 @@ final class Renderer: NSObject {
     static var colorPixelFormat: MTLPixelFormat!
     static var depthPixelFormat: MTLPixelFormat!
     static var library: MTLLibrary?
-    static let MaxVisibleFaces = 5
+    static let MaxVisibleFaces = 6
     static let MaxActors = 5
     static let MaxActorInstances = 50
     static let InstanceParamsBufferCapacity = Renderer.MaxActors * Renderer.MaxActorInstances * Renderer.MaxVisibleFaces
@@ -291,8 +291,9 @@ extension Renderer: MTKViewDelegate {
 
             let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
 
-            var transformInstanceCount = 6
+            var transformInstanceCount = Renderer.MaxVisibleFaces
 
+            // Theres as many transforms as instances / view facess.........
             for (transformIdx, transform) in prop.transforms.enumerated() {
                 // Check if each transform fits into the view port
                 for (faceIdx, probe) in culler_probe.enumerated() {
@@ -300,7 +301,9 @@ extension Renderer: MTKViewDelegate {
                     // commenting this check out causes the tree not to render in face 6 (back)
                     // why is this fucking up the number of transform instance count???
 //                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
-                        prop.updateBuffer(baseInstanceIndex: actorIdx, cullIndex: transformIdx, viewPort: faceIdx)
+
+                        // doesn't make sense to use transform idx here ... we should be advancing by view port?
+                        prop.updateBuffer(transformIndex: transformIdx, viewPortIndex: faceIdx)
 //                    }
                 }
 
