@@ -289,7 +289,7 @@ extension Renderer: MTKViewDelegate {
                 for (faceIdx, probe) in culler_probe.enumerated() {
 //                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
 
-                        prop.updateShadowBuffer(transformIndex: (transformIdx * 6) + faceIdx, viewPortIndex: faceIdx)
+//                        prop.updateShadowBuffer(transformIndex: (transformIdx * 6) + faceIdx, viewPortIndex: faceIdx)
 //                    }
                 }
             }

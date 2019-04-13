@@ -236,10 +236,11 @@ class Prop: Node {
         let startingPoint = instance * 6
         shadowPointer = shadowPointer.advanced(by: startingPoint)
         shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
-
+        shadowPointer.pointee.viewportIndex = UInt32(0)
         for i in 1...6 {
             shadowPointer = shadowPointer.advanced(by: 1)
             shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
+            shadowPointer.pointee.viewportIndex = UInt32(i)
         }
     }
 
