@@ -265,14 +265,9 @@ extension Renderer: MTKViewDelegate {
             let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
             let lookAt = float4x4(lookAtLHEye: position, target: position + directions[i], up: ups[i])
             map.faceViewMatrix = projection * lookAt
-
-            
-//            map.faceViewMatrix = float4x4(translation: position) * lookAt
-
             viewMatrices.append(map)
 
             // Create frustums
-
             let cullerProbe = FrustumCuller(viewMatrix: map.faceViewMatrix,
                                             viewPosition: position,
                                             aspect: 1,
@@ -287,30 +282,17 @@ extension Renderer: MTKViewDelegate {
         for (actorIdx, renderable) in scene.renderables.enumerated() {
             guard let prop = renderable as? Prop else { continue }
 
-            var totalInstanceCount = 0
-
             let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
 
-            var transformInstanceCount = Renderer.MaxVisibleFaces
-
-            // Theres as many transforms as instances / view facess.........
             for (transformIdx, transform) in prop.transforms.enumerated() {
-                // Check if each transform fits into the view port
-                for (faceIdx, probe) in culler_probe.enumerated() {
 
-                    // commenting this check out causes the tree not to render in face 6 (back)
-                    // why is this fucking up the number of transform instance count???
+                for (faceIdx, probe) in culler_probe.enumerated() {
 //                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
 
-                        // doesn't make sense to use transform idx here ... we should be advancing by view port?
-                        prop.updateBuffer(transformIndex: transformIdx, viewPortIndex: faceIdx)
+                        prop.updateShadowBuffer(transformIndex: (transformIdx * 6) + faceIdx, viewPortIndex: faceIdx)
 //                    }
                 }
-
-                totalInstanceCount += transformInstanceCount
             }
-
-            prop.shadowInstanceCount = 180
         }
 
         // setVertexBytes instanceParams

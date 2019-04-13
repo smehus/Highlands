@@ -49,7 +49,7 @@ final class GameScene: Scene {
         // Adding this below the trees fixes an issue
         // where the -z face wasn't rendering the ground depth.
         // Why you say? IDFK
-        add(node: ground)
+//        add(node: ground)
 
         let count = 30
         let offset = 10

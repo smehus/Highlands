@@ -120,7 +120,11 @@ class Prop: Node {
     private(set) var transforms: [Transform]
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
-    var shadowInstanceCount: Int = 1
+
+    let shadowInstanceCount: Int
+    var shadowTransforms: [Transform]
+    var shadowInstanceBuffer: MTLBuffer
+
     var windingOrder: MTLWinding = .counterClockwise
 
     init(type: PropType) {
@@ -144,8 +148,12 @@ class Prop: Node {
         debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
 
         instanceCount = type.instanceCount
-        transforms = Prop.buildTransforms(instanceCount: instanceCount * 6)
+        transforms = Prop.buildTransforms(instanceCount: instanceCount)
         instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
+
+        shadowInstanceCount = type.instanceCount * 6
+        shadowTransforms = Prop.buildTransforms(instanceCount: instanceCount * 6)
+        shadowInstanceBuffer = Prop.buildInstanceBuffer(transforms: shadowTransforms)
 
         super.init()
         self.name = type.name
@@ -214,7 +222,7 @@ class Prop: Node {
     }
 
     func updateBuffer(instance: Int, transform: Transform, textureID: Int) {
-        transforms[instance * 6] = transform
+        transforms[instance] = transform
 
         var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
         pointer = pointer.advanced(by: instance)
@@ -222,15 +230,22 @@ class Prop: Node {
         pointer.pointee.normalMatrix = transforms[instance].normalMatrix
         pointer.pointee.textureID = UInt32(textureID)
 
-        // Update shadow face instances
-        for i in 1...5 {
-            pointer = pointer.advanced(by: i)
-            pointer.pointee.modelMatrix = transforms[instance].modelMatrix
+
+        // Set matrices for shadow instances
+        var shadowPointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
+        let startingPoint = instance * 6
+        shadowPointer = shadowPointer.advanced(by: startingPoint)
+        shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
+
+        for i in 1...6 {
+            shadowPointer = shadowPointer.advanced(by: 1)
+            shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
         }
     }
 
-    func updateBuffer(transformIndex: Int, viewPortIndex: Int) {
-        var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
+    // Update shadow Buffer
+    func updateShadowBuffer(transformIndex: Int, viewPortIndex: Int) {
+        var pointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
         pointer = pointer.advanced(by: transformIndex + viewPortIndex)
         pointer.pointee.viewportIndex = UInt32(viewPortIndex)
     }
@@ -306,7 +321,7 @@ extension Prop: Renderable {
         uniforms.modelMatrix = modelMatrix
         uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
-        renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
+        renderEncoder.setVertexBuffer(shadowInstanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
         for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
@@ -322,9 +337,7 @@ extension Prop: Renderable {
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset,
-                                                instanceCount: instanceCount,
-                                                baseVertex: 0,
-                                                baseInstance: startingIndex)
+                                                instanceCount: shadowInstanceCount)
         }
     }
 }
