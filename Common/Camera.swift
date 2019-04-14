@@ -25,6 +25,7 @@ class Camera: Node {
     var projectionMatrix: float4x4 {
 //        return float4x4(projectionFov: fovRadians, near: near, far: far, aspect: aspect)
 //        return float4x4(projectionFov: fovRadians, aspectRaptio: aspect, nearZ: near, farZ: far)
+
         return float4x4(projectionFov: fovRadians, aspectRatio: aspect, nearZ: near, farZ: far)
     }
 
@@ -61,7 +62,7 @@ class ThirdPersonCamera: Camera {
 
     var focus: Node
     var focusDistance: Float = 3
-    var focusHeight: Float = 1.5
+    var focusHeight: Float = 3
 
     init(focus: Node) {
         self.focus = focus
@@ -69,15 +70,14 @@ class ThirdPersonCamera: Camera {
     }
 
     override var viewMatrix: float4x4 {
-//        setRotatingCamera()
-        setNonRotatingCamera()
-        return super.viewMatrix
+        setRotatingCamera()
+//        setNonRotatingCamera()
+        return float4x4(lookAtLHEye: position, target: focus.position, up: [0, 1, 0])
     }
 
     private func setNonRotatingCamera() {
         position = float3(focus.position.x, focus.position.y - 2, focus.position.z - 2)
         position.y = 3
-        rotation.x = radians(fromDegrees: 40)
     }
 
     private func setRotatingCamera() {

@@ -15,7 +15,6 @@ final class GameScene: Scene {
     let ground = Prop(type: .base(name: "large-plane", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
-//    let car = Prop(name: "racing-car")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
     override func setupScene() {
@@ -30,25 +29,6 @@ final class GameScene: Scene {
 
         ground.tiling = 16
 
-
-
-//        plane.position.z = 10
-//        plane.rotation.x = radians(fromDegrees: 130)
-//        plane.tiling = 1
-//        add(node: plane)
-
-//
-//        let singleTree = Prop(type: .base(name: "treefir", lighting: true))
-//        singleTree.position = [-2, 0, 0]
-//        add(node: singleTree)
-//
-//        let tree2 = Prop(type: .base(name: "treefir", lighting: true))
-//        tree2.position = [2, 0, 0]
-//        add(node: tree2)
-
-        // Adding this below the trees fixes an issue
-        // where the -z face wasn't rendering the ground depth.
-        // Why you say? IDFK
         add(node: ground)
 
         let count = 30
@@ -80,14 +60,8 @@ final class GameScene: Scene {
 //            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
 //        }
 
-
-//        car.rotation = [0, radians(fromDegrees: 90), 0]
-//        car.position = [-2, 0, 0]
-//        add(node: car)
-//        physicsController.addStaticBody(node: car)
-
-//        lantern.position = [2.5, 3, 1]
-//        add(node: lantern, parent: skeleton, render: true)
+        lantern.position = [2.5, 3, 1]
+        add(node: lantern, parent: skeleton, render: true)
 
         skeleton.scale = [0.3, 0.3, 0.3]
 //        skeleton.position.y -= 5
@@ -108,8 +82,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-//        tpCamera.focusHeight = 3
-//        tpCamera.focusDistance = 2
+        tpCamera.focusHeight = 2.5
+        tpCamera.focusDistance = 2.5
         cameras.append(tpCamera)
         currentCameraIndex = 2
     }
