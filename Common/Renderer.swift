@@ -46,8 +46,8 @@ final class Renderer: NSObject {
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
         super.init()
-        metalView.clearColor = MTLClearColor(red: 0.0, green: 0.5,
-                                             blue: 1, alpha: 1)
+        metalView.clearColor = MTLClearColor(red: 0.0, green: 0.0,
+                                             blue: 0, alpha: 1)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
@@ -181,7 +181,7 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+//        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
 //        drawDebug(encoder: renderEncoder)
 

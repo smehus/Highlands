@@ -12,7 +12,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let ground = Prop(type: .base(name: "large-plane", lighting: true))
+    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
