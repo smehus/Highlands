@@ -141,10 +141,9 @@ final class GameScene: Scene {
 extension GameScene: KeyboardDelegate {
     func keyPressed(key: KeyboardControl, keysDown: Set<KeyboardControl>, state: InputState) -> Bool {
         switch key {
-        case .key0:
-            currentCameraIndex = 0
-        case .key1:
-            currentCameraIndex = 1
+        case .key0: currentCameraIndex = 0
+        case .key1: currentCameraIndex = 1
+        case .key2: currentCameraIndex = 2
         case .w, .s, .a, .d, .left, .right, .up, .down:
             if state == .began {
                 skeleton.resumeAnimation()
