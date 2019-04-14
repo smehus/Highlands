@@ -181,7 +181,7 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-//        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
 //        drawDebug(encoder: renderEncoder)
 

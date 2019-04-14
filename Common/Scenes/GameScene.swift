@@ -28,37 +28,39 @@ final class GameScene: Scene {
         camera.rotation = [0, 0, 0]
 
         ground.tiling = 16
-
+        ground.position = float3(0, -0.03, 0)
         add(node: ground)
 
-        let count = 30
-        let offset = 10
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
+        let count = 10
+        let offset = 3
+        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
         add(node: tree)
 //         TODO: Figure out a way to handle physics with instancing
 //        physicsController.addStaticBody(node: tree)
+
         for i in 0..<count {
             var transform = Transform()
             transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+            transform.scale = float3(0.3, 0.3, 0.3)
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
 ////
-//        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
-//        let morphTargetNames = ["rock1", "rock2", "rock3"]
-//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
-//        add(node: rock)
-//        for i in 0..<20 {
-//            var transform = Transform()
-//
-//            if i == 0 {
-//                transform.position = [0, 0, 3]
-//            } else {
-//                transform.position = [Float(Int.random(in: -10...10)), 0, Float(Int.random(in: -10...10))]
-//            }
-//
-//            transform.scale = [0.5, 0.5, 0.5]
-//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-//        }
+        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
+        let morphTargetNames = ["rock1", "rock2", "rock3"]
+        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
+        add(node: rock)
+        for i in 0..<count {
+            var transform = Transform()
+
+            if i == 0 {
+                transform.position = [0, 0, 3]
+            } else {
+                transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+            }
+
+            transform.scale = [0.5, 0.5, 0.5]
+            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+        }
 
         lantern.position = [2.5, 3, 1]
         add(node: lantern, parent: skeleton, render: true)

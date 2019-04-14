@@ -112,6 +112,24 @@
 		A59150B72263BA6F008ED280 /* floor_grid.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150B52263BA6F008ED280 /* floor_grid.obj */; };
 		A59150B92263BA7E008ED280 /* floor_grid.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150B82263BA7E008ED280 /* floor_grid.mtl */; };
 		A59150BA2263BA7E008ED280 /* floor_grid.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150B82263BA7E008ED280 /* floor_grid.mtl */; };
+		A59150BE2263BC8B008ED280 /* pillar.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150BC2263BC8B008ED280 /* pillar.mtl */; };
+		A59150BF2263BC8B008ED280 /* pillar.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150BC2263BC8B008ED280 /* pillar.mtl */; };
+		A59150C02263BC8B008ED280 /* pillar.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150BD2263BC8B008ED280 /* pillar.obj */; };
+		A59150C12263BC8B008ED280 /* pillar.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150BD2263BC8B008ED280 /* pillar.obj */; };
+		A59150C32263BFDD008ED280 /* grid_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = A59150C22263BFDD008ED280 /* grid_texture.png */; };
+		A59150C42263BFDD008ED280 /* grid_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = A59150C22263BFDD008ED280 /* grid_texture.png */; };
+		A59150CC2263C216008ED280 /* tree_tile.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150C62263C216008ED280 /* tree_tile.mtl */; };
+		A59150CD2263C216008ED280 /* tree_tile.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150C62263C216008ED280 /* tree_tile.mtl */; };
+		A59150CE2263C216008ED280 /* grass_tile.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150C72263C216008ED280 /* grass_tile.mtl */; };
+		A59150CF2263C216008ED280 /* grass_tile.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150C72263C216008ED280 /* grass_tile.mtl */; };
+		A59150D02263C216008ED280 /* grass_tile_long.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150C82263C216008ED280 /* grass_tile_long.obj */; };
+		A59150D12263C216008ED280 /* grass_tile_long.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150C82263C216008ED280 /* grass_tile_long.obj */; };
+		A59150D22263C216008ED280 /* tree_tile.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150C92263C216008ED280 /* tree_tile.obj */; };
+		A59150D32263C216008ED280 /* tree_tile.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150C92263C216008ED280 /* tree_tile.obj */; };
+		A59150D42263C216008ED280 /* grass_tile_long.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150CA2263C216008ED280 /* grass_tile_long.mtl */; };
+		A59150D52263C216008ED280 /* grass_tile_long.mtl in Resources */ = {isa = PBXBuildFile; fileRef = A59150CA2263C216008ED280 /* grass_tile_long.mtl */; };
+		A59150D62263C216008ED280 /* grass_tile.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150CB2263C216008ED280 /* grass_tile.obj */; };
+		A59150D72263C216008ED280 /* grass_tile.obj in Resources */ = {isa = PBXBuildFile; fileRef = A59150CB2263C216008ED280 /* grass_tile.obj */; };
 		A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1721B9EC5D002F6F35 /* Node.swift */; };
 		A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */; };
@@ -255,6 +273,15 @@
 		A58F1A1021E94112003F6F1F /* MorphShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MorphShader.metal; sourceTree = "<group>"; };
 		A59150B52263BA6F008ED280 /* floor_grid.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = floor_grid.obj; sourceTree = SOURCE_ROOT; };
 		A59150B82263BA7E008ED280 /* floor_grid.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = floor_grid.mtl; sourceTree = SOURCE_ROOT; };
+		A59150BC2263BC8B008ED280 /* pillar.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pillar.mtl; sourceTree = SOURCE_ROOT; };
+		A59150BD2263BC8B008ED280 /* pillar.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pillar.obj; sourceTree = SOURCE_ROOT; };
+		A59150C22263BFDD008ED280 /* grid_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grid_texture.png; sourceTree = SOURCE_ROOT; };
+		A59150C62263C216008ED280 /* tree_tile.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tree_tile.mtl; sourceTree = SOURCE_ROOT; };
+		A59150C72263C216008ED280 /* grass_tile.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = grass_tile.mtl; sourceTree = SOURCE_ROOT; };
+		A59150C82263C216008ED280 /* grass_tile_long.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = grass_tile_long.obj; sourceTree = SOURCE_ROOT; };
+		A59150C92263C216008ED280 /* tree_tile.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tree_tile.obj; sourceTree = SOURCE_ROOT; };
+		A59150CA2263C216008ED280 /* grass_tile_long.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = grass_tile_long.mtl; sourceTree = SOURCE_ROOT; };
+		A59150CB2263C216008ED280 /* grass_tile.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = grass_tile.obj; sourceTree = SOURCE_ROOT; };
 		A5A1CD1721B9EC5D002F6F35 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		A5A1CD1D21B9F332002F6F35 /* Prop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prop.swift; sourceTree = "<group>"; };
@@ -327,6 +354,8 @@
 		A551AE0621C997C600FA207B /* Props */ = {
 			isa = PBXGroup;
 			children = (
+				A59150C52263C202008ED280 /* garden */,
+				A59150BB2263BC7C008ED280 /* Pillar */,
 				A59150B42263BA59008ED280 /* Grid */,
 				A58F19FD21E931E5003F6F1F /* Rocks */,
 				A5F2916A21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern_OBJ */,
@@ -552,10 +581,33 @@
 		A59150B42263BA59008ED280 /* Grid */ = {
 			isa = PBXGroup;
 			children = (
+				A59150C22263BFDD008ED280 /* grid_texture.png */,
 				A59150B82263BA7E008ED280 /* floor_grid.mtl */,
 				A59150B52263BA6F008ED280 /* floor_grid.obj */,
 			);
 			path = Grid;
+			sourceTree = "<group>";
+		};
+		A59150BB2263BC7C008ED280 /* Pillar */ = {
+			isa = PBXGroup;
+			children = (
+				A59150BC2263BC8B008ED280 /* pillar.mtl */,
+				A59150BD2263BC8B008ED280 /* pillar.obj */,
+			);
+			path = Pillar;
+			sourceTree = "<group>";
+		};
+		A59150C52263C202008ED280 /* garden */ = {
+			isa = PBXGroup;
+			children = (
+				A59150CA2263C216008ED280 /* grass_tile_long.mtl */,
+				A59150C82263C216008ED280 /* grass_tile_long.obj */,
+				A59150C72263C216008ED280 /* grass_tile.mtl */,
+				A59150CB2263C216008ED280 /* grass_tile.obj */,
+				A59150C62263C216008ED280 /* tree_tile.mtl */,
+				A59150C92263C216008ED280 /* tree_tile.obj */,
+			);
+			path = garden;
 			sourceTree = "<group>";
 		};
 		A5A1CD3621BA2962002F6F35 /* Extensions */ = {
@@ -681,6 +733,7 @@
 				A5CBD1BA21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A55EFC6E21D9B4DF008DAD22 /* MouthMAP1.png in Resources */,
 				A59150B92263BA7E008ED280 /* floor_grid.mtl in Resources */,
+				A59150CC2263C216008ED280 /* tree_tile.mtl in Resources */,
 				A5CB1E8421EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
 				A58F1A0C21E931E5003F6F1F /* rock2.mtl in Resources */,
@@ -693,6 +746,8 @@
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
 				A58F1A0421E931E5003F6F1F /* rock2.obj in Resources */,
+				A59150D62263C216008ED280 /* grass_tile.obj in Resources */,
+				A59150C02263BC8B008ED280 /* pillar.obj in Resources */,
 				A5C952CD21CEA53000B23364 /* ground.png in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A58F1A0821E931E5003F6F1F /* rock1.obj in Resources */,
@@ -703,8 +758,12 @@
 				A5CBD0DD21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A5CBD0DF21E16FC1001D77EF /* claire_waking.bin in Resources */,
 				A58F1A0E21E931E5003F6F1F /* rock3.mtl in Resources */,
+				A59150D22263C216008ED280 /* tree_tile.obj in Resources */,
 				A5CBD0F421E2697B001D77EF /* claire_idle.bin in Resources */,
+				A59150CE2263C216008ED280 /* grass_tile.mtl in Resources */,
+				A59150C32263BFDD008ED280 /* grid_texture.png in Resources */,
 				A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */,
+				A59150D42263C216008ED280 /* grass_tile_long.mtl in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A5CBD0F221E2697B001D77EF /* claire_idle.gltf in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
@@ -712,6 +771,7 @@
 				A58F1A0621E931E5003F6F1F /* rock3.obj in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
+				A59150D02263C216008ED280 /* grass_tile_long.obj in Resources */,
 				A5CB1E8621EA74F7002CCB94 /* HRN_LMP_NM.bmp in Resources */,
 				A5819C5B21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
 				A563DEFE21E6B2CD00563EA9 /* claire_zup_2.gltf in Resources */,
@@ -720,6 +780,7 @@
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
 				A59150B62263BA6F008ED280 /* floor_grid.obj in Resources */,
 				A5CB1E8221EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
+				A59150BE2263BC8B008ED280 /* pillar.mtl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -735,6 +796,9 @@
 				A5C952CC21CEA53000B23364 /* plane.mtl in Resources */,
 				A5C952CA21CEA53000B23364 /* plane.obj in Resources */,
 				A57506BB21CD646900C63081 /* treefir.obj in Resources */,
+				A59150D32263C216008ED280 /* tree_tile.obj in Resources */,
+				A59150D12263C216008ED280 /* grass_tile_long.obj in Resources */,
+				A59150D52263C216008ED280 /* grass_tile_long.mtl in Resources */,
 				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
 				A59150B72263BA6F008ED280 /* floor_grid.obj in Resources */,
@@ -746,6 +810,7 @@
 				A563DEFD21E6B2CD00563EA9 /* claire_zup_2.bin in Resources */,
 				A58F1A0521E931E5003F6F1F /* rock2.obj in Resources */,
 				A59150BA2263BA7E008ED280 /* floor_grid.mtl in Resources */,
+				A59150CD2263C216008ED280 /* tree_tile.mtl in Resources */,
 				A563DF0321E6B30400563EA9 /* claire_zup.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
 				A5CBD0E021E16FC1001D77EF /* claire_waking.bin in Resources */,
@@ -759,12 +824,17 @@
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
 				A5CBD0DE21E16FC1001D77EF /* claire_waking.gltf in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
+				A59150D72263C216008ED280 /* grass_tile.obj in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
 				A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */,
 				A58F1A0921E931E5003F6F1F /* rock1.obj in Resources */,
 				A5819C5C21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
+				A59150BF2263BC8B008ED280 /* pillar.mtl in Resources */,
 				A5CB1E8321EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A5CB1E8521EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
+				A59150CF2263C216008ED280 /* grass_tile.mtl in Resources */,
+				A59150C42263BFDD008ED280 /* grid_texture.png in Resources */,
+				A59150C12263BC8B008ED280 /* pillar.obj in Resources */,
 				A58F1A0F21E931E5003F6F1F /* rock3.mtl in Resources */,
 				A55EFC7321D9B4DF008DAD22 /* file15.jpg in Resources */,
 				A55EFC6D21D9B4DF008DAD22 /* file14.jpg in Resources */,

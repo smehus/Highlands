@@ -20,4 +20,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-#map_Kd /Users/scottmehus/Documents/ScottPersonal/TransportPuzzle/SokobanCopy2/art.scnassets/Objects/grid_texture.png
+map_Kd grid_texture.png
