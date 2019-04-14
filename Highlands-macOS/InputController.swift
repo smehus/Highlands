@@ -19,7 +19,7 @@ class InputController {
     var useMouse = false
 
     var translationSpeed: Float = 2.0
-    var rotationSpeed: Float = 1.0
+    var rotationSpeed: Float = 2.0
 
 
     public func updatePlayer(deltaTime: Float) {

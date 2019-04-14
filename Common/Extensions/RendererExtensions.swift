@@ -19,7 +19,7 @@ func lighting() -> [Light] {
     light = buildDefaultLight()
     light.type = Ambientlight
     light.intensity = 0.1
-    lights.append(light)
+//    lights.append(light)
 
 
 
@@ -31,7 +31,7 @@ func lantern() -> Light {
     var light = buildDefaultLight()
     light.color = [1, 1, 0.7]
     light.position = pos
-    light.attenuation = float3(0.3, 1.0, 0.0)
+    light.attenuation = float3(0.7, 1.0, 0.0)
     light.type = Pointlight
 //    light.intensity = 10
     return light

@@ -305,7 +305,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
         float epsilon = 0.1;
         if (closestDepth.w + epsilon < currentDepth) {
-            color *= 0.5;
+            color *= 0.6;
         }
 
 //        return float4(closestDepth, 1);
