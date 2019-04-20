@@ -15,6 +15,7 @@ final class GameScene: Scene {
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
+//    let skeleton = Character(name: "claire_waking")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
     override func setupScene() {
@@ -62,12 +63,15 @@ final class GameScene: Scene {
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
 
-        lantern.position = [2.5, 3, 1]
-        add(node: lantern, parent: skeleton, render: true)
 
-        skeleton.scale = [0.3, 0.3, 0.3]
-//        skeleton.position.y -= 5
-//        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+
+        if skeleton.name.hasPrefix("claire") {
+            skeleton.scale = [0.005, 0.005, 0.005]
+            skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+        } else {
+            skeleton.scale = [0.3, 0.3, 0.3]
+        }
+
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
         skeleton.runAnimation(name: "walking")
@@ -76,7 +80,8 @@ final class GameScene: Scene {
 //        skeleton.currentAnimation?.speed = 3.0
         skeleton.pauseAnimation()
 
-
+        lantern.position = [2.5, 3, 1]
+        add(node: lantern, parent: skeleton, render: true)
 
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2

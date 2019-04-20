@@ -39,9 +39,18 @@ class InputController {
             case .d:
                 direction.x += 1
             case .left, .q:
-                player.rotation.y -= rotationSpeed
+                if player.name.hasPrefix("claire") {
+                    player.rotation.z += rotationSpeed
+                } else {
+                    player.rotation.y -= rotationSpeed
+                }
+
             case .right, .e:
-                player.rotation.y += rotationSpeed
+                if player.name.hasPrefix("claire") {
+                    player.rotation.z -= rotationSpeed
+                } else {
+                    player.rotation.y += rotationSpeed
+                }
             default:
                 break
             }

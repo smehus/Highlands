@@ -45,7 +45,11 @@ class Node {
     }
 
     var forwardVector: float3 {
-        return normalize([sin(rotation.y), 0, cos(rotation.y)])
+        if name.hasPrefix("claire") {
+            return normalize([sin(-rotation.z), 0, cos(-rotation.z)])
+        } else {
+            return normalize([sin(rotation.y), 0, cos(rotation.y)])
+        }
     }
 
     var rightVector: float3 {
