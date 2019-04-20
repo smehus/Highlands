@@ -36,3 +36,11 @@ Although the car did not?
 
 ***** If you get a blue screen thats half black and all fucked up ****
 - Its probably because theres a nil texture somewhere in the shaders
+
+
+When export gltf from blender / Make Human
+- Need texture node
+- Need images node - Update names
+- Need to udpate materials to match the original shit "firstHuman_rigged_1_working_walk"
+    - Update i
+- If i export a new gltf file - Need to always add this shit
