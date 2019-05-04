@@ -311,7 +311,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 //        return float4(closestDepth, 1);
     }
 
-//    float4 finalColor = fog(in.position, float4(color, 1));
+    float4 finalColor = fog(in.position, float4(color, 1));
 
     return float4(color, 1);
 }

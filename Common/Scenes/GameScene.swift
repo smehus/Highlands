@@ -14,8 +14,8 @@ final class GameScene: Scene {
     let orthoCamera = OrthographicCamera()
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
-//    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
-    let skeleton = Character(name: "scaled_rigged_character")
+    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
+//    let skeleton = Character(name: "scaled_rigged_character")
 //    let skeleton = Character(name: "claire_waking")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
@@ -67,7 +67,7 @@ final class GameScene: Scene {
 
 
         if skeleton.name.hasPrefix("claire") {
-            skeleton.scale = [0.005, 0.005, 0.005]
+//            skeleton.scale = [0.005, 0.005, 0.005]
             skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
         } else {
 //            skeleton.scale = [0.3, 0.3, 0.3]
@@ -90,7 +90,7 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 2.5
+        tpCamera.focusHeight = 4
         tpCamera.focusDistance = 2.5
         cameras.append(tpCamera)
         currentCameraIndex = 2
