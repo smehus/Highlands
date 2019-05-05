@@ -197,6 +197,17 @@ float4 fogOFWar(float3 position, float4 color) {
     return color;
 }
 
+float4 sepiaShader(float4 color) {
+
+    float y = dot(float3(0.299, 0.587, 0.114), color.rgb);
+    float4 sepia = float4(0.191, -0.054, -0.221, 0.0);
+    float4 output = sepia + y;
+    output.z = color.z;
+
+    output = mix(output, color, 0.4);
+    return output;
+}
+
 fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               constant Light *lights [[ buffer(BufferIndexLights) ]],
                               sampler textureSampler [[ sampler(0) ]],
@@ -325,10 +336,6 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 //    float4 fogOFWar = fogOFWar(in.worldPosition.xyz, float4(color, 1));
 
     // Adding Sepia TONE - otherwise just return float4(color, 1)
-    float y = dot(float3(0.299, 0.587, 0.114), color.rgb);
-    float4 sepia = float4(0.191, -0.054, -0.221, 0.0);
-    float4 output = sepia + y;
-    output.z = color.z;
 
-    return output;
+    return sepiaShader(float4(color, 1));
 }
