@@ -186,6 +186,8 @@ float4 distanceFog(float4 position, float4 color) {
     return color;
 }
 
+// I think I just need to input the player position and then turn off this
+// To get receding fog of war
 float4 fogOFWar(float3 position, float4 color) {
 
     float d = distance(position, float3(0, 0, 0));
