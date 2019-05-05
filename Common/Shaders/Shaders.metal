@@ -322,7 +322,13 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 //        return float4(closestDepth, 1);
     }
 
-    float4 finalColor = fogOFWar(in.worldPosition.xyz, float4(color, 1));
+//    float4 fogOFWar = fogOFWar(in.worldPosition.xyz, float4(color, 1));
 
-    return float4(finalColor);
+    // Adding Sepia TONE - otherwise just return float4(color, 1)
+    float y = dot(float3(0.299, 0.587, 0.114), color.rgb);
+    float4 sepia = float4(0.191, -0.054, -0.221, 0.0);
+    float4 output = sepia + y;
+    output.z = color.z;
+
+    return output;
 }
