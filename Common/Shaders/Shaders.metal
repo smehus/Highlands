@@ -177,12 +177,23 @@ float3 diffuseLighting(VertexOut in,
 
 }
 
-float4 fog(float4 position, float4 color) {
+float4 distanceFog(float4 position, float4 color) {
     float distance = position.z / position.w;
     float density = 0.05;
     float fog = 1.0 - clamp(exp(-density * distance), 0.0, 1.0);
     float4 fogColor = float4(1.0);
     color = mix(color, fogColor, fog);
+    return color;
+}
+
+float4 fogOFWar(float3 position, float4 color) {
+
+    float d = distance(position, float3(0, 0, 0));
+
+    if (d > 1) {
+        color = float4(0);
+    }
+
     return color;
 }
 
@@ -228,7 +239,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
     normalValue = normalize(normalValue);
 
-    baseColor = fog(in.position, baseColor);
+    baseColor = distanceFog(in.position, baseColor);
 
     float3 color;
 
@@ -311,7 +322,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 //        return float4(closestDepth, 1);
     }
 
-    float4 finalColor = fog(in.position, float4(color, 1));
+    float4 finalColor = fogOFWar(in.worldPosition.xyz, float4(color, 1));
 
-    return float4(color, 1);
+    return float4(finalColor);
 }

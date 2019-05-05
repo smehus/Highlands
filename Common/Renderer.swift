@@ -46,8 +46,8 @@ final class Renderer: NSObject {
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
         super.init()
-        metalView.clearColor = MTLClearColor(red: 0.3, green: 0.3,
-                                             blue: 1, alpha: 1)
+        metalView.clearColor = MTLClearColor(red: 0, green: 0,
+                                             blue: 0, alpha: 1)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
