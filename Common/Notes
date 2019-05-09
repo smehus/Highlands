@@ -44,3 +44,11 @@ When export gltf from blender / Make Human
 - Need to udpate materials to match the original shit "firstHuman_rigged_1_working_walk"
     - Update i
 - If i export a new gltf file - Need to always add this shit
+
+
+*** BLENDER ***
+
+- mixamo character scaling
+- select mesh - right click (or option p) -> clear and keep transformation - parent
+- control A - apply transformations
+- control p - assign parent Keep transform - to the bones

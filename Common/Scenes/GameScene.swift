@@ -14,8 +14,8 @@ final class GameScene: Scene {
     let orthoCamera = OrthographicCamera()
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
-    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
-//    let skeleton = Character(name: "claire")
+//    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
+    let skeleton = Character(name: "scaled_test")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
     override func setupScene() {
@@ -64,13 +64,17 @@ final class GameScene: Scene {
         }
 
 
-
-        if skeleton.name.hasPrefix("claire") {
+//
+//        if skeleton.name.hasPrefix("claire") {
 //            skeleton.scale = [0.005, 0.005, 0.005]
 //            skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
-        } else {
-            skeleton.scale = [0.3, 0.3, 0.3]
-        }
+//        } else {
+////            skeleton.scale = [0.3, 0.3, 0.3]
+//        }
+
+
+//        skeleton.scale = [0.1, 0.1, 0.1]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
 
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)

@@ -144,6 +144,20 @@
 		A5A49169226B7AF8000A6BDD /* brown_eye.png in Resources */ = {isa = PBXBuildFile; fileRef = A5A4915D226B7AF8000A6BDD /* brown_eye.png */; };
 		A5A9E08E21BC1A1800A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
 		A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
+		A5B748882283D52900372C98 /* scaled_test.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5B748812283D52900372C98 /* scaled_test.bin */; };
+		A5B748892283D52900372C98 /* scaled_test.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5B748812283D52900372C98 /* scaled_test.bin */; };
+		A5B7488A2283D52900372C98 /* BrowsMAP2.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B748822283D52900372C98 /* BrowsMAP2.png */; };
+		A5B7488B2283D52900372C98 /* BrowsMAP2.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B748822283D52900372C98 /* BrowsMAP2.png */; };
+		A5B7488C2283D52900372C98 /* scaled_test.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5B748832283D52900372C98 /* scaled_test.gltf */; };
+		A5B7488D2283D52900372C98 /* scaled_test.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5B748832283D52900372C98 /* scaled_test.gltf */; };
+		A5B7488E2283D52900372C98 /* file15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5B748842283D52900372C98 /* file15.jpg */; };
+		A5B7488F2283D52900372C98 /* file15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5B748842283D52900372C98 /* file15.jpg */; };
+		A5B748902283D52900372C98 /* BrowsMAP1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B748852283D52900372C98 /* BrowsMAP1.png */; };
+		A5B748912283D52900372C98 /* BrowsMAP1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B748852283D52900372C98 /* BrowsMAP1.png */; };
+		A5B748922283D52900372C98 /* BrowsMAP3.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B748862283D52900372C98 /* BrowsMAP3.png */; };
+		A5B748932283D52900372C98 /* BrowsMAP3.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B748862283D52900372C98 /* BrowsMAP3.png */; };
+		A5B748942283D52900372C98 /* file14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5B748872283D52900372C98 /* file14.jpg */; };
+		A5B748952283D52900372C98 /* file14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5B748872283D52900372C98 /* file14.jpg */; };
 		A5C952C521CE952D00B23364 /* MotionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C952C421CE952D00B23364 /* MotionController.swift */; };
 		A5C952C921CEA53000B23364 /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5C952C621CEA53000B23364 /* plane.obj */; };
 		A5C952CA21CEA53000B23364 /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = A5C952C621CEA53000B23364 /* plane.obj */; };
@@ -278,6 +292,13 @@
 		A5A4915C226B7AF8000A6BDD /* scaled_rigged_character.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = scaled_rigged_character.bin; sourceTree = SOURCE_ROOT; };
 		A5A4915D226B7AF8000A6BDD /* brown_eye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = brown_eye.png; path = MHFile/textures/brown_eye.png; sourceTree = SOURCE_ROOT; };
 		A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texturable.swift; sourceTree = "<group>"; };
+		A5B748812283D52900372C98 /* scaled_test.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = scaled_test.bin; sourceTree = SOURCE_ROOT; };
+		A5B748822283D52900372C98 /* BrowsMAP2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrowsMAP2.png; sourceTree = SOURCE_ROOT; };
+		A5B748832283D52900372C98 /* scaled_test.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scaled_test.gltf; sourceTree = SOURCE_ROOT; };
+		A5B748842283D52900372C98 /* file15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file15.jpg; sourceTree = SOURCE_ROOT; };
+		A5B748852283D52900372C98 /* BrowsMAP1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrowsMAP1.png; sourceTree = SOURCE_ROOT; };
+		A5B748862283D52900372C98 /* BrowsMAP3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrowsMAP3.png; sourceTree = SOURCE_ROOT; };
+		A5B748872283D52900372C98 /* file14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file14.jpg; sourceTree = SOURCE_ROOT; };
 		A5C952C421CE952D00B23364 /* MotionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionController.swift; sourceTree = "<group>"; };
 		A5C952C621CEA53000B23364 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
 		A5C952C721CEA53000B23364 /* plane.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.mtl; sourceTree = "<group>"; };
@@ -356,6 +377,13 @@
 		A55EFC4921D9725A008DAD22 /* Claire */ = {
 			isa = PBXGroup;
 			children = (
+				A5B748852283D52900372C98 /* BrowsMAP1.png */,
+				A5B748822283D52900372C98 /* BrowsMAP2.png */,
+				A5B748862283D52900372C98 /* BrowsMAP3.png */,
+				A5B748872283D52900372C98 /* file14.jpg */,
+				A5B748842283D52900372C98 /* file15.jpg */,
+				A5B748812283D52900372C98 /* scaled_test.bin */,
+				A5B748832283D52900372C98 /* scaled_test.gltf */,
 			);
 			path = Claire;
 			sourceTree = "<group>";
@@ -733,23 +761,30 @@
 				A59150D22263C216008ED280 /* tree_tile.obj in Resources */,
 				A5A4915E226B7AF8000A6BDD /* ponytail01_diffuse.png in Resources */,
 				A59150CE2263C216008ED280 /* grass_tile.mtl in Resources */,
+				A5B748922283D52900372C98 /* BrowsMAP3.png in Resources */,
 				A59150C32263BFDD008ED280 /* grid_texture.png in Resources */,
 				A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */,
 				A59150D42263C216008ED280 /* grass_tile_long.mtl in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
+				A5B748882283D52900372C98 /* scaled_test.bin in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				A5CBD1BC21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */,
 				A58F1A0621E931E5003F6F1F /* rock3.obj in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A5A49164226B7AF8000A6BDD /* scaled_rigged_character.gltf in Resources */,
 				A5A49160226B7AF8000A6BDD /* teeth.png in Resources */,
+				A5B748902283D52900372C98 /* BrowsMAP1.png in Resources */,
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
 				A59150D02263C216008ED280 /* grass_tile_long.obj in Resources */,
+				A5B7488E2283D52900372C98 /* file15.jpg in Resources */,
 				A5CB1E8621EA74F7002CCB94 /* HRN_LMP_NM.bmp in Resources */,
+				A5B748942283D52900372C98 /* file14.jpg in Resources */,
+				A5B7488A2283D52900372C98 /* BrowsMAP2.png in Resources */,
 				A5819C5B21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
 				A59150B62263BA6F008ED280 /* floor_grid.obj in Resources */,
 				A5CB1E8221EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
+				A5B7488C2283D52900372C98 /* scaled_test.gltf in Resources */,
 				A59150BE2263BC8B008ED280 /* pillar.mtl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -773,6 +808,7 @@
 				A5819C6021E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A5A49163226B7AF8000A6BDD /* middleage_lightskinned_female_diffuse.png in Resources */,
 				A5CB1E8721EA74F7002CCB94 /* HRN_LMP_NM.bmp in Resources */,
+				A5B748892283D52900372C98 /* scaled_test.bin in Resources */,
 				A57506C421CD65A400C63081 /* skeleton.gltf in Resources */,
 				A58F1A0D21E931E5003F6F1F /* rock2.mtl in Resources */,
 				A5A4915F226B7AF8000A6BDD /* ponytail01_diffuse.png in Resources */,
@@ -780,13 +816,16 @@
 				A59150BA2263BA7E008ED280 /* floor_grid.mtl in Resources */,
 				A59150CD2263C216008ED280 /* tree_tile.mtl in Resources */,
 				A5A49165226B7AF8000A6BDD /* scaled_rigged_character.gltf in Resources */,
+				A5B748932283D52900372C98 /* BrowsMAP3.png in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
 				A58F1A0B21E931E5003F6F1F /* rock1.mtl in Resources */,
+				A5B748952283D52900372C98 /* file14.jpg in Resources */,
 				A57506B521CD646900C63081 /* large-plane.mtl in Resources */,
 				A5CB1E8121EA74F7002CCB94 /* HRN_LMP_CM.bmp in Resources */,
 				A58F1A0721E931E5003F6F1F /* rock3.obj in Resources */,
 				A5A49169226B7AF8000A6BDD /* brown_eye.png in Resources */,
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
+				A5B748912283D52900372C98 /* BrowsMAP1.png in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A5A49161226B7AF8000A6BDD /* teeth.png in Resources */,
 				A59150D72263C216008ED280 /* grass_tile.obj in Resources */,
@@ -795,12 +834,15 @@
 				A5A49167226B7AF8000A6BDD /* scaled_rigged_character.bin in Resources */,
 				A58F1A0921E931E5003F6F1F /* rock1.obj in Resources */,
 				A5819C5C21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
+				A5B7488D2283D52900372C98 /* scaled_test.gltf in Resources */,
+				A5B7488B2283D52900372C98 /* BrowsMAP2.png in Resources */,
 				A59150BF2263BC8B008ED280 /* pillar.mtl in Resources */,
 				A5CB1E8321EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A5CB1E8521EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A59150CF2263C216008ED280 /* grass_tile.mtl in Resources */,
 				A59150C42263BFDD008ED280 /* grid_texture.png in Resources */,
 				A59150C12263BC8B008ED280 /* pillar.obj in Resources */,
+				A5B7488F2283D52900372C98 /* file15.jpg in Resources */,
 				A58F1A0F21E931E5003F6F1F /* rock3.mtl in Resources */,
 				A5819C5E21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */,
 			);
