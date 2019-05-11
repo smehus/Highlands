@@ -15,7 +15,7 @@ final class GameScene: Scene {
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
 //    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
-    let skeleton = Character(name: "non_scaled_claire")
+    let skeleton = Character(name: "scaled_claire")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
     override func setupScene() {
@@ -73,11 +73,12 @@ final class GameScene: Scene {
 //        }
 
 
-            skeleton.scale = [0.0001, 0.0001, 0.0001]
+//            skeleton.scale = [0.1, 0.1, 0.1]
 //        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
 
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
+        skeleton.position = [0, 2, 0]
         skeleton.runAnimation(name: "walking")
         self.physicsController.dynamicBody = skeleton
         self.inputController.player = skeleton
