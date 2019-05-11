@@ -2,6 +2,8 @@
 using namespace metal;
 #import "Common.h"
 
+constant bool hasColorTexture [[ function_constant(0) ]];
+
 struct VertexIn {
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];
@@ -182,13 +184,18 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                         constant Light *lights [[ buffer(BufferIndexLights) ]],
-                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
+                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture), functioin_constant(hasColorTexture) ]],
                                         // currently using omnidirectional shadow map : texturecube
 //                                        texture2d<float> shadowTexture [[ texture(ShadowColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
 
     constexpr sampler s(filter::linear);
-    float4 baseColor = baseColorTexture.sample(s, in.uv);
+    float4 baseColor;
+    if (hasColorTexture) {
+         baseColor = baseColorTexture.sample(s, in.uv);
+    } else {
+        baseColor = float4(material.baseColor, 1);
+    }
 
     if (baseColor.a < 0.1) {
         discard_fragment();
