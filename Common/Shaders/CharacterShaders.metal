@@ -1,6 +1,6 @@
 #include <metal_stdlib>
 using namespace metal;
-#import "../../Common/Utility/Common.h"
+#import "../../Common/Utility/BridgingHeader.h"
 
 constant bool hasColorTexture [[ function_constant(0) ]];
 
@@ -184,7 +184,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                         constant Light *lights [[ buffer(BufferIndexLights) ]],
-                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture), functioin_constant(hasColorTexture) ]],
+                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture), function_constant(hasColorTexture) ]],
                                         // currently using omnidirectional shadow map : texturecube
 //                                        texture2d<float> shadowTexture [[ texture(ShadowColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {

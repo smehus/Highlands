@@ -168,23 +168,6 @@
 		A5F6ABB421CF292E0027D425 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = A5F6ABB321CF292D0027D425 /* Notes */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A5D24D7A2287150700362257 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A5D24D762287150700362257 /* GLTF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83D6FF481F48BB3A00F71E0C;
-			remoteInfo = GLTF;
-		};
-		A5D24D802287150C00362257 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A5D24D7C2287150C00362257 /* GLTFMTL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83D6FFB11F48BCB500F71E0C;
-			remoteInfo = GLTFMTL;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		A588D8E921CAFE4600652FC2 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -252,7 +235,6 @@
 		A57F6A5221B8CBA8002C0632 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A57F6A5321B8CBA8002C0632 /* Highlands_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Highlands_macOS.entitlements; sourceTree = "<group>"; };
 		A57F6A6221B978E3002C0632 /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
-		A57F6A6521B9795D002C0632 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		A5819C5821E59CB300E724BE /* young_lightskinned_female_diffuse2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = young_lightskinned_female_diffuse2.png; sourceTree = "<group>"; };
 		A5819C5921E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = firstHuman_rigged_1_working_walk.bin; sourceTree = "<group>"; };
 		A5819C5A21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = firstHuman_rigged_1_working_walk.gltf; sourceTree = "<group>"; };
@@ -305,8 +287,7 @@
 		A5D24D622287094200362257 /* scaled_claire.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = scaled_claire.bin; sourceTree = SOURCE_ROOT; };
 		A5D24D662287094300362257 /* file14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file14.jpg; sourceTree = SOURCE_ROOT; };
 		A5D24D672287094300362257 /* file15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = file15.jpg; sourceTree = SOURCE_ROOT; };
-		A5D24D762287150700362257 /* GLTF.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GLTF.xcodeproj; path = "../../../../../../Downloads/GLTFKit-master/Framework/GLTF/GLTF.xcodeproj"; sourceTree = "<group>"; };
-		A5D24D7C2287150C00362257 /* GLTFMTL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GLTFMTL.xcodeproj; path = "../../../../../../Downloads/GLTFKit-master/Framework/GLTFMTL/GLTFMTL.xcodeproj"; sourceTree = "<group>"; };
+		A5D24D8822871C5500362257 /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		A5F08F3C21FCC7A0007E276F /* Shadow.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shadow.metal; sourceTree = "<group>"; };
 		A5F6ABB321CF292D0027D425 /* Notes */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -551,13 +532,11 @@
 		A57F6A6121B978E3002C0632 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				A57F6A6521B9795D002C0632 /* Common.h */,
-				A5D24D7C2287150C00362257 /* GLTFMTL.xcodeproj */,
-				A5D24D762287150700362257 /* GLTF.xcodeproj */,
 				A57506D321CD6C9200C63081 /* glTF Importer */,
 				A57506C721CD669700C63081 /* Debug */,
 				A575069D21CD63E200C63081 /* PhysicsController.swift */,
 				A57F6A6221B978E3002C0632 /* MathLibrary.swift */,
+				A5D24D8822871C5500362257 /* BridgingHeader.h */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -631,22 +610,6 @@
 				A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */,
 			);
 			path = Door;
-			sourceTree = "<group>";
-		};
-		A5D24D772287150700362257 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A5D24D7B2287150700362257 /* GLTF.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A5D24D7D2287150C00362257 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A5D24D812287150C00362257 /* GLTFMTL.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		A5F2916A21CEDFB000FF57A5 /* SA_LD_Medieval_Horn_Lantern_OBJ */ = {
@@ -728,16 +691,6 @@
 			mainGroup = A57F6A0521B8A145002C0632;
 			productRefGroup = A57F6A0F21B8A145002C0632 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = A5D24D772287150700362257 /* Products */;
-					ProjectRef = A5D24D762287150700362257 /* GLTF.xcodeproj */;
-				},
-				{
-					ProductGroup = A5D24D7D2287150C00362257 /* Products */;
-					ProjectRef = A5D24D7C2287150C00362257 /* GLTFMTL.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				A57F6A3021B8CB42002C0632 /* Highlands-iOS */,
@@ -745,23 +698,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		A5D24D7B2287150700362257 /* GLTF.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GLTF.framework;
-			remoteRef = A5D24D7A2287150700362257 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A5D24D812287150C00362257 /* GLTFMTL.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GLTFMTL.framework;
-			remoteRef = A5D24D802287150C00362257 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A57F6A2F21B8CB42002C0632 /* Resources */ = {
@@ -1042,7 +978,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/BridgingHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
 			};
@@ -1099,7 +1035,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/BridgingHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
 			};
@@ -1126,7 +1062,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = ./Common/Utility/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/BridgingHeader.h;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = (
@@ -1157,7 +1093,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = ./Common/Utility/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/BridgingHeader.h;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = (
@@ -1188,7 +1124,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = ./Common/Utility/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/BridgingHeader.h;
 				SWIFT_VERSION = 4.2;
 				USER_HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
@@ -1217,7 +1153,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = ./Common/Utility/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/BridgingHeader.h;
 				SWIFT_VERSION = 4.2;
 				USER_HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",

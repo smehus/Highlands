@@ -8,7 +8,7 @@
 
 #include <metal_stdlib>
 using namespace metal;
-#import "../../Common/Utility/Common.h"
+#import "../../Common/Utility/BridgingHeader.h"
 
 struct VertexIn {
     float4 position [[ attribute(0) ]];

@@ -40,7 +40,7 @@ class Skybox {
         pipelineState = Skybox.buildPipelineState(vertexDescriptor: cube.vertexDescriptor)
         depthStencilState = Skybox.buildDepthStencilState()
 
-        if let textureName = textureName {
+        if let _ = textureName {
 
         } else {
             texture = loadGeneratedSkyboxTexture(dimensions: [256, 256])

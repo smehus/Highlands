@@ -281,14 +281,14 @@ extension Renderer: MTKViewDelegate {
         }
 
 
-        for (actorIdx, renderable) in scene.renderables.enumerated() {
+        for (_, renderable) in scene.renderables.enumerated() {
             guard let prop = renderable as? Prop else { continue }
 
-            let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
+            let _ = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
 
-            for (transformIdx, transform) in prop.transforms.enumerated() {
+            for (_, _) in prop.transforms.enumerated() {
 
-                for (faceIdx, probe) in culler_probe.enumerated() {
+                for (_, _) in culler_probe.enumerated() {
 //                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
 
 //                        prop.updateShadowBuffer(transformIndex: (transformIdx * 6) + faceIdx, viewPortIndex: faceIdx)

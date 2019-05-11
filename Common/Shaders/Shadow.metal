@@ -8,7 +8,7 @@
 
 #include <metal_stdlib>
 using namespace metal;
-#import "../../Common/Utility/Common.h"
+#import "../../Common/Utility/BridgingHeader.h"
 
 constant bool isSkinnedModel [[ function_constant(0) ]];
 constant bool isInstanced [[ function_constant(1) ]];

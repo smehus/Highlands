@@ -30,7 +30,7 @@
 
 #include <metal_stdlib>
 using namespace metal;
-#import "../../Common/Utility/Common.h"
+#import "../../Common/Utility/BridgingHeader.h"
 
 vertex float4 debug_vertex(const device packed_float3 *vertices [[buffer(21)]],
                                   constant Uniforms &uniforms [[ buffer(BufferIndexUniforms) ]],
