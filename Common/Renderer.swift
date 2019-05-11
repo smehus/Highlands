@@ -20,6 +20,8 @@ final class Renderer: NSObject {
     private var depthStencilState: MTLDepthStencilState!
     private var instanceParamBuffer: MTLBuffer
 
+    private var gltfRenderer: GLTFMTLRenderer!
+    private var gltfAsset: GLTFAsset!
     lazy var lightPipelineState: MTLRenderPipelineState = {
         return buildLightPipelineState()
     }()
@@ -46,16 +48,24 @@ final class Renderer: NSObject {
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
         super.init()
-        metalView.clearColor = MTLClearColor(red: 0, green: 0,
-                                             blue: 0, alpha: 1)
+        metalView.clearColor = MTLClearColor(red: 0, green: 0.5,
+                                             blue: 0.5, alpha: 1)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
 
+        gltfRenderer = GLTFMTLRenderer(device: device)
+        gltfRenderer.drawableSize = metalView.drawableSize
+        gltfRenderer.colorPixelFormat = metalView.colorPixelFormat
+        gltfRenderer.depthStencilPixelFormat = metalView.depthStencilPixelFormat
 
-
+        let url = Bundle.main.url(forResource: "claire", withExtension: "gltf")!
+        let allocator = GLTFMTLBufferAllocator(device: device)
+        gltfAsset = GLTFAsset(url: url, bufferAllocator: allocator)
+        gltfAsset.defaultScene!.nodes.first!.translation = [0, -1, 0]
+        print("gltfass ** \(gltfAsset)")
     }
 
     func buildCubeTexture(pixelFormat: MTLPixelFormat, size: Int) -> MTLTexture {
@@ -183,6 +193,17 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
+        // GLTF RENDERER START
+
+
+        gltfRenderer.renderScene(gltfAsset.defaultScene!,
+                                 commandBuffer: commandBuffer,
+                                 commandEncoder: renderEncoder)
+
+
+
+        // GLTF RENDERER END
+
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
 //        drawDebug(encoder: renderEncoder)
@@ -191,6 +212,10 @@ extension Renderer: MTKViewDelegate {
 
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
+
+        commandBuffer.addCompletedHandler { _ in
+            self.gltfRenderer.signalFrameCompletion()
+        }
         commandBuffer.commit()
     }
 

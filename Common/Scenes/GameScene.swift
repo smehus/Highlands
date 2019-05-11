@@ -92,6 +92,7 @@ final class GameScene: Scene {
         orthoCamera.rotation.x = .pi / 2
         cameras.append(orthoCamera)
 
+        self.inputController.player = camera
 
 //        let tpCamera = ThirdPersonCamera(focus: skeleton)
 //        tpCamera.focusHeight = 4
@@ -176,11 +177,11 @@ extension GameScene: KeyboardDelegate {
 
 extension GameScene: KeyboardDelegate {
     func didStartMove() {
-        skeleton.resumeAnimation()
+//        skeleton.resumeAnimation()
     }
 
     func didEndMove() {
-        skeleton.pauseAnimation()
+//        skeleton.pauseAnimation()
     }
 }
 

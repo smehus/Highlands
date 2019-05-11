@@ -9,7 +9,8 @@
 #ifndef Highlands_Bridging_Header_h
 #define Highlands_Bridging_Header_h
 
-#import <GLTF/GLTF.h>
+#import "GLTF.h"
+#import "GLTFMTL.h"
 #import "Common.h"
 
 #endif /* Highlands_Bridging_Header_h */
