@@ -54,6 +54,8 @@ final class Renderer: NSObject {
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
 
+
+
     }
 
     func buildCubeTexture(pixelFormat: MTLPixelFormat, size: Int) -> MTLTexture {

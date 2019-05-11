@@ -3,6 +3,7 @@
 #define Common_h
 
 #import <simd/simd.h>
+//#import <GLTF/GLTF.h>
 
 typedef struct {
     matrix_float4x4 modelMatrix;

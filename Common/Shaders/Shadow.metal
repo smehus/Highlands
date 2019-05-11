@@ -8,7 +8,7 @@
 
 #include <metal_stdlib>
 using namespace metal;
-#import "../Shaders/Common.h"
+#import "../../Common/Utility/Common.h"
 
 constant bool isSkinnedModel [[ function_constant(0) ]];
 constant bool isInstanced [[ function_constant(1) ]];

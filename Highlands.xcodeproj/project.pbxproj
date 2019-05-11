@@ -443,7 +443,6 @@
 				A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */,
 				A57506C821CD669700C63081 /* DebugBoundingBox.metal */,
 				A57F6A2621B8A901002C0632 /* Shaders.metal */,
-				A57F6A6521B9795D002C0632 /* Common.h */,
 				A563DF1421E7999F00563EA9 /* Skybox.metal */,
 				A58F1A1021E94112003F6F1F /* MorphShader.metal */,
 				A5F08F3C21FCC7A0007E276F /* Shadow.metal */,
@@ -552,6 +551,7 @@
 		A57F6A6121B978E3002C0632 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				A57F6A6521B9795D002C0632 /* Common.h */,
 				A5D24D7C2287150C00362257 /* GLTFMTL.xcodeproj */,
 				A5D24D762287150700362257 /* GLTF.xcodeproj */,
 				A57506D321CD6C9200C63081 /* glTF Importer */,
@@ -1042,8 +1042,9 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = Common/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
 			};
 			name = Debug;
 		};
@@ -1098,8 +1099,9 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OBJC_BRIDGING_HEADER = Common/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
 			};
 			name = Release;
 		};
@@ -1114,6 +1116,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Common",
 				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Highlands-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1123,9 +1126,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ./Common/Utility/Common.h;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Common/Utility",
+				);
 			};
 			name = Debug;
 		};
@@ -1140,6 +1147,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Common",
 				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Highlands-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1149,9 +1157,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ./Common/Utility/Common.h;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Common/Utility",
+				);
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1168,6 +1180,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Common",
 				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Highlands-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1175,8 +1188,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ./Common/Utility/Common.h;
 				SWIFT_VERSION = 4.2;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Common/Utility",
+				);
 			};
 			name = Debug;
 		};
@@ -1192,6 +1209,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Common",
 				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Highlands-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1199,8 +1217,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ./Common/Utility/Common.h;
 				SWIFT_VERSION = 4.2;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Common/Utility",
+				);
 			};
 			name = Release;
 		};
