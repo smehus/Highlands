@@ -1,16 +1,14 @@
 //
-//  BridgingHeader.h
+//  Common.h
 //  Highlands
 //
 //  Created by Scott Mehus on 5/11/19.
 //  Copyright © 2019 Scott Mehus. All rights reserved.
 //
 
-#ifndef BridgingHeader_h
-#define BridgingHeader_h
-
+#ifndef Common_h
+#define Common_h
 #import <simd/simd.h>
-
 
 typedef struct {
     matrix_float4x4 modelMatrix;
@@ -106,4 +104,7 @@ typedef struct {
     uint viewportIndex;
 } InstanceParams;
 
-#endif /* BridgingHeader_h */
+
+
+
+#endif /* Common_h */

@@ -1,6 +1,6 @@
 #include <metal_stdlib>
 using namespace metal;
-#import "../../Common/Utility/BridgingHeader.h"
+#import "../../Common/Utility/Common.h"
 
 constant bool hasColorTexture [[ function_constant(0) ]];
 
