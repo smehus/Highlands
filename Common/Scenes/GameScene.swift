@@ -15,7 +15,7 @@ final class GameScene: Scene {
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
 //    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
-    let skeleton = Character(name: "scaled_claire")
+//    let skeleton = Character(name: "scaled_claire")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
     override func setupScene() {
@@ -77,27 +77,27 @@ final class GameScene: Scene {
 //        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
 
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
-        self.add(node: skeleton)
-        skeleton.position = [0, 2, 0]
-        skeleton.runAnimation(name: "walking")
-        self.physicsController.dynamicBody = skeleton
-        self.inputController.player = skeleton
-//        skeleton.currentAnimation?.speed = 3.0
-        skeleton.pauseAnimation()
-
-        lantern.position = [2.5, 0, 1]
-        add(node: lantern, parent: skeleton, render: true)
+//        self.add(node: skeleton)
+//        skeleton.position = [0, 2, 0]
+//        skeleton.runAnimation(name: "walking")
+//        self.physicsController.dynamicBody = skeleton
+//        self.inputController.player = skeleton
+////        skeleton.currentAnimation?.speed = 3.0
+//        skeleton.pauseAnimation()
+//
+//        lantern.position = [2.5, 0, 1]
+//        add(node: lantern, parent: skeleton, render: true)
 
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2
         cameras.append(orthoCamera)
 
 
-        let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 4
-        tpCamera.focusDistance = 2.5
-        cameras.append(tpCamera)
-        currentCameraIndex = 2
+//        let tpCamera = ThirdPersonCamera(focus: skeleton)
+//        tpCamera.focusHeight = 4
+//        tpCamera.focusDistance = 2.5
+//        cameras.append(tpCamera)
+//        currentCameraIndex = 2
     }
 
     override func isHardCollision() -> Bool {
@@ -107,8 +107,8 @@ final class GameScene: Scene {
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
             guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
-            let pos = inputController.player!.position
-            let dir = inputController.player!.forwardVector
+            guard let pos = inputController.player?.position else { return }
+            guard let dir = inputController.player?.forwardVector else { return }
 
 
             // Lantern
@@ -156,11 +156,11 @@ extension GameScene: KeyboardDelegate {
         case .key2: currentCameraIndex = 2
         case .w, .s, .a, .d, .left, .right, .up, .down:
             if state == .began {
-                skeleton.resumeAnimation()
+//                skeleton.resumeAnimation()
             }
 
             if state == .ended, keysDown.isEmpty {
-                skeleton.pauseAnimation()
+//                skeleton.pauseAnimation()
             }
         default:
             break
