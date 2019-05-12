@@ -293,6 +293,8 @@
 		A5D24F7922873E4200362257 /* GLTFMTLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D24F6022873E4200362257 /* GLTFMTLRenderer.h */; };
 		A5D24F7A22873E4200362257 /* GLTFMTLLightingEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D24F6122873E4200362257 /* GLTFMTLLightingEnvironment.h */; };
 		A5D24F7B22873E4200362257 /* GLTFMTLLightingEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D24F6122873E4200362257 /* GLTFMTLLightingEnvironment.h */; };
+		A5D24F7C2287443E00362257 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
+		A5D24F7D2287443F00362257 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		A5F08F3D21FCC7A0007E276F /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5F08F3C21FCC7A0007E276F /* Shadow.metal */; };
 		A5F08F3E21FCC7A0007E276F /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = A5F08F3C21FCC7A0007E276F /* Shadow.metal */; };
 		A5F6ABB421CF292E0027D425 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = A5F6ABB321CF292D0027D425 /* Notes */; };
@@ -1291,6 +1293,7 @@
 				A5C952C521CE952D00B23364 /* MotionController.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
 				A5D24F3A22873E2E00362257 /* GLTFDefaultBufferAllocator.m in Sources */,
+				A5D24F7C2287443E00362257 /* Character.swift in Sources */,
 				A5D24F2C22873E2E00362257 /* GLTFBinaryChunk.m in Sources */,
 				A5D24F4222873E2E00362257 /* GLTFVertexDescriptor.m in Sources */,
 				A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */,
@@ -1351,6 +1354,7 @@
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A5D24F6322873E4200362257 /* GLTFMTLUtilities.m in Sources */,
 				A5D24F6922873E4200362257 /* GLTFMTLTextureLoader.m in Sources */,
+				A5D24F7D2287443F00362257 /* Character.swift in Sources */,
 				A5D24F4D22873E2E00362257 /* GLTFTextureSampler.m in Sources */,
 				A58F1A1221E94112003F6F1F /* MorphShader.metal in Sources */,
 				A5CB1EA121EA848E002CCB94 /* DebugLights.swift in Sources */,

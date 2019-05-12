@@ -8,6 +8,42 @@
 
 import MetalKit
 
+public class CharacterNode {
+    var name: String = " "
+    public var nodeIndex: Int = 0  //
+    public var childIndices = [Int]()
+    public var skin: GLTFSkin?
+    public var jointName: String?
+    public var mesh: GLTFMesh?
+    public var rotationQuaternion = simd_quatf()
+    public var scale = float3(1)
+    public var translation = float3(0)
+    public var matrix: float4x4?
+    public var approximateBounds = ""
+    public var inverseBindTransform = float4x4.identity()
+
+    // generated
+    public var parent: CharacterNode?
+    public var children = [CharacterNode]()
+
+    public var localTransform: float4x4 {
+        if let matrix = matrix {
+            return matrix
+        }
+        let T = float4x4(translation: translation)
+        let R = float4x4(rotationQuaternion)
+        let S = float4x4(scaling: scale)
+        return T * R * S
+    }
+
+    var globalTransform: float4x4 {
+        if let parent = parent {
+            return parent.globalTransform * self.localTransform
+        }
+        return localTransform
+    }
+}
+
 class Character: Node {
 
     class CharacterSubmesh: Submesh {
@@ -28,24 +64,28 @@ class Character: Node {
     }
 
     let buffers: [MTLBuffer]
-    let meshNodes: [CharacterNode]
-    let animations: [AnimationClip]
-    let nodes: [CharacterNode]
+    let meshNodes: [GLTFNode]
+    let animations: [GLTFAnimation]
+    let nodes: [GLTFNode]
     var currentTime: Float = 0
-    var currentAnimation: AnimationClip?
+    var currentAnimation: GLTFAnimation?
     var currentAnimationPlaying = false
     var samplerState: MTLSamplerState
     var shadowInstanceCount: Int = 0
+
     init(name: String) {
-        let asset = GLTFAsset(filename: name)
-        buffers = asset.buffers
+        let url = Bundle.main.url(forResource: name, withExtension: "gltf")!
+        let allocator = GLTFMTLBufferAllocator(device: Renderer.device)
+        let asset = GLTFAsset(url: url, bufferAllocator: allocator)
+
+//        buffers = asset.buffers
         animations = asset.animations
         guard !asset.scenes.isEmpty else { fatalError() }
 
         // The nodes that contain skinning data which bind vertices to joints.
-        meshNodes = asset.scenes[0].meshNodes
-        
-        nodes = asset.scenes[0].nodes
+        meshNodes = asset.defaultScene!.nodes.first!.children
+
+        nodes = asset.defaultScene!.nodes
 
         samplerState = Character.buildSamplerState()
 
@@ -72,6 +112,7 @@ class Character: Node {
             return
         }
 
+        /*
         currentTime += deltaTime
         let time = fmod(currentTime, animation.duration)
         for nodeAnimation in animation.nodeAnimations {
@@ -90,6 +131,7 @@ class Character: Node {
                 node.rotationQuaternion = rotationQuaternion
             }
         }
+ */
     }
 }
 

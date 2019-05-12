@@ -56,15 +56,6 @@ final class Renderer: NSObject {
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
 
-        gltfRenderer = GLTFMTLRenderer(device: device)
-        gltfRenderer.drawableSize = metalView.drawableSize
-        gltfRenderer.colorPixelFormat = metalView.colorPixelFormat
-        gltfRenderer.depthStencilPixelFormat = metalView.depthStencilPixelFormat
-
-        let url = Bundle.main.url(forResource: "claire", withExtension: "gltf")!
-        let allocator = GLTFMTLBufferAllocator(device: device)
-        gltfAsset = GLTFAsset(url: url, bufferAllocator: allocator)
-        gltfAsset.defaultScene!.nodes.first!.translation = [0, -1, 0]
         print("gltfass ** \(gltfAsset)")
     }
 

@@ -44,42 +44,6 @@ public struct Attributes {
     public var offset: Int = 0
 }
 
-public class CharacterNode {
-    var name: String = " "
-    public var nodeIndex: Int = 0  //
-    public var childIndices = [Int]()
-    public var skin: Skin?
-    public var jointName: String?
-    public var mesh: GLTFMesh?
-    public var rotationQuaternion = simd_quatf()
-    public var scale = float3(1)
-    public var translation = float3(0)
-    public var matrix: float4x4?
-    public var approximateBounds = ""
-    public var inverseBindTransform = float4x4.identity()
-
-    // generated
-    public var parent: CharacterNode?
-    public var children = [CharacterNode]()
-
-    public var localTransform: float4x4 {
-        if let matrix = matrix {
-            return matrix
-        }
-        let T = float4x4(translation: translation)
-        let R = float4x4(rotationQuaternion)
-        let S = float4x4(scaling: scale)
-        return T * R * S
-    }
-
-    var globalTransform: float4x4 {
-        if let parent = parent {
-            return parent.globalTransform * self.localTransform
-        }
-        return localTransform
-    }
-}
-
 public class Skin {
     public var skinIndex: Int = 0 // the index in the original json array
     public var inverseBindMatricesAccessor: GLTFAccessor!
