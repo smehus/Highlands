@@ -136,7 +136,7 @@ class Character: Node {
 }
 
 extension Character: Renderable {
-
+/*
     func runAnimation(clip animationClip: AnimationClip? = nil) {
         var clip = animationClip
         if clip == nil {
@@ -172,7 +172,7 @@ extension Character: Renderable {
         currentAnimation = nil
         currentAnimationPlaying = false
     }
-
+ */
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
 
@@ -180,6 +180,7 @@ extension Character: Renderable {
             guard let mesh = node.mesh else { continue }
 
             if let skin = node.skin {
+                // FIXME: -- Need to figure out what this does and assign values
                 for (i, jointNode) in skin.jointNodes.enumerated() {
                     skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
                 }
@@ -288,3 +289,4 @@ extension Character: Renderable {
  */
     }
 }
+
