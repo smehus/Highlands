@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0228BB2C22A89FE20072B790 /* Highlands-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 0228BB2A22A89FE20072B790 /* Highlands-Bridging-Header.h */; };
+		0228BB2D22A8A0540072B790 /* Highlands-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 0228BB2A22A89FE20072B790 /* Highlands-Bridging-Header.h */; };
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
@@ -334,6 +336,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0228BB2A22A89FE20072B790 /* Highlands-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Highlands-Bridging-Header.h"; sourceTree = "<group>"; };
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
@@ -424,7 +427,6 @@
 		A5CB1E9D21EA848E002CCB94 /* DebugLights.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugLights.swift; sourceTree = "<group>"; };
 		A5CBD1B821E29B3C001D77EF /* animated_ball_texture.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = animated_ball_texture.bin; sourceTree = "<group>"; };
 		A5CBD1B921E29B3C001D77EF /* animated_ball_texture.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = animated_ball_texture.gltf; sourceTree = "<group>"; };
-		A5D24D9622871ED600362257 /* Highlands-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Highlands-Bridging-Header.h"; sourceTree = "<group>"; };
 		A5D24DA02287214800362257 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		A5D24E852287311E00362257 /* pbr.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = pbr.metal; sourceTree = "<group>"; };
 		A5D24E9B2287355A00362257 /* BrowsMAP2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BrowsMAP2.png; sourceTree = SOURCE_ROOT; };
@@ -683,6 +685,7 @@
 		A57F6A2121B8A1CC002C0632 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				0228BB2A22A89FE20072B790 /* Highlands-Bridging-Header.h */,
 				A5D24EC522873E1000362257 /* GLTFKIt */,
 				A56ACB5321C728750069962B /* Textures.xcassets */,
 				A57506DD21CD96FF00C63081 /* Scenes */,
@@ -743,7 +746,6 @@
 		A57F6A6121B978E3002C0632 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				A5D24D9622871ED600362257 /* Highlands-Bridging-Header.h */,
 				A57506D321CD6C9200C63081 /* glTF Importer */,
 				A57506C721CD669700C63081 /* Debug */,
 				A575069D21CD63E200C63081 /* PhysicsController.swift */,
@@ -1008,6 +1010,7 @@
 				A5D24F0122873E2E00362257 /* GLTFAsset.h in Headers */,
 				A5D24F1722873E2E00362257 /* GLTFMaterial.h in Headers */,
 				A5D24F0F22873E2E00362257 /* GLTFBufferView.h in Headers */,
+				0228BB2C22A89FE20072B790 /* Highlands-Bridging-Header.h in Headers */,
 				A5D24EFF22873E2E00362257 /* GLTFAnimation.h in Headers */,
 				A5D24F7B22873E4200362257 /* GLTFMTLLightingEnvironment.h in Headers */,
 				A5D24F6F22873E4200362257 /* GLTFMTL.h in Headers */,
@@ -1259,6 +1262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0228BB2D22A8A0540072B790 /* Highlands-Bridging-Header.h in Sources */,
 				A5D24F6C22873E4200362257 /* GLTFMTLBufferAllocator.m in Sources */,
 				A5D24DA52287229B00362257 /* Common.h in Sources */,
 				A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */,
@@ -1562,7 +1566,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/HIghlands-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Common/Highlands-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = (
@@ -1593,7 +1597,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/HIghlands-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Common/Highlands-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = (
@@ -1624,7 +1628,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/Highlands-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Common/Highlands-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				USER_HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
@@ -1653,7 +1657,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/scottmehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Utility/Highlands-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Common/Highlands-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				USER_HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
