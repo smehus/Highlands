@@ -199,7 +199,16 @@ extension Character: Renderable {
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
             for submesh in mesh.submeshes {
-                renderEncoder.setRenderPipelineState(submesh.pipelineState)
+
+                let shaderBuilder = GLTFMTLShaderBuilder()
+                let pipeline = shaderBuilder.renderPipelineState(for: submesh,
+                                                                 lightingEnvironment: nil,
+                                                                 colorPixelFormat: Renderer.colorPixelFormat,
+                                                                 depthStencilPixelFormat: Renderer.depthPixelFormat,
+                                                                 sampleCount: Int32(Renderer.sampleCount),
+                                                                 device: Renderer.device)
+
+                renderEncoder.setRenderPipelineState(pipeline)
 
                 if submesh.textures.baseColor == nil {
                     print("🧲 TEXTURE BASE COLOR NIL")

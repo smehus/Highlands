@@ -52,3 +52,7 @@ When export gltf from blender / Make Human
 - select mesh - right click (or option p) -> clear and keep transformation - parent
 - control A - apply transformations
 - control p - assign parent Keep transform - to the bones
+
+
+- Transferring over to using gltfkit
+
