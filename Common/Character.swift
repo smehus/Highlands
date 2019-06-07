@@ -199,6 +199,7 @@ extension Character: Renderable {
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
             for submesh in mesh.submeshes {
+                guard let indexAcessor = submesh.indexAccessor else { fatalError() }
 
                 let shaderBuilder = GLTFMTLShaderBuilder()
                 let pipeline = shaderBuilder.renderPipelineState(for: submesh,
@@ -210,10 +211,6 @@ extension Character: Renderable {
 
                 renderEncoder.setRenderPipelineState(pipeline)
 
-                if submesh.textures.baseColor == nil {
-                    print("🧲 TEXTURE BASE COLOR NIL")
-                }
-
                 // Set the texture
                 renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
 
@@ -223,17 +220,24 @@ extension Character: Renderable {
                                                length: MemoryLayout<Material>.stride,
                                                index: Int(BufferIndexMaterials.rawValue))
 
-                for attribute in submesh.attributes {
-                    renderEncoder.setVertexBuffer(buffers[attribute.bufferIndex],
-                                                  offset: attribute.offset,
-                                                  index: attribute.index)
+                for attribute in submesh.vertexDescriptor.attributes {
+                    guard let accessor = submesh.accessorsForAttributes[attribute.semantic] else { fatalError() }
+                    guard let bufferView = accessor.bufferView else { fatalError() }
+                    guard let buffer = (bufferView.buffer as? GLTFMTLBuffer)?.buffer else { fatalError() }
+
+                    renderEncoder.setVertexBuffer(buffer,
+                                                  offset: accessor.offset + bufferView.offset,
+                                                  index: 1)
                 }
 
+                guard let indexBuffer = indexAcessor.bufferView?.buffer as? GLTFMTLBuffer else { fatalError() }
+                let indexType = (indexAcessor.componentType == .dataTypeUShort) ? MTLIndexType.uint16 : MTLIndexType.uint32
+
                 renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                    indexCount: submesh.indexCount,
-                                                    indexType: submesh.indexType,
-                                                    indexBuffer: submesh.indexBuffer!,
-                                                    indexBufferOffset: submesh.indexBufferOffset)
+                                                    indexCount: indexAcessor.count,
+                                                    indexType: indexType,
+                                                    indexBuffer: indexBuffer.buffer,
+                                                    indexBufferOffset: indexAcessor.offset + indexAcessor.bufferView!.offset)
             }
 
             if debugRenderBoundingBox {
