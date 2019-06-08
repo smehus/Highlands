@@ -225,6 +225,10 @@ extension Character: Renderable {
                                                                  device: Renderer.device)
                  */
 
+                guard submesh.vertexDescriptor.attributes.count >= 8 else {
+                    fatalError()
+                }
+
                 let descriptor = shaderBuilder.vertexDescriptor(for: submesh)
                 let pipeline = asset.createPipelineState(vertexDescriptor: descriptor)
                 renderEncoder.setRenderPipelineState(pipeline)
@@ -343,7 +347,7 @@ extension GLTFAsset {
         return functionConstants
     }
 
-    func createPipelineState(vertexDescriptor: MTLVertexDescriptor) -> MTLRenderPipelineState{
+    func createPipelineState(vertexDescriptor: MTLVertexDescriptor) -> MTLRenderPipelineState {
         let functionConstants = buildFunctionConstants()
         let pipelineState: MTLRenderPipelineState
         do {
