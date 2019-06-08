@@ -43,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
       commandBuffer:(id<MTLCommandBuffer>)commandBuffer
      commandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder;
 
+- (id<MTLTexture>)textureForImage:(GLTFImage *)image preferSRGB:(BOOL)sRGB;
+- (void)computeJointsForSubmesh:(GLTFSubmesh *)submesh inNode:(GLTFNode *)node buffer:(id<MTLBuffer>)jointBuffer;
 - (id<MTLRenderPipelineState>)renderPipelineStateForSubmesh:(GLTFSubmesh *)submesh;
 - (void)signalFrameCompletion;
 

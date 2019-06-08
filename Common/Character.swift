@@ -76,6 +76,7 @@ class Character: Node {
     var currentAnimationPlaying = false
     var samplerState: MTLSamplerState
     var shadowInstanceCount: Int = 0
+    let glRenderer = GLTFMTLRenderer(device: Renderer.device)
 
     init(name: String) {
         let url = Bundle.main.url(forResource: name, withExtension: "gltf")!
@@ -184,14 +185,15 @@ extension Character: Renderable {
             guard let mesh = node.mesh else { continue }
 
 //            if let skin = node.skin {
-//                // FIXME: -- Need to figure out what this does and assign values
-//                for (i, jointNode) in skin.jointNodes.enumerated() {
-//                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
-//                }
+////                // FIXME: -- Need to figure out what this does and assign values
+////                for (i, jointNode) in skin.jointNodes.enumerated() {
+////                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
+////                }
+////
+////                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
+////                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
+////                renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
 //
-//                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
-//                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
-//                renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
 //            }
 
             var uniforms = vertex
@@ -205,6 +207,12 @@ extension Character: Renderable {
             for submesh in mesh.submeshes {
                 guard let indexAcessor = submesh.indexAccessor else { fatalError() }
 
+                if let skin = node.skin {
+                    let buffer = Renderer.device.makeBuffer(length: skin.jointNodes.count * MemoryLayout<simd_float4x4>.size, options: .storageModeShared)
+                    glRenderer.computeJoints(for: submesh, in: node, buffer: buffer!)
+                    renderEncoder.setVertexBuffer(buffer!, offset: 0, index: 21)
+                }
+
 
                 let shaderBuilder = GLTFMTLShaderBuilder()
                 /*
@@ -215,17 +223,18 @@ extension Character: Renderable {
                                                                  depthStencilPixelFormat: Renderer.depthPixelFormat,
                                                                  sampleCount: Int32(Renderer.sampleCount),
                                                                  device: Renderer.device)
-*/
+                 */
+
                 let descriptor = shaderBuilder.vertexDescriptor(for: submesh)
                 let pipeline = asset.createPipelineState(vertexDescriptor: descriptor)
                 renderEncoder.setRenderPipelineState(pipeline)
 
                 // Set the actual texture image
                 guard var material = submesh.material else { fatalError() }
-                guard let textureName = material.baseColorTexture?.texture.image?.name else { fatalError() }
-                guard let texture = try? Character.loadTexture(imageName: textureName.appending(".jpg")) else { fatalError() }
+                guard let image = material.baseColorTexture?.texture.image else { fatalError() }
+                let texture = glRenderer.texture(for: image, preferSRGB: true)
 
-                // TODO: - need to re-add this line
+
                 renderEncoder.setFragmentTexture(texture, index: Int(BaseColorTexture.rawValue))
 
                 // Set Material - basically just the hard coded color

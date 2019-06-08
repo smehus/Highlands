@@ -11,7 +11,7 @@ struct VertexIn {
 //    float4 tangent [[ attribute(Tangent) ]];
 //    float3 bitangent [[ attribute(Bitangent) ]];
     float4 color [[ attribute(Color) ]];
-    ushort4 joints [[ attribute(8) ]];
+//    ushort4 joints [[ attribute(Joints) ]];
     float4 weights [[ attribute(Weights) ]];
 };
 
@@ -32,15 +32,15 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     VertexOut out;
 
     // skinning code
-    float4 weights = vertexIn.weights;
-    ushort4 joints = vertexIn.joints;
-    float4x4 skinMatrix =
-    weights.x * jointMatrices[joints.x] +
-    weights.y * jointMatrices[joints.y] +
-    weights.z * jointMatrices[joints.z] +
-    weights.w * jointMatrices[joints.w];
+//    float4 weights = vertexIn.weights;
+//    ushort4 joints = vertexIn.joints;
+//    float4x4 skinMatrix =
+//    weights.x * jointMatrices[joints.x] +
+//    weights.y * jointMatrices[joints.y] +
+//    weights.z * jointMatrices[joints.z] +
+//    weights.w * jointMatrices[joints.w];
 
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * /*skinMatrix **/ vertexIn.position;
     // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
     out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
     out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
