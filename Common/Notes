@@ -56,3 +56,8 @@ When export gltf from blender / Make Human
 
 - Transferring over to using gltfkit
 
+
+- missing in vertex descriptor
+
+- the ray wend version uses GLTFMakeVertexDescriptor to create and hard set the attributes
+- While gltfkit does not so attributes could be missing - and fail out
