@@ -23,7 +23,7 @@
 
 @import ImageIO;
 @import MetalKit;
-
+/*
 typedef struct {
     simd_float4x4 modelMatrix;
     simd_float4x4 modelViewProjectionMatrix;
@@ -39,28 +39,9 @@ typedef struct {
     float range;
     simd_float4 spotDirection;
 } Light;
+*/
 
-typedef struct {
-    float normalScale;
-    simd_float3 emissiveFactor;
-    float occlusionStrength;
-    simd_float2 metallicRoughnessValues;
-    simd_float4 baseColorFactor;
-    simd_float3 camera;
-    float alphaCutoff;
-    float envIntensity;
-    Light ambientLight;
-    Light lights[GLTFMTLMaximumLightCount];
-    simd_float3x3 textureMatrices[GLTFMTLMaximumTextureCount];
-} FragmentUniforms;
 
-@interface GLTFMTLRenderItem: NSObject
-@property (nonatomic, strong) NSString *label;
-@property (nonatomic, strong) GLTFNode *node;
-@property (nonatomic, strong) GLTFSubmesh *submesh;
-@property (nonatomic, assign) VertexUniforms vertexUniforms;
-@property (nonatomic, assign) FragmentUniforms fragmentUniforms;
-@end
 
 @implementation GLTFMTLRenderItem
 @end
@@ -363,9 +344,10 @@ typedef struct {
     }
 }
 
-- (void)buildRenderListRecursive:(GLTFNode *)node
+- (NSArray<GLTFMTLRenderItem *> *)buildRenderListRecursive:(GLTFNode *)node
                      modelMatrix:(simd_float4x4)modelMatrix
 {
+    NSMutableArray *renderList = [[NSMutableArray alloc] init];
     modelMatrix = matrix_multiply(modelMatrix, node.localTransform);
 
     GLTFMesh *mesh = node.mesh;
@@ -377,12 +359,12 @@ typedef struct {
             simd_float3 cameraPos = self.viewMatrix.columns[3].xyz;
             simd_float3 cameraWorldPos = matrix_multiply(viewAffine, -cameraPos);
             
-            VertexUniforms vertexUniforms;
+            Uniforms vertexUniforms;
             vertexUniforms.modelMatrix = modelMatrix;
             vertexUniforms.modelViewProjectionMatrix = matrix_multiply(matrix_multiply(self.projectionMatrix, self.viewMatrix), modelMatrix);
-            vertexUniforms.normalMatrix = GLTFNormalMatrixFromModelMatrix(modelMatrix);
+            vertexUniforms.characterNormalMatrix = GLTFNormalMatrixFromModelMatrix(modelMatrix);
             
-            FragmentUniforms fragmentUniforms = { 0 };
+            CharacterFragmentUniforms fragmentUniforms = { 0 };
             fragmentUniforms.normalScale = material.normalTextureScale;
             fragmentUniforms.emissiveFactor = material.emissiveFactor;
             fragmentUniforms.occlusionStrength = material.occlusionStrength;
@@ -408,6 +390,7 @@ typedef struct {
                 fragmentUniforms.textureMatrices[GLTFTextureBindIndexEmissive] = GLTFTextureMatrixFromTransform(material.emissiveTexture.transform);
             }
 
+            /*
             if (self.ambientLight != nil) {
                 fragmentUniforms.ambientLight.color = self.ambientLight.color;
                 fragmentUniforms.ambientLight.intensity = self.ambientLight.intensity;
@@ -434,7 +417,7 @@ typedef struct {
                 }
                 fragmentUniforms.lights[lightIndex].spotDirection = lightNode.globalTransform.columns[2];
             }
-            
+            */
             GLTFMTLRenderItem *item = [GLTFMTLRenderItem new];
             item.label = [NSString stringWithFormat:@"%@ - %@", node.name ?: @"Unnamed node", submesh.name ?: @"Unnamed primitive"];
             item.node = node;
@@ -443,7 +426,7 @@ typedef struct {
             item.fragmentUniforms = fragmentUniforms;
             
             if (submesh.material.alphaMode == GLTFAlphaModeBlend) {
-                [self.transparentRenderItems addObject:item];
+                [renderList addObject:item];
             } else {
                 [self.opaqueRenderItems addObject:item];
             }
@@ -453,6 +436,8 @@ typedef struct {
     for (GLTFNode *childNode in node.children) {
         [self buildRenderListRecursive:childNode modelMatrix:modelMatrix];
     }
+
+    return renderList;
 }
 
 - (void)drawRenderList:(NSArray<GLTFMTLRenderItem *> *)renderList commandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder {
@@ -479,7 +464,7 @@ typedef struct {
         
         [self bindTexturesForMaterial:material commandEncoder:renderEncoder];
         
-        VertexUniforms vertexUniforms = item.vertexUniforms;
+        Uniforms vertexUniforms = item.vertexUniforms;
         [renderEncoder setVertexBytes:&vertexUniforms length:sizeof(vertexUniforms) atIndex:GLTFVertexDescriptorMaxAttributeCount + 0];
         
         if (node.skin != nil && node.skin.jointNodes != nil && node.skin.jointNodes.count > 0) {
@@ -489,7 +474,7 @@ typedef struct {
             [self.deferredReusableBuffers addObject:jointBuffer];
         }
         
-        FragmentUniforms fragmentUniforms = item.fragmentUniforms;
+        CharacterFragmentUniforms fragmentUniforms = item.fragmentUniforms;
         [renderEncoder setFragmentBytes:&fragmentUniforms length: sizeof(fragmentUniforms) atIndex: 0];
                 
         GLTFVertexDescriptor *vertexDescriptor = submesh.vertexDescriptor;

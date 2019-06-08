@@ -15,12 +15,36 @@
 //
 
 #import "GLTF.h"
+#import "Common.h"
+#import "GLTFMTLShaderBuilder.h"
+
 @import Foundation;
 @import Metal;
 
 NS_ASSUME_NONNULL_BEGIN
 
 #define GLTFMTLRendererMaxInflightFrames 3
+
+typedef struct {
+    float normalScale;
+    simd_float3 emissiveFactor;
+    float occlusionStrength;
+    simd_float2 metallicRoughnessValues;
+    simd_float4 baseColorFactor;
+    simd_float3 camera;
+    float alphaCutoff;
+    float envIntensity;
+    simd_float3x3 textureMatrices[GLTFMTLMaximumTextureCount];
+} CharacterFragmentUniforms;
+
+
+@interface GLTFMTLRenderItem: NSObject
+@property (nonatomic, strong) NSString *label;
+@property (nonatomic, strong) GLTFNode *node;
+@property (nonatomic, strong) GLTFSubmesh *submesh;
+@property (nonatomic, assign) Uniforms vertexUniforms;
+@property (nonatomic, assign) CharacterFragmentUniforms fragmentUniforms;
+@end
 
 @class GLTFMTLLightingEnvironment;
 
@@ -43,6 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
       commandBuffer:(id<MTLCommandBuffer>)commandBuffer
      commandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder;
 
+- (void)drawRenderList:(NSArray<GLTFMTLRenderItem *> *)renderList commandEncoder:(id<MTLRenderCommandEncoder>)renderEncoder;
+- (NSArray<GLTFMTLRenderItem *> *)buildRenderListRecursive:(GLTFNode *)node modelMatrix:(simd_float4x4)modelMatrix;
 - (id<MTLRenderPipelineState>)renderPipelineStateForSubmesh:(GLTFSubmesh *)submesh;
 - (void)signalFrameCompletion;
 

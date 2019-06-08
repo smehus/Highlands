@@ -76,6 +76,7 @@ class Character: Node {
     var currentAnimationPlaying = false
     var samplerState: MTLSamplerState
     var shadowInstanceCount: Int = 0
+    let glRednerer = GLTFMTLRenderer(device: Renderer.device)
 
     init(name: String) {
         let url = Bundle.main.url(forResource: name, withExtension: "gltf")!
@@ -178,82 +179,8 @@ extension Character: Renderable {
     }
  */
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
-//        renderEncoder.setFrontFacing(.clockwise)
-
-        for node in rootNode.children {
-            guard let mesh = node.mesh else { continue }
-
-//            if let skin = node.skin {
-//                // FIXME: -- Need to figure out what this does and assign values
-//                for (i, jointNode) in skin.jointNodes.enumerated() {
-//                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
-//                }
-//
-//                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
-//                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
-//                renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
-//            }
-
-            var uniforms = vertex
-            uniforms.modelMatrix = worldTransform
-            uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
-
-            renderEncoder.setFragmentSamplerState(samplerState, index: 0)
-
-            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
-
-            for submesh in mesh.submeshes {
-                guard let indexAcessor = submesh.indexAccessor else { fatalError() }
-
-                let shaderBuilder = GLTFMTLShaderBuilder()
-                let pipeline = shaderBuilder.renderPipelineState(for: submesh,
-                                                                 lightingEnvironment: nil,
-                                                                 colorPixelFormat: Renderer.colorPixelFormat,
-                                                                 depthStencilPixelFormat: Renderer.depthPixelFormat,
-                                                                 sampleCount: Int32(Renderer.sampleCount),
-                                                                 device: Renderer.device)
-
-                renderEncoder.setRenderPipelineState(pipeline)
-
-                // Set the actual texture image
-                guard var material = submesh.material else { fatalError() }
-                guard let textureName = material.baseColorTexture?.texture.image?.name else { fatalError() }
-                guard let texture = try? Character.loadTexture(imageName: textureName.appending(".jpg")) else { fatalError() }
-
-                // TODO: - need to re-add this line
-                renderEncoder.setFragmentTexture(texture, index: Int(BaseColorTexture.rawValue))
-
-                // Set Material - basically just the hard coded color
-
-                renderEncoder.setFragmentBytes(&material,
-                                               length: MemoryLayout<Material>.stride,
-                                               index: Int(BufferIndexMaterials.rawValue))
-
-                for (index, attribute) in submesh.vertexDescriptor.attributes.enumerated() {
-                    guard !attribute.semantic.isEmpty else { continue }
-                    guard let accessor = submesh.accessorsForAttributes[attribute.semantic] else { continue }
-                    guard let bufferView = accessor.bufferView else { fatalError() }
-                    guard let buffer = (bufferView.buffer as? GLTFMTLBuffer)?.buffer else { fatalError() }
-
-                    renderEncoder.setVertexBuffer(buffer,
-                                                  offset: accessor.offset + bufferView.offset,
-                                                  index: index)
-                }
-
-                guard let indexBuffer = indexAcessor.bufferView?.buffer as? GLTFMTLBuffer else { fatalError() }
-                let indexType = (indexAcessor.componentType == .dataTypeUShort) ? MTLIndexType.uint16 : MTLIndexType.uint32
-
-                renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                    indexCount: indexAcessor.count,
-                                                    indexType: indexType,
-                                                    indexBuffer: indexBuffer.buffer,
-                                                    indexBufferOffset: indexAcessor.offset + indexAcessor.bufferView!.offset)
-            }
-
-            if debugRenderBoundingBox {
-                debugBoundingBox?.render(renderEncoder: renderEncoder, uniforms: uniforms)
-            }
-        }
+        let renderList = glRednerer.buildRenderListRecursive(rootNode, modelMatrix: modelMatrix)
+        glRednerer.drawRenderList(renderList, commandEncoder: renderEncoder)
     }
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, startingIndex: Int) {
