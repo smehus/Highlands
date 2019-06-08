@@ -205,14 +205,19 @@ extension Character: Renderable {
             for submesh in mesh.submeshes {
                 guard let indexAcessor = submesh.indexAccessor else { fatalError() }
 
+
                 let shaderBuilder = GLTFMTLShaderBuilder()
+                /*
+                 // create my own pipeline state
                 let pipeline = shaderBuilder.renderPipelineState(for: submesh,
                                                                  lightingEnvironment: nil,
                                                                  colorPixelFormat: Renderer.colorPixelFormat,
                                                                  depthStencilPixelFormat: Renderer.depthPixelFormat,
                                                                  sampleCount: Int32(Renderer.sampleCount),
                                                                  device: Renderer.device)
-
+*/
+                let descriptor = shaderBuilder.vertexDescriptor(for: submesh)
+                let pipeline = asset.createPipelineState(vertexDescriptor: descriptor)
                 renderEncoder.setRenderPipelineState(pipeline)
 
                 // Set the actual texture image
@@ -313,3 +318,40 @@ extension Character: Renderable {
     }
 }
 
+extension GLTFAsset {
+
+    private func buildFunctionConstants() -> MTLFunctionConstantValues {
+
+        var hasNormal = false
+        var hasTangent = false
+        var hasTexture = true
+
+
+        let functionConstants = MTLFunctionConstantValues()
+        functionConstants.setConstantValue(&hasTexture, type: .bool, index: 0)
+        functionConstants.setConstantValue(&hasNormal, type: .bool, index: Int(Normal.rawValue))
+        functionConstants.setConstantValue(&hasTangent, type: .bool, index: Int(Tangent.rawValue))
+        return functionConstants
+    }
+
+    func createPipelineState(vertexDescriptor: MTLVertexDescriptor) -> MTLRenderPipelineState{
+        let functionConstants = buildFunctionConstants()
+        let pipelineState: MTLRenderPipelineState
+        do {
+            let library = Renderer.device.makeDefaultLibrary()
+            let vertexFunction = try library?.makeFunction(name: "character_vertex_main", constantValues: functionConstants)
+            let fragmentFunction = try library?.makeFunction(name: "character_fragment_main", constantValues: functionConstants)
+            let descriptor = MTLRenderPipelineDescriptor()
+            descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+            descriptor.vertexFunction = vertexFunction
+            descriptor.fragmentFunction = fragmentFunction
+            descriptor.vertexDescriptor = vertexDescriptor
+            descriptor.depthAttachmentPixelFormat = .depth32Float
+            descriptor.sampleCount = Renderer.sampleCount
+            try pipelineState = Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+        } catch let error {
+            fatalError(error.localizedDescription)
+        }
+        return pipelineState
+    }
+}

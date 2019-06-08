@@ -11,7 +11,7 @@ struct VertexIn {
 //    float4 tangent [[ attribute(Tangent) ]];
 //    float3 bitangent [[ attribute(Bitangent) ]];
     float4 color [[ attribute(Color) ]];
-    ushort4 joints [[ attribute(Joints) ]];
+    ushort4 joints [[ attribute(8) ]];
     float4 weights [[ attribute(Weights) ]];
 };
 

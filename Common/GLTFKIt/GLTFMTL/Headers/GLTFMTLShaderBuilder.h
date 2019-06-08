@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     depthStencilPixelFormat:(MTLPixelFormat)depthStencilPixelFormat
                                                 sampleCount:(int)sampleCount
                                                      device:(id<MTLDevice>)device;
-
+- (MTLVertexDescriptor *)vertexDescriptorForSubmesh:(GLTFSubmesh *)submesh;
 @end
 
 NS_ASSUME_NONNULL_END
