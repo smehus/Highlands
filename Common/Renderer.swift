@@ -184,17 +184,6 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-        // GLTF RENDERER START
-
-
-        gltfRenderer.renderScene(gltfAsset.defaultScene!,
-                                 commandBuffer: commandBuffer,
-                                 commandEncoder: renderEncoder)
-
-
-
-        // GLTF RENDERER END
-
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
 //        drawDebug(encoder: renderEncoder)
@@ -203,10 +192,6 @@ extension Renderer: MTKViewDelegate {
 
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
-
-        commandBuffer.addCompletedHandler { _ in
-            self.gltfRenderer.signalFrameCompletion()
-        }
         commandBuffer.commit()
     }
 

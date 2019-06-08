@@ -63,7 +63,7 @@ class Character: Node {
         }
     }
 
-    let buffers: [MTLBuffer]
+//    let buffers: [MTLBuffer]
     let meshNodes: [GLTFNode]
     let animations: [GLTFAnimation]
     let nodes: [GLTFNode]
@@ -211,11 +211,14 @@ extension Character: Renderable {
 
                 renderEncoder.setRenderPipelineState(pipeline)
 
-                // Set the texture
-                renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+                // Set the actual texture image
+                guard var material = submesh.material else { fatalError() }
+                let texture = material.baseColorTexture?.texture.image
+                // TODO: - need to re-add this line
+//                renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
 
-                // Set Material
-                var material = submesh.material
+                // Set Material - basically just the hard coded color
+
                 renderEncoder.setFragmentBytes(&material,
                                                length: MemoryLayout<Material>.stride,
                                                index: Int(BufferIndexMaterials.rawValue))
