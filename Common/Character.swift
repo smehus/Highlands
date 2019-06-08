@@ -44,6 +44,8 @@ public class CharacterNode {
     }
 }
 
+extension Character: Texturable { }
+
 class Character: Node {
 
     class CharacterSubmesh: Submesh {
@@ -64,9 +66,11 @@ class Character: Node {
     }
 
 //    let buffers: [MTLBuffer]
-    let meshNodes: [GLTFNode]
+//    let meshNodes: [GLTFNode]
     let animations: [GLTFAnimation]
-    let nodes: [GLTFNode]
+    let rootNode: GLTFNode
+    let asset: GLTFAsset
+//    let textures: [String: MTLTexture]
     var currentTime: Float = 0
     var currentAnimation: GLTFAnimation?
     var currentAnimationPlaying = false
@@ -76,17 +80,17 @@ class Character: Node {
     init(name: String) {
         let url = Bundle.main.url(forResource: name, withExtension: "gltf")!
         let allocator = GLTFMTLBufferAllocator(device: Renderer.device)
-        let asset = GLTFAsset(url: url, bufferAllocator: allocator)
+        asset = GLTFAsset(url: url, bufferAllocator: allocator)
 
 //        buffers = asset.buffers
         animations = asset.animations
         guard !asset.scenes.isEmpty else { fatalError() }
 
         // The nodes that contain skinning data which bind vertices to joints.
-        meshNodes = asset.defaultScene!.nodes.first!.children
+//        meshNodes = asset.defaultScene!.nodes.first!.children
+//        nodes = asset.defaultScene!.nodes
 
-        nodes = asset.defaultScene!.nodes
-
+        rootNode = asset.defaultScene!.nodes.first!
         samplerState = Character.buildSamplerState()
 
         super.init()
@@ -176,19 +180,19 @@ extension Character: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
 
-        for node in meshNodes {
+        for node in rootNode.children {
             guard let mesh = node.mesh else { continue }
 
-            if let skin = node.skin {
-                // FIXME: -- Need to figure out what this does and assign values
-                for (i, jointNode) in skin.jointNodes.enumerated() {
-                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
-                }
-
-                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
-                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
-                renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
-            }
+//            if let skin = node.skin {
+//                // FIXME: -- Need to figure out what this does and assign values
+//                for (i, jointNode) in skin.jointNodes.enumerated() {
+//                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
+//                }
+//
+//                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
+//                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
+//                renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
+//            }
 
             var uniforms = vertex
             uniforms.modelMatrix = worldTransform
@@ -213,9 +217,11 @@ extension Character: Renderable {
 
                 // Set the actual texture image
                 guard var material = submesh.material else { fatalError() }
-                let texture = material.baseColorTexture?.texture.image
+                guard let textureName = material.baseColorTexture?.texture.image?.name else { fatalError() }
+                guard let texture = try? Character.loadTexture(imageName: textureName.appending(".jpg")) else { fatalError() }
+
                 // TODO: - need to re-add this line
-//                renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+                renderEncoder.setFragmentTexture(texture, index: Int(BaseColorTexture.rawValue))
 
                 // Set Material - basically just the hard coded color
 
@@ -223,14 +229,15 @@ extension Character: Renderable {
                                                length: MemoryLayout<Material>.stride,
                                                index: Int(BufferIndexMaterials.rawValue))
 
-                for attribute in submesh.vertexDescriptor.attributes {
-                    guard let accessor = submesh.accessorsForAttributes[attribute.semantic] else { fatalError() }
+                for (index, attribute) in submesh.vertexDescriptor.attributes.enumerated() {
+                    guard !attribute.semantic.isEmpty else { continue }
+                    guard let accessor = submesh.accessorsForAttributes[attribute.semantic] else { continue }
                     guard let bufferView = accessor.bufferView else { fatalError() }
                     guard let buffer = (bufferView.buffer as? GLTFMTLBuffer)?.buffer else { fatalError() }
 
                     renderEncoder.setVertexBuffer(buffer,
                                                   offset: accessor.offset + bufferView.offset,
-                                                  index: 1)
+                                                  index: index)
                 }
 
                 guard let indexBuffer = indexAcessor.bufferView?.buffer as? GLTFMTLBuffer else { fatalError() }
