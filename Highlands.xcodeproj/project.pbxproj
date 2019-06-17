@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0228BB2C22A89FE20072B790 /* Highlands-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 0228BB2A22A89FE20072B790 /* Highlands-Bridging-Header.h */; };
 		0228BB2D22A8A0540072B790 /* Highlands-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 0228BB2A22A89FE20072B790 /* Highlands-Bridging-Header.h */; };
+		0288864722B85868004FFB70 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0288864622B85867004FFB70 /* CharacterShaders.metal */; };
+		0288864822B85868004FFB70 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0288864622B85867004FFB70 /* CharacterShaders.metal */; };
+		0288864A22B85959004FFB70 /* CharacterShaders.metal in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0288864622B85867004FFB70 /* CharacterShaders.metal */; };
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
@@ -70,8 +73,6 @@
 		A5819C5E21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5921E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin */; };
 		A5819C5F21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5A21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf */; };
 		A5819C6021E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */ = {isa = PBXBuildFile; fileRef = A5819C5A21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf */; };
-		A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
-		A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */; };
 		A58F1A0421E931E5003F6F1F /* rock2.obj in Resources */ = {isa = PBXBuildFile; fileRef = A58F19FE21E931E5003F6F1F /* rock2.obj */; };
 		A58F1A0521E931E5003F6F1F /* rock2.obj in Resources */ = {isa = PBXBuildFile; fileRef = A58F19FE21E931E5003F6F1F /* rock2.obj */; };
 		A58F1A0621E931E5003F6F1F /* rock3.obj in Resources */ = {isa = PBXBuildFile; fileRef = A58F19FF21E931E5003F6F1F /* rock3.obj */; };
@@ -329,6 +330,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				0288864A22B85959004FFB70 /* CharacterShaders.metal in CopyFiles */,
 				A5D24E8B228731DF00362257 /* pbr.metal in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,6 +339,7 @@
 
 /* Begin PBXFileReference section */
 		0228BB2A22A89FE20072B790 /* Highlands-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Highlands-Bridging-Header.h"; sourceTree = "<group>"; };
+		0288864622B85867004FFB70 /* CharacterShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CharacterShaders.metal; sourceTree = "<group>"; };
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
@@ -384,7 +387,6 @@
 		A5819C5921E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = firstHuman_rigged_1_working_walk.bin; sourceTree = "<group>"; };
 		A5819C5A21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = firstHuman_rigged_1_working_walk.gltf; sourceTree = "<group>"; };
 		A588D83921CAE1A300652FC2 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
-		A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CharacterShaders.metal; sourceTree = "<group>"; };
 		A58F19FE21E931E5003F6F1F /* rock2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock2.obj; sourceTree = "<group>"; };
 		A58F19FF21E931E5003F6F1F /* rock3.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock3.obj; sourceTree = "<group>"; };
 		A58F1A0021E931E5003F6F1F /* rock1.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock1.obj; sourceTree = "<group>"; };
@@ -630,9 +632,9 @@
 		A57506CE21CD671A00C63081 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				0288864622B85867004FFB70 /* CharacterShaders.metal */,
 				A5D24E852287311E00362257 /* pbr.metal */,
 				A5CB1E9C21EA848E002CCB94 /* DebugLights.metal */,
-				A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */,
 				A57506C821CD669700C63081 /* DebugBoundingBox.metal */,
 				A57F6A2621B8A901002C0632 /* Shaders.metal */,
 				A563DF1421E7999F00563EA9 /* Skybox.metal */,
@@ -1272,6 +1274,7 @@
 				A5D24F3C22873E2E00362257 /* GLTFScene.m in Sources */,
 				A5D24F4A22873E2E00362257 /* GLTFBufferView.m in Sources */,
 				A5D24F3822873E2E00362257 /* GLTFAnimation.m in Sources */,
+				0288864722B85868004FFB70 /* CharacterShaders.metal in Sources */,
 				A57506E221CDA2C600C63081 /* GameScene.swift in Sources */,
 				A563DF1521E7999F00563EA9 /* Skybox.metal in Sources */,
 				A5D24F4822873E2E00362257 /* GLTFUtilities.m in Sources */,
@@ -1312,7 +1315,6 @@
 				A5D24F4622873E2E00362257 /* GLTFNode.m in Sources */,
 				A5D24F3E22873E2E00362257 /* GLTFObject.m in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
-				A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A57506A021CD63E200C63081 /* PhysicsController.swift in Sources */,
 				A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */,
 				A5D24D82228715BE00362257 /* GLTFMathLibrary.swift in Sources */,
@@ -1362,10 +1364,10 @@
 				A5D24F4D22873E2E00362257 /* GLTFTextureSampler.m in Sources */,
 				A58F1A1221E94112003F6F1F /* MorphShader.metal in Sources */,
 				A5CB1EA121EA848E002CCB94 /* DebugLights.swift in Sources */,
-				A588D83E21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A5D24D83228715BE00362257 /* GLTFMathLibrary.swift in Sources */,
 				A563DF1321E6EBBE00563EA9 /* Skybox.swift in Sources */,
 				A5D24F6D22873E4200362257 /* GLTFMTLBufferAllocator.m in Sources */,
+				0288864822B85868004FFB70 /* CharacterShaders.metal in Sources */,
 				A5D24F6522873E4200362257 /* GLTFMTLRenderer.m in Sources */,
 				A57506A121CD63E200C63081 /* PhysicsController.swift in Sources */,
 				A5D24F4322873E2E00362257 /* GLTFVertexDescriptor.m in Sources */,

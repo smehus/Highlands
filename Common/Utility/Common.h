@@ -52,7 +52,7 @@ typedef struct {
 
 typedef enum {
     BufferIndexVertices = 0,
-    BufferIndexUniforms = 11,
+    BufferIndexUniforms = 17,
     BufferIndexLights = 12,
     BufferIndexFragmentUniforms = 13,
     BufferIndexMaterials = 14,

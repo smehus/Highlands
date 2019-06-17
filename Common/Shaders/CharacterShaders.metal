@@ -5,6 +5,7 @@ using namespace metal;
 constant bool hasColorTexture [[ function_constant(0) ]];
 
 struct VertexIn {
+    /*
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];
     float2 uv [[ attribute(UV) ]];
@@ -13,6 +14,20 @@ struct VertexIn {
     float4 color [[ attribute(Color) ]];
     ushort4 joints [[ attribute(8) ]];
     float4 weights [[ attribute(Weights) ]];
+     */
+
+    float3 position  [[attribute(0)]];
+    float3 normal    [[attribute(1)]];
+    float4 tangent   [[attribute(2)]];
+    float2 texCoord0 [[attribute(3)]];
+    float2 texCoord1 [[attribute(4)]];
+    float4 color     [[attribute(5)]];
+    float4 weights0  [[attribute(6)]];
+    float4 weights1  [[attribute(7)]];
+    ushort4 joints0  [[attribute(8)]];
+    ushort4 joints1  [[attribute(9)]];
+    float roughness  [[attribute(10)]];
+    float metalness  [[attribute(11)]];
 };
 
 struct VertexOut {
@@ -32,22 +47,23 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     VertexOut out;
 
     // skinning code
-    float4 weights = vertexIn.weights;
-    ushort4 joints = vertexIn.joints;
+    float4 weights = vertexIn.weights0;
+    ushort4 joints = vertexIn.joints0;
     float4x4 skinMatrix =
     weights.x * jointMatrices[joints.x] +
     weights.y * jointMatrices[joints.y] +
     weights.z * jointMatrices[joints.z] +
     weights.w * jointMatrices[joints.w];
 
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
+    float4 position = float4(vertexIn.position, 1);
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * position;
     // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
-    out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
+    out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ position;
     out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
-    out.uv = vertexIn.uv;
+    out.uv = vertexIn.texCoord0;
 
     float4x4 shadowMatrix = uniforms.shadowMatrix;
-    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * vertexIn.position;
+    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * position;
 
 //    out.worldTangent = uniforms.normalMatrix * (skinMatrix * vertexIn.tangent).xyz;
 //    float3 bitangent = cross(vertexIn.normal, vertexIn.tangent.xyz) * vertexIn.tangent.w;

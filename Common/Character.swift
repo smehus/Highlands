@@ -210,7 +210,7 @@ extension Character: Renderable {
                 if let skin = node.skin {
                     let buffer = Renderer.device.makeBuffer(length: skin.jointNodes.count * MemoryLayout<simd_float4x4>.size, options: .storageModeShared)
                     glRenderer.computeJoints(for: submesh, in: node, buffer: buffer!)
-                    renderEncoder.setVertexBuffer(buffer!, offset: 0, index: 21)
+                    renderEncoder.setVertexBuffer(buffer!, offset: 0, index: 16)
                 }
 
 
@@ -225,12 +225,15 @@ extension Character: Renderable {
                                                                  device: Renderer.device)
                  */
 
-                guard submesh.vertexDescriptor.attributes.count >= 8 else {
-                    fatalError()
-                }
 
-                let descriptor = shaderBuilder.vertexDescriptor(for: submesh)
-                let pipeline = asset.createPipelineState(vertexDescriptor: descriptor)
+
+//                let descriptor = shaderBuilder.vertexDescriptor(for: submesh)
+                let pipeline = shaderBuilder.renderPipelineState(for: submesh,
+                                                                 lightingEnvironment: nil,
+                                                                 colorPixelFormat: Renderer.colorPixelFormat,
+                                                                 depthStencilPixelFormat: Renderer.depthPixelFormat,
+                                                                 sampleCount: Int32(Renderer.sampleCount),
+                                                                 device: Renderer.device)
                 renderEncoder.setRenderPipelineState(pipeline)
 
                 // Set the actual texture image
