@@ -61,3 +61,10 @@ When export gltf from blender / Make Human
 
 - the ray wend version uses GLTFMakeVertexDescriptor to create and hard set the attributes
 - While gltfkit does not so attributes could be missing - and fail out
+
+
+- GLTFKit doesn't reuse properties like BufferIndexFragment (or whatever) Because he doesn't import any header files in the shader. When creating the source it fails with a fatal error saying it can't find common.h
+
+
+- I should just rewrite - (MTLVertexDescriptor *)vertexDescriptorForSubmesh:(GLTFSubmesh *)submesh { in the shader builder in swift
+- Can use functions constants to set shader stage_in attributes to optional

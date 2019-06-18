@@ -5,29 +5,14 @@ using namespace metal;
 constant bool hasColorTexture [[ function_constant(0) ]];
 
 struct VertexIn {
-    /*
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];
     float2 uv [[ attribute(UV) ]];
 //    float4 tangent [[ attribute(Tangent) ]];
 //    float3 bitangent [[ attribute(Bitangent) ]];
     float4 color [[ attribute(Color) ]];
-    ushort4 joints [[ attribute(8) ]];
+    ushort4 joints [[ attribute(Joints) ]];
     float4 weights [[ attribute(Weights) ]];
-     */
-
-    float3 position  [[attribute(0)]];
-    float3 normal    [[attribute(1)]];
-    float4 tangent   [[attribute(2)]];
-    float2 texCoord0 [[attribute(3)]];
-    float2 texCoord1 [[attribute(4)]];
-    float4 color     [[attribute(5)]];
-    float4 weights0  [[attribute(6)]];
-    float4 weights1  [[attribute(7)]];
-    ushort4 joints0  [[attribute(8)]];
-    ushort4 joints1  [[attribute(9)]];
-    float roughness  [[attribute(10)]];
-    float metalness  [[attribute(11)]];
 };
 
 struct VertexOut {
@@ -47,23 +32,22 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     VertexOut out;
 
     // skinning code
-    float4 weights = vertexIn.weights0;
-    ushort4 joints = vertexIn.joints0;
+    float4 weights = vertexIn.weights;
+    ushort4 joints = vertexIn.joints;
     float4x4 skinMatrix =
     weights.x * jointMatrices[joints.x] +
     weights.y * jointMatrices[joints.y] +
     weights.z * jointMatrices[joints.z] +
     weights.w * jointMatrices[joints.w];
 
-    float4 position = float4(vertexIn.position, 1);
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * position;
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
     // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
-    out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ position;
+    out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
     out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
-    out.uv = vertexIn.texCoord0;
+    out.uv = vertexIn.uv;
 
     float4x4 shadowMatrix = uniforms.shadowMatrix;
-    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * position;
+    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * vertexIn.position;
 
 //    out.worldTangent = uniforms.normalMatrix * (skinMatrix * vertexIn.tangent).xyz;
 //    float3 bitangent = cross(vertexIn.normal, vertexIn.tangent.xyz) * vertexIn.tangent.w;
@@ -200,7 +184,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                         constant Light *lights [[ buffer(BufferIndexLights) ]],
-                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture), function_constant(hasColorTexture) ]],
+                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture), functioin_constant(hasColorTexture) ]],
                                         // currently using omnidirectional shadow map : texturecube
 //                                        texture2d<float> shadowTexture [[ texture(ShadowColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {

@@ -215,8 +215,8 @@ extension Character: Renderable {
 
 
                 let shaderBuilder = GLTFMTLShaderBuilder()
+                let descriptor = shaderBuilder.vertexDescriptor(for: submesh)
                 /*
-                 // create my own pipeline state
                 let pipeline = shaderBuilder.renderPipelineState(for: submesh,
                                                                  lightingEnvironment: nil,
                                                                  colorPixelFormat: Renderer.colorPixelFormat,
@@ -225,15 +225,8 @@ extension Character: Renderable {
                                                                  device: Renderer.device)
                  */
 
+                let pipeline = asset.createPipelineState(vertexDescriptor: descriptor, submesh: submesh)
 
-
-//                let descriptor = shaderBuilder.vertexDescriptor(for: submesh)
-                let pipeline = shaderBuilder.renderPipelineState(for: submesh,
-                                                                 lightingEnvironment: nil,
-                                                                 colorPixelFormat: Renderer.colorPixelFormat,
-                                                                 depthStencilPixelFormat: Renderer.depthPixelFormat,
-                                                                 sampleCount: Int32(Renderer.sampleCount),
-                                                                 device: Renderer.device)
                 renderEncoder.setRenderPipelineState(pipeline)
 
                 // Set the actual texture image
@@ -350,7 +343,7 @@ extension GLTFAsset {
         return functionConstants
     }
 
-    func createPipelineState(vertexDescriptor: MTLVertexDescriptor) -> MTLRenderPipelineState {
+    func createPipelineState(vertexDescriptor: MTLVertexDescriptor, submesh: GLTFSubmesh) -> MTLRenderPipelineState {
         let functionConstants = buildFunctionConstants()
         let pipelineState: MTLRenderPipelineState
         do {
