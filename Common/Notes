@@ -68,3 +68,5 @@ When export gltf from blender / Make Human
 
 - I should just rewrite - (MTLVertexDescriptor *)vertexDescriptorForSubmesh:(GLTFSubmesh *)submesh { in the shader builder in swift
 - Can use functions constants to set shader stage_in attributes to optional
+- Can use the 'semantic' property to assign specific semantics to buffer indexes. For instance semantic NORMAL would get set to
+-- float3 normal [[ attribute(Normal) ]]; in the shader source vertex attributes
