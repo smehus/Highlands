@@ -333,6 +333,10 @@ extension GLTFAsset {
         (vertexDescriptor.attributes[7] as! MDLVertexAttribute).name = MDLVertexAttributeJointWeights
 
         let gltfVertexDescriptor = submesh.vertexDescriptor
+        var layouts = NSMutableArray(capacity: 8)
+        for _ in layouts {
+            layouts.add(MDLVertexBufferLayout(stride: 0))
+        }
 
         for index in 0..<GLTFVertexDescriptorMaxAttributeCount {
             let attribute = gltfVertexDescriptor.attributes[index]
@@ -349,18 +353,24 @@ extension GLTFAsset {
             switch attribute.semantic {
             case "POSITION":
                 name = MDLVertexAttributePosition
+                layoutIndex = 0
             case "NORMAL":
                 name = MDLVertexAttributeNormal
+                layoutIndex = 1
             case "WEIGHTS_0":
                 name = MDLVertexAttributeJointWeights
+                layoutIndex = 7
                 hasWeights = true
             case "TANGENT":
                 name = MDLVertexAttributeTangent
+                layoutIndex = 3
             case "JOINTS_0":
                 name = MDLVertexAttributeJointIndices
+                layoutIndex = 6
                 hasJoints = true
             case "TEXCOORD_0":
                 name = MDLVertexAttributeTextureCoordinate
+                layoutIndex = 2
                 hasColorTexture = true
             default:
                 break
@@ -375,6 +385,10 @@ extension GLTFAsset {
                                                   offset: 0,
                                                   bufferIndex: layoutIndex)
 
+            vertexDescriptor.addOrReplaceAttribute(mdlAttribute)
+            layouts[layoutIndex] = MDLVertexBufferLayout(stride: layout.stride)
+
+
 //            descriptor.attributes[index].offset = 0;
 //            descriptor.attributes[index].format = vertexFormat;
 //            descriptor.attributes[index].bufferIndex = index;
@@ -384,6 +398,7 @@ extension GLTFAsset {
 //            descriptor.layouts[index].stepFunction = .perVertex;
         }
 
+        vertexDescriptor.layouts = layouts
         return (MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)!, functionConstants)
     }
 

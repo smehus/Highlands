@@ -7,27 +7,15 @@ constant bool hasWeights [[ function_constant(1) ]];
 constant bool hasJoints [[ function_constant(2) ]];
 
 struct VertexIn {
-//    float4 position [[ attribute(Position) ]];
-//    float3 normal [[ attribute(Normal) ]];
-//    float2 uv [[ attribute(UV) ]];
-////    float4 tangent [[ attribute(Tangent) ]];
-////    float3 bitangent [[ attribute(Bitangent) ]];
-//    float4 color [[ attribute(Color) ]];
-//    ushort4 joints [[ attribute(Joints) ]];
-//    float4 weights [[ attribute(Weights) ]];
+    float4 position [[ attribute(Position) ]];
+    float3 normal [[ attribute(Normal) ]];
+    float2 uv [[ attribute(UV) ]];
+//    float4 tangent [[ attribute(Tangent) ]];
+//    float3 bitangent [[ attribute(Bitangent) ]];
+    float4 color [[ attribute(Color) ]];
+    ushort4 joints [[ attribute(Joints) ]];
+    float4 weights [[ attribute(Weights) ]];
 
-    float4 position  [[attribute(0)]];
-    float3 normal    [[attribute(1)]];
-    float4 tangent   [[attribute(2)]];
-    float2 uv        [[attribute(3)]];
-//    float2 texCoord1 [[attribute(4)]];
-//    float4 color     [[attribute(5)]];
-    float4 weights   [[attribute(6), function_constant(hasWeights)]];
-//    float4 weights1  [[attribute(7)]];
-    ushort4 joints    [[attribute(8), function_constant(hasJoints)]];
-//    ushort4 joints1  [[attribute(9)]];
-//    float roughness  [[attribute(10)]];
-//    float metalness  [[attribute(11)]];
 };
 
 struct VertexOut {
