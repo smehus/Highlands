@@ -329,22 +329,34 @@ extension Character: Renderable {
 
 extension GLTFAsset {
 
-    private func buildFunctionConstants() -> MTLFunctionConstantValues {
-
-        var hasNormal = false
-        var hasTangent = false
-        var hasTexture = true
-
-
+    func pipelineProperties(for submesh: GLTFSubmesh) -> (MTLVertexDescriptor, MTLFunctionConstantValues) {
         let functionConstants = MTLFunctionConstantValues()
-        functionConstants.setConstantValue(&hasTexture, type: .bool, index: 0)
-        functionConstants.setConstantValue(&hasNormal, type: .bool, index: Int(Normal.rawValue))
-        functionConstants.setConstantValue(&hasTangent, type: .bool, index: Int(Tangent.rawValue))
-        return functionConstants
+        let vertexDescriptor = MTLVertexDescriptor()
+        let descriptor = submesh.vertexDescriptor
+
+        for index in 0...GLTFVertexDescriptorMaxAttributeCount {
+            let attribute = descriptor.attributes[index]
+            let layout = descriptor.bufferLayouts[index]
+
+            guard attribute.componentType.rawValue != 0 else { continue }
+
+            let vertexFormat = GLTFMTLVertexFormatForComponentTypeAndDimension(attribute.componentType, attribute.dimension)
+
+            switch attribute.semantic {
+            default: continue
+            }
+
+        }
+
+        
+
+        return (vertexDescriptor, functionConstants)
     }
 
-    func createPipelineState(vertexDescriptor: MTLVertexDescriptor, submesh: GLTFSubmesh) -> MTLRenderPipelineState {
-        let functionConstants = buildFunctionConstants()
+
+
+    func createPipelineState(submesh: GLTFSubmesh) -> MTLRenderPipelineState {
+        let (vertexDescriptor, functionConstants) = pipelineProperties(for: submesh)
         let pipelineState: MTLRenderPipelineState
         do {
             let library = Renderer.device.makeDefaultLibrary()
@@ -363,4 +375,5 @@ extension GLTFAsset {
         }
         return pipelineState
     }
+
 }
