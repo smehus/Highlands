@@ -213,9 +213,6 @@ extension Character: Renderable {
                     renderEncoder.setVertexBuffer(buffer!, offset: 0, index: 16)
                 }
 
-
-                let shaderBuilder = GLTFMTLShaderBuilder()
-                let descriptor = shaderBuilder.vertexDescriptor(for: submesh)
                 /*
                 let pipeline = shaderBuilder.renderPipelineState(for: submesh,
                                                                  lightingEnvironment: nil,
@@ -225,8 +222,7 @@ extension Character: Renderable {
                                                                  device: Renderer.device)
                  */
 
-                let pipeline = asset.createPipelineState(vertexDescriptor: descriptor, submesh: submesh)
-
+                let pipeline = asset.createPipelineState(submesh: submesh)
                 renderEncoder.setRenderPipelineState(pipeline)
 
                 // Set the actual texture image
@@ -342,18 +338,28 @@ extension GLTFAsset {
 
             let vertexFormat = GLTFMTLVertexFormatForComponentTypeAndDimension(attribute.componentType, attribute.dimension)
 
+            var attributeIndex = 0
             switch attribute.semantic {
+            case "POSITION": attributeIndex = 0
+            case "NORMAL": attributeIndex = 1
+            case "WEIGHTS_0": attributeIndex = 7
+            case "TANGENT": attributeIndex = 3
+            case "JOINTS_0": attributeIndex = 6
+            case "TEXCOORD_0": attributeIndex = 2
             default: continue
             }
 
-        }
+            vertexDescriptor.attributes[attributeIndex].offset = 0;
+            vertexDescriptor.attributes[attributeIndex].format = vertexFormat;
+            vertexDescriptor.attributes[attributeIndex].bufferIndex = attributeIndex;
 
-        
+            vertexDescriptor.layouts[attributeIndex].stride = layout.stride;
+            vertexDescriptor.layouts[attributeIndex].stepRate = 1;
+            vertexDescriptor.layouts[attributeIndex].stepFunction = .perVertex;
+        }
 
         return (vertexDescriptor, functionConstants)
     }
-
-
 
     func createPipelineState(submesh: GLTFSubmesh) -> MTLRenderPipelineState {
         let (vertexDescriptor, functionConstants) = pipelineProperties(for: submesh)
