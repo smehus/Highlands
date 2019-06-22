@@ -210,7 +210,7 @@ extension Character: Renderable {
                 if let skin = node.skin {
                     let buffer = Renderer.device.makeBuffer(length: skin.jointNodes.count * MemoryLayout<simd_float4x4>.size, options: .storageModeShared)
                     glRenderer.computeJoints(for: submesh, in: node, buffer: buffer!)
-                    renderEncoder.setVertexBuffer(buffer!, offset: 0, index: 16)
+                    renderEncoder.setVertexBuffer(buffer!, offset: 0, index: 21)
                 }
 
                 /*
@@ -221,6 +221,7 @@ extension Character: Renderable {
                                                                  sampleCount: Int32(Renderer.sampleCount),
                                                                  device: Renderer.device)
                  */
+
 
                 let pipeline = asset.createPipelineState(submesh: submesh)
                 renderEncoder.setRenderPipelineState(pipeline)
@@ -327,10 +328,13 @@ extension GLTFAsset {
 
     func pipelineProperties(for submesh: GLTFSubmesh) -> (MTLVertexDescriptor, MTLFunctionConstantValues) {
         let functionConstants = MTLFunctionConstantValues()
+        var hasColorTexture = true
+        functionConstants.setConstantValue(&hasColorTexture, type: .bool, index: 0)
+
         let vertexDescriptor = MTLVertexDescriptor()
         let descriptor = submesh.vertexDescriptor
 
-        for index in 0...GLTFVertexDescriptorMaxAttributeCount {
+        for index in 0..<GLTFVertexDescriptorMaxAttributeCount {
             let attribute = descriptor.attributes[index]
             let layout = descriptor.bufferLayouts[index]
 
