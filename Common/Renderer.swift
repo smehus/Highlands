@@ -20,13 +20,10 @@ final class Renderer: NSObject {
     private var depthStencilState: MTLDepthStencilState!
     private var instanceParamBuffer: MTLBuffer
 
-    private var gltfRenderer: GLTFMTLRenderer!
-    private var gltfAsset: GLTFAsset!
     lazy var lightPipelineState: MTLRenderPipelineState = {
         return buildLightPipelineState()
     }()
 
-    
     var shadowDepthTexture: MTLTexture!
     var shadowColorTexture: MTLTexture!
     let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
@@ -56,7 +53,6 @@ final class Renderer: NSObject {
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
 
-        print("gltfass ** \(gltfAsset)")
     }
 
     func buildCubeTexture(pixelFormat: MTLPixelFormat, size: Int) -> MTLTexture {

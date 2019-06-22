@@ -213,16 +213,6 @@ extension Character: Renderable {
                     renderEncoder.setVertexBuffer(buffer!, offset: 0, index: 21)
                 }
 
-                /*
-                let pipeline = shaderBuilder.renderPipelineState(for: submesh,
-                                                                 lightingEnvironment: nil,
-                                                                 colorPixelFormat: Renderer.colorPixelFormat,
-                                                                 depthStencilPixelFormat: Renderer.depthPixelFormat,
-                                                                 sampleCount: Int32(Renderer.sampleCount),
-                                                                 device: Renderer.device)
-                 */
-
-
                 let pipeline = asset.createPipelineState(submesh: submesh)
                 renderEncoder.setRenderPipelineState(pipeline)
 
@@ -328,41 +318,73 @@ extension GLTFAsset {
 
     func pipelineProperties(for submesh: GLTFSubmesh) -> (MTLVertexDescriptor, MTLFunctionConstantValues) {
         let functionConstants = MTLFunctionConstantValues()
-        var hasColorTexture = true
-        functionConstants.setConstantValue(&hasColorTexture, type: .bool, index: 0)
+        var hasColorTexture = false
+        var hasJoints = false
+        var hasWeights = false
 
-        let vertexDescriptor = MTLVertexDescriptor()
-        let descriptor = submesh.vertexDescriptor
+        let vertexDescriptor = MDLVertexDescriptor()
+        (vertexDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
+        (vertexDescriptor.attributes[1] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
+        (vertexDescriptor.attributes[2] as! MDLVertexAttribute).name = MDLVertexAttributeTextureCoordinate
+        (vertexDescriptor.attributes[3] as! MDLVertexAttribute).name = MDLVertexAttributeTangent
+        (vertexDescriptor.attributes[4] as! MDLVertexAttribute).name = MDLVertexAttributeBitangent
+        (vertexDescriptor.attributes[5] as! MDLVertexAttribute).name = MDLVertexAttributeColor
+        (vertexDescriptor.attributes[6] as! MDLVertexAttribute).name = MDLVertexAttributeJointIndices
+        (vertexDescriptor.attributes[7] as! MDLVertexAttribute).name = MDLVertexAttributeJointWeights
+
+        let gltfVertexDescriptor = submesh.vertexDescriptor
 
         for index in 0..<GLTFVertexDescriptorMaxAttributeCount {
-            let attribute = descriptor.attributes[index]
-            let layout = descriptor.bufferLayouts[index]
+            let attribute = gltfVertexDescriptor.attributes[index]
+            let layout = gltfVertexDescriptor.bufferLayouts[index]
 
             guard attribute.componentType.rawValue != 0 else { continue }
 
-            let vertexFormat = GLTFMTLVertexFormatForComponentTypeAndDimension(attribute.componentType, attribute.dimension)
+//            let vertexFormat = GLTFMTLVertexFormatForComponentTypeAndDimension(attribute.componentType, attribute.dimension)
+            let format = mdlVertexFormat(baseType: attribute.componentType, dimension: attribute.dimension)
+            guard format != .invalid else { fatalError() }
 
-            var attributeIndex = 0
+            var name = "ERROR"
+            var layoutIndex = 0
             switch attribute.semantic {
-            case "POSITION": attributeIndex = 0
-            case "NORMAL": attributeIndex = 1
-            case "WEIGHTS_0": attributeIndex = 7
-            case "TANGENT": attributeIndex = 3
-            case "JOINTS_0": attributeIndex = 6
-            case "TEXCOORD_0": attributeIndex = 2
-            default: continue
+            case "POSITION":
+                name = MDLVertexAttributePosition
+            case "NORMAL":
+                name = MDLVertexAttributeNormal
+            case "WEIGHTS_0":
+                name = MDLVertexAttributeJointWeights
+                hasWeights = true
+            case "TANGENT":
+                name = MDLVertexAttributeTangent
+            case "JOINTS_0":
+                name = MDLVertexAttributeJointIndices
+                hasJoints = true
+            case "TEXCOORD_0":
+                name = MDLVertexAttributeTextureCoordinate
+                hasColorTexture = true
+            default:
+                break
             }
 
-            vertexDescriptor.attributes[attributeIndex].offset = 0;
-            vertexDescriptor.attributes[attributeIndex].format = vertexFormat;
-            vertexDescriptor.attributes[attributeIndex].bufferIndex = attributeIndex;
+            functionConstants.setConstantValue(&hasColorTexture, type: .bool, index: 0)
+            functionConstants.setConstantValue(&hasWeights, type: .bool, index: 1)
+            functionConstants.setConstantValue(&hasJoints, type: .bool, index: 2)
 
-            vertexDescriptor.layouts[attributeIndex].stride = layout.stride;
-            vertexDescriptor.layouts[attributeIndex].stepRate = 1;
-            vertexDescriptor.layouts[attributeIndex].stepFunction = .perVertex;
+            let mdlAttribute = MDLVertexAttribute(name: name,
+                                                  format: format,
+                                                  offset: 0,
+                                                  bufferIndex: layoutIndex)
+
+//            descriptor.attributes[index].offset = 0;
+//            descriptor.attributes[index].format = vertexFormat;
+//            descriptor.attributes[index].bufferIndex = index;
+//
+//            descriptor.layouts[index].stride = layout.stride;
+//            descriptor.layouts[index].stepRate = 1;
+//            descriptor.layouts[index].stepFunction = .perVertex;
         }
 
-        return (vertexDescriptor, functionConstants)
+        return (MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)!, functionConstants)
     }
 
     func createPipelineState(submesh: GLTFSubmesh) -> MTLRenderPipelineState {
@@ -386,4 +408,39 @@ extension GLTFAsset {
         return pipelineState
     }
 
+    func mdlVertexFormat(baseType: GLTFDataType, dimension: GLTFDataDimension) -> MDLVertexFormat {
+        switch baseType {
+        case .dataTypeChar, .dataTypeUChar:
+            switch dimension {
+            case .vector2: return .char2
+            case .vector3: return .char3
+            case .vector4: return .char4
+            default: return .invalid
+            }
+        case .dataTypeShort, .dataTypeUShort:
+            switch dimension {
+            case .vector2: return .uShort2
+            case .vector3: return .uShort3
+            case .vector4: return .uShort4
+            default: return .invalid
+            }
+        case .dataTypeInt, .dataTypeUInt:
+            switch dimension {
+            case .scalar: return .int
+            case .vector2: return .int2
+            case .vector3: return .int3
+            case .vector4: return .int4
+            default: return .invalid
+            }
+        case .dataTypeFloat:
+            switch dimension {
+            case .scalar: return .float
+            case .vector2: return .float2
+            case .vector3: return .float3
+            case .vector4: return .float4
+            default: return .invalid
+            }
+        default: return .invalid
+        }
+    }
 }
