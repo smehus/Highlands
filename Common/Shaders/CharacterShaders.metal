@@ -6,41 +6,41 @@ using namespace metal;
 //constant bool hasWeights [[ function_constant(1) ]];
 //constant bool hasJoints [[ function_constant(2) ]];
 
-constant bool hasPosition    [[function_constant(0)]];
-constant bool hasNormal      [[function_constant(1)]];
-constant bool hasTangent     [[function_constant(2)]];
+//constant bool hasPosition    [[function_constant(0)]];
+//constant bool hasNormal      [[function_constant(1)]];
+//constant bool hasTangent     [[function_constant(2)]];
 constant bool hasTexCoord0   [[function_constant(3)]];
-constant bool hasTexCoord1   [[function_constant(4)]];
-constant bool hasColor       [[function_constant(5)]];
-constant bool hasWeights0    [[function_constant(6)]];
-constant bool hasWeights1    [[function_constant(7)]];
-constant bool hasJoints0     [[function_constant(8)]];
-constant bool hasJoints1     [[function_constant(9)]];
-constant bool hasRoughness   [[function_constant(10)]];
-constant bool hasMetalness   [[function_constant(11)]];
+//constant bool hasTexCoord1   [[function_constant(4)]];
+//constant bool hasColor       [[function_constant(5)]];
+//constant bool hasWeights0    [[function_constant(6)]];
+//constant bool hasWeights1    [[function_constant(7)]];
+//constant bool hasJoints0     [[function_constant(8)]];
+//constant bool hasJoints1     [[function_constant(9)]];
+//constant bool hasRoughness   [[function_constant(10)]];
+//constant bool hasMetalness   [[function_constant(11)]];
 
 struct VertexIn {
-//    float4 position [[ attribute(Position) ]];
-//    float3 normal [[ attribute(Normal) ]];
-//    float2 uv [[ attribute(UV) ]];
-////    float4 tangent [[ attribute(Tangent) ]];
-////    float3 bitangent [[ attribute(Bitangent) ]];
-//    float4 color [[ attribute(Color) ]];
-//    ushort4 joints [[ attribute(Joints) ]];
-//    float4 weights [[ attribute(Weights) ]];
+    float4 position [[ attribute(Position) ]];
+    float3 normal [[ attribute(Normal) ]];
+    float2 uv [[ attribute(UV) ]];
+//    float4 tangent [[ attribute(Tangent) ]];
+//    float3 bitangent [[ attribute(Bitangent) ]];
+    float4 color [[ attribute(Color) ]];
+    ushort4 joints [[ attribute(Joints) ]];
+    float4 weights [[ attribute(Weights) ]];
 
-    float4 position  [[attribute(0), function_constant(hasPosition) ]];
-    float3 normal    [[attribute(1), function_constant(hasNormal)]];
-    float4 tangent   [[attribute(2), function_constant(hasTangent)]];
-    float2 texCoord0 [[attribute(3), function_constant(hasTexCoord0)]];
-    float2 texCoord1 [[attribute(4), function_constant(hasTexCoord1)]];
-    float4 color     [[attribute(5), function_constant(hasColor)]];
-    float4 weights0  [[attribute(6), function_constant(hasWeights0)]];
-    float4 weights1  [[attribute(7), function_constant(hasWeights1)]];
-    ushort4 joints0  [[attribute(8), function_constant(hasJoints0)]];
-    ushort4 joints1  [[attribute(9), function_constant(hasJoints1)]];
-    float roughness  [[attribute(10), function_constant(hasRoughness)]];
-    float metalness  [[attribute(11), function_constant(hasMetalness)]];
+//    float4 position  [[attribute(0), function_constant(hasPosition) ]];
+//    float3 normal    [[attribute(1), function_constant(hasNormal)]];
+//    float4 tangent   [[attribute(2), function_constant(hasTangent)]];
+//    float2 texCoord0 [[attribute(3), function_constant(hasTexCoord0)]];
+//    float2 texCoord1 [[attribute(4), function_constant(hasTexCoord1)]];
+//    float4 color     [[attribute(5), function_constant(hasColor)]];
+//    float4 weights0  [[attribute(6), function_constant(hasWeights0)]];
+//    float4 weights1  [[attribute(7), function_constant(hasWeights1)]];
+//    ushort4 joints0  [[attribute(8), function_constant(hasJoints0)]];
+//    ushort4 joints1  [[attribute(9), function_constant(hasJoints1)]];
+//    float roughness  [[attribute(10), function_constant(hasRoughness)]];
+//    float metalness  [[attribute(11), function_constant(hasMetalness)]];
 
 };
 
@@ -61,8 +61,8 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     VertexOut out;
 
     // skinning code
-    float4 weights = vertexIn.weights0;
-    ushort4 joints = vertexIn.joints0;
+    float4 weights = vertexIn.weights;
+    ushort4 joints = vertexIn.joints;
     float4x4 skinMatrix =
     weights.x * jointMatrices[joints.x] +
     weights.y * jointMatrices[joints.y] +
@@ -73,7 +73,7 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
     out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
     out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
-    out.uv = vertexIn.texCoord0;
+    out.uv = vertexIn.uv;
 
     float4x4 shadowMatrix = uniforms.shadowMatrix;
     out.shadowPosition = shadowMatrix * uniforms.modelMatrix * vertexIn.position;

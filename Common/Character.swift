@@ -410,6 +410,91 @@ extension GLTFAsset {
         return(vertexDescriptor, functionConstants)
     }
 
+    private func createVertexDescriptor(for submesh: GLTFSubmesh) -> (MTLVertexDescriptor, MTLFunctionConstantValues) {
+        let functionConstants = MTLFunctionConstantValues()
+        var hasNormal      = false
+        var hasTangent      = false
+        var hasTexCoord      = true
+        var hasBitangent   = false
+        var hasColor       = false
+        var hasWeights    = false
+        var hasJoints     = false
+
+        functionConstants.setConstantValue(&hasTexCoord, type: .bool, index: 3)
+
+        let layouts = NSMutableArray(capacity: 8)
+        for _ in 0..<8 {
+            layouts.add(MDLVertexBufferLayout(stride: 0))
+        }
+        let vertexDescriptor = defaultMDLVertexDescriptor
+
+        for accessorAttribute in submesh.accessorsForAttributes {
+            let accessor = accessorAttribute.value
+            var attributeName = "Untitled"
+            var layoutIndex = 0
+
+            guard let key = GLTFAttribute(rawValue: accessorAttribute.key) else {
+                print("WARNING! - Attribute: \(accessorAttribute.key) not supported")
+                continue
+            }
+
+            switch key {
+            case .position:
+                attributeName = MDLVertexAttributePosition
+
+            case .normal:
+                attributeName = MDLVertexAttributeNormal
+                hasNormal = true
+            case .texCoord_zero:
+                attributeName = MDLVertexAttributeTextureCoordinate
+            case .texCoord_one:
+                attributeName = MDLVertexAttributeTextureCoordinate
+            case .joints:
+                attributeName = MDLVertexAttributeJointIndices
+                hasJoints = true
+            case .weights:
+                attributeName = MDLVertexAttributeJointWeights
+                hasWeights = true
+            case .tangent:
+                attributeName = MDLVertexAttributeTangent
+                hasTangent = true
+            case .bitangent:
+                attributeName = MDLVertexAttributeBitangent
+                hasBitangent = true
+            case .color:
+                attributeName = MDLVertexAttributeColor
+                hasColor = true
+            default: continue
+            }
+
+            layoutIndex = key.bufferIndex()
+
+            let bufferView = accessor.bufferView!
+            let format: MDLVertexFormat = GLTFGetVertexFormat(componentType: accessor.componentType.rawValue, type: accessor.dimension)
+            // the accessor and bufferView offsets are picked up during rendering,
+            // as all layouts start from 0
+            let offset = 0
+            let attribute = MDLVertexAttribute(name: attributeName,
+                                               format: format,
+                                               offset: offset,
+                                               bufferIndex: layoutIndex)
+
+            vertexDescriptor.addOrReplaceAttribute(attribute)
+
+            // update the layout
+            var stride = bufferView.stride
+
+            if stride <= 0 {
+                stride = GLTFStrideOf(vertexFormat: format)
+            }
+
+            layouts[layoutIndex] = MDLVertexBufferLayout(stride: stride);
+        }
+        vertexDescriptor.layouts  = layouts
+
+        return (MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)!, functionConstants)
+    }
+
     var defaultMDLVertexDescriptor: MDLVertexDescriptor {
         let vertexDescriptor = MDLVertexDescriptor()
         (vertexDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
@@ -421,6 +506,62 @@ extension GLTFAsset {
         (vertexDescriptor.attributes[6] as! MDLVertexAttribute).name = MDLVertexAttributeJointIndices
         (vertexDescriptor.attributes[7] as! MDLVertexAttribute).name = MDLVertexAttributeJointWeights
         return vertexDescriptor
+    }
+
+    public func GLTFGetVertexFormat(componentType: Int, type: GLTFDataDimension) -> MDLVertexFormat {
+        var dataType = MDLVertexFormat.invalid
+        switch componentType {
+        case 5120 where type == .scalar:
+            dataType = .char
+        case 5120 where type == .vector2:
+            dataType = .char2
+        case 5120 where type == .vector3:
+            dataType = .char3
+        case 5120 where type == .vector4:
+            dataType = .char4
+        case 5121 where type == .scalar:
+            dataType = .uChar
+        case 5121 where type == .vector2:
+            dataType = .uChar2
+        case 5121 where type == .vector3:
+            dataType = .uChar3
+        case 5121 where type == .vector4:
+            dataType = .uChar4
+        case 5122 where type == .scalar:
+            dataType = .short
+        case 5122 where type == .vector2:
+            dataType = .short2
+        case 5122 where type == .vector3:
+            dataType = .short3
+        case 5122 where type == .vector4:
+            dataType = .short4
+        case 5123 where type == .scalar:
+            dataType = .uShort
+        case 5123 where type == .vector2:
+            dataType = .uShort2
+        case 5123 where type == .vector3:
+            dataType = .uShort3
+        case 5123 where type == .vector4:
+            dataType = .uShort4
+        case 5125 where type == .scalar:
+            dataType = .uInt
+        case 5125 where type == .vector2:
+            dataType = .uInt2
+        case 5125 where type == .vector3:
+            dataType = .uInt3
+        case 5125 where type == .vector4:
+            dataType = .uInt4
+        case 5126 where type == .scalar:
+            dataType = .float
+        case 5126 where type == .vector2:
+            dataType = .float2
+        case 5126 where type == .vector3:
+            dataType = .float3
+        case 5126 where type == .vector4:
+            dataType = .float4
+        default: break
+        }
+        return dataType
     }
 
     public func GLTFStrideOf(vertexFormat: MDLVertexFormat) -> Int {
@@ -439,7 +580,7 @@ extension GLTFAsset {
     }
 
     func createPipelineState(submesh: GLTFSubmesh) -> MTLRenderPipelineState {
-        let (vertexDescriptor, functionConstants) = pipelineProperties(for: submesh)
+        let (vertexDescriptor, functionConstants) = createVertexDescriptor(for: submesh)
         let pipelineState: MTLRenderPipelineState
         do {
             let library = Renderer.device.makeDefaultLibrary()
@@ -493,6 +634,47 @@ extension GLTFAsset {
             default: return .invalid
             }
         default: return .invalid
+        }
+    }
+}
+
+enum GLTFAttribute: String {
+    case position = "POSITION",
+    normal = "NORMAL",
+    texCoord_zero = "TEXCOORD_0",
+    texCoord_one = "TEXCOORD_1",
+    texCoord_two = "TEXCOORD_2",
+    texCoord_three = "TEXCOORD_3",
+    joints = "JOINTS_0",
+    weights = "WEIGHTS_0",
+    tangent = "TANGENT",
+    bitangent = "BITANGENT",
+    color = "COLOR_0"
+
+    func bufferIndex() -> Int {
+        switch self {
+        case .position:
+            return 0
+        case .normal:
+            return 1
+        case .texCoord_zero:
+            return 2
+        case .texCoord_one:
+            return 2
+        case .texCoord_two:
+            return 2
+        case .texCoord_three:
+            return 2
+        case .joints:
+            return 3
+        case .weights:
+            return 4
+        case .tangent:
+            return 5
+        case .bitangent:
+            return 6
+        case .color:
+            return 7
         }
     }
 }
