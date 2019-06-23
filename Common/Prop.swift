@@ -41,6 +41,13 @@ enum PropType {
         }
     }
 
+    var isInstanced: Bool {
+        switch self {
+        case .instanced: return true
+        default: return false
+        }
+    }
+
     var isTextureArray: Bool {
         switch self {
         case .morph: return true
@@ -116,7 +123,7 @@ class Prop: Node {
     var tiling: UInt32 = 1
     let samplerState: MTLSamplerState?
     let debugBoundingBox: DebugBoundingBox
-
+    let propType: PropType
     private(set) var transforms: [Transform]
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
@@ -129,6 +136,7 @@ class Prop: Node {
 
     init(type: PropType) {
 
+        self.propType = type
         // MDLMesh: Load model from bundle
         let mdlMesh = Prop.loadMesh(name: type.name)
         mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,

@@ -37,19 +37,19 @@ final class GameScene: Scene {
         let offset = 15
         let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
         add(node: tree)
-//         TODO: Figure out a way to handle physics with instancing
-//        physicsController.addStaticBody(node: tree)
-
+        physicsController.addStaticBody(node: tree)
         for i in 0..<count {
             var transform = Transform()
             transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
-////
+
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
         let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
+        rock.position = [3, 0, 0]
         add(node: rock)
+        physicsController.addStaticBody(node: rock)
         for i in 0..<count {
             var transform = Transform()
 

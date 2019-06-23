@@ -34,13 +34,27 @@ class PhysicsController {
         
         for body in staticBodies  {
             let bodyRadius = max((body.size.x / 2), (body.size.z / 2))
-            let bodyPosition = body.worldTransform.columns.3.xyz
-            let d = distance(nodePosition, bodyPosition)
-            if d < (nodeRadius + bodyRadius) {
-                if holdAllCollided {
-                    collidedBodies.append(body)
-                } else {
-                    return true
+            if let prop = body as? Prop, prop.propType.isInstanced {
+                for transform in prop.transforms {
+                    let bodyPosition = transform.modelMatrix.columns.3.xyz
+                    let d = distance(nodePosition, bodyPosition)
+                    if d < (nodeRadius + bodyRadius) {
+                        if holdAllCollided {
+                            collidedBodies.append(body)
+                        } else {
+                            return true
+                        }
+                    }
+                }
+            } else {
+                let bodyPosition = body.worldTransform.columns.3.xyz
+                let d = distance(nodePosition, bodyPosition)
+                if d < (nodeRadius + bodyRadius) {
+                    if holdAllCollided {
+                        collidedBodies.append(body)
+                    } else {
+                        return true
+                    }
                 }
             }
         }
