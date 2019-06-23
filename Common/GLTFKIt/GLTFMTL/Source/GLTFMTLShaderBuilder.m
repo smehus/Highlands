@@ -93,7 +93,7 @@
 
 - (NSString *)shaderSource {
     NSError *error = nil;
-    NSURL *shaderURL = [[NSBundle mainBundle] URLForResource:@"CharacterShaders" withExtension:@"metal"];
+    NSURL *shaderURL = [[NSBundle mainBundle] URLForResource:@"pbr" withExtension:@"metal"];
     if (shaderURL == nil) {
         NSLog(@"ERROR: Shader source not found in main bundle; pipeline states cannot be generated");
     }

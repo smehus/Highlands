@@ -14,8 +14,8 @@ final class GameScene: Scene {
     let orthoCamera = OrthographicCamera()
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
-    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
-//    let skeleton = Character(name: "claire")
+//    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
+    let skeleton = Character(name: "claire")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 
     override func setupScene() {

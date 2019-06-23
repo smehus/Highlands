@@ -17,6 +17,9 @@ final class Renderer: NSObject {
 
     var scene: Scene?
 
+    var gltfRenderer: GLTFMTLRenderer!
+    var asset: GLTFAsset!
+
     private var depthStencilState: MTLDepthStencilState!
     private var instanceParamBuffer: MTLBuffer
 
@@ -44,6 +47,16 @@ final class Renderer: NSObject {
         instanceParamBuffer = Renderer.device
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
+        /*
+        gltfRenderer = GLTFMTLRenderer(device: device)
+        gltfRenderer.drawableSize = metalView.drawableSize;
+        gltfRenderer.colorPixelFormat = metalView.colorPixelFormat;
+        gltfRenderer.depthStencilPixelFormat = metalView.depthStencilPixelFormat;
+
+        let url = Bundle.main.url(forResource: "claire", withExtension: "gltf")!
+        let allocator = GLTFMTLBufferAllocator(device: Renderer.device)
+        asset = GLTFAsset(url: url, bufferAllocator: allocator)
+         */
         super.init()
         metalView.clearColor = MTLClearColor(red: 0, green: 0.5,
                                              blue: 0.5, alpha: 1)
@@ -179,7 +192,6 @@ extension Renderer: MTKViewDelegate {
             renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
             renderEncoder.popDebugGroup()
         }
-
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
 //        drawDebug(encoder: renderEncoder)
@@ -188,7 +200,19 @@ extension Renderer: MTKViewDelegate {
 
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
+
         commandBuffer.commit()
+    }
+
+    func renderGLTF(commandBuffer: MTLCommandBuffer, renderEncoder: MTLRenderCommandEncoder) {
+        gltfRenderer.renderScene(asset.defaultScene!,
+                                 commandBuffer: commandBuffer,
+                                 commandEncoder: renderEncoder)
+
+        commandBuffer.addCompletedHandler { (buffer) in
+            self.gltfRenderer.signalFrameCompletion()
+        }
+
     }
 
     func renderShadowPass(renderEncoder: MTLRenderCommandEncoder, view: MTKView) {
