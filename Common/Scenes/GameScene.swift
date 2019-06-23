@@ -80,7 +80,7 @@ final class GameScene: Scene {
 //        skeleton.currentAnimation?.speed = 3.0
         skeleton.pauseAnimation()
 
-        lantern.position = [2.5, 3, 1]
+        lantern.position = [2.5, 3, 1.2]
         add(node: lantern, parent: skeleton, render: true)
 
         orthoCamera.position = [0, 2, 0]
