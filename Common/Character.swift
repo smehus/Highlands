@@ -418,9 +418,10 @@ extension GLTFAsset {
         var hasBitangent   = false
         var hasColor       = false
         var hasWeights    = false
-        var hasJoints     = false
+        var hasJoints     = true
 
         functionConstants.setConstantValue(&hasTexCoord, type: .bool, index: 3)
+        functionConstants.setConstantValue(&hasJoints, type: .bool, index: 8)
 
         let layouts = NSMutableArray(capacity: 8)
         for _ in 0..<8 {

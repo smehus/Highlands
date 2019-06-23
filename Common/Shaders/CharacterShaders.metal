@@ -2,10 +2,6 @@
 using namespace metal;
 #import "../../Common/Utility/Common.h"
 
-//constant bool hasColorTexture [[ function_constant(0) ]];
-//constant bool hasWeights [[ function_constant(1) ]];
-//constant bool hasJoints [[ function_constant(2) ]];
-
 //constant bool hasPosition    [[function_constant(0)]];
 //constant bool hasNormal      [[function_constant(1)]];
 //constant bool hasTangent     [[function_constant(2)]];
@@ -14,7 +10,7 @@ constant bool hasTexCoord0   [[function_constant(3)]];
 //constant bool hasColor       [[function_constant(5)]];
 //constant bool hasWeights0    [[function_constant(6)]];
 //constant bool hasWeights1    [[function_constant(7)]];
-//constant bool hasJoints0     [[function_constant(8)]];
+constant bool hasJoints0     [[function_constant(8)]];
 //constant bool hasJoints1     [[function_constant(9)]];
 //constant bool hasRoughness   [[function_constant(10)]];
 //constant bool hasMetalness   [[function_constant(11)]];
@@ -26,7 +22,7 @@ struct VertexIn {
 //    float4 tangent [[ attribute(Tangent) ]];
 //    float3 bitangent [[ attribute(Bitangent) ]];
     float4 color [[ attribute(Color) ]];
-    ushort4 joints [[ attribute(Joints) ]];
+    ushort4 joints [[ attribute(Joints), function_constant(hasJoints0)]];
     float4 weights [[ attribute(Weights) ]];
 
 //    float4 position  [[attribute(0), function_constant(hasPosition) ]];
