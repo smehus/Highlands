@@ -28,8 +28,8 @@ final class GameScene: Scene {
         camera.position = [0, 2, -4]
         camera.rotation = [0, 0, 0]
 
-        ground.tiling = 16
-        ground.scale = [16, 1, 16]
+        ground.tiling = 4
+        ground.scale = [4, 1, 4]
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
 
