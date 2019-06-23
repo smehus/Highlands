@@ -29,11 +29,12 @@ final class GameScene: Scene {
         camera.rotation = [0, 0, 0]
 
         ground.tiling = 16
+        ground.scale = [16, 1, 16]
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
 
         let count = 10
-        let offset = 3
+        let offset = 15
         let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
         add(node: tree)
 //         TODO: Figure out a way to handle physics with instancing
@@ -42,7 +43,6 @@ final class GameScene: Scene {
         for i in 0..<count {
             var transform = Transform()
             transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-            transform.scale = float3(0.3, 0.3, 0.3)
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
 ////
@@ -59,25 +59,16 @@ final class GameScene: Scene {
                 transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
             }
 
-            transform.scale = [0.5, 0.5, 0.5]
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
 
-
-
-        if skeleton.name.hasPrefix("claire") {
-//            skeleton.scale = [0.005, 0.005, 0.005]
-//            skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
-        } else {
-            skeleton.scale = [0.3, 0.3, 0.3]
-        }
 
 //        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
         skeleton.runAnimation(name: "walking")
         self.physicsController.dynamicBody = skeleton
         self.inputController.player = skeleton
-//        skeleton.currentAnimation?.speed = 3.0
+        skeleton.currentAnimation?.speed = 1.0
         skeleton.pauseAnimation()
 
         lantern.position = [2.5, 3, 1.2]
@@ -89,8 +80,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 4
-        tpCamera.focusDistance = 2.5
+        tpCamera.focusHeight = 6
+        tpCamera.focusDistance = 4
         cameras.append(tpCamera)
         currentCameraIndex = 2
     }

@@ -154,11 +154,11 @@ extension Submesh: Texturable {}
 private extension Submesh.Textures {
     init(material: MDLMaterial?, origin: MTKTextureLoader.Origin = .topLeft, overrideTextures: [String]? = nil) {
         func property(with semantic: MDLMaterialSemantic, name: String) -> MTLTexture? {
-//            print("🛠 Loading Material \(name)")
             guard
                 let property = material?.property(with: semantic),
                 property.type == .string,
-                let filename = property.stringValue else {
+                let filename = property.stringValue
+            else {
                     return nil
             }
 

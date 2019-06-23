@@ -12,14 +12,14 @@ class InputController {
 
 
     var rotationSpeed: Float = 4.0
-    var translationSpeed: Float = 0.05 {
+    var translationSpeed: Float = 0.15 {
         didSet {
             if translationSpeed > maxSpeed {
                 translationSpeed = maxSpeed
             }
         }
     }
-    let maxSpeed: Float = 0.03
+    let maxSpeed: Float = 1.0
     var currentTurnSpeed: Float = 0
     var currentPitch: Float = 0
     var forward = false

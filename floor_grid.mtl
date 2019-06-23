@@ -10,6 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Kd grid_texture.png
 
 newmtl Material.001_Untitled
 Ns 96.078431

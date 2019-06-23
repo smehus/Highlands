@@ -18,7 +18,7 @@ class InputController {
     var mouseDelegate: MouseDelegate?
     var useMouse = false
 
-    var translationSpeed: Float = 2.0
+    var translationSpeed: Float = 6.0
     var rotationSpeed: Float = 2.0
 
 
