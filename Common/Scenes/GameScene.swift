@@ -46,8 +46,8 @@ final class GameScene: Scene {
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: 20))
-        rock.position = [3, 0, 0]
+        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
+
         add(node: rock)
         physicsController.addStaticBody(node: rock)
         for i in 0..<count {

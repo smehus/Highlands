@@ -43,7 +43,7 @@ enum PropType {
 
     var isInstanced: Bool {
         switch self {
-        case .instanced: return true
+        case .morph, .instanced: return true
         default: return false
         }
     }
