@@ -205,7 +205,7 @@ float4 sepiaShader(float4 color) {
     output.z = color.z;
 
     output = mix(output, color, 0.4);
-    return output;
+    return color;
 }
 
 fragment float4 fragment_main(VertexOut in [[ stage_in ]],

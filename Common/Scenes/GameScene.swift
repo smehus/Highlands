@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MetalKit
 import ModelIO
 
 final class GameScene: Scene {
@@ -17,6 +18,7 @@ final class GameScene: Scene {
     let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let skeleton = Character(name: "claire")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
+    let water = Water(size: 100)
 
     override func setupScene() {
 
@@ -28,13 +30,19 @@ final class GameScene: Scene {
         camera.position = [0, 2, -4]
         camera.rotation = [0, 0, 0]
 
+        water.position.y = -1
+        water.rotation = [0, 0, radians(fromDegrees: -90)]
+        add(node: water)
+
         ground.tiling = 4
-        ground.scale = [4, 1, 4]
+        ground.scale = [1, 1, 1]
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
 
+
+        /*
         let count = 10
-        let offset = 15
+        let offset = 10
         let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
         add(node: tree)
         physicsController.addStaticBody(node: tree)
@@ -61,9 +69,9 @@ final class GameScene: Scene {
 
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
+         */
 
-
-//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
         skeleton.runAnimation(name: "walking")
         self.physicsController.dynamicBody = skeleton
