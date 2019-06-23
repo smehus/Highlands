@@ -317,11 +317,100 @@ extension Character: Renderable {
 extension GLTFAsset {
 
     func pipelineProperties(for submesh: GLTFSubmesh) -> (MTLVertexDescriptor, MTLFunctionConstantValues) {
+        let vertexDescriptor = MTLVertexDescriptor()
         let functionConstants = MTLFunctionConstantValues()
-        var hasColorTexture = false
-        var hasJoints = false
-        var hasWeights = false
 
+        var hasPosition    = false
+        var hasNormal      = false
+        var hasTangent     = false
+        var hasTexCoord0   = false
+        var hasTexCoord1   = false
+        var hasColor       = false
+        var hasWeights0    = false
+        var hasWeights1    = false
+        var hasJoints0     = false
+        var hasJoints1     = false
+        var hasRoughness   = false
+        var hasMetalness   = false
+
+        let descriptor = submesh.vertexDescriptor
+        for attributeIndex in 0..<GLTFVertexDescriptorMaxAttributeCount {
+            let attribute = descriptor.attributes[attributeIndex]
+            let layout = descriptor.bufferLayouts[attributeIndex]
+
+            var bufferIndex = attributeIndex
+            switch attribute.semantic {
+            case GLTFAttributeSemanticPosition:
+                hasPosition = true
+                bufferIndex = 0
+            case GLTFAttributeSemanticTangent:
+                hasTangent = true
+                bufferIndex = 2
+            case GLTFAttributeSemanticNormal:
+                hasNormal = true
+                bufferIndex = 1
+            case GLTFAttributeSemanticTexCoord0:
+                hasTexCoord0 = true
+                bufferIndex = 3
+            case GLTFAttributeSemanticTexCoord1:
+                hasTexCoord1 = true
+                bufferIndex = 4
+            case GLTFAttributeSemanticColor0:
+                hasColor = true
+                bufferIndex = 5
+            case GLTFAttributeSemanticJoints0:
+                hasJoints0 = true
+                bufferIndex = 8
+            case GLTFAttributeSemanticJoints1:
+                hasJoints1 = true
+                bufferIndex = 9
+            case GLTFAttributeSemanticWeights0:
+                hasWeights0 = true
+                bufferIndex = 6
+            case GLTFAttributeSemanticWeights1:
+                hasWeights1 = true
+                bufferIndex = 7
+            case GLTFAttributeSemanticRoughness:
+                hasRoughness = true
+                bufferIndex = 10
+            case GLTFAttributeSemanticMetallic:
+                hasMetalness = true
+                bufferIndex = 11
+            default: break
+            }
+
+            functionConstants.setConstantValue(&hasPosition, type: .bool, index: 0)
+            functionConstants.setConstantValue(&hasNormal, type: .bool, index: 1)
+            functionConstants.setConstantValue(&hasTangent, type: .bool, index: 2)
+            functionConstants.setConstantValue(&hasTexCoord0, type: .bool, index: 3)
+            functionConstants.setConstantValue(&hasTexCoord1, type: .bool, index: 4)
+            functionConstants.setConstantValue(&hasColor, type: .bool, index: 5)
+            functionConstants.setConstantValue(&hasWeights0, type: .bool, index: 6)
+            functionConstants.setConstantValue(&hasWeights1, type: .bool, index: 7)
+            functionConstants.setConstantValue(&hasJoints0, type: .bool, index: 8)
+            functionConstants.setConstantValue(&hasJoints1, type: .bool, index: 9)
+            functionConstants.setConstantValue(&hasRoughness, type: .bool, index: 10)
+            functionConstants.setConstantValue(&hasMetalness, type: .bool, index: 11)
+
+
+            guard attribute.componentType.rawValue != 0 else { continue }
+
+            let vertexFormat = GLTFMTLVertexFormatForComponentTypeAndDimension(attribute.componentType, attribute.dimension)
+            vertexDescriptor.attributes[attributeIndex].offset = 0;
+            vertexDescriptor.attributes[attributeIndex].format = vertexFormat;
+            vertexDescriptor.attributes[attributeIndex].bufferIndex = bufferIndex;
+
+            vertexDescriptor.layouts[attributeIndex].stride = layout.stride;
+            vertexDescriptor.layouts[attributeIndex].stepRate = 1;
+            vertexDescriptor.layouts[attributeIndex].stepFunction = .perInstance;
+        }
+
+
+
+        return(vertexDescriptor, functionConstants)
+    }
+
+    var defaultMDLVertexDescriptor: MDLVertexDescriptor {
         let vertexDescriptor = MDLVertexDescriptor()
         (vertexDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
         (vertexDescriptor.attributes[1] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
@@ -331,75 +420,22 @@ extension GLTFAsset {
         (vertexDescriptor.attributes[5] as! MDLVertexAttribute).name = MDLVertexAttributeColor
         (vertexDescriptor.attributes[6] as! MDLVertexAttribute).name = MDLVertexAttributeJointIndices
         (vertexDescriptor.attributes[7] as! MDLVertexAttribute).name = MDLVertexAttributeJointWeights
+        return vertexDescriptor
+    }
 
-        let gltfVertexDescriptor = submesh.vertexDescriptor
-        var layouts = NSMutableArray(capacity: 8)
-        for _ in layouts {
-            layouts.add(MDLVertexBufferLayout(stride: 0))
+    public func GLTFStrideOf(vertexFormat: MDLVertexFormat) -> Int {
+        switch  vertexFormat {
+        case .float2:
+            return MemoryLayout<Float>.stride * 2
+        case .float3:
+            return MemoryLayout<Float>.stride * 3
+        case .float4:
+            return MemoryLayout<Float>.stride * 4
+        case .uShort4:
+            return MemoryLayout<ushort>.stride * 4
+        default:
+            fatalError("MDLVertexFormat: \(vertexFormat.rawValue) not supported")
         }
-
-        for index in 0..<GLTFVertexDescriptorMaxAttributeCount {
-            let attribute = gltfVertexDescriptor.attributes[index]
-            let layout = gltfVertexDescriptor.bufferLayouts[index]
-
-            guard attribute.componentType.rawValue != 0 else { continue }
-
-//            let vertexFormat = GLTFMTLVertexFormatForComponentTypeAndDimension(attribute.componentType, attribute.dimension)
-            let format = mdlVertexFormat(baseType: attribute.componentType, dimension: attribute.dimension)
-            guard format != .invalid else { fatalError() }
-
-            var name = "ERROR"
-            var layoutIndex = 0
-            switch attribute.semantic {
-            case "POSITION":
-                name = MDLVertexAttributePosition
-                layoutIndex = 0
-            case "NORMAL":
-                name = MDLVertexAttributeNormal
-                layoutIndex = 1
-            case "WEIGHTS_0":
-                name = MDLVertexAttributeJointWeights
-                layoutIndex = 7
-                hasWeights = true
-            case "TANGENT":
-                name = MDLVertexAttributeTangent
-                layoutIndex = 3
-            case "JOINTS_0":
-                name = MDLVertexAttributeJointIndices
-                layoutIndex = 6
-                hasJoints = true
-            case "TEXCOORD_0":
-                name = MDLVertexAttributeTextureCoordinate
-                layoutIndex = 2
-                hasColorTexture = true
-            default:
-                break
-            }
-
-            functionConstants.setConstantValue(&hasColorTexture, type: .bool, index: 0)
-            functionConstants.setConstantValue(&hasWeights, type: .bool, index: 1)
-            functionConstants.setConstantValue(&hasJoints, type: .bool, index: 2)
-
-            let mdlAttribute = MDLVertexAttribute(name: name,
-                                                  format: format,
-                                                  offset: 0,
-                                                  bufferIndex: layoutIndex)
-
-            vertexDescriptor.addOrReplaceAttribute(mdlAttribute)
-            layouts[layoutIndex] = MDLVertexBufferLayout(stride: layout.stride)
-
-
-//            descriptor.attributes[index].offset = 0;
-//            descriptor.attributes[index].format = vertexFormat;
-//            descriptor.attributes[index].bufferIndex = index;
-//
-//            descriptor.layouts[index].stride = layout.stride;
-//            descriptor.layouts[index].stepRate = 1;
-//            descriptor.layouts[index].stepFunction = .perVertex;
-        }
-
-        vertexDescriptor.layouts = layouts
-        return (MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)!, functionConstants)
     }
 
     func createPipelineState(submesh: GLTFSubmesh) -> MTLRenderPipelineState {
@@ -423,7 +459,7 @@ extension GLTFAsset {
         return pipelineState
     }
 
-    func mdlVertexFormat(baseType: GLTFDataType, dimension: GLTFDataDimension) -> MDLVertexFormat {
+    func mdlVertexFormat(baseType: GLTFDataType, dimension: GLTFDataDimension) -> MTLVertexFormat {
         switch baseType {
         case .dataTypeChar, .dataTypeUChar:
             switch dimension {
@@ -434,9 +470,9 @@ extension GLTFAsset {
             }
         case .dataTypeShort, .dataTypeUShort:
             switch dimension {
-            case .vector2: return .uShort2
-            case .vector3: return .uShort3
-            case .vector4: return .uShort4
+            case .vector2: return .ushort2
+            case .vector3: return .ushort3
+            case .vector4: return .ushort4
             default: return .invalid
             }
         case .dataTypeInt, .dataTypeUInt:
@@ -452,7 +488,8 @@ extension GLTFAsset {
             case .scalar: return .float
             case .vector2: return .float2
             case .vector3: return .float3
-            case .vector4: return .float4
+            case .vector4:
+                return .float4
             default: return .invalid
             }
         default: return .invalid
