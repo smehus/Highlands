@@ -178,6 +178,11 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
         for renderable in scene.renderables {
+            // Allow set up for off screen targets
+            renderable.renderToTarget(with: commandBuffer)
+        }
+
+        for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
             renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
             renderEncoder.popDebugGroup()
