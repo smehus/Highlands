@@ -9,6 +9,7 @@ final class Renderer: NSObject {
     static var commandQueue: MTLCommandQueue!
     static var colorPixelFormat: MTLPixelFormat!
     static var depthPixelFormat: MTLPixelFormat!
+    static var drawableSize: CGSize!
     static var library: MTLLibrary?
     static let MaxVisibleFaces = 6
     static let MaxActors = 5
@@ -42,6 +43,7 @@ final class Renderer: NSObject {
         Renderer.colorPixelFormat = metalView.colorPixelFormat
         Renderer.depthPixelFormat = metalView.depthStencilPixelFormat
         Renderer.library = device.makeDefaultLibrary()
+        Renderer.drawableSize = metalView.drawableSize
         instanceParamBuffer = Renderer.device
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 

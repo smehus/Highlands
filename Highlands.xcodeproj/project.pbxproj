@@ -11,6 +11,10 @@
 		0284473922C02DFB00A4E479 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
 		0284473B22C0377500A4E479 /* Water.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0284473A22C0377500A4E479 /* Water.metal */; };
 		0284473C22C0377500A4E479 /* Water.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0284473A22C0377500A4E479 /* Water.metal */; };
+		0284473E22C0455C00A4E479 /* normal-water.png in Resources */ = {isa = PBXBuildFile; fileRef = 0284473D22C0455C00A4E479 /* normal-water.png */; };
+		0284473F22C0455C00A4E479 /* normal-water.png in Resources */ = {isa = PBXBuildFile; fileRef = 0284473D22C0455C00A4E479 /* normal-water.png */; };
+		0284474122C04EE500A4E479 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
+		0284474222C04EE500A4E479 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
@@ -202,6 +206,8 @@
 /* Begin PBXFileReference section */
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
 		0284473A22C0377500A4E479 /* Water.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Water.metal; sourceTree = "<group>"; };
+		0284473D22C0455C00A4E479 /* normal-water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "normal-water.png"; sourceTree = "<group>"; };
+		0284474022C04EE500A4E479 /* RenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
@@ -348,6 +354,7 @@
 		A551AE0621C997C600FA207B /* Props */ = {
 			isa = PBXGroup;
 			children = (
+				0284473D22C0455C00A4E479 /* normal-water.png */,
 				A59150C52263C202008ED280 /* garden */,
 				A59150BB2263BC7C008ED280 /* Pillar */,
 				A59150B42263BA59008ED280 /* Grid */,
@@ -541,6 +548,7 @@
 		A57F6A6121B978E3002C0632 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				0284474022C04EE500A4E479 /* RenderPass.swift */,
 				A57506D321CD6C9200C63081 /* glTF Importer */,
 				A57506C721CD669700C63081 /* Debug */,
 				A575069D21CD63E200C63081 /* PhysicsController.swift */,
@@ -724,6 +732,7 @@
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
 				A5CB1E8021EA74F7002CCB94 /* HRN_LMP_CM.bmp in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
+				0284473E22C0455C00A4E479 /* normal-water.png in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
 				A58F1A0421E931E5003F6F1F /* rock2.obj in Resources */,
 				A59150D62263C216008ED280 /* grass_tile.obj in Resources */,
@@ -790,6 +799,7 @@
 				A5A49165226B7AF8000A6BDD /* scaled_rigged_character.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
 				A58F1A0B21E931E5003F6F1F /* rock1.mtl in Resources */,
+				0284473F22C0455C00A4E479 /* normal-water.png in Resources */,
 				A57506B521CD646900C63081 /* large-plane.mtl in Resources */,
 				A5CB1E8121EA74F7002CCB94 /* HRN_LMP_CM.bmp in Resources */,
 				A58F1A0721E931E5003F6F1F /* rock3.obj in Resources */,
@@ -848,6 +858,7 @@
 				A57506CC21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
 				A57506EC21CE942700C63081 /* InputController.swift in Sources */,
 				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
+				0284474122C04EE500A4E479 /* RenderPass.swift in Sources */,
 				A57506D921CD6C9200C63081 /* GLTFAsset.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5CB1E9E21EA848E002CCB94 /* DebugLights.metal in Sources */,
@@ -874,6 +885,7 @@
 				A5CB1E9F21EA848E002CCB94 /* DebugLights.metal in Sources */,
 				0284473C22C0377500A4E479 /* Water.metal in Sources */,
 				A563DF1621E7999F00563EA9 /* Skybox.metal in Sources */,
+				0284474222C04EE500A4E479 /* RenderPass.swift in Sources */,
 				A57F6A5821B8CBD8002C0632 /* Renderer.swift in Sources */,
 				A588D83B21CAE1A300652FC2 /* Character.swift in Sources */,
 				A5A1CD2521BA2833002F6F35 /* ViewController.swift in Sources */,

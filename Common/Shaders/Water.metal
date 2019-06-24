@@ -32,8 +32,23 @@ vertex VertexOut vertex_water(const VertexIn vertex_in [[ stage_in ]],
     return vertex_out;
 }
 
-fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]]) {
-    return float4(0.1, 0.5, 0.6, 1.0);
+fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
+                               texture2d<float> normalTexture [[ texture(2) ]],
+                               constant float &timer [[ buffer(3) ]]) {
+
+    constexpr sampler s(filter::linear, address::repeat);
+    float2 uv = vertex_in.uv * 2.0;
+    float waveStrength = 0.1;
+    float2 rippleX = float2(uv.x + timer, uv.y);
+    float2 rippleY = float2(-uv.x, uv.y) + timer;
+    float2 ripple = ((normalTexture.sample(s, rippleX).rg * 2.0 - 1.0) +
+                     (normalTexture.sample(s, rippleY).rg * 2.0 - 1.0)) * waveStrength;
+    float2 reflectionCoords = ripple;
+    reflectionCoords = clamp(reflectionCoords, 0.001, 0.999);
+
+    float4 color = float4(0.1, 0.5, 0.6, 1.0);
+
+    return color;
 }
 
 
