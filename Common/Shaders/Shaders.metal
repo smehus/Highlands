@@ -47,7 +47,7 @@ vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
 
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix * float4(vertexIn.position.xyz, 1);
 
-    out.worldPosition = uniforms.modelMatrix * instance.modelMatrix *vertexIn.position;
+    out.worldPosition = uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
     out.worldNormal = uniforms.normalMatrix * instance.normalMatrix * vertexIn.normal;
     out.uv = vertexIn.uv;
     // Normal matrix is the same as world space aka model matrix

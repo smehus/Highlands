@@ -13,6 +13,7 @@ enum PropType {
     case instanced(name: String, instanceCount: Int)
     case ground(name: String)
     case morph(textures: [String], morphTargets: [String], instanceCount: Int)
+    case water
 
     var name: String {
         switch self {
@@ -20,6 +21,7 @@ enum PropType {
         case .ground(let name): return name
         case .morph(_, let targets, _): return targets.first!
         case .instanced(let name, _): return name
+        case .water: return "Water"
         }
     }
 
@@ -29,6 +31,7 @@ enum PropType {
             return "vertex_main"
         case .morph:
             return "vertex_morph"
+        case .water: return "vertex_water"
         }
     }
 
@@ -38,6 +41,7 @@ enum PropType {
             return "fragment_main"
         case .morph:
             return "fragment_main"
+        case .water: return "fragment_water"
         }
     }
 
@@ -150,7 +154,7 @@ class Prop: Node {
         submeshes = mdlMesh.submeshes?.enumerated().compactMap { index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
             return Submesh(submesh: mtkMesh.submeshes[index], mdlSubmesh: submesh, type: type)
-            } ?? []
+        } ?? []
 
         samplerState = Prop.buildSamplerState()
         debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)

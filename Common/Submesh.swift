@@ -183,7 +183,7 @@ private extension Submesh.Textures {
     }
 }
 
-private extension Material {
+extension Material {
     init(material: MDLMaterial?) {
         self.init()
         if let baseColor = material?.property(with: .baseColor), baseColor.type == .float3 {
