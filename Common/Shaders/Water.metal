@@ -32,6 +32,8 @@ vertex VertexOut vertex_water(const VertexIn vertex_in [[ stage_in ]],
     return vertex_out;
 }
 
+
+
 fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
                                texture2d<float> reflectionTexture [[ texture(0) ]],
                                texture2d<float> refractionTexture [[ texture(1) ]],
@@ -48,7 +50,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
 
     // Ripples
-    float2 uv = vertex_in.uv * 0.7;
+    float2 uv = vertex_in.uv * 0.2;
     float waveStrength = 0.05;
     float2 rippleX = float2(uv.x + timer, uv.y);
     float2 rippleY = float2(-uv.x, uv.y) + timer * 0.5;
