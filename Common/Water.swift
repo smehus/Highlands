@@ -109,6 +109,8 @@ extension Water: Renderable {
 
         var uniforms = vertex
         uniforms.modelMatrix = worldTransform
+        uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
         renderEncoder.setFragmentTexture(reflectionRenderPass.texture, index: 0)
@@ -118,7 +120,7 @@ extension Water: Renderable {
         renderEncoder.setFragmentBytes(&timer, length: MemoryLayout<Float>.size, index: 3)
         for (index, submesh) in mesh.submeshes.enumerated() {
 
-            // Not a great way to do this 
+            // Not a great way to do this
             let mdlSubmesh = mdlMesh.submeshes?[index] as! MDLSubmesh
             var material = Material(material: mdlSubmesh.material)
             renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
