@@ -111,11 +111,16 @@ float3 diffuseLighting(VertexOut in,
                 float3 reflection = reflect(lightDirection, normalDirection);
                 // vector between camera & fragment
                 float3 cameraPosition = normalize(in.worldPosition.xyz - fragmentUniforms.cameraPosition);
-                float specularIntensity = pow(saturate(dot(reflection, cameraPosition)), materialShininess);
+                // Commented out because I think this is 'light reflection off shininess' thing thats causing the light
+                // But I don't get the same affecta s no sunlight...
+                float specularIntensity = 0;//pow(saturate(dot(reflection, cameraPosition)), materialShininess);
                 specularColor = light.specularColor * materialSpecularColor * specularIntensity;
             }
 
             diffuseColor += light.color * baseColor * diffuseIntensity;
+
+            // Use intensity of light to create general light
+            diffuseColor *= light.intensity;
         } else if (light.type == Ambientlight) {
             ambientColor += light.color * light.intensity;
         } else if (light.type == Pointlight) {

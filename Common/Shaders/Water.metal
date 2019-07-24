@@ -73,6 +73,10 @@ float3 waterDiffuseLighting(VertexOut in,
             }
 
             diffuseColor += light.color * baseColor * diffuseIntensity;
+
+            // Use intensity of light to create general light
+            diffuseColor *= light.intensity;
+
         } else if (light.type == Pointlight) {
             // *** Light Bulb ***\\
 
