@@ -45,6 +45,8 @@ float3 waterDiffuseLighting(VertexOut in,
     float3 diffuseColor = 0;
     float3 ambientColor = 0;
     float3 specularColor = 0;
+    float materialShininess = material.shininess;
+    float3 materialSpecularColor = material.specularColor;
 
     float3 normalDirection;
     normalDirection = normalValue.xyz;
@@ -53,7 +55,25 @@ float3 waterDiffuseLighting(VertexOut in,
     for (uint i = 0; i < fragmentUniforms.lightCount; i++) {
         Light light = lights[i];
 
-        if (light.type == Pointlight) {
+        if (light.type == Sunlight) {
+            float3 lightDirection = normalize(light.position);
+
+            // Dot finds angle between sun direction & normal direction
+            // Dot returns between -1 and 1
+            // Saturate clamps between 0 and 1
+            float diffuseIntensity = saturate(dot(lightDirection, normalDirection));
+
+            if (diffuseIntensity > 0) {
+                // reflection
+                float3 reflection = reflect(lightDirection, normalDirection);
+                // vector between camera & fragment
+                float3 cameraPosition = normalize(in.worldPosition.xyz - fragmentUniforms.cameraPosition);
+                float specularIntensity = pow(saturate(dot(reflection, cameraPosition)), materialShininess);
+                specularColor = light.specularColor * materialSpecularColor * specularIntensity;
+            }
+
+            diffuseColor += light.color * baseColor * diffuseIntensity;
+        } else if (light.type == Pointlight) {
             // *** Light Bulb ***\\
 
             // distance between light and fragment
@@ -76,6 +96,8 @@ float3 waterDiffuseLighting(VertexOut in,
             color *= attenuation;
 
             diffuseColor += color;
+        } else if (light.type == Ambientlight) {
+            ambientColor += light.color * light.intensity;
         }
     }
 
@@ -122,6 +144,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
         baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
     }
 
+    // Check out ray sample project challenge for lighting against the normalTexture rather than the geometry
     float3 color = waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
 
     return float4(color, 1);

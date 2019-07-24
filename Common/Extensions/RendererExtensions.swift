@@ -14,12 +14,13 @@ func lighting() -> [Light] {
 
     var light = buildDefaultLight()
     light.position = [1, 2, -2]
-    light.color = [0.2, 0.2, 0.2]
-//    lights.append(light)
+    light.color = [1, 1, 0.9]
+    lights.append(light)
 
     light = buildDefaultLight()
     light.type = Ambientlight
-    light.intensity = 0.1
+    light.intensity = 0.7
+//    light.color = [1, 1, 0.9]
 //    lights.append(light)
 
 

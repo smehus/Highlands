@@ -15,8 +15,9 @@ final class GameScene: Scene {
     let orthoCamera = OrthographicCamera()
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
-    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
+//    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let skeleton = Character(name: "claire")
+    let skeleton = Character(name: "walking_boy")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
     let water = Water(size: 100)
 
@@ -71,6 +72,7 @@ final class GameScene: Scene {
         }
 
 
+//        skeleton.scale = [0.3, 0.3, 0.3]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
         skeleton.runAnimation(name: "walking")
