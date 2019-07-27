@@ -117,10 +117,12 @@ float3 diffuseLighting(VertexOut in,
                 specularColor = light.specularColor * materialSpecularColor * specularIntensity;
             }
 
-            diffuseColor += light.color * baseColor * diffuseIntensity;
+            float3 combinedColor = light.color * baseColor * diffuseIntensity * light.intensity;
+            diffuseColor += combinedColor;
 
             // Use intensity of light to create general light
-            diffuseColor *= light.intensity;
+            // Removed this to only use intensity on light applied with sunlight - not like pointlight or anything
+//            diffuseColor *= light.intensity;
         } else if (light.type == Ambientlight) {
             ambientColor += light.color * light.intensity;
         } else if (light.type == Pointlight) {
