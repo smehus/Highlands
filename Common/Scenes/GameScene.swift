@@ -114,8 +114,8 @@ final class GameScene: Scene {
 
             // Lantern
             lights[index].position = position
-            lights[index].position.y = 3.0
-            lights[index].position += forward / 4
+            lights[index].position.y = 1.0
+            lights[index].position += (forward * 4)
 
 
 //            lights[index].position = camera.position

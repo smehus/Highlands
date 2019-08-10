@@ -43,7 +43,7 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
     // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
     out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
-    out.worldNormal = uniforms.normalMatrix * (skinMatrix * float4(vertexIn.normal, 1)).xyz;
+    out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
     out.uv = vertexIn.uv;
 
     float4x4 shadowMatrix = uniforms.shadowMatrix;
@@ -195,18 +195,18 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     if (hasCharacterTextures) {
         constexpr sampler s(filter::linear);
         float4 textureColor = baseColorTexture.sample(s, in.uv);
-        if (textureColor.a < 0.1) { discard_fragment(); }
+//        if (textureColor.a < 0.1) { discard_fragment(); }
         baseColor = textureColor.rgb;
 
     } else {
         baseColor = material.baseColor;
     }
 
-    if (baseColor.r == 0 && baseColor.g == 0 && baseColor.b == 0) {
-        discard_fragment();
-    }
+//    if (baseColor.r == 0 && baseColor.g == 0 && baseColor.b == 0) {
+//        discard_fragment();
+//    }
 
-//    float3 color = characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
+    float3 color = characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
 
     /*
      This is for non omnidiretional shadow maps
@@ -227,7 +227,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 
      */
     
-    return float4(baseColor, 1);
+    return float4(color, 1);
 
 //
 //    float4 color;
