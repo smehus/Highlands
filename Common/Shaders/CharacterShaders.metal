@@ -2,10 +2,12 @@
 using namespace metal;
 #import "Common.h"
 
+constant bool hasCharacterTextures [[ function_constant(UV) ]];
+
 struct VertexIn {
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];
-    float2 uv [[ attribute(UV) ]];
+    float2 uv [[ attribute(UV), function_constant(hasCharacterTextures) ]];
 //    float4 tangent [[ attribute(Tangent) ]];
 //    float3 bitangent [[ attribute(Bitangent) ]];
     float4 color [[ attribute(Color) ]];
@@ -41,7 +43,7 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
     // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
     out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
-    out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
+    out.worldNormal = uniforms.normalMatrix * (skinMatrix * float4(vertexIn.normal, 1)).xyz;
     out.uv = vertexIn.uv;
 
     float4x4 shadowMatrix = uniforms.shadowMatrix;
@@ -187,26 +189,35 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 //                                        texture2d<float> shadowTexture [[ texture(ShadowColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
 
-    constexpr sampler s(filter::linear);
-    float4 baseColor = baseColorTexture.sample(s, in.uv);
 
-    if (baseColor.a < 0.1) {
-        discard_fragment();
+
+    float3 baseColor;
+    if (hasCharacterTextures) {
+        constexpr sampler s(filter::linear);
+        float4 textureColor = baseColorTexture.sample(s, in.uv);
+        if (textureColor.a < 0.1) { discard_fragment(); }
+        baseColor = textureColor.rgb;
+
+    } else {
+        baseColor = material.baseColor;
     }
 
     if (baseColor.r == 0 && baseColor.g == 0 && baseColor.b == 0) {
         discard_fragment();
     }
 
-    float3 color = characterDiffuseLighting(in, baseColor.rgb, normalize(in.worldNormal), material, fragmentUniforms, lights);
-
-    float2 xy = in.shadowPosition.xy;
-    xy = xy * 0.5 + 0.5;
-    xy.y = 1 - xy.y;
+    float3 color = characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
 
     /*
      This is for non omnidiretional shadow maps
+     simply grabbing the fragment coordinates out of shadow map and
+     crosschecking with shadow in position.
     constexpr sampler shadowSample(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
+
+     float2 xy = in.shadowPosition.xy;
+     xy = xy * 0.5 + 0.5;
+     xy.y = 1 - xy.y;
+
     float shadow_sample = shadowTexture.sample(shadowSample, xy);
     float current_sample = in.shadowPosition.z / in.shadowPosition.w;
 

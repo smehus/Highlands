@@ -56,6 +56,7 @@ class GLTFAsset {
     var hasWeights = false
     var hasBitangent = false
     var hasColor = false
+    var hasColorTexture = false
 
     private var animatedModel: Character!
 
@@ -222,8 +223,10 @@ class GLTFAsset {
                 hasNormal = true
             case .texCoord_zero:
                 attributeName = MDLVertexAttributeTextureCoordinate
+                hasColorTexture = true
             case .texCoord_one:
                 attributeName = MDLVertexAttributeTextureCoordinate
+                hasColorTexture = true
             case .joints:
                 attributeName = MDLVertexAttributeJointIndices
                 hasJoints = true
@@ -436,14 +439,14 @@ class GLTFAsset {
                     var materialProperty: MDLMaterialProperty?
                     switch property.key {
 
-                        //          case "baseColorFactor":
-                        //            if let value = property.value as? [Float] {
-                        //              let color = float4(array: value)
-                        //              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
-                        //            } else if let value = property.value as? [Double] {
-                        //              let color = float4(array: value)
-                        //              materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
-                        //            }
+                    case "baseColorFactor":
+                        if let value = property.value as? [Float] {
+                            let color = float4(array: value)
+                            materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
+                        } else if let value = property.value as? [Double] {
+                            let color = float4(array: value)
+                            materialProperty = MDLMaterialProperty(name: property.key, semantic: .baseColor, float3: [color.x, color.y, color.z])
+                        }
 
                     case "metallicFactor":
                         if let value = property.value as? Float {
@@ -806,16 +809,18 @@ extension GLTFAsset {
         let functionConstants = MTLFunctionConstantValues()
         functionConstants.setConstantValue(&hasNormal, type: .bool, index: Int(Normal.rawValue))
         functionConstants.setConstantValue(&hasTangent, type: .bool, index: Int(Tangent.rawValue))
+        functionConstants.setConstantValue(&hasColorTexture, type: .bool, index: Int(UV.rawValue))
         return functionConstants
     }
 
     func createPipelineState(vertexDescriptor: MTLVertexDescriptor) -> MTLRenderPipelineState{
         let functionConstants = buildFunctionConstants()
+
         let pipelineState: MTLRenderPipelineState
         do {
             let library = Renderer.device.makeDefaultLibrary()
             let vertexFunction = try library?.makeFunction(name: "character_vertex_main", constantValues: functionConstants)
-            let fragmentFunction =  library?.makeFunction(name: "character_fragment_main" /* Need to create function constants for fragment shader */)
+            let fragmentFunction =  try library?.makeFunction(name: "character_fragment_main", constantValues: functionConstants)
             let descriptor = MTLRenderPipelineDescriptor()
             descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
             descriptor.vertexFunction = vertexFunction
