@@ -28,6 +28,7 @@ class Node {
 
     var parent: Node?
     var children = [Node]()
+    var needsXRotationFix = false
 
     var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
@@ -45,7 +46,7 @@ class Node {
     }
 
     var forwardVector: float3 {
-        if name.hasPrefix("claire") {
+        if needsXRotationFix {
             return normalize([sin(-rotation.z), 0, cos(-rotation.z)])
         } else {
             return normalize([sin(rotation.y), 0, cos(rotation.y)])

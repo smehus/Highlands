@@ -7,24 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0242522E22DB932C00F57C91 /* file6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522522DB932C00F57C91 /* file6.png */; };
-		0242522F22DB932C00F57C91 /* file6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522522DB932C00F57C91 /* file6.png */; };
-		0242523022DB932C00F57C91 /* walking_boy.bin in Resources */ = {isa = PBXBuildFile; fileRef = 0242522622DB932C00F57C91 /* walking_boy.bin */; };
-		0242523122DB932C00F57C91 /* walking_boy.bin in Resources */ = {isa = PBXBuildFile; fileRef = 0242522622DB932C00F57C91 /* walking_boy.bin */; };
-		0242523222DB932C00F57C91 /* walking_boy.gltf in Resources */ = {isa = PBXBuildFile; fileRef = 0242522722DB932C00F57C91 /* walking_boy.gltf */; };
-		0242523322DB932C00F57C91 /* walking_boy.gltf in Resources */ = {isa = PBXBuildFile; fileRef = 0242522722DB932C00F57C91 /* walking_boy.gltf */; };
-		0242523422DB932C00F57C91 /* file5.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522822DB932C00F57C91 /* file5.png */; };
-		0242523522DB932C00F57C91 /* file5.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522822DB932C00F57C91 /* file5.png */; };
-		0242523622DB932C00F57C91 /* file2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522922DB932C00F57C91 /* file2.png */; };
-		0242523722DB932C00F57C91 /* file2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522922DB932C00F57C91 /* file2.png */; };
-		0242523822DB932C00F57C91 /* file3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522A22DB932C00F57C91 /* file3.png */; };
-		0242523922DB932C00F57C91 /* file3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522A22DB932C00F57C91 /* file3.png */; };
-		0242523A22DB932C00F57C91 /* file7.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522B22DB932C00F57C91 /* file7.png */; };
-		0242523B22DB932C00F57C91 /* file7.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522B22DB932C00F57C91 /* file7.png */; };
-		0242523C22DB932C00F57C91 /* file4.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522C22DB932C00F57C91 /* file4.png */; };
-		0242523D22DB932C00F57C91 /* file4.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522C22DB932C00F57C91 /* file4.png */; };
-		0242523E22DB932C00F57C91 /* file1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522D22DB932C00F57C91 /* file1.png */; };
-		0242523F22DB932C00F57C91 /* file1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0242522D22DB932C00F57C91 /* file1.png */; };
 		0284473822C02DFB00A4E479 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
 		0284473922C02DFB00A4E479 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
 		0284473B22C0377500A4E479 /* Water.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0284473A22C0377500A4E479 /* Water.metal */; };
@@ -33,6 +15,24 @@
 		0284473F22C0455C00A4E479 /* normal-water.png in Resources */ = {isa = PBXBuildFile; fileRef = 0284473D22C0455C00A4E479 /* normal-water.png */; };
 		0284474122C04EE500A4E479 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
 		0284474222C04EE500A4E479 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
+		02A081C922FF19E400DE9D74 /* boy_tpose.gltf in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C022FF19E300DE9D74 /* boy_tpose.gltf */; };
+		02A081CA22FF19E400DE9D74 /* boy_tpose.gltf in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C022FF19E300DE9D74 /* boy_tpose.gltf */; };
+		02A081CB22FF19E400DE9D74 /* Boy_Hands_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C122FF19E300DE9D74 /* Boy_Hands_diffuse.png */; };
+		02A081CC22FF19E400DE9D74 /* Boy_Hands_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C122FF19E300DE9D74 /* Boy_Hands_diffuse.png */; };
+		02A081CD22FF19E400DE9D74 /* Boy_UpperBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C222FF19E300DE9D74 /* Boy_UpperBody_diffuse.png */; };
+		02A081CE22FF19E400DE9D74 /* Boy_UpperBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C222FF19E300DE9D74 /* Boy_UpperBody_diffuse.png */; };
+		02A081CF22FF19E400DE9D74 /* Boy_Hair_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C322FF19E300DE9D74 /* Boy_Hair_diffuse.png */; };
+		02A081D022FF19E400DE9D74 /* Boy_Hair_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C322FF19E300DE9D74 /* Boy_Hair_diffuse.png */; };
+		02A081D122FF19E400DE9D74 /* Boy_Head_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C422FF19E300DE9D74 /* Boy_Head_diffuse.png */; };
+		02A081D222FF19E400DE9D74 /* Boy_Head_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C422FF19E300DE9D74 /* Boy_Head_diffuse.png */; };
+		02A081D322FF19E400DE9D74 /* boy_tpose.bin in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C522FF19E300DE9D74 /* boy_tpose.bin */; };
+		02A081D422FF19E400DE9D74 /* boy_tpose.bin in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C522FF19E300DE9D74 /* boy_tpose.bin */; };
+		02A081D522FF19E400DE9D74 /* Boy_LowerBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C622FF19E300DE9D74 /* Boy_LowerBody_diffuse.png */; };
+		02A081D622FF19E400DE9D74 /* Boy_LowerBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C622FF19E300DE9D74 /* Boy_LowerBody_diffuse.png */; };
+		02A081D722FF19E400DE9D74 /* Boy_Scarf_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C722FF19E400DE9D74 /* Boy_Scarf_diffuse.png */; };
+		02A081D822FF19E400DE9D74 /* Boy_Scarf_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C722FF19E400DE9D74 /* Boy_Scarf_diffuse.png */; };
+		02A081D922FF19E400DE9D74 /* Boy_Shoes_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C822FF19E400DE9D74 /* Boy_Shoes_diffuse.png */; };
+		02A081DA22FF19E400DE9D74 /* Boy_Shoes_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02A081C822FF19E400DE9D74 /* Boy_Shoes_diffuse.png */; };
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
@@ -222,19 +222,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0242522522DB932C00F57C91 /* file6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file6.png; sourceTree = SOURCE_ROOT; };
-		0242522622DB932C00F57C91 /* walking_boy.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = walking_boy.bin; sourceTree = SOURCE_ROOT; };
-		0242522722DB932C00F57C91 /* walking_boy.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = walking_boy.gltf; sourceTree = SOURCE_ROOT; };
-		0242522822DB932C00F57C91 /* file5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file5.png; sourceTree = SOURCE_ROOT; };
-		0242522922DB932C00F57C91 /* file2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file2.png; sourceTree = SOURCE_ROOT; };
-		0242522A22DB932C00F57C91 /* file3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file3.png; sourceTree = SOURCE_ROOT; };
-		0242522B22DB932C00F57C91 /* file7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file7.png; sourceTree = SOURCE_ROOT; };
-		0242522C22DB932C00F57C91 /* file4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file4.png; sourceTree = SOURCE_ROOT; };
-		0242522D22DB932C00F57C91 /* file1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file1.png; sourceTree = SOURCE_ROOT; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
 		0284473A22C0377500A4E479 /* Water.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Water.metal; sourceTree = "<group>"; };
 		0284473D22C0455C00A4E479 /* normal-water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "normal-water.png"; sourceTree = "<group>"; };
 		0284474022C04EE500A4E479 /* RenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
+		02A081C022FF19E300DE9D74 /* boy_tpose.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = boy_tpose.gltf; sourceTree = SOURCE_ROOT; };
+		02A081C122FF19E300DE9D74 /* Boy_Hands_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Boy_Hands_diffuse.png; sourceTree = SOURCE_ROOT; };
+		02A081C222FF19E300DE9D74 /* Boy_UpperBody_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Boy_UpperBody_diffuse.png; sourceTree = SOURCE_ROOT; };
+		02A081C322FF19E300DE9D74 /* Boy_Hair_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Boy_Hair_diffuse.png; sourceTree = SOURCE_ROOT; };
+		02A081C422FF19E300DE9D74 /* Boy_Head_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Boy_Head_diffuse.png; sourceTree = SOURCE_ROOT; };
+		02A081C522FF19E300DE9D74 /* boy_tpose.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = boy_tpose.bin; sourceTree = SOURCE_ROOT; };
+		02A081C622FF19E300DE9D74 /* Boy_LowerBody_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Boy_LowerBody_diffuse.png; sourceTree = SOURCE_ROOT; };
+		02A081C722FF19E400DE9D74 /* Boy_Scarf_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Boy_Scarf_diffuse.png; sourceTree = SOURCE_ROOT; };
+		02A081C822FF19E400DE9D74 /* Boy_Shoes_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Boy_Shoes_diffuse.png; sourceTree = SOURCE_ROOT; };
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
@@ -354,15 +354,15 @@
 		02295EC022DB8BAE00A1C90D /* boy */ = {
 			isa = PBXGroup;
 			children = (
-				0242522D22DB932C00F57C91 /* file1.png */,
-				0242522922DB932C00F57C91 /* file2.png */,
-				0242522A22DB932C00F57C91 /* file3.png */,
-				0242522C22DB932C00F57C91 /* file4.png */,
-				0242522822DB932C00F57C91 /* file5.png */,
-				0242522522DB932C00F57C91 /* file6.png */,
-				0242522B22DB932C00F57C91 /* file7.png */,
-				0242522622DB932C00F57C91 /* walking_boy.bin */,
-				0242522722DB932C00F57C91 /* walking_boy.gltf */,
+				02A081C322FF19E300DE9D74 /* Boy_Hair_diffuse.png */,
+				02A081C122FF19E300DE9D74 /* Boy_Hands_diffuse.png */,
+				02A081C422FF19E300DE9D74 /* Boy_Head_diffuse.png */,
+				02A081C622FF19E300DE9D74 /* Boy_LowerBody_diffuse.png */,
+				02A081C722FF19E400DE9D74 /* Boy_Scarf_diffuse.png */,
+				02A081C822FF19E400DE9D74 /* Boy_Shoes_diffuse.png */,
+				02A081C522FF19E300DE9D74 /* boy_tpose.bin */,
+				02A081C022FF19E300DE9D74 /* boy_tpose.gltf */,
+				02A081C222FF19E300DE9D74 /* Boy_UpperBody_diffuse.png */,
 			);
 			path = boy;
 			sourceTree = "<group>";
@@ -764,16 +764,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02A081CD22FF19E400DE9D74 /* Boy_UpperBody_diffuse.png in Resources */,
 				A57506C521CD65A400C63081 /* buffer_skeleton.bin in Resources */,
-				0242523622DB932C00F57C91 /* file2.png in Resources */,
 				A5CBD1BA21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				A59150B92263BA7E008ED280 /* floor_grid.mtl in Resources */,
 				A59150CC2263C216008ED280 /* tree_tile.mtl in Resources */,
+				02A081D722FF19E400DE9D74 /* Boy_Scarf_diffuse.png in Resources */,
 				A5CB1E8421EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
 				A58F1A0C21E931E5003F6F1F /* rock2.mtl in Resources */,
 				A5A49168226B7AF8000A6BDD /* brown_eye.png in Resources */,
-				0242523022DB932C00F57C91 /* walking_boy.bin in Resources */,
 				A5819C5D21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */,
 				A5C952C921CEA53000B23364 /* plane.obj in Resources */,
 				A5CB1E8021EA74F7002CCB94 /* HRN_LMP_CM.bmp in Resources */,
@@ -781,36 +781,37 @@
 				0284473E22C0455C00A4E479 /* normal-water.png in Resources */,
 				A5C952CB21CEA53000B23364 /* plane.mtl in Resources */,
 				A58F1A0421E931E5003F6F1F /* rock2.obj in Resources */,
+				02A081D522FF19E400DE9D74 /* Boy_LowerBody_diffuse.png in Resources */,
 				A59150D62263C216008ED280 /* grass_tile.obj in Resources */,
 				A59150C02263BC8B008ED280 /* pillar.obj in Resources */,
 				A5C952CD21CEA53000B23364 /* ground.png in Resources */,
 				A5A49166226B7AF8000A6BDD /* scaled_rigged_character.bin in Resources */,
-				0242523822DB932C00F57C91 /* file3.png in Resources */,
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
+				02A081CF22FF19E400DE9D74 /* Boy_Hair_diffuse.png in Resources */,
+				02A081D922FF19E400DE9D74 /* Boy_Shoes_diffuse.png in Resources */,
+				02A081D322FF19E400DE9D74 /* boy_tpose.bin in Resources */,
 				A58F1A0821E931E5003F6F1F /* rock1.obj in Resources */,
-				0242523C22DB932C00F57C91 /* file4.png in Resources */,
+				02A081D122FF19E400DE9D74 /* Boy_Head_diffuse.png in Resources */,
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
-				0242523A22DB932C00F57C91 /* file7.png in Resources */,
 				A5A49162226B7AF8000A6BDD /* middleage_lightskinned_female_diffuse.png in Resources */,
 				A58F1A0A21E931E5003F6F1F /* rock1.mtl in Resources */,
-				0242522E22DB932C00F57C91 /* file6.png in Resources */,
 				A5819C5F21E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A58F1A0E21E931E5003F6F1F /* rock3.mtl in Resources */,
-				0242523222DB932C00F57C91 /* walking_boy.gltf in Resources */,
 				A59150D22263C216008ED280 /* tree_tile.obj in Resources */,
 				A5A4915E226B7AF8000A6BDD /* ponytail01_diffuse.png in Resources */,
 				A59150CE2263C216008ED280 /* grass_tile.mtl in Resources */,
 				A59150C32263BFDD008ED280 /* grid_texture.png in Resources */,
 				A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */,
-				0242523E22DB932C00F57C91 /* file1.png in Resources */,
 				A59150D42263C216008ED280 /* grass_tile_long.mtl in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				A5CBD1BC21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */,
+				02A081C922FF19E400DE9D74 /* boy_tpose.gltf in Resources */,
 				A58F1A0621E931E5003F6F1F /* rock3.obj in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A5A49164226B7AF8000A6BDD /* scaled_rigged_character.gltf in Resources */,
+				02A081CB22FF19E400DE9D74 /* Boy_Hands_diffuse.png in Resources */,
 				A5A49160226B7AF8000A6BDD /* teeth.png in Resources */,
 				A57506BA21CD646900C63081 /* treefir.obj in Resources */,
 				A59150D02263C216008ED280 /* grass_tile_long.obj in Resources */,
@@ -818,7 +819,6 @@
 				A5819C5B21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
 				A59150B62263BA6F008ED280 /* floor_grid.obj in Resources */,
-				0242523422DB932C00F57C91 /* file5.png in Resources */,
 				A5CB1E8221EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A59150BE2263BC8B008ED280 /* pillar.mtl in Resources */,
 			);
@@ -830,8 +830,10 @@
 			files = (
 				A5CBD1BD21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */,
 				A5CBD1BB21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
+				02A081CE22FF19E400DE9D74 /* Boy_UpperBody_diffuse.png in Resources */,
 				A57506C621CD65A400C63081 /* buffer_skeleton.bin in Resources */,
 				A5C952CC21CEA53000B23364 /* plane.mtl in Resources */,
+				02A081D622FF19E400DE9D74 /* Boy_LowerBody_diffuse.png in Resources */,
 				A5C952CA21CEA53000B23364 /* plane.obj in Resources */,
 				A57506BB21CD646900C63081 /* treefir.obj in Resources */,
 				A59150D32263C216008ED280 /* tree_tile.obj in Resources */,
@@ -843,11 +845,9 @@
 				A5819C6021E59CB400E724BE /* firstHuman_rigged_1_working_walk.gltf in Resources */,
 				A5A49163226B7AF8000A6BDD /* middleage_lightskinned_female_diffuse.png in Resources */,
 				A5CB1E8721EA74F7002CCB94 /* HRN_LMP_NM.bmp in Resources */,
-				0242523522DB932C00F57C91 /* file5.png in Resources */,
 				A57506C421CD65A400C63081 /* skeleton.gltf in Resources */,
 				A58F1A0D21E931E5003F6F1F /* rock2.mtl in Resources */,
 				A5A4915F226B7AF8000A6BDD /* ponytail01_diffuse.png in Resources */,
-				0242522F22DB932C00F57C91 /* file6.png in Resources */,
 				A58F1A0521E931E5003F6F1F /* rock2.obj in Resources */,
 				A59150BA2263BA7E008ED280 /* floor_grid.mtl in Resources */,
 				A59150CD2263C216008ED280 /* tree_tile.mtl in Resources */,
@@ -856,32 +856,32 @@
 				A58F1A0B21E931E5003F6F1F /* rock1.mtl in Resources */,
 				0284473F22C0455C00A4E479 /* normal-water.png in Resources */,
 				A57506B521CD646900C63081 /* large-plane.mtl in Resources */,
+				02A081DA22FF19E400DE9D74 /* Boy_Shoes_diffuse.png in Resources */,
 				A5CB1E8121EA74F7002CCB94 /* HRN_LMP_CM.bmp in Resources */,
+				02A081D422FF19E400DE9D74 /* boy_tpose.bin in Resources */,
 				A58F1A0721E931E5003F6F1F /* rock3.obj in Resources */,
 				A5A49169226B7AF8000A6BDD /* brown_eye.png in Resources */,
 				A5C952CE21CEA53000B23364 /* ground.png in Resources */,
+				02A081D022FF19E400DE9D74 /* Boy_Hair_diffuse.png in Resources */,
+				02A081D222FF19E400DE9D74 /* Boy_Head_diffuse.png in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
 				A5A49161226B7AF8000A6BDD /* teeth.png in Resources */,
 				A59150D72263C216008ED280 /* grass_tile.obj in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
-				0242523722DB932C00F57C91 /* file2.png in Resources */,
 				A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */,
+				02A081CA22FF19E400DE9D74 /* boy_tpose.gltf in Resources */,
+				02A081CC22FF19E400DE9D74 /* Boy_Hands_diffuse.png in Resources */,
 				A5A49167226B7AF8000A6BDD /* scaled_rigged_character.bin in Resources */,
-				0242523922DB932C00F57C91 /* file3.png in Resources */,
-				0242523322DB932C00F57C91 /* walking_boy.gltf in Resources */,
 				A58F1A0921E931E5003F6F1F /* rock1.obj in Resources */,
 				A5819C5C21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
-				0242523F22DB932C00F57C91 /* file1.png in Resources */,
+				02A081D822FF19E400DE9D74 /* Boy_Scarf_diffuse.png in Resources */,
 				A59150BF2263BC8B008ED280 /* pillar.mtl in Resources */,
 				A5CB1E8321EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A5CB1E8521EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A59150CF2263C216008ED280 /* grass_tile.mtl in Resources */,
 				A59150C42263BFDD008ED280 /* grid_texture.png in Resources */,
-				0242523D22DB932C00F57C91 /* file4.png in Resources */,
-				0242523122DB932C00F57C91 /* walking_boy.bin in Resources */,
 				A59150C12263BC8B008ED280 /* pillar.obj in Resources */,
 				A58F1A0F21E931E5003F6F1F /* rock3.mtl in Resources */,
-				0242523B22DB932C00F57C91 /* file7.png in Resources */,
 				A5819C5E21E59CB400E724BE /* firstHuman_rigged_1_working_walk.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

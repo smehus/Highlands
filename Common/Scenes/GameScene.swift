@@ -18,7 +18,7 @@ final class GameScene: Scene {
 //    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let skeleton = Character(name: "claire")
 //    let skeleton = Character(name: "skeleton")
-    let skeleton = Character(name: "walking_boy")
+    let skeleton = Character(name: "boy_tpose")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
     let water = Water(size: 100)
 
@@ -73,14 +73,17 @@ final class GameScene: Scene {
         }
 
 
-        skeleton.scale = [1.6, 1.6, 1.6]
+
+        skeleton.scale = [0.015, 0.015, 0.015]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+        skeleton.needsXRotationFix = true
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         self.add(node: skeleton)
-        skeleton.runAnimation(name: "walking")
+//        skeleton.runAnimation(name: "walking")
         self.physicsController.dynamicBody = skeleton
         self.inputController.player = skeleton
-        skeleton.currentAnimation?.speed = 2.0
-        skeleton.pauseAnimation()
+//        skeleton.currentAnimation?.speed = 2.0
+//        skeleton.pauseAnimation()
 
         lantern.position = [2.5, 3, 1.2]
         add(node: lantern, parent: skeleton, render: true)

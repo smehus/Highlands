@@ -39,14 +39,14 @@ class InputController {
             case .d:
                 direction.x += 1
             case .left, .q:
-                if player.name.hasPrefix("claire") {
+                if player.needsXRotationFix {
                     player.rotation.z += rotationSpeed
                 } else {
                     player.rotation.y -= rotationSpeed
                 }
 
             case .right, .e:
-                if player.name.hasPrefix("claire") {
+                if player.needsXRotationFix {
                     player.rotation.z -= rotationSpeed
                 } else {
                     player.rotation.y += rotationSpeed
