@@ -18,7 +18,7 @@ final class GameScene: Scene {
 //    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let skeleton = Character(name: "claire")
 //    let skeleton = Character(name: "skeleton")
-    let skeleton = Character(name: "boy_tpose")
+    let skeleton = Character(name: "boy_walking")
     let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
     let water = Water(size: 100)
 
@@ -78,15 +78,15 @@ final class GameScene: Scene {
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
         skeleton.needsXRotationFix = true
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
-        self.add(node: skeleton)
-//        skeleton.runAnimation(name: "walking")
+        add(node: skeleton)
+        skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
         self.physicsController.dynamicBody = skeleton
         self.inputController.player = skeleton
 //        skeleton.currentAnimation?.speed = 2.0
-//        skeleton.pauseAnimation()
+        skeleton.pauseAnimation()
 
         lantern.position = [2.5, 3, 1.2]
-        add(node: lantern, parent: skeleton, render: true)
+        add(node: lantern)
 
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2
@@ -107,14 +107,15 @@ final class GameScene: Scene {
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
             guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
-            let pos = inputController.player!.position
-            let dir = inputController.player!.forwardVector
+            let position = inputController.player!.position
+            let forward = inputController.player!.forwardVector
+            let rotation = inputController.player!.rotation
 
 
             // Lantern
-            lights[index].position = inputController.player!.position
-            lights[index].position.y = 1.0
-            lights[index].position += inputController.player!.forwardVector / 4
+            lights[index].position = position
+            lights[index].position.y = 3.0
+            lights[index].position += forward / 4
 
 
 //            lights[index].position = camera.position
@@ -129,6 +130,14 @@ final class GameScene: Scene {
 //            lights[index].position = float3(pos.x, pos.y + 0.3, pos.z)
 //            lights[index].position += (inputController.player!.forwardVector.x)
 //            lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
+
+
+
+            lantern.rotation = [0, -rotation.z, 0]
+            lantern.position = position
+            lantern.position.y += 2
+            lantern.position += forward * 1.5
+//            lantern.position.z -= 0.5
         }
     }
 

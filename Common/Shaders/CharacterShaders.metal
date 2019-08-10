@@ -206,7 +206,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
         discard_fragment();
     }
 
-    float3 color = characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
+//    float3 color = characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
 
     /*
      This is for non omnidiretional shadow maps
@@ -227,7 +227,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 
      */
     
-    return float4(color, 1);
+    return float4(baseColor, 1);
 
 //
 //    float4 color;
