@@ -19,7 +19,8 @@ final class GameScene: Scene {
 //    let skeleton = Character(name: "claire")
 //    let skeleton = Character(name: "skeleton")
     let skeleton = Character(name: "boy_walking")
-    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
+//    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
+    let lantern = Prop(type: .base(name: "Torch", lighting: false))
     let water = Water(size: 100)
 
     override func setupScene() {
@@ -43,34 +44,34 @@ final class GameScene: Scene {
 
 
 
-        let count = 10
-        let offset = 10
-        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
-        add(node: tree)
-        physicsController.addStaticBody(node: tree)
-        for i in 0..<count {
-            var transform = Transform()
-            transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-        }
+//        let count = 10
+//        let offset = 10
+//        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
+//        add(node: tree)
+//        physicsController.addStaticBody(node: tree)
+//        for i in 0..<count {
+//            var transform = Transform()
+//            transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+//        }
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
+//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
 
-        add(node: rock)
-        physicsController.addStaticBody(node: rock)
-        for i in 0..<count {
-            var transform = Transform()
-
-            if i == 0 {
-                transform.position = [0, 0, 3]
-            } else {
-                transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-            }
-
-            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-        }
+//        add(node: rock)
+//        physicsController.addStaticBody(node: rock)
+//        for i in 0..<count {
+//            var transform = Transform()
+//
+//            if i == 0 {
+//                transform.position = [0, 0, 3]
+//            } else {
+//                transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//            }
+//
+//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+//        }
 
 
 
@@ -82,7 +83,7 @@ final class GameScene: Scene {
         skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
         self.physicsController.dynamicBody = skeleton
         self.inputController.player = skeleton
-//        skeleton.currentAnimation?.speed = 2.0
+//        skeleton.currentAnimation?.speed = 1.0
         skeleton.pauseAnimation()
 
         lantern.position = [2.5, 3, 1.2]
@@ -114,8 +115,8 @@ final class GameScene: Scene {
 
             // Lantern
             lights[index].position = position
-            lights[index].position.y = 1.0
-            lights[index].position += (forward * 4)
+            lights[index].position.y = 2.5
+            lights[index].position += (forward)
 
 
 //            lights[index].position = camera.position
@@ -132,13 +133,25 @@ final class GameScene: Scene {
 //            lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
 
 
+            if let hand = skeleton.nodes.compactMap({ self.find(name: "Boy:RightHand", in: $0) }).first {
+                print("*** heyoooo \(hand)")
+                print("*** heyoooo \(hand)")
+                print("*** heyoooo \(hand)")
+                print("*** heyoooo \(hand)")
+            }
 
             lantern.rotation = [0, -rotation.z, 0]
             lantern.position = position
-            lantern.position.y += 2
-            lantern.position += forward * 1.5
+            lantern.position.y += 1.8
+            lantern.position += forward * 0.8
 //            lantern.position.z -= 0.5
         }
+    }
+
+    private func find(name: String, in node: CharacterNode) -> CharacterNode? {
+        guard node.name != name else { return node }
+
+        return node.children.compactMap ({ self.find(name: name, in: $0) }).first
     }
 
     override func sceneSizeWillChange(to size: CGSize) {

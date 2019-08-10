@@ -25,6 +25,10 @@
 		02316F0C22FF2943000DA34B /* Boy_Head_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EFB22FF2943000DA34B /* Boy_Head_diffuse.png */; };
 		02316F0D22FF2943000DA34B /* Boy_LowerBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */; };
 		02316F0E22FF2943000DA34B /* Boy_LowerBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */; };
+		0275F18922FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
+		0275F18A22FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
+		0275F18B22FF6B5600C7D898 /* Torch.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18822FF6B5600C7D898 /* Torch.mtl */; };
+		0275F18C22FF6B5600C7D898 /* Torch.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18822FF6B5600C7D898 /* Torch.mtl */; };
 		0284473822C02DFB00A4E479 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
 		0284473922C02DFB00A4E479 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
 		0284473B22C0377500A4E479 /* Water.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0284473A22C0377500A4E479 /* Water.metal */; };
@@ -231,6 +235,8 @@
 		02316EFA22FF2943000DA34B /* Boy_Shoes_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_Shoes_diffuse.png; path = BoyWalking/Boy_Shoes_diffuse.png; sourceTree = SOURCE_ROOT; };
 		02316EFB22FF2943000DA34B /* Boy_Head_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_Head_diffuse.png; path = BoyWalking/Boy_Head_diffuse.png; sourceTree = SOURCE_ROOT; };
 		02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_LowerBody_diffuse.png; path = BoyWalking/Boy_LowerBody_diffuse.png; sourceTree = SOURCE_ROOT; };
+		0275F18722FF6B5600C7D898 /* Torch.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.obj; sourceTree = SOURCE_ROOT; };
+		0275F18822FF6B5600C7D898 /* Torch.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.mtl; sourceTree = SOURCE_ROOT; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
 		0284473A22C0377500A4E479 /* Water.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Water.metal; sourceTree = "<group>"; };
 		0284473D22C0455C00A4E479 /* normal-water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "normal-water.png"; sourceTree = "<group>"; };
@@ -367,6 +373,15 @@
 			path = boy;
 			sourceTree = "<group>";
 		};
+		0275F18622FF6B4300C7D898 /* Torch */ = {
+			isa = PBXGroup;
+			children = (
+				0275F18822FF6B5600C7D898 /* Torch.mtl */,
+				0275F18722FF6B5600C7D898 /* Torch.obj */,
+			);
+			path = Torch;
+			sourceTree = "<group>";
+		};
 		A539CEE021E2DA40004FD174 /* Human */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,6 +413,7 @@
 		A551AE0621C997C600FA207B /* Props */ = {
 			isa = PBXGroup;
 			children = (
+				0275F18622FF6B4300C7D898 /* Torch */,
 				0284473D22C0455C00A4E479 /* normal-water.png */,
 				A59150C52263C202008ED280 /* garden */,
 				A59150BB2263BC7C008ED280 /* Pillar */,
@@ -767,9 +783,11 @@
 				A57506C521CD65A400C63081 /* buffer_skeleton.bin in Resources */,
 				A5CBD1BA21E29B3C001D77EF /* animated_ball_texture.bin in Resources */,
 				02316EFD22FF2943000DA34B /* Boy_UpperBody_diffuse.png in Resources */,
+				0275F18B22FF6B5600C7D898 /* Torch.mtl in Resources */,
 				A59150B92263BA7E008ED280 /* floor_grid.mtl in Resources */,
 				A59150CC2263C216008ED280 /* tree_tile.mtl in Resources */,
 				A5CB1E8421EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
+				0275F18922FF6B5600C7D898 /* Torch.obj in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
 				02316F0B22FF2943000DA34B /* Boy_Head_diffuse.png in Resources */,
 				A58F1A0C21E931E5003F6F1F /* rock2.mtl in Resources */,
@@ -854,9 +872,11 @@
 				A59150BA2263BA7E008ED280 /* floor_grid.mtl in Resources */,
 				A59150CD2263C216008ED280 /* tree_tile.mtl in Resources */,
 				02316F0822FF2943000DA34B /* Boy_Hands_diffuse.png in Resources */,
+				0275F18A22FF6B5600C7D898 /* Torch.obj in Resources */,
 				A5A49165226B7AF8000A6BDD /* scaled_rigged_character.gltf in Resources */,
 				A57506B721CD646900C63081 /* large-plane.obj in Resources */,
 				A58F1A0B21E931E5003F6F1F /* rock1.mtl in Resources */,
+				0275F18C22FF6B5600C7D898 /* Torch.mtl in Resources */,
 				0284473F22C0455C00A4E479 /* normal-water.png in Resources */,
 				02316F0C22FF2943000DA34B /* Boy_Head_diffuse.png in Resources */,
 				02316EFE22FF2943000DA34B /* Boy_UpperBody_diffuse.png in Resources */,
