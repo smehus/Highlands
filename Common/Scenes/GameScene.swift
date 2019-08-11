@@ -20,7 +20,7 @@ final class GameScene: Scene {
 //    let skeleton = Character(name: "skeleton")
     let skeleton = Character(name: "boy_walking")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
-    let lantern = Prop(type: .base(name: "Torch", lighting: false))
+    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
     let water = Water(size: 100)
 
     override func setupScene() {
@@ -35,7 +35,7 @@ final class GameScene: Scene {
 
         water.position.y = -1
         water.rotation = [0, 0, radians(fromDegrees: -90)]
-        add(node: water)
+//        add(node: water)
 
         ground.tiling = 4
         ground.scale = [4, 1, 4]
@@ -77,7 +77,6 @@ final class GameScene: Scene {
 
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
-        skeleton.needsXRotationFix = true
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         add(node: skeleton)
         skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
@@ -86,8 +85,8 @@ final class GameScene: Scene {
 //        skeleton.currentAnimation?.speed = 1.0
         skeleton.pauseAnimation()
 
-        lantern.position = [2.5, 3, 1.2]
-        add(node: lantern)
+        lantern.position = [0.14, 1.9, 0.85]
+        add(node: lantern, parent: skeleton)
 
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2
@@ -99,6 +98,7 @@ final class GameScene: Scene {
         tpCamera.focusDistance = 4
         cameras.append(tpCamera)
         currentCameraIndex = 2
+
     }
 
     override func isHardCollision() -> Bool {
@@ -134,17 +134,16 @@ final class GameScene: Scene {
 
 
             if let hand = skeleton.nodes.compactMap({ self.find(name: "Boy:RightHand", in: $0) }).first {
-                print("*** heyoooo \(hand)")
-                print("*** heyoooo \(hand)")
-                print("*** heyoooo \(hand)")
-                print("*** heyoooo \(hand)")
+                // this will never work because we've rotated the chracter. So the torch will be rotated around the axis
+//                let matrix = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * hand.localTransform
+//                lantern.position = matrix.columns.3.xyz
             }
 
-            lantern.rotation = [0, -rotation.z, 0]
-            lantern.position = position
-            lantern.position.y += 1.8
-            lantern.position += forward * 0.8
-//            lantern.position.z -= 0.5
+//            lantern.rotation = [-rotation.x, rotation.y, rotation.z]
+//            lantern.position = position
+//            lantern.position.y += 1.8
+//            lantern.position += forward * 0.8
+//            lantern.position.x -= 0.5
         }
     }
 

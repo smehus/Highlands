@@ -36,6 +36,10 @@ class Character: Node {
     var currentAnimationPlaying = false
     var samplerState: MTLSamplerState
     var shadowInstanceCount: Int = 0
+
+
+    private let needsXRotationFix = true
+
     init(name: String) {
         let asset = GLTFAsset(filename: name)
         buffers = asset.buffers
@@ -67,6 +71,11 @@ class Character: Node {
         return state
     }
 
+
+    override var forwardVector: float3 {
+        return normalize([sin(-rotation.z), 0, cos(-rotation.z)])
+    }
+
     override func update(deltaTime: Float) {
         guard let animation = currentAnimation, currentAnimationPlaying == true else {
             return
@@ -89,6 +98,22 @@ class Character: Node {
             if let rotationQuaternion = animation.getRotation(time: time) {
                 node.rotationQuaternion = rotationQuaternion
             }
+        }
+    }
+
+    func setLeftRotation(rotationSpeed: Float) {
+        if needsXRotationFix {
+            rotation.z += rotationSpeed
+        } else {
+            rotation.y -= rotationSpeed
+        }
+    }
+
+    func setRightRotation(rotationSpeed: Float) {
+        if needsXRotationFix {
+            rotation.z -= rotationSpeed
+        } else {
+            rotation.y += rotationSpeed
         }
     }
 }

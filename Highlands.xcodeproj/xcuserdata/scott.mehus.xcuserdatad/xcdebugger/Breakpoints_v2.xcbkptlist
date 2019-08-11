@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Common/Scenes/GameScene.swift"
-            timestampString = "587167376.536247"
+            filePath = "Common/Character.swift"
+            timestampString = "587250037.084258"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "updateScene(deltaTime:)"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "setRightRotation(rotationSpeed:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

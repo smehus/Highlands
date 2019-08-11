@@ -8,6 +8,26 @@
 
 import MetalKit
 
+class CharacterTorch: Prop {
+
+    override var worldTransform: float4x4 {
+        guard let parent = parent else { fatalError() }
+
+        let parentTranslation = float4x4(translation: parent.position)
+        let parentRotation = float4x4(simd_quatf(float4x4(rotation: [0, -parent.rotation.z, 0])))
+        let parentScale = float4x4(scaling: [1, 1, 1])
+
+        let translationMatrix = float4x4(translation: position)
+        let rotateMatrix = float4x4(quaternion)
+        let scaleMatrix = float4x4(scaling: scale)
+
+        let parentTransRot = parentTranslation * parentRotation * parentScale.inverse
+        let model = translationMatrix * rotateMatrix * scaleMatrix
+
+        return parentTransRot * model
+    }
+}
+
 class Node {
 
     var name = "untitled"
@@ -28,7 +48,6 @@ class Node {
 
     var parent: Node?
     var children = [Node]()
-    var needsXRotationFix = false
 
     var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
@@ -40,17 +59,14 @@ class Node {
 
     var worldTransform: float4x4 {
         if let parent = parent {
-            return parent.worldTransform * self.modelMatrix
+            return parent.worldTransform * modelMatrix
         }
+
         return modelMatrix
     }
 
     var forwardVector: float3 {
-        if needsXRotationFix {
-            return normalize([sin(-rotation.z), 0, cos(-rotation.z)])
-        } else {
-            return normalize([sin(rotation.y), 0, cos(rotation.y)])
-        }
+        return normalize([sin(rotation.y), 0, cos(rotation.y)])
     }
 
     var rightVector: float3 {

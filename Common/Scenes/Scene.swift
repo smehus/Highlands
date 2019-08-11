@@ -78,9 +78,8 @@ class Scene {
         } else {
             rootNode.add(childNode: node)
         }
-        guard render == true, let renderable = node as? Renderable else {
-            return
-        }
+
+        guard render == true, let renderable = node as? Renderable else { return }
         renderables.append(renderable)
     }
 
