@@ -8,6 +8,31 @@
 
 import MetalKit
 
+class CharacterTorch: Prop {
+
+    static let localPosition: float3 = [0.14, 0.85, -1.8]
+
+    override var worldTransform: float4x4 {
+        guard let parent = parent else { fatalError() }
+
+        let parentTranslation = float4x4(translation: parent.position)
+        // This is for if we want the model to be upright (normal in blender)
+        // rather than compensating for the shitty mixamo models
+//        let parentRotation = float4x4(simd_quatf(float4x4(rotation: [0, -parent.rotation.z, 0])))
+        let parentRotation = float4x4(parent.quaternion)
+        let parentScale = float4x4(scaling: [1, 1, 1])
+
+        let translationMatrix = float4x4(translation: position)
+        let rotateMatrix = float4x4(quaternion)
+        let scaleMatrix = float4x4(scaling: scale)
+
+        let parentTransRot = parentTranslation * parentRotation * parentScale.inverse
+        let model = translationMatrix * rotateMatrix * scaleMatrix
+
+        return parentTransRot * model
+    }
+}
+
 class Character: Node {
 
     class CharacterSubmesh: Submesh {

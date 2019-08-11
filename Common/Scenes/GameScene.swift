@@ -35,43 +35,41 @@ final class GameScene: Scene {
 
         water.position.y = -1
         water.rotation = [0, 0, radians(fromDegrees: -90)]
-//        add(node: water)
+        add(node: water)
 
         ground.tiling = 4
         ground.scale = [4, 1, 4]
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
 
-
-
-//        let count = 10
-//        let offset = 10
-//        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
-//        add(node: tree)
-//        physicsController.addStaticBody(node: tree)
-//        for i in 0..<count {
-//            var transform = Transform()
-//            transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-//        }
+        let count = 10
+        let offset = 10
+        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
+        add(node: tree)
+        physicsController.addStaticBody(node: tree)
+        for i in 0..<count {
+            var transform = Transform()
+            transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+        }
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
-//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
+        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
 
-//        add(node: rock)
-//        physicsController.addStaticBody(node: rock)
-//        for i in 0..<count {
-//            var transform = Transform()
-//
-//            if i == 0 {
-//                transform.position = [0, 0, 3]
-//            } else {
-//                transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-//            }
-//
-//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-//        }
+        add(node: rock)
+        physicsController.addStaticBody(node: rock)
+        for i in 0..<count {
+            var transform = Transform()
+
+            if i == 0 {
+                transform.position = [0, 0, 3]
+            } else {
+                transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+            }
+
+            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+        }
 
 
 
@@ -85,7 +83,7 @@ final class GameScene: Scene {
 //        skeleton.currentAnimation?.speed = 1.0
         skeleton.pauseAnimation()
 
-        lantern.position = [0.14, 1.9, 0.85]
+        lantern.position = CharacterTorch.localPosition
         add(node: lantern, parent: skeleton)
 
         orthoCamera.position = [0, 2, 0]
@@ -115,8 +113,9 @@ final class GameScene: Scene {
 
             // Lantern
             lights[index].position = position
-            lights[index].position.y = 2.5
-            lights[index].position += (forward)
+            lights[index].position.y = 3.5
+            lights[index].position += (forward * 0.8)
+            lights[index].position.x -= 0.2
 
 
 //            lights[index].position = camera.position
@@ -137,6 +136,9 @@ final class GameScene: Scene {
                 // this will never work because we've rotated the chracter. So the torch will be rotated around the axis
 //                let matrix = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * hand.localTransform
 //                lantern.position = matrix.columns.3.xyz
+                var localTranslation = hand.globalTransform.columns.3.xyz
+                lantern.position.z = CharacterTorch.localPosition.z + (localTranslation.x * 0.7)
+                lantern.position.x = CharacterTorch.localPosition.x + (localTranslation.z * 0.2)
             }
 
 //            lantern.rotation = [-rotation.x, rotation.y, rotation.z]

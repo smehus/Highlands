@@ -111,6 +111,17 @@ float3 waterDiffuseLighting(VertexOut in,
 
 }
 
+float4 sepiaShaderWater(float4 color) {
+
+    float y = dot(float3(0.299, 0.587, 0.114), color.rgb);
+    float4 sepia = float4(0.191, -0.054, -0.221, 0.0);
+    float4 output = sepia + y;
+    output.z = color.z;
+
+    output = mix(output, color, 0.4);
+    return output;
+}
+
 fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
                                texture2d<float> reflectionTexture [[ texture(0) ]],
                                texture2d<float> refractionTexture [[ texture(1) ]],
@@ -153,7 +164,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     // Check out ray sample project challenge for lighting against the normalTexture rather than the geometry
     float3 color = waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
 
-    return float4(color, 1);
+    return sepiaShaderWater(float4(color, 1));
 }
 
 

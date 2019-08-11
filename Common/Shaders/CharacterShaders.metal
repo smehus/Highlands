@@ -180,6 +180,17 @@ float4 characterFog(float4 position, float4 color) {
     return color;
 }
 
+float4 sepiaShaderCharacter(float4 color) {
+
+    float y = dot(float3(0.299, 0.587, 0.114), color.rgb);
+    float4 sepia = float4(0.191, -0.054, -0.221, 0.0);
+    float4 output = sepia + y;
+    output.z = color.z;
+
+    output = mix(output, color, 0.4);
+    return output;
+}
+
 fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
@@ -227,7 +238,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 
      */
     
-    return float4(color, 1);
+    return sepiaShaderCharacter(float4(color, 1));
 
 //
 //    float4 color;
