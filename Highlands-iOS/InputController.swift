@@ -1,5 +1,6 @@
 
 import MetalKit
+import Foundation
 
 protocol KeyboardDelegate: class {
     func didStartMove()
@@ -7,7 +8,7 @@ protocol KeyboardDelegate: class {
 }
 
 class InputController {
-    var player: Node?
+    var player: Character?
     var currentSpeed: Float = 0
 
 
@@ -59,9 +60,15 @@ extension InputController {
             keyboardDelegate?.didStartMove()
         }
 
-        player.rotation.y += currentPitch * deltaTime * rotationSpeed
-        player.position.x += currentSpeed * sin(player.rotation.y)
-        player.position.z += currentSpeed * cos(player.rotation.y)
+        if player.needsXRotationFix {
+            player.rotation.z -= currentPitch * deltaTime * rotationSpeed
+            player.position.x -= currentSpeed * sin(player.rotation.z)
+            player.position.z += currentSpeed * cos(player.rotation.z)
+        } else {
+            player.rotation.y += currentPitch * deltaTime * rotationSpeed
+            player.position.x += currentSpeed * sin(player.rotation.y)
+            player.position.z += currentSpeed * cos(player.rotation.y)
+        }
     }
 }
 

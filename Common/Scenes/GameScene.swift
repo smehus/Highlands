@@ -49,7 +49,13 @@ final class GameScene: Scene {
         physicsController.addStaticBody(node: tree)
         for i in 0..<count {
             var transform = Transform()
-            transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+
+            var position: float3
+            repeat {
+                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+            } while position.x > 2 && position.z > 2
+
+            transform.position = position
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
 
@@ -65,13 +71,16 @@ final class GameScene: Scene {
             if i == 0 {
                 transform.position = [0, 0, 3]
             } else {
-                transform.position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+                var position: float3
+                repeat {
+                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+                } while position.x > 2 && position.z > 2
+
+                transform.position = position
             }
 
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
-
-
 
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]

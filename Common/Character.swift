@@ -61,9 +61,8 @@ class Character: Node {
     var currentAnimationPlaying = false
     var samplerState: MTLSamplerState
     var shadowInstanceCount: Int = 0
-
-
-    private let needsXRotationFix = true
+    
+    let needsXRotationFix = true
 
     init(name: String) {
         let asset = GLTFAsset(filename: name)
