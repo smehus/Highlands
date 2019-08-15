@@ -142,19 +142,20 @@ final class GameScene: Scene {
 
 
             if let hand = skeleton.nodes.compactMap({ self.find(name: "Boy:RightHand", in: $0) }).first {
-                // this will never work because we've rotated the chracter. So the torch will be rotated around the axis
-//                let matrix = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * hand.localTransform
-//                lantern.position = matrix.columns.3.xyz
-                var localTranslation = hand.globalTransform.columns.3.xyz
-                lantern.position.z = CharacterTorch.localPosition.z + (localTranslation.x * 0.7)
-                lantern.position.x = CharacterTorch.localPosition.x + (localTranslation.z * 0.2)
-            }
 
-//            lantern.rotation = [-rotation.x, rotation.y, rotation.z]
-//            lantern.position = position
-//            lantern.position.y += 1.8
-//            lantern.position += forward * 0.8
-//            lantern.position.x -= 0.5
+                var localTranslation = hand.globalTransform.columns.3.xyz
+
+                let x = skeleton.worldTransform.columns.3.x
+                let y = skeleton.worldTransform.columns.3.y
+                let z = skeleton.worldTransform.columns.3.z
+                let concatenatedPosition = float3(x + localTranslation.x, y + localTranslation.y, z + localTranslation.z)
+
+                print("*** hand translation \(concatenatedPosition)")
+//                lantern.position.z = CharacterTorch.localPosition.z + (localTranslation.x * 0.7)
+//                lantern.position.x = CharacterTorch.localPosition.x + (localTranslation.z * 0.2)
+                lantern.position.z = concatenatedPosition.x
+                lantern.position.x = concatenatedPosition.z
+            }
         }
     }
 
