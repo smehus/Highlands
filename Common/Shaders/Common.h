@@ -75,7 +75,8 @@ typedef enum {
     NormalTexture = 1,
     RoughnessTexture = 2,
     ShadowColorTexture = 3,
-    ShadowDepthTexture = 4
+    ShadowDepthTexture = 4,
+    HeightMapTexture = 5
 } Textures;
 
 struct Material {

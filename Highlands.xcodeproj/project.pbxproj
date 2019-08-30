@@ -29,6 +29,8 @@
 		0275F18A22FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
 		0275F18B22FF6B5600C7D898 /* Torch.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18822FF6B5600C7D898 /* Torch.mtl */; };
 		0275F18C22FF6B5600C7D898 /* Torch.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18822FF6B5600C7D898 /* Torch.mtl */; };
+		0278A9132319591A004E8560 /* heightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 0278A9122319591A004E8560 /* heightmap.png */; };
+		0278A9142319591A004E8560 /* heightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 0278A9122319591A004E8560 /* heightmap.png */; };
 		0284473822C02DFB00A4E479 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
 		0284473922C02DFB00A4E479 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
 		0284473B22C0377500A4E479 /* Water.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0284473A22C0377500A4E479 /* Water.metal */; };
@@ -237,6 +239,7 @@
 		02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_LowerBody_diffuse.png; path = BoyWalking/Boy_LowerBody_diffuse.png; sourceTree = SOURCE_ROOT; };
 		0275F18722FF6B5600C7D898 /* Torch.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.obj; sourceTree = SOURCE_ROOT; };
 		0275F18822FF6B5600C7D898 /* Torch.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.mtl; sourceTree = SOURCE_ROOT; };
+		0278A9122319591A004E8560 /* heightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heightmap.png; sourceTree = "<group>"; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
 		0284473A22C0377500A4E479 /* Water.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Water.metal; sourceTree = "<group>"; };
 		0284473D22C0455C00A4E479 /* normal-water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "normal-water.png"; sourceTree = "<group>"; };
@@ -454,6 +457,7 @@
 		A57506A721CD646900C63081 /* Ground */ = {
 			isa = PBXGroup;
 			children = (
+				0278A9122319591A004E8560 /* heightmap.png */,
 				A5C952C821CEA53000B23364 /* ground.png */,
 				A5C952C721CEA53000B23364 /* plane.mtl */,
 				A5C952C621CEA53000B23364 /* plane.obj */,
@@ -807,6 +811,7 @@
 				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A58F1A0821E931E5003F6F1F /* rock1.obj in Resources */,
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
+				0278A9132319591A004E8560 /* heightmap.png in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
 				A5A49162226B7AF8000A6BDD /* middleage_lightskinned_female_diffuse.png in Resources */,
 				A58F1A0A21E931E5003F6F1F /* rock1.mtl in Resources */,
@@ -853,6 +858,7 @@
 				A5C952CC21CEA53000B23364 /* plane.mtl in Resources */,
 				A5C952CA21CEA53000B23364 /* plane.obj in Resources */,
 				A57506BB21CD646900C63081 /* treefir.obj in Resources */,
+				0278A9142319591A004E8560 /* heightmap.png in Resources */,
 				A59150D32263C216008ED280 /* tree_tile.obj in Resources */,
 				A59150D12263C216008ED280 /* grass_tile_long.obj in Resources */,
 				A59150D52263C216008ED280 /* grass_tile_long.mtl in Resources */,

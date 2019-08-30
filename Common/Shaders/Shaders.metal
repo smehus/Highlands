@@ -39,17 +39,30 @@ struct VertexOut {
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
                              constant Instances *instances [[ buffer(BufferIndexInstances) ]],
                              uint instanceID [[ instance_id ]],
-                             constant Uniforms & uniforms [[ buffer(BufferIndexUniforms) ]]) {
+                             constant Uniforms & uniforms [[ buffer(BufferIndexUniforms) ]],
+                             texture2d<float> heightMap [[ texture(HeightMapTexture) ]])
+ {
 
     VertexOut out;
+
+     float yPosition = 0;
+     if (isGroundTexture) {
+         constexpr sampler sam(min_filter::linear, mag_filter::linear, mip_filter::none, address::mirrored_repeat);
+          yPosition = heightMap.sample(sam, vertexIn.uv).r * 100;
+     }
 
     Instances instance = instances[instanceID];
 
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix * float4(vertexIn.position.xyz, 1);
+     out.position.y += 3;
 
     out.worldPosition = uniforms.modelMatrix * instance.modelMatrix * vertexIn.position;
+     out.worldPosition.y += 3;
+
     out.worldNormal = uniforms.normalMatrix * instance.normalMatrix * vertexIn.normal;
     out.uv = vertexIn.uv;
+
+
     // Normal matrix is the same as world space aka model matrix
     out.worldTangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.tangent;
     out.worldBitangent = uniforms.normalMatrix * instance.normalMatrix * vertexIn.bitangent;

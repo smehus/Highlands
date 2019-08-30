@@ -15,7 +15,7 @@ func lighting() -> [Light] {
     var light = buildDefaultLight()
     light.position = [0, 30, 0]
     light.color = [1, 1, 0.9]
-    light.intensity = 0.05
+    light.intensity = 0.1
     lights.append(light)
 
 //    light = buildDefaultLight()

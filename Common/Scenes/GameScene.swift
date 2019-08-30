@@ -13,6 +13,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
+//    let ground = Prop(type: .ground(name: "grass"))
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
 //    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
@@ -42,6 +43,7 @@ final class GameScene: Scene {
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
 
+        /*
         let count = 10
         let offset = 10
         let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
@@ -81,7 +83,8 @@ final class GameScene: Scene {
 
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
-
+         */
+        
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])

@@ -71,10 +71,7 @@ enum PropType {
     }
 
     var isGround: Bool {
-        switch self {
-        case .ground: return true
-        default: return false
-        }
+        return name == "floor_grid"
     }
 
     var blending: Bool {
@@ -138,6 +135,8 @@ class Prop: Node {
 
     var windingOrder: MTLWinding = .counterClockwise
 
+    var heightMap: MTLTexture?
+
     init(type: PropType) {
 
         self.propType = type
@@ -171,6 +170,9 @@ class Prop: Node {
         self.name = type.name
         boundingBox = mdlMesh.boundingBox
 
+        if case .ground = type {
+            loadHeightMap()
+        }
     }
 
 //    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
@@ -272,6 +274,17 @@ class Prop: Node {
         return Renderer.device.makeSamplerState(descriptor: descriptor)
     }
 
+    private func loadHeightMap () {
+        let textureLoader = MTKTextureLoader(device: Renderer.device)
+        let options: [MTKTextureLoader.Option: Any] =
+            [.origin: MTKTextureLoader.Origin.topLeft,
+             .SRGB: false,
+             .generateMipmaps: NSNumber(booleanLiteral: true)]
+
+        let url = Bundle.main.url(forResource: "heightmap", withExtension: "png")!
+        heightMap = try? textureLoader.newTexture(URL: url, options: options)
+    }
+
     override func update(deltaTime: Float) {
 
     }
@@ -306,7 +319,10 @@ extension Prop: Renderable {
             renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
             renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
             renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: 2)
-            
+            if case .ground = propType {
+                let heightTexture = heightMap!
+                renderEncoder.setVertexTexture(heightTexture, index: Int(HeightMapTexture.rawValue))
+            }
 
             var material = modelSubmesh.material
             renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
