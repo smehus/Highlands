@@ -13,6 +13,8 @@ using namespace metal;
 struct TerrainVertexOut {
     float4 position [[ position ]];
     float4 color;
+    float height;
+    float2 uv;
 };
 
 struct ControlPoint {
@@ -65,14 +67,36 @@ kernel void tessellation_main(constant float* edge_factors [[ buffer(0) ]],
 vertex TerrainVertexOut vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
                                        constant Uniforms &uniforms [[ buffer(BufferIndexUniforms) ]],
                                        float2 patch_coord [[ position_in_patch ]],
+                                       texture2d<float> heightMap [[ texture(0) ]],
+                                       constant TerrainParams &terrain [[ buffer(6) ]],
                                        uint patchID [[ patch_id ]])
 {
+
+    float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
+
     float u = patch_coord.x;
     float v = patch_coord.y;
 
+    float2 top = mix(control_points[0].position.xz,
+                     control_points[1].position.xz, u);
+    float2 bottom = mix(control_points[3].position.xz,
+                        control_points[2].position.xz, u);
+
     TerrainVertexOut out;
-    out.position = float4(u, v, 0, 1);
-    out.color = float4(u, v, 0, 1);
+    float2 interpolated = mix(top, bottom, v);
+    float4 position = float4(interpolated.x, 0.0, interpolated.y, 1.0);
+
+    float2 xy = (position.xz + terrain.size / 2.0) / terrain.size;
+    constexpr sampler sample;
+    float4 color = heightMap.sample(sample, xy);
+    out.color = float4(color.r);
+
+    float height = (color.r * 2 - 1) * terrain.height;
+    position.y = height;
+
+    out.position = mvp * position;
+    out.uv = xy;
+    out.height = height;
     return out;
 }
 

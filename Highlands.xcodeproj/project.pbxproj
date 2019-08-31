@@ -29,6 +29,8 @@
 		02544A9A231AB2130072E47F /* Terrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02544A98231AB2130072E47F /* Terrain.swift */; };
 		02544A9C231AB8360072E47F /* Terrain.metal in Sources */ = {isa = PBXBuildFile; fileRef = 02544A9B231AB8360072E47F /* Terrain.metal */; };
 		02544A9D231AB8360072E47F /* Terrain.metal in Sources */ = {isa = PBXBuildFile; fileRef = 02544A9B231AB8360072E47F /* Terrain.metal */; };
+		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
+		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		0275F18922FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
 		0275F18A22FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
 		0275F18B22FF6B5600C7D898 /* Torch.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18822FF6B5600C7D898 /* Torch.mtl */; };
@@ -51,8 +53,6 @@
 		A563DF1621E7999F00563EA9 /* Skybox.metal in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1421E7999F00563EA9 /* Skybox.metal */; };
 		A563DF1C21E8035200563EA9 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1B21E8035200563EA9 /* Transform.swift */; };
 		A563DF1D21E8035200563EA9 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1B21E8035200563EA9 /* Transform.swift */; };
-		A56ACB5421C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
-		A56ACB5521C728750069962B /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56ACB5321C728750069962B /* Textures.xcassets */; };
 		A575069F21CD63E200C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069C21CD63E100C63081 /* InputController.swift */; };
 		A57506A021CD63E200C63081 /* PhysicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069D21CD63E200C63081 /* PhysicsController.swift */; };
 		A57506A121CD63E200C63081 /* PhysicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A575069D21CD63E200C63081 /* PhysicsController.swift */; };
@@ -241,6 +241,7 @@
 		02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_LowerBody_diffuse.png; path = BoyWalking/Boy_LowerBody_diffuse.png; sourceTree = SOURCE_ROOT; };
 		02544A98231AB2130072E47F /* Terrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terrain.swift; sourceTree = "<group>"; };
 		02544A9B231AB8360072E47F /* Terrain.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Terrain.metal; sourceTree = "<group>"; };
+		02544A9E231AC6F20072E47F /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Textures.xcassets; path = ../Textures.xcassets; sourceTree = "<group>"; };
 		0275F18722FF6B5600C7D898 /* Torch.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.obj; sourceTree = SOURCE_ROOT; };
 		0275F18822FF6B5600C7D898 /* Torch.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.mtl; sourceTree = SOURCE_ROOT; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
@@ -252,7 +253,6 @@
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
 		A563DF1421E7999F00563EA9 /* Skybox.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Skybox.metal; sourceTree = "<group>"; };
 		A563DF1B21E8035200563EA9 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
-		A56ACB5321C728750069962B /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Textures.xcassets; sourceTree = "<group>"; };
 		A575069C21CD63E100C63081 /* InputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
 		A575069D21CD63E200C63081 /* PhysicsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsController.swift; sourceTree = "<group>"; };
 		A57506A221CD641300C63081 /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -555,9 +555,9 @@
 		A57F6A2121B8A1CC002C0632 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				02544A9E231AC6F20072E47F /* Textures.xcassets */,
 				A57506DD21CD96FF00C63081 /* Scenes */,
 				A57506CE21CD671A00C63081 /* Shaders */,
-				A56ACB5321C728750069962B /* Textures.xcassets */,
 				A56ACB3A21C727970069962B /* Models */,
 				A5A9E08C21BC1A0C00A6F6BB /* Protocols */,
 				A5A1CD3621BA2962002F6F35 /* Extensions */,
@@ -812,7 +812,6 @@
 				A59150C02263BC8B008ED280 /* pillar.obj in Resources */,
 				A5C952CD21CEA53000B23364 /* ground.png in Resources */,
 				A5A49166226B7AF8000A6BDD /* scaled_rigged_character.bin in Resources */,
-				A56ACB5421C728750069962B /* Textures.xcassets in Resources */,
 				A58F1A0821E931E5003F6F1F /* rock1.obj in Resources */,
 				A57506B621CD646900C63081 /* large-plane.obj in Resources */,
 				A57506B421CD646900C63081 /* large-plane.mtl in Resources */,
@@ -832,6 +831,7 @@
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				A5CBD1BC21E29B3C001D77EF /* animated_ball_texture.gltf in Resources */,
 				A58F1A0621E931E5003F6F1F /* rock3.obj in Resources */,
+				02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				A5A49164226B7AF8000A6BDD /* scaled_rigged_character.gltf in Resources */,
 				A5A49160226B7AF8000A6BDD /* teeth.png in Resources */,
@@ -864,7 +864,6 @@
 				A59150D32263C216008ED280 /* tree_tile.obj in Resources */,
 				A59150D12263C216008ED280 /* grass_tile_long.obj in Resources */,
 				A59150D52263C216008ED280 /* grass_tile_long.mtl in Resources */,
-				A56ACB5521C728750069962B /* Textures.xcassets in Resources */,
 				02316F0222FF2943000DA34B /* Boy_Hair_diffuse.png in Resources */,
 				A57506B921CD646900C63081 /* treefir.mtl in Resources */,
 				A59150B72263BA6F008ED280 /* floor_grid.obj in Resources */,
@@ -888,6 +887,7 @@
 				0284473F22C0455C00A4E479 /* normal-water.png in Resources */,
 				02316F0C22FF2943000DA34B /* Boy_Head_diffuse.png in Resources */,
 				02316EFE22FF2943000DA34B /* Boy_UpperBody_diffuse.png in Resources */,
+				02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */,
 				A57506B521CD646900C63081 /* large-plane.mtl in Resources */,
 				A5CB1E8121EA74F7002CCB94 /* HRN_LMP_CM.bmp in Resources */,
 				A58F1A0721E931E5003F6F1F /* rock3.obj in Resources */,

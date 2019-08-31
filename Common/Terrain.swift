@@ -24,7 +24,7 @@ class Terrain: Node {
     private var controlPointsBuffer: MTLBuffer?
     private var tessellationPipelineState: MTLComputePipelineState
     private var renderPipelineState: MTLRenderPipelineState
-
+    private let heightMap: MTLTexture
 
     lazy var tessellationFactorsBuffer: MTLBuffer! = {
         let count = patchCount * (4 + 2)
@@ -35,6 +35,15 @@ class Terrain: Node {
     init(textureName: String) {
         renderPipelineState = Terrain.buildRenderPipelineState()
         tessellationPipelineState = Terrain.buildComputePipelineState()
+
+        do {
+            let textureLoader = MTKTextureLoader(device: Renderer.device)
+            heightMap = try textureLoader.newTexture(name: textureName, scaleFactor: 1.0,
+                                                bundle: Bundle.main, options: nil)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+
         super.init()
 
         let controlPoints = createControlPoints(patches: patches,
@@ -62,8 +71,8 @@ extension Terrain {
         descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
         descriptor.depthAttachmentPixelFormat = .depth32Float
 
-        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_main")
-        let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_main")
+        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
+        let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
         descriptor.vertexFunction = vertexFunction
         descriptor.fragmentFunction = fragmentFunction
 
@@ -77,8 +86,8 @@ extension Terrain {
         descriptor.vertexDescriptor = vertexDescriptor
 
         descriptor.tessellationFactorStepFunction = .perPatch
-//        descriptor.maxTessellationFactor = Renderer.maxTessellation
-        descriptor.tessellationPartitionMode = .pow2
+        descriptor.maxTessellationFactor = maxTessellation
+        descriptor.tessellationPartitionMode = .fractionalEven
 
         return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
     }
@@ -141,7 +150,7 @@ extension Terrain: ComputeHandler {
                                 index: 4)
         computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 5)
         computeEncoder.setBytes(&terrainParams,
-                                length: MemoryLayout<Terrain>.stride,
+                                length: MemoryLayout<TerrainParams>.stride,
                                 index: 6)
 
 
@@ -163,7 +172,13 @@ extension Terrain: ComputeHandler {
 
 extension Terrain: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+
+        var uniforms = vertex
+        renderEncoder.setRenderPipelineState(renderPipelineState)
+        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
         renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
+        renderEncoder.setVertexTexture(heightMap, index: 0)
+        renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,
