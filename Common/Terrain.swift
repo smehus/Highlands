@@ -173,12 +173,19 @@ extension Terrain: ComputeHandler {
 extension Terrain: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 
+        renderEncoder.pushDebugGroup("Terrain")
         var uniforms = vertex
+
+        uniforms.projectionMatrix = float4x4(projectionFov: 1.2, near: 0.01, far: 100,
+                                        aspect: Float(Renderer.mtkView.bounds.width/Renderer.mtkView.bounds.height))
+        uniforms.viewMatrix = float4x4(translation: [0, 0, -1.8])
+
         renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
         renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
         renderEncoder.setVertexTexture(heightMap, index: 0)
         renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
+        renderEncoder.setTriangleFillMode(.fill)
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,
@@ -187,6 +194,9 @@ extension Terrain: Renderable {
                                   patchIndexBufferOffset: 0,
                                   instanceCount: 1,
                                   baseInstance: 0)
+
+        renderEncoder.popDebugGroup()
+
     }
 
 

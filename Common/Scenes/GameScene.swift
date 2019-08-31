@@ -34,6 +34,8 @@ final class GameScene: Scene {
         camera.position = [0, 2, -4]
         camera.rotation = [0, 0, 0]
 
+        terrain.position = float3([0, 0, 0])
+        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
         add(node: terrain)
 
         /*
@@ -108,8 +110,10 @@ final class GameScene: Scene {
         tpCamera.focusHeight = 6
         tpCamera.focusDistance = 4
         cameras.append(tpCamera)
-        currentCameraIndex = 2
+        currentCameraIndex = 0
 
+
+//        self.inputController.player = cameras.first!
     }
 
     override func isHardCollision() -> Bool {
@@ -154,7 +158,7 @@ final class GameScene: Scene {
                 let z = skeleton.worldTransform.columns.3.z
                 let concatenatedPosition = float3(x + localTranslation.x, y + localTranslation.y, z + localTranslation.z)
 
-                print("*** hand translation \(concatenatedPosition)")
+//                print("*** hand translation \(concatenatedPosition)")
 //                lantern.position.z = CharacterTorch.localPosition.z + (localTranslation.x * 0.7)
 //                lantern.position.x = CharacterTorch.localPosition.x + (localTranslation.z * 0.2)
                 lantern.position.z = concatenatedPosition.x

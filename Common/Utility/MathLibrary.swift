@@ -28,6 +28,19 @@ extension Float {
 }
 
 extension float4x4 {
+
+    public init(projectionFov fov: Float, near: Float, far: Float, aspect: Float, lhs: Bool = true) {
+        let y = 1 / tan(fov * 0.5)
+        let x = y / aspect
+        let z = lhs ? far / (far - near) : far / (near - far)
+        let X = float4( x,  0,  0,  0)
+        let Y = float4( 0,  y,  0,  0)
+        let Z = lhs ? float4( 0,  0,  z, 1) : float4( 0,  0,  z, -1)
+        let W = lhs ? float4( 0,  0,  z * -near,  0) : float4( 0,  0,  z * near,  0)
+        self.init()
+        columns = (X, Y, Z, W)
+    }
+
     init(translation t: float3) {
         self = matrix_identity_float4x4
         columns.3.x = t.x

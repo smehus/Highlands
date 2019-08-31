@@ -20,7 +20,7 @@ final class Renderer: NSObject {
 
     private var depthStencilState: MTLDepthStencilState!
     private var instanceParamBuffer: MTLBuffer
-
+    static var mtkView: MTKView!
     lazy var lightPipelineState: MTLRenderPipelineState = {
         return buildLightPipelineState()
     }()
@@ -31,6 +31,7 @@ final class Renderer: NSObject {
     let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
 
     init(metalView: MTKView) {
+        Renderer.mtkView = metalView
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("GPU not available")
         }
