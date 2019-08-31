@@ -13,18 +13,24 @@ class Terrain: Node {
 
     static let maxTessellation = 16
 
-    private let patches = (horizontal: 1, vertical: 1)
+    private let patches = (horizontal: 6, vertical: 6)
     private var patchCount: Int {
         return patches.horizontal * patches.vertical
     }
 
-    private var terrainParams = TerrainParams(size: [2, 2], height: 1, maxTessellation: UInt32(maxTessellation))
+    private var terrainParams = TerrainParams(size: [8, 8], height: 1, maxTessellation: UInt32(maxTessellation))
     private var edgeFactors: [Float] = [4]
     private var insideFactors: [Float] = [4]
     private var controlPointsBuffer: MTLBuffer?
     private var tessellationPipelineState: MTLComputePipelineState
     private var renderPipelineState: MTLRenderPipelineState
     private let heightMap: MTLTexture
+
+    override var modelMatrix: float4x4 {
+        let translationMatrix = float4x4(translation: position)
+        let rotationMatrix = float4x4(rotation: rotation)
+        return translationMatrix * rotationMatrix
+    }
 
     lazy var tessellationFactorsBuffer: MTLBuffer! = {
         let count = patchCount * (4 + 2)
@@ -144,7 +150,7 @@ extension Terrain: ComputeHandler {
         computeEncoder.setBytes(&cameraPosition,
                                 length: MemoryLayout<float4>.stride,
                                 index: 3)
-        var matrix = uniforms.modelMatrix
+        var matrix = modelMatrix
         computeEncoder.setBytes(&matrix,
                                 length: MemoryLayout<float4x4>.stride,
                                 index: 4)
@@ -176,10 +182,7 @@ extension Terrain: Renderable {
         renderEncoder.pushDebugGroup("Terrain")
         var uniforms = vertex
 
-        uniforms.projectionMatrix = float4x4(projectionFov: 1.2, near: 0.01, far: 100,
-                                        aspect: Float(Renderer.mtkView.bounds.width/Renderer.mtkView.bounds.height))
-        uniforms.viewMatrix = float4x4(translation: [0, 0, -1.8])
-
+        uniforms.modelMatrix = modelMatrix
         renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
         renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)

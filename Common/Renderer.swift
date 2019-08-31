@@ -49,8 +49,8 @@ final class Renderer: NSObject {
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
         super.init()
-        metalView.clearColor = MTLClearColor(red: 0, green: 0,
-                                             blue: 0, alpha: 1)
+        metalView.clearColor = MTLClearColor(red: 1, green: 1,
+                                             blue: 1, alpha: 1)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
@@ -130,6 +130,10 @@ extension Renderer: MTKViewDelegate {
         scene.update(deltaTime: deltaTime)
 
 
+        scene.uniforms.projectionMatrix = float4x4(projectionFov: 1.2, near: 0.01, far: 100,
+                                             aspect: Float(view.bounds.width/view.bounds.height))
+        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, -1.8]).inverse
+
         // Tessellation Pass
         guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
         computeEncoder.pushDebugGroup("Tessellation Pass")
@@ -138,10 +142,10 @@ extension Renderer: MTKViewDelegate {
         computeEncoder.popDebugGroup()
 
 
-        // Shadow pass
+//        // Shadow pass
         let previousUniforms = scene.uniforms
-        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else { fatalError() }
-        renderShadowPass(renderEncoder: shadowEncoder, view: view)
+//        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else { fatalError() }
+//        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
 
         // Main pass
@@ -160,35 +164,30 @@ extension Renderer: MTKViewDelegate {
 //                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
 
         // Reset uniforms so projection is correct
-        // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
-        // goodddddddd damniiitttttt
-//        scene.uniforms = previousUniforms
-//        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
-//        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
         scene.uniforms.viewMatrix = previousUniforms.viewMatrix
         scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
-
-        renderEncoder.setFragmentBytes(&fragmentUniforms,
-                                       length: MemoryLayout<FragmentUniforms>.stride,
-                                       index: Int(BufferIndexFragmentUniforms.rawValue))
-
-        
-        renderEncoder.setFragmentBytes(&scene.lights,
-                                       length: MemoryLayout<Light>.stride * scene.lights.count,
-                                       index: Int(BufferIndexLights.rawValue))
-
-        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
-        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
-        
-        var farZ = Camera.FarZ
-        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
+//
+//        renderEncoder.setFragmentBytes(&fragmentUniforms,
+//                                       length: MemoryLayout<FragmentUniforms>.stride,
+//                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+//
+//
+//        renderEncoder.setFragmentBytes(&scene.lights,
+//                                       length: MemoryLayout<Light>.stride * scene.lights.count,
+//                                       index: Int(BufferIndexLights.rawValue))
+//
+//        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
+//        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
+//
+//        var farZ = Camera.FarZ
+//        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
         renderEncoder.setTessellationFactorBuffer(terrain.tessellationFactorsBuffer, offset: 0, instanceStride: 0)
 
-        for renderable in scene.renderables {
-            // Allow set up for off screen targets
-            renderable.renderToTarget(with: commandBuffer)
-        }
+//        for renderable in scene.renderables {
+//            // Allow set up for off screen targets
+//            renderable.renderToTarget(with: commandBuffer)
+//        }
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
@@ -196,7 +195,7 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+//        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
 //        drawDebug(encoder: renderEncoder)
 
@@ -343,7 +342,7 @@ extension Renderer: MTKViewDelegate {
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
         encoder.pushDebugGroup("DEBUG LIGHTS")
         guard let gameScene = scene as? GameScene else { return }
-        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: gameScene.skeleton.position)
+//        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: gameScene.skeleton.position)
         encoder.popDebugGroup()
     }
 }

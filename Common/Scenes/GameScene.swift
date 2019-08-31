@@ -12,27 +12,27 @@ import ModelIO
 
 final class GameScene: Scene {
 
-    let orthoCamera = OrthographicCamera()
+//    let orthoCamera = OrthographicCamera()
     let terrain = Terrain(textureName: "mountain")
-    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
-    let plane = Prop(type: .base(name: "large-plane", lighting: true))
+//    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
+//    let plane = Prop(type: .base(name: "large-plane", lighting: true))
 //    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
 //    let skeleton = Character(name: "claire")
 //    let skeleton = Character(name: "skeleton")
-    let skeleton = Character(name: "boy_walking")
+//    let skeleton = Character(name: "boy_walking")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
-    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
-    let water = Water(size: 100)
+//    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
+//    let water = Water(size: 100)
 
     override func setupScene() {
 
-        skybox = Skybox(textureName: nil)
+//        skybox = Skybox(textureName: nil)
 
         inputController.keyboardDelegate = self
 
         lights = lighting()
-        camera.position = [0, 2, -4]
-        camera.rotation = [0, 0, 0]
+//        camera.position = [0, 2, -4]
+//        camera.rotation = [0, 0, 0]
 
         terrain.position = float3([0, 0, 0])
         terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
@@ -87,7 +87,7 @@ final class GameScene: Scene {
 
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
- */
+
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
@@ -111,9 +111,9 @@ final class GameScene: Scene {
         tpCamera.focusDistance = 4
         cameras.append(tpCamera)
         currentCameraIndex = 0
+ */
 
-
-//        self.inputController.player = cameras.first!
+        self.inputController.player = cameras.first!
     }
 
     override func isHardCollision() -> Bool {
@@ -121,6 +121,7 @@ final class GameScene: Scene {
     }
 
     override func updateScene(deltaTime: Float) {
+        return
         for index in 0..<lights.count {
             guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
             let position = inputController.player!.position
@@ -149,21 +150,21 @@ final class GameScene: Scene {
 //            lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
 
 
-            if let hand = skeleton.nodes.compactMap({ self.find(name: "Boy:RightHand", in: $0) }).first {
-
-                var localTranslation = hand.globalTransform.columns.3.xyz
-
-                let x = skeleton.worldTransform.columns.3.x
-                let y = skeleton.worldTransform.columns.3.y
-                let z = skeleton.worldTransform.columns.3.z
-                let concatenatedPosition = float3(x + localTranslation.x, y + localTranslation.y, z + localTranslation.z)
-
-//                print("*** hand translation \(concatenatedPosition)")
-//                lantern.position.z = CharacterTorch.localPosition.z + (localTranslation.x * 0.7)
-//                lantern.position.x = CharacterTorch.localPosition.x + (localTranslation.z * 0.2)
-                lantern.position.z = concatenatedPosition.x
-                lantern.position.x = concatenatedPosition.z
-            }
+//            if let hand = skeleton.nodes.compactMap({ self.find(name: "Boy:RightHand", in: $0) }).first {
+//
+//                var localTranslation = hand.globalTransform.columns.3.xyz
+//
+//                let x = skeleton.worldTransform.columns.3.x
+//                let y = skeleton.worldTransform.columns.3.y
+//                let z = skeleton.worldTransform.columns.3.z
+//                let concatenatedPosition = float3(x + localTranslation.x, y + localTranslation.y, z + localTranslation.z)
+//
+////                print("*** hand translation \(concatenatedPosition)")
+////                lantern.position.z = CharacterTorch.localPosition.z + (localTranslation.x * 0.7)
+////                lantern.position.x = CharacterTorch.localPosition.x + (localTranslation.z * 0.2)
+//                lantern.position.z = concatenatedPosition.x
+//                lantern.position.x = concatenatedPosition.z
+//            }
         }
     }
 
@@ -184,7 +185,7 @@ final class GameScene: Scene {
                              top: cameraSize,
                              bottom: -cameraSize)
 
-        orthoCamera.rect = rect
+//        orthoCamera.rect = rect
     }
 }
 
@@ -195,14 +196,14 @@ extension GameScene: KeyboardDelegate {
         case .key0: currentCameraIndex = 0
         case .key1: currentCameraIndex = 1
         case .key2: currentCameraIndex = 2
-        case .w, .s, .a, .d, .left, .right, .up, .down:
-            if state == .began {
-                skeleton.resumeAnimation()
-            }
-
-            if state == .ended, keysDown.isEmpty {
-                skeleton.pauseAnimation()
-            }
+//        case .w, .s, .a, .d, .left, .right, .up, .down:
+//            if state == .began {
+//                skeleton.resumeAnimation()
+//            }
+//
+//            if state == .ended, keysDown.isEmpty {
+//                skeleton.pauseAnimation()
+//            }
         default:
             break
         }
