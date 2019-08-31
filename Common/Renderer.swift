@@ -123,23 +123,29 @@ extension Renderer: MTKViewDelegate {
             let scene = scene
         else {
             return
-        } 
+        }
 
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
-        let previousUniforms = scene.uniforms
-        // Shadow pass
-        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {
-            return
-        }
 
+        // Tessellation Pass
+        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+        computeEncoder.pushDebugGroup("Tessellation Pass")
+        for case let handler as ComputeHandler in scene.renderables {
+            handler.compute(computeEncoder: computeEncoder)
+        }
+        computeEncoder.popDebugGroup()
+
+
+        // Shadow pass
+        let previousUniforms = scene.uniforms
+        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else { fatalError() }
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
-        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else {
-            return 
-        }
 
+        // Main pass
+        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderEncoder.pushDebugGroup("Main pass")
         renderEncoder.label = "Main encoder"
         renderEncoder.setDepthStencilState(depthStencilState)

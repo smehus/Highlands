@@ -25,6 +25,8 @@
 		02316F0C22FF2943000DA34B /* Boy_Head_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EFB22FF2943000DA34B /* Boy_Head_diffuse.png */; };
 		02316F0D22FF2943000DA34B /* Boy_LowerBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */; };
 		02316F0E22FF2943000DA34B /* Boy_LowerBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */; };
+		02544A99231AB2130072E47F /* Terrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02544A98231AB2130072E47F /* Terrain.swift */; };
+		02544A9A231AB2130072E47F /* Terrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02544A98231AB2130072E47F /* Terrain.swift */; };
 		0275F18922FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
 		0275F18A22FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
 		0275F18B22FF6B5600C7D898 /* Torch.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18822FF6B5600C7D898 /* Torch.mtl */; };
@@ -235,6 +237,7 @@
 		02316EFA22FF2943000DA34B /* Boy_Shoes_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_Shoes_diffuse.png; path = BoyWalking/Boy_Shoes_diffuse.png; sourceTree = SOURCE_ROOT; };
 		02316EFB22FF2943000DA34B /* Boy_Head_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_Head_diffuse.png; path = BoyWalking/Boy_Head_diffuse.png; sourceTree = SOURCE_ROOT; };
 		02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_LowerBody_diffuse.png; path = BoyWalking/Boy_LowerBody_diffuse.png; sourceTree = SOURCE_ROOT; };
+		02544A98231AB2130072E47F /* Terrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terrain.swift; sourceTree = "<group>"; };
 		0275F18722FF6B5600C7D898 /* Torch.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.obj; sourceTree = SOURCE_ROOT; };
 		0275F18822FF6B5600C7D898 /* Torch.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.mtl; sourceTree = SOURCE_ROOT; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
@@ -568,6 +571,7 @@
 				A5F6ABB321CF292D0027D425 /* Notes */,
 				A563DF1B21E8035200563EA9 /* Transform.swift */,
 				0284473722C02DFB00A4E479 /* Water.swift */,
+				02544A98231AB2130072E47F /* Terrain.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -950,6 +954,7 @@
 				A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */,
 				A57F6A6321B978E3002C0632 /* MathLibrary.swift in Sources */,
 				0284473B22C0377500A4E479 /* Water.metal in Sources */,
+				02544A99231AB2130072E47F /* Terrain.swift in Sources */,
 				A5A1CD1821B9EC5D002F6F35 /* Node.swift in Sources */,
 				A57506EE21CE942700C63081 /* GameView.swift in Sources */,
 			);
@@ -960,6 +965,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5A1CD1F21B9F332002F6F35 /* Prop.swift in Sources */,
+				02544A9A231AB2130072E47F /* Terrain.swift in Sources */,
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,

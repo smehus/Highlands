@@ -20,3 +20,7 @@ extension Renderable {
     func renderToTarget(with commandBuffer: MTLCommandBuffer) { }
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }
 }
+
+protocol ComputeHandler {
+    func compute(computeEncoder: MTLComputeCommandEncoder)
+}

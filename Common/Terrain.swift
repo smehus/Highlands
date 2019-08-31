@@ -1,0 +1,141 @@
+//
+//  Terrain.swift
+//  Highlands
+//
+//  Created by Scott Mehus on 8/31/19.
+//  Copyright © 2019 Scott Mehus. All rights reserved.
+//
+
+import Foundation
+import MetalKit
+
+class Terrain: Node {
+
+    private let patches = (horizontal: 1, vertical: 1)
+    private var patchCount: Int {
+        return patches.horizontal * patches.vertical
+    }
+
+    private var edgeFactors: [Float] = [4]
+    private var insideFactors: [Float] = [4]
+    private var controlPointsBuffer: MTLBuffer?
+    private var tessellationPipelineState: MTLComputePipelineState
+    private var renderPipelineState: MTLRenderPipelineState
+
+    lazy var tessellationFactorsBuffer: MTLBuffer? = {
+        let count = patchCount * (4 + 2)
+        let size = count * MemoryLayout<Float>.size / 2
+        return Renderer.device.makeBuffer(length: size, options: .storageModePrivate)
+    }()
+
+    init(textureName: String) {
+        renderPipelineState = Terrain.buildRenderPipelineState()
+        tessellationPipelineState = Terrain.buildComputePipelineState()
+        super.init()
+
+        let controlPoints = createControlPoints(patches: patches, size: (2, 2))
+        controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints,
+                                                         length: MemoryLayout<float3>.stride * controlPoints.count)
+
+
+    }
+}
+
+extension Terrain {
+
+    static func buildComputePipelineState() -> MTLComputePipelineState {
+        guard let kernelFunction = Renderer.library?.makeFunction(name: "tessellation_main") else {
+            fatalError("Tessellation shader function not found")
+        }
+
+        return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
+    }
+
+    static func buildRenderPipelineState() -> MTLRenderPipelineState {
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        descriptor.depthAttachmentPixelFormat = .depth32Float
+
+        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_main")
+        let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_main")
+        descriptor.vertexFunction = vertexFunction
+        descriptor.fragmentFunction = fragmentFunction
+
+        let vertexDescriptor = MTLVertexDescriptor()
+        vertexDescriptor.attributes[0].format = .float3
+        vertexDescriptor.attributes[0].offset = 0
+        vertexDescriptor.attributes[0].bufferIndex = 0
+
+        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
+        vertexDescriptor.layouts[0].stride = MemoryLayout<float3>.stride
+        descriptor.vertexDescriptor = vertexDescriptor
+
+        descriptor.tessellationFactorStepFunction = .perPatch
+//        descriptor.maxTessellationFactor = Renderer.maxTessellation
+        descriptor.tessellationPartitionMode = .pow2
+
+        return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+    }
+}
+
+extension Terrain {
+    /**
+     Create control points
+     - Parameters:
+     - patches: number of patches across and down
+     - size: size of plane
+     - Returns: an array of patch control points. Each group of four makes one patch.
+     **/
+    func createControlPoints(patches: (horizontal: Int, vertical: Int),
+                             size: (width: Float, height: Float)) -> [float3] {
+
+        var points: [float3] = []
+        // per patch width and height
+        let width = 1 / Float(patches.horizontal)
+        let height = 1 / Float(patches.vertical)
+
+        for j in 0..<patches.vertical {
+            let row = Float(j)
+            for i in 0..<patches.horizontal {
+                let column = Float(i)
+                let left = width * column
+                let bottom = height * row
+                let right = width * column + width
+                let top = height * row + height
+
+                points.append([left, 0, top])
+                points.append([right, 0, top])
+                points.append([right, 0, bottom])
+                points.append([left, 0, bottom])
+            }
+        }
+        // size and convert to Metal coordinates
+        // eg. 6 across would be -3 to + 3
+        points = points.map {
+            [$0.x * size.width - size.width / 2,
+             0,
+             $0.z * size.height - size.height / 2]
+        }
+        return points
+    }
+}
+
+
+extension Terrain: ComputeHandler {
+    func compute(computeEncoder: MTLComputeCommandEncoder) {
+        computeEncoder.setComputePipelineState(tessellationPipelineState)
+        computeEncoder.setBytes(&edgeFactors,
+                                length: MemoryLayout<Float>.size * edgeFactors.count,
+                                index: 0)
+        computeEncoder.setBytes(&insideFactors,
+                                length: MemoryLayout<Float>.size * insideFactors.count,
+                                index: 1)
+        computeEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, index: 2)
+
+        let width = min(patchCount, tessellationPipelineState.threadExecutionWidth)
+
+        computeEncoder.dispatchThreadgroups(MTLSizeMake(patchCount, 1, 1),
+                                            threadsPerThreadgroup: MTLSizeMake(width, 1, 1))
+        computeEncoder.endEncoding()
+    }
+}
