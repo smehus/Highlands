@@ -22,5 +22,5 @@ extension Renderable {
 }
 
 protocol ComputeHandler {
-    func compute(computeEncoder: MTLComputeCommandEncoder)
+    func compute(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms)
 }

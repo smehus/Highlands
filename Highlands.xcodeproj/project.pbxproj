@@ -27,6 +27,8 @@
 		02316F0E22FF2943000DA34B /* Boy_LowerBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */; };
 		02544A99231AB2130072E47F /* Terrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02544A98231AB2130072E47F /* Terrain.swift */; };
 		02544A9A231AB2130072E47F /* Terrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02544A98231AB2130072E47F /* Terrain.swift */; };
+		02544A9C231AB8360072E47F /* Terrain.metal in Sources */ = {isa = PBXBuildFile; fileRef = 02544A9B231AB8360072E47F /* Terrain.metal */; };
+		02544A9D231AB8360072E47F /* Terrain.metal in Sources */ = {isa = PBXBuildFile; fileRef = 02544A9B231AB8360072E47F /* Terrain.metal */; };
 		0275F18922FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
 		0275F18A22FF6B5600C7D898 /* Torch.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18722FF6B5600C7D898 /* Torch.obj */; };
 		0275F18B22FF6B5600C7D898 /* Torch.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 0275F18822FF6B5600C7D898 /* Torch.mtl */; };
@@ -238,6 +240,7 @@
 		02316EFB22FF2943000DA34B /* Boy_Head_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_Head_diffuse.png; path = BoyWalking/Boy_Head_diffuse.png; sourceTree = SOURCE_ROOT; };
 		02316EFC22FF2943000DA34B /* Boy_LowerBody_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_LowerBody_diffuse.png; path = BoyWalking/Boy_LowerBody_diffuse.png; sourceTree = SOURCE_ROOT; };
 		02544A98231AB2130072E47F /* Terrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terrain.swift; sourceTree = "<group>"; };
+		02544A9B231AB8360072E47F /* Terrain.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Terrain.metal; sourceTree = "<group>"; };
 		0275F18722FF6B5600C7D898 /* Torch.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.obj; sourceTree = SOURCE_ROOT; };
 		0275F18822FF6B5600C7D898 /* Torch.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Torch.mtl; sourceTree = SOURCE_ROOT; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
@@ -505,6 +508,7 @@
 				A58F1A1021E94112003F6F1F /* MorphShader.metal */,
 				A5F08F3C21FCC7A0007E276F /* Shadow.metal */,
 				0284473A22C0377500A4E479 /* Water.metal */,
+				02544A9B231AB8360072E47F /* Terrain.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -948,6 +952,7 @@
 				A57506D921CD6C9200C63081 /* GLTFAsset.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5CB1E9E21EA848E002CCB94 /* DebugLights.metal in Sources */,
+				02544A9C231AB8360072E47F /* Terrain.metal in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A57506A021CD63E200C63081 /* PhysicsController.swift in Sources */,
@@ -999,6 +1004,7 @@
 				A57506D121CD680E00C63081 /* Renderable.swift in Sources */,
 				A575069F21CD63E200C63081 /* InputController.swift in Sources */,
 				A57506CD21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
+				02544A9D231AB8360072E47F /* Terrain.metal in Sources */,
 				A5F08F3E21FCC7A0007E276F /* Shadow.metal in Sources */,
 				A57506A321CD641300C63081 /* GameView.swift in Sources */,
 				A57506E321CDA2C600C63081 /* GameScene.swift in Sources */,

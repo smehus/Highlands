@@ -11,18 +11,22 @@ import MetalKit
 
 class Terrain: Node {
 
+    static let maxTessellation = 16
+
     private let patches = (horizontal: 1, vertical: 1)
     private var patchCount: Int {
         return patches.horizontal * patches.vertical
     }
 
+    private var terrainParams = TerrainParams(size: [2, 2], height: 1, maxTessellation: UInt32(maxTessellation))
     private var edgeFactors: [Float] = [4]
     private var insideFactors: [Float] = [4]
     private var controlPointsBuffer: MTLBuffer?
     private var tessellationPipelineState: MTLComputePipelineState
     private var renderPipelineState: MTLRenderPipelineState
 
-    lazy var tessellationFactorsBuffer: MTLBuffer? = {
+
+    lazy var tessellationFactorsBuffer: MTLBuffer! = {
         let count = patchCount * (4 + 2)
         let size = count * MemoryLayout<Float>.size / 2
         return Renderer.device.makeBuffer(length: size, options: .storageModePrivate)
@@ -33,7 +37,9 @@ class Terrain: Node {
         tessellationPipelineState = Terrain.buildComputePipelineState()
         super.init()
 
-        let controlPoints = createControlPoints(patches: patches, size: (2, 2))
+        let controlPoints = createControlPoints(patches: patches,
+                                                size: (width: terrainParams.size.x,
+                                                       height: terrainParams.size.y))
         controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints,
                                                          length: MemoryLayout<float3>.stride * controlPoints.count)
 
@@ -122,8 +128,23 @@ extension Terrain {
 
 
 extension Terrain: ComputeHandler {
-    func compute(computeEncoder: MTLComputeCommandEncoder) {
+    func compute(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) {
         computeEncoder.setComputePipelineState(tessellationPipelineState)
+
+        var cameraPosition = uniforms.viewMatrix.columns.3
+        computeEncoder.setBytes(&cameraPosition,
+                                length: MemoryLayout<float4>.stride,
+                                index: 3)
+        var matrix = uniforms.modelMatrix
+        computeEncoder.setBytes(&matrix,
+                                length: MemoryLayout<float4x4>.stride,
+                                index: 4)
+        computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 5)
+        computeEncoder.setBytes(&terrainParams,
+                                length: MemoryLayout<Terrain>.stride,
+                                index: 6)
+
+
         computeEncoder.setBytes(&edgeFactors,
                                 length: MemoryLayout<Float>.size * edgeFactors.count,
                                 index: 0)
@@ -138,4 +159,22 @@ extension Terrain: ComputeHandler {
                                             threadsPerThreadgroup: MTLSizeMake(width, 1, 1))
         computeEncoder.endEncoding()
     }
+}
+
+extension Terrain: Renderable {
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+        renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
+
+        renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
+                                  patchStart: 0,
+                                  patchCount: patchCount,
+                                  patchIndexBuffer: nil,
+                                  patchIndexBufferOffset: 0,
+                                  instanceCount: 1,
+                                  baseInstance: 0)
+    }
+
+
+    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) { }
+
 }

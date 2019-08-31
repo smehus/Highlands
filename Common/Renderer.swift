@@ -132,9 +132,8 @@ extension Renderer: MTKViewDelegate {
         // Tessellation Pass
         guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
         computeEncoder.pushDebugGroup("Tessellation Pass")
-        for case let handler as ComputeHandler in scene.renderables {
-            handler.compute(computeEncoder: computeEncoder)
-        }
+        let terrain = scene.renderables.first(where: { $0 is Terrain }) as! Terrain
+        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
         computeEncoder.popDebugGroup()
 
 
@@ -182,6 +181,8 @@ extension Renderer: MTKViewDelegate {
         
         var farZ = Camera.FarZ
         renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
+
+        renderEncoder.setTessellationFactorBuffer(terrain.tessellationFactorsBuffer, offset: 0, instanceStride: 0)
 
         for renderable in scene.renderables {
             // Allow set up for off screen targets
