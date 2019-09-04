@@ -30,7 +30,11 @@ class Terrain: Node {
     private var controlPointsBuffer: MTLBuffer?
     private var tessellationPipelineState: MTLComputePipelineState
     private var renderPipelineState: MTLRenderPipelineState
+
     private let heightMap: MTLTexture
+    private let cliffTexture: MTLTexture
+    private let snowTexture: MTLTexture
+    private let grassTexture: MTLTexture
 
     override var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
@@ -52,6 +56,13 @@ class Terrain: Node {
             let textureLoader = MTKTextureLoader(device: Renderer.device)
             heightMap = try textureLoader.newTexture(name: textureName, scaleFactor: 1.0,
                                                 bundle: Bundle.main, options: nil)
+            cliffTexture = try textureLoader.newTexture(name: "cliff-color", scaleFactor: 1.0,
+                                                bundle: Bundle.main, options: nil)
+            snowTexture = try textureLoader.newTexture(name: "snow-color", scaleFactor: 1.0,
+                                                bundle: Bundle.main, options: nil)
+            grassTexture = try textureLoader.newTexture(name: "grass-color", scaleFactor: 1.0,
+                                                bundle: Bundle.main, options: nil)
+
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -199,7 +210,9 @@ extension Terrain: Renderable {
         renderEncoder.setVertexTexture(heightMap, index: 0)
         renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
 
-
+        renderEncoder.setFragmentTexture(cliffTexture, index: 1)
+        renderEncoder.setFragmentTexture(snowTexture, index: 2)
+        renderEncoder.setFragmentTexture(grassTexture, index: 3)
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,
