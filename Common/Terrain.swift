@@ -79,27 +79,27 @@ extension Terrain {
     }
 
     static func buildRenderPipelineState() -> MTLRenderPipelineState {
-        let descriptor = MTLRenderPipelineDescriptor()
-        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
-        descriptor.depthAttachmentPixelFormat = .depth32Float
+      let descriptor = MTLRenderPipelineDescriptor()
+      descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+      descriptor.depthAttachmentPixelFormat = .depth32Float
 
-        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
-        let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
-        descriptor.vertexFunction = vertexFunction
-        descriptor.fragmentFunction = fragmentFunction
+      let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
+      let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
+      descriptor.vertexFunction = vertexFunction
+      descriptor.fragmentFunction = fragmentFunction
 
-        let vertexDescriptor = MTLVertexDescriptor()
-        vertexDescriptor.attributes[0].format = .float3
-        vertexDescriptor.attributes[0].offset = 0
-        vertexDescriptor.attributes[0].bufferIndex = 0
+      let vertexDescriptor = MTLVertexDescriptor()
+      vertexDescriptor.attributes[0].format = .float3
+      vertexDescriptor.attributes[0].offset = 0
+      vertexDescriptor.attributes[0].bufferIndex = 0
 
-        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-        vertexDescriptor.layouts[0].stride = MemoryLayout<float3>.stride
-        descriptor.vertexDescriptor = vertexDescriptor
+      vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
+      vertexDescriptor.layouts[0].stride = MemoryLayout<float3>.stride
+      descriptor.vertexDescriptor = vertexDescriptor
 
-        descriptor.tessellationFactorStepFunction = .perPatch
-        descriptor.maxTessellationFactor = maxTessellation
-        descriptor.tessellationPartitionMode = .fractionalEven
+      descriptor.tessellationFactorStepFunction = .perPatch
+      descriptor.maxTessellationFactor = maxTessellation
+      descriptor.tessellationPartitionMode = .pow2
 
         return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
     }
@@ -189,7 +189,11 @@ extension Terrain: Renderable {
 
         uniforms.modelMatrix = modelMatrix
         renderEncoder.setRenderPipelineState(renderPipelineState)
-        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+
+        var mvp = uniforms.projectionMatrix * uniforms.viewMatrix.inverse * modelMatrix
+
+        renderEncoder.setVertexBytes(&mvp, length: MemoryLayout<float4x4>.stride, index: 1)
+//        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
         renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
         renderEncoder.setVertexTexture(heightMap, index: 0)
         renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)

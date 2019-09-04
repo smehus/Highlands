@@ -132,7 +132,7 @@ extension Renderer: MTKViewDelegate {
 
         scene.uniforms.projectionMatrix = float4x4(projectionFov: 1.2, near: 0.01, far: 100,
                                              aspect: Float(view.bounds.width/view.bounds.height))
-        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, -1.8]).inverse
+        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, -1.8])
 
         // Tessellation Pass
         guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
