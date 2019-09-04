@@ -137,11 +137,14 @@ extension Renderer: MTKViewDelegate {
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         // Tessellation Pass
-        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
-        computeEncoder.pushDebugGroup("Tessellation Pass")
-        let terrain = scene.renderables.first(where: { $0 is Terrain }) as! Terrain
-        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
-        computeEncoder.popDebugGroup()
+        if let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain {
+            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+            computeEncoder.pushDebugGroup("Tessellation Pass")
+            terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+            computeEncoder.popDebugGroup()
+            computeEncoder.endEncoding()
+        }
+
 
 
         // Main pass
