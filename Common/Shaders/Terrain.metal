@@ -100,9 +100,10 @@ vertex_terrain(patch_control_point<ControlPoint>
 }
 
 fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
-                              texture2d<float> cliffTexture [[ texture(1) ]],
-                              texture2d<float> snowTexture  [[ texture(2) ]],
-                              texture2d<float> grassTexture [[ texture(3) ]])
+                                 constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
+                                 texture2d<float> cliffTexture [[ texture(TerrainTextureBase) ]],
+                                 texture2d<float> snowTexture  [[ texture(TerrainTextureMiddle) ]],
+                                 texture2d<float> grassTexture [[ texture(TerrainTextureTop) ]])
 {
     return in.color;
 

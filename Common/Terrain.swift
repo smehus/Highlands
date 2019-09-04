@@ -206,9 +206,9 @@ extension Terrain: Renderable {
         renderEncoder.setVertexTexture(heightMap, index: 0)
         renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
 
-        renderEncoder.setFragmentTexture(cliffTexture, index: 1)
-        renderEncoder.setFragmentTexture(snowTexture, index: 2)
-        renderEncoder.setFragmentTexture(grassTexture, index: 3)
+        renderEncoder.setFragmentTexture(cliffTexture, index: Int(TerrainTextureBase.rawValue))
+        renderEncoder.setFragmentTexture(snowTexture, index: Int(TerrainTextureMiddle.rawValue))
+        renderEncoder.setFragmentTexture(grassTexture, index: Int(TerrainTextureTop.rawValue))
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,

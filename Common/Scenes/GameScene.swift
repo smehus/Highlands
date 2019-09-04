@@ -13,6 +13,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
+    let terrain = Terrain(textureName: "mountain")
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
 //    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
@@ -29,10 +30,16 @@ final class GameScene: Scene {
 
         inputController.keyboardDelegate = self
 
+        terrain.position = float3([0, 1, 0])
+        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
+        add(node: terrain)
+
+
         lights = lighting()
-        camera.position = [0, 2, -4]
+        camera.position = [0, 0, -1.8]
         camera.rotation = [0, 0, 0]
 
+        /*
         water.position.y = -1
         water.rotation = [0, 0, radians(fromDegrees: -90)]
         add(node: water)
@@ -105,7 +112,7 @@ final class GameScene: Scene {
         tpCamera.focusDistance = 4
         cameras.append(tpCamera)
         currentCameraIndex = 2
-
+        */
     }
 
     override func isHardCollision() -> Bool {
@@ -114,48 +121,48 @@ final class GameScene: Scene {
 
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
-            guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
-            let position = inputController.player!.position
-            let forward = inputController.player!.forwardVector
-            let rotation = inputController.player!.rotation
-
-
-            // Lantern
-            lights[index].position = position
-            lights[index].position.y = 3.5
-            lights[index].position += (forward * 0.8)
-            lights[index].position.x -= 0.2
-
-
-//            lights[index].position = camera.position
-
-            // Spotlight
-//            lights[index].position = float3(pos.x, pos.y + 3.0, pos.z)
-////            lights[index].position += (inputController.player!.forwardVector * 1.2)
-//            lights[index].coneDirection = float3(dir.x, radians(fromDegrees: -120), dir.z)
-
-
-
-//            lights[index].position = float3(pos.x, pos.y + 0.3, pos.z)
-//            lights[index].position += (inputController.player!.forwardVector.x)
-//            lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
-
-
-            if let hand = skeleton.nodes.compactMap({ self.find(name: "Boy:RightHand", in: $0) }).first {
-
-                var localTranslation = hand.globalTransform.columns.3.xyz
-
-                let x = skeleton.worldTransform.columns.3.x
-                let y = skeleton.worldTransform.columns.3.y
-                let z = skeleton.worldTransform.columns.3.z
-                let concatenatedPosition = float3(x + localTranslation.x, y + localTranslation.y, z + localTranslation.z)
-
-                print("*** hand translation \(concatenatedPosition)")
-//                lantern.position.z = CharacterTorch.localPosition.z + (localTranslation.x * 0.7)
-//                lantern.position.x = CharacterTorch.localPosition.x + (localTranslation.z * 0.2)
-                lantern.position.z = concatenatedPosition.x
-                lantern.position.x = concatenatedPosition.z
-            }
+//            guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
+//            let position = inputController.player!.position
+//            let forward = inputController.player!.forwardVector
+//            let rotation = inputController.player!.rotation
+//
+//
+//            // Lantern
+//            lights[index].position = position
+//            lights[index].position.y = 3.5
+//            lights[index].position += (forward * 0.8)
+//            lights[index].position.x -= 0.2
+//
+//
+////            lights[index].position = camera.position
+//
+//            // Spotlight
+////            lights[index].position = float3(pos.x, pos.y + 3.0, pos.z)
+//////            lights[index].position += (inputController.player!.forwardVector * 1.2)
+////            lights[index].coneDirection = float3(dir.x, radians(fromDegrees: -120), dir.z)
+//
+//
+//
+////            lights[index].position = float3(pos.x, pos.y + 0.3, pos.z)
+////            lights[index].position += (inputController.player!.forwardVector.x)
+////            lights[index].coneDirection = float3(dir.x, -1.0, dir.z)
+//
+//
+//            if let hand = skeleton.nodes.compactMap({ self.find(name: "Boy:RightHand", in: $0) }).first {
+//
+//                var localTranslation = hand.globalTransform.columns.3.xyz
+//
+//                let x = skeleton.worldTransform.columns.3.x
+//                let y = skeleton.worldTransform.columns.3.y
+//                let z = skeleton.worldTransform.columns.3.z
+//                let concatenatedPosition = float3(x + localTranslation.x, y + localTranslation.y, z + localTranslation.z)
+//
+//                print("*** hand translation \(concatenatedPosition)")
+////                lantern.position.z = CharacterTorch.localPosition.z + (localTranslation.x * 0.7)
+////                lantern.position.x = CharacterTorch.localPosition.x + (localTranslation.z * 0.2)
+//                lantern.position.z = concatenatedPosition.x
+//                lantern.position.x = concatenatedPosition.z
+//            }
         }
     }
 
