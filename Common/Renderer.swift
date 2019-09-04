@@ -182,8 +182,6 @@ extension Renderer: MTKViewDelegate {
 //        var farZ = Camera.FarZ
 //        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-        renderEncoder.setTessellationFactorBuffer(terrain.tessellationFactorsBuffer, offset: 0, instanceStride: 0)
-
 //        for renderable in scene.renderables {
 //            // Allow set up for off screen targets
 //            renderable.renderToTarget(with: commandBuffer)

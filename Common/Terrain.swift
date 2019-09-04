@@ -11,7 +11,13 @@ import MetalKit
 
 class Terrain: Node {
 
-    static let maxTessellation = 16
+      static let maxTessellation: Int = {
+        #if os(macOS)
+        return 64
+        #else
+        return 16
+        #endif
+    } ()
 
     private let patches = (horizontal: 6, vertical: 6)
     private var patchCount: Int {
@@ -145,11 +151,19 @@ extension Terrain {
 extension Terrain: ComputeHandler {
     func compute(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) {
         computeEncoder.setComputePipelineState(tessellationPipelineState)
+        computeEncoder.setBytes(&edgeFactors,
+                                length: MemoryLayout<Float>.size * edgeFactors.count,
+                                index: 0)
+        computeEncoder.setBytes(&insideFactors,
+                                length: MemoryLayout<Float>.size * insideFactors.count,
+                                index: 1)
 
+        computeEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, index: 2)
         var cameraPosition = uniforms.viewMatrix.columns.3
         computeEncoder.setBytes(&cameraPosition,
                                 length: MemoryLayout<float4>.stride,
                                 index: 3)
+
         var matrix = modelMatrix
         computeEncoder.setBytes(&matrix,
                                 length: MemoryLayout<float4x4>.stride,
@@ -158,15 +172,6 @@ extension Terrain: ComputeHandler {
         computeEncoder.setBytes(&terrainParams,
                                 length: MemoryLayout<TerrainParams>.stride,
                                 index: 6)
-
-
-        computeEncoder.setBytes(&edgeFactors,
-                                length: MemoryLayout<Float>.size * edgeFactors.count,
-                                index: 0)
-        computeEncoder.setBytes(&insideFactors,
-                                length: MemoryLayout<Float>.size * insideFactors.count,
-                                index: 1)
-        computeEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, index: 2)
 
         let width = min(patchCount, tessellationPipelineState.threadExecutionWidth)
 
@@ -188,7 +193,8 @@ extension Terrain: Renderable {
         renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
         renderEncoder.setVertexTexture(heightMap, index: 0)
         renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
-        renderEncoder.setTriangleFillMode(.fill)
+        renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
+        renderEncoder.setTriangleFillMode(.lines)
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,
