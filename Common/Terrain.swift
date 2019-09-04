@@ -196,6 +196,7 @@ extension Terrain: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 
         renderEncoder.pushDebugGroup("Terrain")
+        renderEncoder.setCullMode(.none)
         var uniforms = vertex
 
         uniforms.modelMatrix = modelMatrix
@@ -205,7 +206,7 @@ extension Terrain: Renderable {
         renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(&mvp, length: MemoryLayout<float4x4>.stride, index: 1)
         renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
-        renderEncoder.setTriangleFillMode(.lines)
+        renderEncoder.setTriangleFillMode(.fill)
         renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
         renderEncoder.setVertexTexture(heightMap, index: 0)
         renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)

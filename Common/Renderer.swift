@@ -143,7 +143,7 @@ extension Renderer: MTKViewDelegate {
 
 
 //        // Shadow pass
-        let previousUniforms = scene.uniforms
+//        let previousUniforms = scene.uniforms
 //        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else { fatalError() }
 //        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
@@ -155,17 +155,17 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setCullMode(.back)
 
-        var fragmentUniforms = FragmentUniforms()
-        fragmentUniforms.cameraPosition = scene.camera.position
-        fragmentUniforms.lightCount = UInt32(scene.lights.count)
+//        var fragmentUniforms = FragmentUniforms()
+//        fragmentUniforms.cameraPosition = scene.camera.position
+//        fragmentUniforms.lightCount = UInt32(scene.lights.count)
 //        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
 //                                                          near: 0.01,
 //                                                          far: 16,
 //                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
 
         // Reset uniforms so projection is correct
-        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
-        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
+//        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
+//        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 //
 //        renderEncoder.setFragmentBytes(&fragmentUniforms,
 //                                       length: MemoryLayout<FragmentUniforms>.stride,

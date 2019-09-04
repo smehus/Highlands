@@ -63,8 +63,8 @@ class Scene {
 
     private func update(nodes: [Node], deltaTime: Float) {
         nodes.forEach { node in
-            node.update(deltaTime: deltaTime)
-            update(nodes: node.children, deltaTime: deltaTime)
+//            node.update(deltaTime: deltaTime)
+//            update(nodes: node.children, deltaTime: deltaTime)
         }
     }
 
@@ -98,9 +98,9 @@ class Scene {
     }
 
     func sceneSizeWillChange(to size: CGSize) {
-        for camera in cameras {
-            camera.aspect = Float(size.width / size.height)
-        }
-        sceneSize = size
+//        for camera in cameras {
+//            camera.aspect = Float(size.width / size.height)
+//        }
+//        sceneSize = size
     }
 }
