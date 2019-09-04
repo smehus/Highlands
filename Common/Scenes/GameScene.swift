@@ -31,8 +31,8 @@ final class GameScene: Scene {
         inputController.keyboardDelegate = self
 
         lights = lighting()
-//        camera.position = [0, 2, -4]
-//        camera.rotation = [0, 0, 0]
+        camera.position = [0, 0, -1.8]
+        camera.rotation = [0, 0, 0]
 
         terrain.position = float3([0, 0, 0])
         terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)

@@ -124,11 +124,16 @@ extension Renderer: MTKViewDelegate {
             let scene = scene
         else {
             return
-        }
+        } 
 
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
+
+        // Shadow pass
+        let previousUniforms = scene.uniforms
+        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
+        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         scene.uniforms.projectionMatrix = float4x4(projectionFov: 1.2, near: 0.01, far: 100,
                                              aspect: Float(view.bounds.width/view.bounds.height))
@@ -142,12 +147,6 @@ extension Renderer: MTKViewDelegate {
         computeEncoder.popDebugGroup()
 
 
-//        // Shadow pass
-//        let previousUniforms = scene.uniforms
-//        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else { fatalError() }
-//        renderShadowPass(renderEncoder: shadowEncoder, view: view)
-
-
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderEncoder.pushDebugGroup("Main pass")
@@ -155,15 +154,15 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setCullMode(.back)
 
-//        var fragmentUniforms = FragmentUniforms()
-//        fragmentUniforms.cameraPosition = scene.camera.position
-//        fragmentUniforms.lightCount = UInt32(scene.lights.count)
-//        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
-//                                                          near: 0.01,
-//                                                          far: 16,
-//                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
+        var fragmentUniforms = FragmentUniforms()
+        fragmentUniforms.cameraPosition = scene.camera.position
+        fragmentUniforms.lightCount = UInt32(scene.lights.count)
+        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
+                                                          near: 0.01,
+                                                          far: 16,
+                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
 
-        // Reset uniforms so projection is correct
+//         Reset uniforms so projection is correct
 //        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
 //        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 //
