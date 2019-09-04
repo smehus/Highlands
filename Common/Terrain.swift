@@ -150,6 +150,7 @@ extension Terrain {
 
 extension Terrain: ComputeHandler {
     func compute(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) {
+
         computeEncoder.setComputePipelineState(tessellationPipelineState)
         computeEncoder.setBytes(&edgeFactors,
                                 length: MemoryLayout<Float>.size * edgeFactors.count,
@@ -157,13 +158,11 @@ extension Terrain: ComputeHandler {
         computeEncoder.setBytes(&insideFactors,
                                 length: MemoryLayout<Float>.size * insideFactors.count,
                                 index: 1)
-
         computeEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, index: 2)
         var cameraPosition = uniforms.viewMatrix.columns.3
         computeEncoder.setBytes(&cameraPosition,
                                 length: MemoryLayout<float4>.stride,
                                 index: 3)
-
         var matrix = modelMatrix
         computeEncoder.setBytes(&matrix,
                                 length: MemoryLayout<float4x4>.stride,
@@ -173,11 +172,12 @@ extension Terrain: ComputeHandler {
                                 length: MemoryLayout<TerrainParams>.stride,
                                 index: 6)
 
-        let width = min(patchCount, tessellationPipelineState.threadExecutionWidth)
-
+        let width = min(patchCount,
+                        tessellationPipelineState.threadExecutionWidth)
         computeEncoder.dispatchThreadgroups(MTLSizeMake(patchCount, 1, 1),
                                             threadsPerThreadgroup: MTLSizeMake(width, 1, 1))
         computeEncoder.endEncoding()
+
     }
 }
 
@@ -188,17 +188,18 @@ extension Terrain: Renderable {
         var uniforms = vertex
 
         uniforms.modelMatrix = modelMatrix
-        renderEncoder.setRenderPipelineState(renderPipelineState)
 
         var mvp = uniforms.projectionMatrix * uniforms.viewMatrix.inverse * modelMatrix
 
+        renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(&mvp, length: MemoryLayout<float4x4>.stride, index: 1)
-//        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
         renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
+        renderEncoder.setTriangleFillMode(.lines)
+        renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
         renderEncoder.setVertexTexture(heightMap, index: 0)
         renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
-        renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
-        renderEncoder.setTriangleFillMode(.lines)
+
+
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,
