@@ -104,16 +104,18 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
                               texture2d<float> snowTexture  [[ texture(2) ]],
                               texture2d<float> grassTexture [[ texture(3) ]])
 {
-  constexpr sampler sample(filter::linear, address::repeat);
-  float tiling = 16.0;
-  float4 color;
-  if (in.height < -0.5) {
-    color = grassTexture.sample(sample, in.uv * tiling);
-  } else if (in.height < 0.3) {
-    color = cliffTexture.sample(sample, in.uv * tiling);
-  } else {
-    color = snowTexture.sample(sample, in.uv * tiling);
-  }
-  return color;
+    return in.color;
+
+//  constexpr sampler sample(filter::linear, address::repeat);
+//  float tiling = 16.0;
+//  float4 color;
+//  if (in.height < -0.5) {
+//    color = grassTexture.sample(sample, in.uv * tiling);
+//  } else if (in.height < 0.3) {
+//    color = cliffTexture.sample(sample, in.uv * tiling);
+//  } else {
+//    color = snowTexture.sample(sample, in.uv * tiling);
+//  }
+//  return color;
 }
 
