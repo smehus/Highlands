@@ -28,26 +28,12 @@ extension Float {
 }
 
 extension float4x4 {
-
-    public init(projectionFov fov: Float, near: Float, far: Float, aspect: Float, lhs: Bool = true) {
-        let y = 1 / tan(fov * 0.5)
-        let x = y / aspect
-        let z = lhs ? far / (far - near) : far / (near - far)
-        let X = float4( x,  0,  0,  0)
-        let Y = float4( 0,  y,  0,  0)
-        let Z = lhs ? float4( 0,  0,  z, 1) : float4( 0,  0,  z, -1)
-        let W = lhs ? float4( 0,  0,  z * -near,  0) : float4( 0,  0,  z * near,  0)
-        self.init()
-        columns = (X, Y, Z, W)
+    init(translation t: float3) {
+        self = matrix_identity_float4x4
+        columns.3.x = t.x
+        columns.3.y = t.y
+        columns.3.z = t.z
     }
-
-    init(translation: float3) {
-      self = matrix_identity_float4x4
-      columns.3.x = translation.x
-      columns.3.y = translation.y
-      columns.3.z = translation.z
-    }
-
 
     init(scaling: float3) {
         self = matrix_identity_float4x4
@@ -61,35 +47,35 @@ extension float4x4 {
         columns.3.w = 1 / scaling
     }
 
-    public init(rotationX angle: Float) {
-      self = matrix_identity_float4x4
-      columns.1.y = cos(angle)
-      columns.1.z = sin(angle)
-      columns.2.y = -sin(angle)
-      columns.2.z = cos(angle)
+    init(rotationX angle: Float) {
+        self = matrix_identity_float4x4
+        columns.1.y = cos(angle)
+        columns.1.z = sin(angle)
+        columns.2.y = -sin(angle)
+        columns.2.z = cos(angle)
     }
 
-    public init(rotationY angle: Float) {
-      self = matrix_identity_float4x4
-      columns.0.x = cos(angle)
-      columns.0.z = -sin(angle)
-      columns.2.x = sin(angle)
-      columns.2.z = cos(angle)
+    init(rotationY angle: Float) {
+        self = matrix_identity_float4x4
+        columns.0.x = cos(angle)
+        columns.0.z = -sin(angle)
+        columns.2.x = sin(angle)
+        columns.2.z = cos(angle)
     }
 
-    public init(rotationZ angle: Float) {
-      self = matrix_identity_float4x4
-      columns.0.x = cos(angle)
-      columns.0.y = sin(angle)
-      columns.1.x = -sin(angle)
-      columns.1.y = cos(angle)
+    init(rotationZ angle: Float) {
+        self = matrix_identity_float4x4
+        columns.0.x = cos(angle)
+        columns.0.y = sin(angle)
+        columns.1.x = -sin(angle)
+        columns.1.y = cos(angle)
     }
 
-    public init(rotation angle: float3) {
-      let rotationX = float4x4(rotationX: angle.x)
-      let rotationY = float4x4(rotationY: angle.y)
-      let rotationZ = float4x4(rotationZ: angle.z)
-      self = rotationX * rotationY * rotationZ
+    init(rotation angle: float3) {
+        let rotationX = float4x4(rotationX: angle.x)
+        let rotationY = float4x4(rotationY: angle.y)
+        let rotationZ = float4x4(rotationZ: angle.z)
+        self = rotationX * rotationY * rotationZ
     }
 
     static func identity() -> float4x4 {

@@ -32,7 +32,7 @@ final class GameScene: Scene {
 
         lights = lighting()
         camera.position = [0, 0, -1.8]
-//        camera.rotation = [0, 0, 0]
+        camera.rotation = [0, 0, 0]
 
         terrain.position = float3([0, 0, 0])
         terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
@@ -112,8 +112,6 @@ final class GameScene: Scene {
         cameras.append(tpCamera)
         currentCameraIndex = 0
  */
-
-        self.inputController.player = cameras.first!
     }
 
     override func isHardCollision() -> Bool {

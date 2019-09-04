@@ -10,8 +10,8 @@ import Foundation
 
 class Camera: Node {
 
-    static var FarZ: Float = 100
-    static var NearZ: Float = 0.01
+    static var FarZ: Float = 25
+    static var NearZ: Float = 0.1
 
     var fovDegrees: Float = 90
     var fovRadians: Float {
@@ -26,8 +26,7 @@ class Camera: Node {
 //        return float4x4(projectionFov: fovRadians, near: near, far: far, aspect: aspect)
 //        return float4x4(projectionFov: fovRadians, aspectRaptio: aspect, nearZ: near, farZ: far)
 
-//        return float4x4(projectionFov: 1.2, aspectRatio: aspect, nearZ: near, farZ: far)
-        return float4x4(projectionFov: 1.2, near: 0.01, far: 100, aspect: aspect)
+        return float4x4(projectionFov: fovRadians, aspectRatio: aspect, nearZ: near, farZ: far)
     }
 
     var viewMatrix: float4x4 {
