@@ -20,6 +20,7 @@ final class Renderer: NSObject {
 
     private var depthStencilState: MTLDepthStencilState!
     private var instanceParamBuffer: MTLBuffer
+
     static var mtkView: MTKView!
     lazy var lightPipelineState: MTLRenderPipelineState = {
         return buildLightPipelineState()
@@ -135,11 +136,6 @@ extension Renderer: MTKViewDelegate {
         guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
-        // used for developing the tessellation
-//        scene.uniforms.projectionMatrix = float4x4(projectionFov: 1.2, near: 0.01, far: 100,
-//                                             aspect: Float(view.bounds.width/view.bounds.height))
-//        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, -1.8])
-
         // Tessellation Pass
         guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
         computeEncoder.pushDebugGroup("Tessellation Pass")
@@ -158,34 +154,39 @@ extension Renderer: MTKViewDelegate {
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
         fragmentUniforms.lightCount = UInt32(scene.lights.count)
-        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
-                                                          near: 0.01,
-                                                          far: 16,
-                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
+//        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
+//                                                          near: 0.01,
+//                                                          far: 16,
+//                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
 
-//         Reset uniforms so projection is correct
+        // Reset uniforms so projection is correct
+        // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
+        // goodddddddd damniiitttttt
+//        scene.uniforms = previousUniforms
+//        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
+//        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
         scene.uniforms.viewMatrix = previousUniforms.viewMatrix
         scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
-//
-//        renderEncoder.setFragmentBytes(&fragmentUniforms,
-//                                       length: MemoryLayout<FragmentUniforms>.stride,
-//                                       index: Int(BufferIndexFragmentUniforms.rawValue))
-//
-//
-//        renderEncoder.setFragmentBytes(&scene.lights,
-//                                       length: MemoryLayout<Light>.stride * scene.lights.count,
-//                                       index: Int(BufferIndexLights.rawValue))
-//
-//        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
-//        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
-//
-//        var farZ = Camera.FarZ
-//        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-//        for renderable in scene.renderables {
-//            // Allow set up for off screen targets
-//            renderable.renderToTarget(with: commandBuffer)
-//        }
+        renderEncoder.setFragmentBytes(&fragmentUniforms,
+                                       length: MemoryLayout<FragmentUniforms>.stride,
+                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+
+        
+        renderEncoder.setFragmentBytes(&scene.lights,
+                                       length: MemoryLayout<Light>.stride * scene.lights.count,
+                                       index: Int(BufferIndexLights.rawValue))
+
+        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
+        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
+        
+        var farZ = Camera.FarZ
+        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
+
+        for renderable in scene.renderables {
+            // Allow set up for off screen targets
+            renderable.renderToTarget(with: commandBuffer)
+        }
 
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
@@ -193,7 +194,7 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-//        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
 //        drawDebug(encoder: renderEncoder)
 
