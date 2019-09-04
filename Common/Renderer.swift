@@ -135,9 +135,10 @@ extension Renderer: MTKViewDelegate {
         guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
-        scene.uniforms.projectionMatrix = float4x4(projectionFov: 1.2, near: 0.01, far: 100,
-                                             aspect: Float(view.bounds.width/view.bounds.height))
-        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, -1.8])
+        // used for developing the tessellation
+//        scene.uniforms.projectionMatrix = float4x4(projectionFov: 1.2, near: 0.01, far: 100,
+//                                             aspect: Float(view.bounds.width/view.bounds.height))
+//        scene.uniforms.viewMatrix = float4x4(translation: [0, 0, -1.8])
 
         // Tessellation Pass
         guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
@@ -163,8 +164,8 @@ extension Renderer: MTKViewDelegate {
                                                           aspect: Float(view.bounds.width) / Float(view.bounds.height))
 
 //         Reset uniforms so projection is correct
-//        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
-//        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
+        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
+        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 //
 //        renderEncoder.setFragmentBytes(&fragmentUniforms,
 //                                       length: MemoryLayout<FragmentUniforms>.stride,

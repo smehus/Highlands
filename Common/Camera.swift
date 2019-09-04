@@ -10,15 +10,15 @@ import Foundation
 
 class Camera: Node {
 
-    static var FarZ: Float = 25
-    static var NearZ: Float = 0.1
+    static var FarZ: Float = 100
+    static var NearZ: Float = 0.01
 
     var fovDegrees: Float = 90
     var fovRadians: Float {
         return radians(fromDegrees: fovDegrees)
     }
 
-    var aspect: Float = 1
+    var aspect: Float = Float(Renderer.mtkView.bounds.width/Renderer.mtkView.bounds.height)
     var near: Float = Camera.NearZ
     var far: Float = Camera.FarZ
 
@@ -26,10 +26,12 @@ class Camera: Node {
 //        return float4x4(projectionFov: fovRadians, near: near, far: far, aspect: aspect)
 //        return float4x4(projectionFov: fovRadians, aspectRaptio: aspect, nearZ: near, farZ: far)
 
-        return float4x4(projectionFov: fovRadians, aspectRatio: aspect, nearZ: near, farZ: far)
+//        return float4x4(projectionFov: 1.2, aspectRatio: aspect, nearZ: near, farZ: far)
+        return float4x4(projectionFov: 1.2, near: 0.01, far: 100, aspect: aspect)
     }
 
     var viewMatrix: float4x4 {
+        return float4x4(translation: [0, 0, -1.8])
         let translationMatrix = float4x4(translation: position)
         let rotateMatrix = float4x4(rotation: rotation)
         let scaleMatrix = float4x4(scaling: scale)
