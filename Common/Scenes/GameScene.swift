@@ -30,8 +30,8 @@ final class GameScene: Scene {
 
         inputController.keyboardDelegate = self
 
-        terrain.position = float3([0, 1, 0])
-        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
+//        terrain.position = float3([0, 1, 0])
+//        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
         add(node: terrain)
 
 
@@ -89,7 +89,7 @@ final class GameScene: Scene {
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
          */
-        
+
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
