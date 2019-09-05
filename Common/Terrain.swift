@@ -12,11 +12,7 @@ import MetalKit
 class Terrain: Node {
 
     static let maxTessellation: Int = {
-        #if os(macOS)
-        return 64
-        #else
         return 16
-        #endif
     }()
 
     private let patches = (horizontal: 6, vertical: 6)
@@ -24,7 +20,7 @@ class Terrain: Node {
         return patches.horizontal * patches.vertical
     }
 
-    private var terrainParams = TerrainParams(size: [8, 8], height: 2, maxTessellation: UInt32(maxTessellation))
+    private var terrainParams = TerrainParams(size: [500, 500], height: 10, maxTessellation: UInt32(maxTessellation))
     private var edgeFactors: [Float] = [4]
     private var insideFactors: [Float] = [4]
     private var controlPointsBuffer: MTLBuffer?

@@ -13,7 +13,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let terrain = Terrain(textureName: "mountain")
+    let terrain = Terrain(textureName: "hills")
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
 //    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
@@ -30,7 +30,7 @@ final class GameScene: Scene {
 
         inputController.keyboardDelegate = self
 
-//        terrain.position = float3([0, 1, 0])
+        terrain.position = float3([0, 1, 0])
 //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
         add(node: terrain)
 
