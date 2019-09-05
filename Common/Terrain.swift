@@ -196,7 +196,7 @@ extension Terrain: Renderable {
 
         uniforms.modelMatrix = modelMatrix
 
-        var mvp = uniforms.projectionMatrix * uniforms.viewMatrix.inverse * modelMatrix
+        var mvp = uniforms.projectionMatrix * uniforms.viewMatrix * modelMatrix
 
         renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(&mvp, length: MemoryLayout<float4x4>.stride, index: 1)

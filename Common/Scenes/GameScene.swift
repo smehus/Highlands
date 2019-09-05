@@ -88,31 +88,31 @@ final class GameScene: Scene {
 
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
-
+         */
+        
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         add(node: skeleton)
         skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
-        self.physicsController.dynamicBody = skeleton
-        self.inputController.player = skeleton
+        physicsController.dynamicBody = skeleton
+        inputController.player = skeleton
 //        skeleton.currentAnimation?.speed = 1.0
         skeleton.pauseAnimation()
-
         lantern.position = CharacterTorch.localPosition
         add(node: lantern, parent: skeleton)
-
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2
         cameras.append(orthoCamera)
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 6
+        tpCamera.focusHeight = 3
         tpCamera.focusDistance = 4
         cameras.append(tpCamera)
         currentCameraIndex = 2
-        */
+
+
     }
 
     override func isHardCollision() -> Bool {
