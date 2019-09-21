@@ -31,6 +31,7 @@ float calc_distance(float3 pointA, float3 pointB,
     return camera_distance;
 }
 
+// This is just creating new vertices
 kernel void tessellation_main(constant float* edge_factors      [[ buffer(0) ]],
                               constant float* inside_factors   [[ buffer(1) ]],
                               device MTLQuadTessellationFactorsHalf* factors [[ buffer(2) ]],
@@ -63,6 +64,7 @@ kernel void tessellation_main(constant float* edge_factors      [[ buffer(0) ]],
 
 
 
+// this can set the height of the new vertices and alter the terrain
 [[ patch(quad, 4) ]]
 vertex TerrainVertexOut
 vertex_terrain(patch_control_point<ControlPoint>
@@ -87,7 +89,8 @@ vertex_terrain(patch_control_point<ControlPoint>
 
     float2 xy = (position.xz + terrain.size / 2.0) / terrain.size;
     constexpr sampler sample;
-    float4 color = heightMap.sample(sample, xy);
+    float4 color = heightMap.sample(sample, xy) + float4(0.3);
+
     out.color = float4(color.r);
 
     float height = (color.r * 2 - 1) * terrain.height;
@@ -105,18 +108,18 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
                                  texture2d<float> snowTexture  [[ texture(TerrainTextureMiddle) ]],
                                  texture2d<float> grassTexture [[ texture(TerrainTextureTop) ]])
 {
-//    return in.color;
+    //    return in.color;
 
-  constexpr sampler sample(filter::linear, address::repeat);
-  float tiling = 16.0;
-  float4 color;
-  if (in.height < -0.5) {
-    color = grassTexture.sample(sample, in.uv * tiling);
-  } else if (in.height < 0.3) {
-    color = cliffTexture.sample(sample, in.uv * tiling);
-  } else {
-    color = snowTexture.sample(sample, in.uv * tiling);
-  }
-  return color;
+    constexpr sampler sample(filter::linear, address::repeat);
+    float tiling = 16.0;
+    float4 color;
+    if (in.height < -0.5) {
+        color = grassTexture.sample(sample, in.uv * tiling);
+    } else if (in.height < 5.0) {
+        color = cliffTexture.sample(sample, in.uv * tiling);
+    } else {
+        color = snowTexture.sample(sample, in.uv * tiling);
+    }
+    return color;
 }
 

@@ -30,7 +30,7 @@ final class GameScene: Scene {
 
         inputController.keyboardDelegate = self
 
-        terrain.position = float3([0, 20, 0])
+        terrain.position = float3([0, 0, 0])
 //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
         add(node: terrain)
 
