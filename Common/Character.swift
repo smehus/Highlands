@@ -108,7 +108,6 @@ class Character: Node {
     override func update(deltaTime: Float) {
 
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
-        print("*** calculated height \(pointer.pointee)")
         position.y = pointer.pointee
 
         guard let animation = currentAnimation, currentAnimationPlaying == true else {
@@ -192,7 +191,7 @@ extension Character: Renderable {
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
-
+        print("*** calculated height \(position.y)")
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 

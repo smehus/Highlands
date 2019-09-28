@@ -58,10 +58,10 @@ class InputController {
 
         if direction != [0, 0, 0] {
             direction = normalize(direction)
-            let multiplier = (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
-            player.position.x += multiplier.x
-            player.position.z += multiplier.z
-//            player.position += (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
+//            let multiplier = (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
+//            player.position.x += multiplier.x
+//            player.position.z += multiplier.z
+            player.position += (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
         }
     }
 

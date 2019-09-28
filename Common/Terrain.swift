@@ -15,7 +15,7 @@ class Terrain: Node {
         return 16
     }()
 
-    private let patches = (horizontal: 6, vertical: 6)
+    private let patches = (horizontal: 50, vertical: 50)
     private var patchCount: Int {
         return patches.horizontal * patches.vertical
     }

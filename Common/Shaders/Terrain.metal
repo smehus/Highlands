@@ -41,8 +41,9 @@ kernel void calculate_heigeht(constant float3 &in_position [[ buffer(0) ]],
     float4 position  = float4(in_position, 1.0);
 
     float2 xy = (position.xz + terrain.size / 2.0) / terrain.size;
-    constexpr sampler sample;
-    float4 color = heightMap.sample(sample, xy) + float4(0.3);
+
+    constexpr sampler s(filter::linear, address::repeat);
+    float4 color = heightMap.sample(s, xy) + float4(0.3);
 
     float height = (color.r * 2 - 1) * terrain.height;
     heightBuffer = height;
