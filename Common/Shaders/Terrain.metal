@@ -32,20 +32,20 @@ float calc_distance(float3 pointA, float3 pointB,
 }
 
 kernel void calculate_heigeht(constant float3 &in_position [[ buffer(0) ]],
-                              device float *heightBuffer [[ buffer(1) ]],
+                              device float &heightBuffer [[ buffer(1) ]],
                               constant TerrainParams &terrain [[ buffer(2) ]],
-                              texture2d<float> heightMap [[ texture(0) ]],
-                              uint pid [[ thread_position_in_grid ]])
+                              constant Uniforms &uniforms [[ buffer(3) ]],
+                              texture2d<float> heightMap [[ texture(0) ]])
 {
 
-    float4 position  = float4(in_position.x, 0.0, in_position.y, 1.0);
+    float4 position  = float4(in_position, 1.0);
 
     float2 xy = (position.xz + terrain.size / 2.0) / terrain.size;
     constexpr sampler sample;
     float4 color = heightMap.sample(sample, xy) + float4(0.3);
 
     float height = (color.r * 2 - 1) * terrain.height;
-    heightBuffer[pid] = height;
+    heightBuffer = height;
 }
 
 // This is just creating new vertices

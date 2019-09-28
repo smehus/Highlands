@@ -309,13 +309,16 @@ extension Character: Renderable {
         return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
-    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams) {
-        computeEncoder.setComputePipelineState(heightCalculatePipelineState)
-        var position = self.position
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) {
+        var position = self.worldTransform.columns.3.xyz
         var terrainParams = terrain
+        var uniforms = uniforms
+
+        computeEncoder.setComputePipelineState(heightCalculatePipelineState)
         computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
         computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
         computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
+        computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
         computeEncoder.setTexture(heightMapTexture, index: 0)
 
         computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
