@@ -20,14 +20,14 @@ class Terrain: Node {
         return patches.horizontal * patches.vertical
     }
 
-    private var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
+    var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
     private var edgeFactors: [Float] = [4]
     private var insideFactors: [Float] = [4]
     private var controlPointsBuffer: MTLBuffer?
     private var tessellationPipelineState: MTLComputePipelineState
     private var renderPipelineState: MTLRenderPipelineState
 
-    private let heightMap: MTLTexture
+    let heightMap: MTLTexture
     private let cliffTexture: MTLTexture
     private let snowTexture: MTLTexture
     private let grassTexture: MTLTexture

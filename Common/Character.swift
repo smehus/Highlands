@@ -61,8 +61,10 @@ class Character: Node {
     var currentAnimationPlaying = false
     var samplerState: MTLSamplerState
     var shadowInstanceCount: Int = 0
-    
+
+    let heightCalculatePipelineState: MTLComputePipelineState
     let needsXRotationFix = true
+    let heightBuffer: MTLBuffer
 
     init(name: String) {
         let asset = GLTFAsset(filename: name)
@@ -76,6 +78,9 @@ class Character: Node {
         nodes = asset.scenes[0].nodes
 
         samplerState = Character.buildSamplerState()
+        heightCalculatePipelineState = Character.buildComputePipelineState()
+
+        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size, options: .storageModeShared)!
 
         super.init()
         self.name = name
@@ -101,6 +106,11 @@ class Character: Node {
     }
 
     override func update(deltaTime: Float) {
+
+        let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
+        print("*** calculated height \(pointer.pointee)")
+        position.y = pointer.pointee
+
         guard let animation = currentAnimation, currentAnimationPlaying == true else {
             return
         }
@@ -289,5 +299,26 @@ extension Character: Renderable {
 
         }
  */
+    }
+
+    static func buildComputePipelineState() -> MTLComputePipelineState {
+        guard let kernelFunction = Renderer.library?.makeFunction(name: "calculate_heigeht") else {
+            fatalError("Tessellation shader function not found")
+        }
+
+        return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
+    }
+
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams) {
+        computeEncoder.setComputePipelineState(heightCalculatePipelineState)
+        var position = self.position
+        var terrainParams = terrain
+        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+        computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
+        computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
+        computeEncoder.setTexture(heightMapTexture, index: 0)
+
+        computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
+                                            threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
     }
 }

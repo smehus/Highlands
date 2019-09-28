@@ -58,7 +58,7 @@ class InputController {
 
         if direction != [0, 0, 0] {
             direction = normalize(direction)
-            player.position += (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
+//            player.position += (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
         }
     }
 

@@ -58,6 +58,7 @@ final class Renderer: NSObject {
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
 
+
     }
 
     func buildCubeTexture(pixelFormat: MTLPixelFormat, size: Int) -> MTLTexture {
@@ -137,15 +138,26 @@ extension Renderer: MTKViewDelegate {
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         // Tessellation Pass
-        if let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain {
-            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
-            computeEncoder.pushDebugGroup("Tessellation Pass")
-            terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
-            computeEncoder.popDebugGroup()
-            computeEncoder.endEncoding()
+        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
+        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+
+        computeEncoder.pushDebugGroup("Tessellation Pass")
+        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+        computeEncoder.popDebugGroup()
+        computeEncoder.endEncoding()
+
+
+
+        // Calculate Height
+
+        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+        heightEncoder.pushDebugGroup("Height pass")
+        for case let prop as Character in scene.renderables {
+            prop.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: terrain.terrainParams)
         }
 
-
+        heightEncoder.popDebugGroup()
+        heightEncoder.endEncoding()
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }

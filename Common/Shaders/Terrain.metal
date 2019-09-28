@@ -31,6 +31,23 @@ float calc_distance(float3 pointA, float3 pointB,
     return camera_distance;
 }
 
+kernel void calculate_heigeht(constant float3 &in_position [[ buffer(0) ]],
+                              device float *heightBuffer [[ buffer(1) ]],
+                              constant TerrainParams &terrain [[ buffer(2) ]],
+                              texture2d<float> heightMap [[ texture(0) ]],
+                              uint pid [[ thread_position_in_grid ]])
+{
+
+    float4 position  = float4(in_position.x, 0.0, in_position.y, 1.0);
+
+    float2 xy = (position.xz + terrain.size / 2.0) / terrain.size;
+    constexpr sampler sample;
+    float4 color = heightMap.sample(sample, xy) + float4(0.3);
+
+    float height = (color.r * 2 - 1) * terrain.height;
+    heightBuffer[pid] = height;
+}
+
 // This is just creating new vertices
 kernel void tessellation_main(constant float* edge_factors      [[ buffer(0) ]],
                               constant float* inside_factors   [[ buffer(1) ]],
