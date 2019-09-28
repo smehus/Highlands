@@ -106,10 +106,6 @@ class Character: Node {
     }
 
     override func update(deltaTime: Float) {
-
-        let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
-        position.y = pointer.pointee
-
         guard let animation = currentAnimation, currentAnimationPlaying == true else {
             return
         }
@@ -132,6 +128,9 @@ class Character: Node {
                 node.rotationQuaternion = rotationQuaternion
             }
         }
+
+        let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
+        position.y = pointer.pointee
     }
 
     func setLeftRotation(rotationSpeed: Float) {
