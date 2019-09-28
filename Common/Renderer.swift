@@ -152,8 +152,8 @@ extension Renderer: MTKViewDelegate {
 
         guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
         heightEncoder.pushDebugGroup("Height pass")
-        for case let prop as Character in scene.renderables {
-            prop.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: terrain.terrainParams, uniforms: previousUniforms)
+        for renderable in scene.renderables {
+            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: terrain.terrainParams, uniforms: previousUniforms)
         }
 
         heightEncoder.popDebugGroup()

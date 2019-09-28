@@ -138,6 +138,9 @@ class Prop: Node {
 
     var windingOrder: MTLWinding = .counterClockwise
 
+    let heightCalculatePipelineState: MTLComputePipelineState
+    let heightBuffer: MTLBuffer
+
     init(type: PropType) {
 
         self.propType = type
@@ -166,6 +169,10 @@ class Prop: Node {
         shadowInstanceCount = type.instanceCount * 6
         shadowTransforms = Prop.buildTransforms(instanceCount: instanceCount * 6)
         shadowInstanceBuffer = Prop.buildInstanceBuffer(transforms: shadowTransforms)
+
+        heightCalculatePipelineState = Character.buildComputePipelineState()
+
+        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size, options: .storageModeShared)!
 
         super.init()
         self.name = type.name
@@ -273,7 +280,8 @@ class Prop: Node {
     }
 
     override func update(deltaTime: Float) {
-
+        let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
+        position.y = pointer.pointee
     }
 }
 
@@ -354,7 +362,19 @@ extension Prop: Renderable {
         }
     }
 
-    func calculateHeight(renderEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture) {
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) {
+        var position = self.worldTransform.columns.3.xyz
+        var terrainParams = terrain
+        var uniforms = uniforms
 
+        computeEncoder.setComputePipelineState(heightCalculatePipelineState)
+        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+        computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
+        computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
+        computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
+        computeEncoder.setTexture(heightMapTexture, index: 0)
+
+        computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
+                                            threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
     }
 }

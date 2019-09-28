@@ -48,9 +48,10 @@ final class GameScene: Scene {
         ground.scale = [4, 1, 4]
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
-
+        */
         let count = 10
         let offset = 10
+         /*
         let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
         add(node: tree)
         physicsController.addStaticBody(node: tree)
@@ -65,30 +66,30 @@ final class GameScene: Scene {
             transform.position = position
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
+        */
+//        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
+//        let morphTargetNames = ["rock1", "rock2", "rock3"]
+//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
+//
+//        add(node: rock)
+//        physicsController.addStaticBody(node: rock)
+//        for i in 0..<count {
+//            var transform = Transform()
+//
+//            if i == 0 {
+//                transform.position = [0, 0, 3]
+//            } else {
+//                var position: float3
+//                repeat {
+//                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//                } while position.x > 2 && position.z > 2
+//
+//                transform.position = position
+//            }
+//
+//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+//        }
 
-        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
-        let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
-
-        add(node: rock)
-        physicsController.addStaticBody(node: rock)
-        for i in 0..<count {
-            var transform = Transform()
-
-            if i == 0 {
-                transform.position = [0, 0, 3]
-            } else {
-                var position: float3
-                repeat {
-                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-                } while position.x > 2 && position.z > 2
-
-                transform.position = position
-            }
-
-            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-        }
-         */
 
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
@@ -102,8 +103,8 @@ final class GameScene: Scene {
 //        skeleton.currentAnimation?.speed = 1.0
         skeleton.pauseAnimation()
 
-        lantern.position = CharacterTorch.localPosition
-        add(node: lantern, parent: skeleton)
+//        lantern.position = CharacterTorch.localPosition
+//        add(node: lantern, parent: skeleton)
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2
         cameras.append(orthoCamera)

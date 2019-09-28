@@ -106,6 +106,12 @@ class Character: Node {
     }
 
     override func update(deltaTime: Float) {
+
+        if position.y == 0 {
+            let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
+            position.y = pointer.pointee
+        }
+
         guard let animation = currentAnimation, currentAnimationPlaying == true else {
             return
         }
