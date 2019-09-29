@@ -29,7 +29,7 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
                                        constant float4x4 *jointMatrices [[ buffer(21) ]],
                                        constant Uniforms &uniforms [[ buffer(BufferIndexUniforms) ]])
 {
-    VertexOut out;
+    VertexOut out;  
 
     // skinning code
     float4 weights = vertexIn.weights;

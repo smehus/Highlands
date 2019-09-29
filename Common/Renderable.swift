@@ -14,9 +14,15 @@ protocol Renderable {
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int)
     func renderToTarget(with commandBuffer: MTLCommandBuffer)
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize)
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms)
 }
 
 extension Renderable {
     func renderToTarget(with commandBuffer: MTLCommandBuffer) { }
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) { }
+}
+
+protocol ComputeHandler {
+    func compute(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms)
 }

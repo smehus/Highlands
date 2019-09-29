@@ -11,7 +11,7 @@ protocol MouseDelegate: class {
 
 class InputController {
 
-    var player: Character?
+    var player: Node?
     weak var keyboardDelegate: KeyboardDelegate?
     var directionKeysDown: Set<KeyboardControl> = []
 
@@ -39,14 +39,14 @@ class InputController {
             case .d:
                 direction.x += 1
             case .left, .q:
-                if player.needsXRotationFix {
+                if let character = player as? Character, character.needsXRotationFix {
                     player.rotation.z += rotationSpeed
                 } else {
                     player.rotation.y -= rotationSpeed
                 }
 
             case .right, .e:
-                if player.needsXRotationFix {
+                if let character = player as? Character, character.needsXRotationFix {
                     player.rotation.z -= rotationSpeed
                 } else {
                     player.rotation.y += rotationSpeed
@@ -58,6 +58,9 @@ class InputController {
 
         if direction != [0, 0, 0] {
             direction = normalize(direction)
+//            let multiplier = (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
+//            player.position.x += multiplier.x
+//            player.position.z += multiplier.z
             player.position += (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
         }
     }

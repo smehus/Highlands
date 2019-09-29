@@ -21,6 +21,7 @@ final class Renderer: NSObject {
     private var depthStencilState: MTLDepthStencilState!
     private var instanceParamBuffer: MTLBuffer
 
+    static var mtkView: MTKView!
     lazy var lightPipelineState: MTLRenderPipelineState = {
         return buildLightPipelineState()
     }()
@@ -31,6 +32,7 @@ final class Renderer: NSObject {
     let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
 
     init(metalView: MTKView) {
+        Renderer.mtkView = metalView
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("GPU not available")
         }
@@ -55,6 +57,7 @@ final class Renderer: NSObject {
 
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
+
 
     }
 
@@ -128,18 +131,36 @@ extension Renderer: MTKViewDelegate {
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
-        let previousUniforms = scene.uniforms
-        // Shadow pass
-        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {
-            return
-        }
 
+        // Shadow pass
+        let previousUniforms = scene.uniforms
+        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
-        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else {
-            return 
+        // Tessellation Pass
+        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
+        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+
+        computeEncoder.pushDebugGroup("Tessellation Pass")
+        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+        computeEncoder.popDebugGroup()
+        computeEncoder.endEncoding()
+
+
+
+        // Calculate Height
+
+        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+        heightEncoder.pushDebugGroup("Height pass")
+        for renderable in scene.renderables {
+            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: terrain.terrainParams, uniforms: previousUniforms)
         }
 
+        heightEncoder.popDebugGroup()
+        heightEncoder.endEncoding()
+
+        // Main pass
+        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderEncoder.pushDebugGroup("Main pass")
         renderEncoder.label = "Main encoder"
         renderEncoder.setDepthStencilState(depthStencilState)
@@ -335,7 +356,7 @@ extension Renderer: MTKViewDelegate {
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
         encoder.pushDebugGroup("DEBUG LIGHTS")
         guard let gameScene = scene as? GameScene else { return }
-        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: gameScene.skeleton.position)
+//        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: gameScene.skeleton.position)
         encoder.popDebugGroup()
     }
 }
