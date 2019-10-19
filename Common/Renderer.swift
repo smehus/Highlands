@@ -148,7 +148,7 @@ extension Renderer: MTKViewDelegate {
 
         // Calculate Height
         for renderable in scene.renderables {
-//            renderable.calculateHeight(commandBuffer: commandBuffer, heightMapTexture: terrain.heightMap, terrain: terrain.terrainParams, uniforms: previousUniforms)
+            renderable.calculateHeight(commandBuffer: commandBuffer, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: previousUniforms)
         }
 
         // Main pass

@@ -145,12 +145,14 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
 [[ patch(quad, 4) ]]
 vertex TerrainVertexOut
 vertex_calculate_height(patch_control_point<ControlPoint>
-               control_points [[ stage_in ]],
-               constant float4x4 &mvp [[buffer(1)]],
-               uint patchID [[ patch_id ]],
-               texture2d<float> heightMap [[ texture(0) ]],
-               constant TerrainParams &terrain [[ buffer(6) ]],
-               float2 patch_coord [[ position_in_patch ]])
+                        control_points [[ stage_in ]],
+//                        constant float4x4 &mvp [[buffer(1)]],
+                        uint patchID [[ patch_id ]],
+                        texture2d<float> heightMap [[ texture(0) ]],
+                        constant TerrainParams &terrain [[ buffer(6) ]],
+                        constant float3 &in_position [[ buffer(7) ]],
+                        device float &heightBuffer [[ buffer(8) ]],
+                        float2 patch_coord [[ position_in_patch ]])
 {
     float u = patch_coord.x;
     float v = patch_coord.y;
@@ -173,7 +175,7 @@ vertex_calculate_height(patch_control_point<ControlPoint>
     float height = (color.r * 2 - 1) * terrain.height;
     position.y = height;
 
-    out.position = mvp * position;
+    out.position = /*mvp **/ position;
     out.uv = xy;
     out.height = height;
     return out;

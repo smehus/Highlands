@@ -393,10 +393,19 @@ extension Character: Renderable {
         guard let descriptor = Renderer.mtkView.currentRenderPassDescriptor,
             let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
 
+        // Compute Tesselation -> Vertex
         renderEncoder.pushDebugGroup("Height Render Encoder")
         renderEncoder.setRenderPipelineState(heightPipelineState)
-//        renderEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
-//        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+        renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
+        renderEncoder.setTriangleFillMode(.fill)
+        renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
+        renderEncoder.setVertexTexture(heightMapTexture, index: 0)
+        renderEncoder.setVertexBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
+
+
+        // Calculate height parameters
+        renderEncoder.setVertexBytes(&position, length: MemoryLayout<float3>.size, index: 7)
+        renderEncoder.setVertexBuffer(heightBuffer, offset: 0, index: 8)
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,
