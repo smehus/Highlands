@@ -154,30 +154,6 @@ class Character: Node {
             rotation.y += rotationSpeed
         }
     }
-
-    private lazy var heightPipelineState: MTLRenderPipelineState = {
-        let descriptor = MTLRenderPipelineDescriptor()
-        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
-        descriptor.depthAttachmentPixelFormat = .depth32Float
-
-        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
-        descriptor.vertexFunction = vertexFunction
-
-        let vertexDescriptor = MTLVertexDescriptor()
-        vertexDescriptor.attributes[0].format = .float3
-        vertexDescriptor.attributes[0].offset = 0
-        vertexDescriptor.attributes[0].bufferIndex = 0
-
-        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-        vertexDescriptor.layouts[0].stride = MemoryLayout<float3>.stride
-        descriptor.vertexDescriptor = vertexDescriptor
-
-        descriptor.tessellationFactorStepFunction = .perPatch
-        descriptor.maxTessellationFactor = Terrain.maxTessellation
-        descriptor.tessellationPartitionMode = .pow2
-
-          return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
-    }()
 }
 
 extension Character: Renderable {
@@ -337,13 +313,11 @@ extension Character: Renderable {
         return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
-    func calculateHeight(commandBuffer: MTLCommandBuffer, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) {
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) {
         var position = self.worldTransform.columns.3.xyz
         var terrainParams = terrain
         var uniforms = uniforms
 
-        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-        computeEncoder.pushDebugGroup("Height Compute Encoder")
         computeEncoder.setComputePipelineState(heightCalculatePipelineState)
         computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
         computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
@@ -353,26 +327,5 @@ extension Character: Renderable {
 
         computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
                                             threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
-
-        computeEncoder.popDebugGroup()
-            computeEncoder.endEncoding()
-
-
-        guard let descriptor = Renderer.mtkView.currentRenderPassDescriptor,
-            let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
-
-        renderEncoder.pushDebugGroup("Height Render Encoder")
-        renderEncoder.setRenderPipelineState(heightPipelineState)
-
-        renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
-                                  patchStart: 0,
-                                  patchCount: Terrain.patchCount,
-                                  patchIndexBuffer: nil,
-                                  patchIndexBufferOffset: 0,
-                                  instanceCount: 1,
-                                  baseInstance: 0)
-
-        renderEncoder.popDebugGroup()
-        renderEncoder.endEncoding()
     }
 }

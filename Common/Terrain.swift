@@ -15,8 +15,8 @@ class Terrain: Node {
         return 16
     }()
 
-    static let patches = (horizontal: 7, vertical: 7)
-    static var patchCount: Int {
+    private let patches = (horizontal: 7, vertical: 7)
+    private var patchCount: Int {
         return patches.horizontal * patches.vertical
     }
 
@@ -39,7 +39,7 @@ class Terrain: Node {
     }
 
     lazy var tessellationFactorsBuffer: MTLBuffer! = {
-        let count = Terrain.patchCount * (4 + 2)
+        let count = patchCount * (4 + 2)
         let size = count * MemoryLayout<Float>.size / 2
         return Renderer.device.makeBuffer(length: size, options: .storageModePrivate)
     }()
@@ -65,7 +65,7 @@ class Terrain: Node {
 
         super.init()
 
-        let controlPoints = createControlPoints(patches: Terrain.patches,
+        let controlPoints = createControlPoints(patches: patches,
                                                 size: (width: terrainParams.size.x,
                                                        height: terrainParams.size.y))
         controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints,
@@ -179,9 +179,9 @@ extension Terrain: ComputeHandler {
                                 length: MemoryLayout<TerrainParams>.stride,
                                 index: 6)
 
-        let width = min(Terrain.patchCount,
+        let width = min(patchCount,
                         tessellationPipelineState.threadExecutionWidth)
-        computeEncoder.dispatchThreadgroups(MTLSizeMake(Terrain.patchCount, 1, 1),
+        computeEncoder.dispatchThreadgroups(MTLSizeMake(patchCount, 1, 1),
                                             threadsPerThreadgroup: MTLSizeMake(width, 1, 1))
 
     }
@@ -212,7 +212,7 @@ extension Terrain: Renderable {
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,
-                                  patchCount: Terrain.patchCount,
+                                  patchCount: patchCount,
                                   patchIndexBuffer: nil,
                                   patchIndexBufferOffset: 0,
                                   instanceCount: 1,
