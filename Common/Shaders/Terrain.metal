@@ -31,7 +31,6 @@ float calc_distance(float3 pointA, float3 pointB,
     return camera_distance;
 }
 
-// Not used anymore
 kernel void calculate_heigeht(constant float3 &in_position [[ buffer(0) ]],
                               device float &heightBuffer [[ buffer(1) ]],
                               constant TerrainParams &terrain [[ buffer(2) ]],
@@ -140,42 +139,5 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
         color = snowTexture.sample(sample, in.uv * tiling);
     }
     return color;
-}
-
-[[ patch(quad, 4) ]]
-vertex TerrainVertexOut
-vertex_calculate_height(patch_control_point<ControlPoint>
-               control_points [[ stage_in ]],
-               constant float4x4 &mvp [[buffer(1)]],
-               uint patchID [[ patch_id ]],
-               texture2d<float> heightMap [[ texture(0) ]],
-               constant TerrainParams &terrain [[ buffer(6) ]],
-               float2 patch_coord [[ position_in_patch ]])
-{
-    float u = patch_coord.x;
-    float v = patch_coord.y;
-
-    float2 top = mix(control_points[0].position.xz,
-                     control_points[1].position.xz, u);
-    float2 bottom = mix(control_points[3].position.xz,
-                        control_points[2].position.xz, u);
-
-    TerrainVertexOut out;
-    float2 interpolated = mix(top, bottom, v);
-    float4 position = float4(interpolated.x, 0.0, interpolated.y, 1.0);
-
-    float2 xy = (position.xz + terrain.size / 2.0) / terrain.size;
-    constexpr sampler sample;
-    float4 color = heightMap.sample(sample, xy) + float4(0.3);
-
-    out.color = float4(color.r);
-
-    float height = (color.r * 2 - 1) * terrain.height;
-    position.y = height;
-
-    out.position = mvp * position;
-    out.uv = xy;
-    out.height = height;
-    return out;
 }
 

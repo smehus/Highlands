@@ -20,10 +20,9 @@ class Terrain: Node {
         return patches.horizontal * patches.vertical
     }
 
-    static var edgeFactors: [Float] = [4]
-    static var insideFactors: [Float] = [4]
-    static var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
-
+    var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
+    private var edgeFactors: [Float] = [4]
+    private var insideFactors: [Float] = [4]
     private var controlPointsBuffer: MTLBuffer?
     private var tessellationPipelineState: MTLComputePipelineState
     private var renderPipelineState: MTLRenderPipelineState
@@ -66,9 +65,9 @@ class Terrain: Node {
 
         super.init()
 
-        let controlPoints = Terrain.createControlPoints(patches: Terrain.patches,
-                                                        size: (width: Terrain.terrainParams.size.x,
-                                                               height: Terrain.terrainParams.size.y))
+        let controlPoints = createControlPoints(patches: Terrain.patches,
+                                                size: (width: terrainParams.size.x,
+                                                       height: terrainParams.size.y))
         controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints,
                                                          length: MemoryLayout<float3>.stride * controlPoints.count)
 
@@ -121,7 +120,7 @@ extension Terrain {
      - size: size of plane
      - Returns: an array of patch control points. Each group of four makes one patch.
      **/
-    static func createControlPoints(patches: (horizontal: Int, vertical: Int),
+    func createControlPoints(patches: (horizontal: Int, vertical: Int),
                              size: (width: Float, height: Float)) -> [float3] {
 
         var points: [float3] = []
@@ -160,11 +159,11 @@ extension Terrain: ComputeHandler {
     func compute(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) {
 
         computeEncoder.setComputePipelineState(tessellationPipelineState)
-        computeEncoder.setBytes(&Terrain.edgeFactors,
-                                length: MemoryLayout<Float>.size * Terrain.edgeFactors.count,
+        computeEncoder.setBytes(&edgeFactors,
+                                length: MemoryLayout<Float>.size * edgeFactors.count,
                                 index: 0)
-        computeEncoder.setBytes(&Terrain.insideFactors,
-                                length: MemoryLayout<Float>.size * Terrain.insideFactors.count,
+        computeEncoder.setBytes(&insideFactors,
+                                length: MemoryLayout<Float>.size * insideFactors.count,
                                 index: 1)
         computeEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, index: 2)
         var cameraPosition = uniforms.viewMatrix.columns.3
@@ -176,7 +175,7 @@ extension Terrain: ComputeHandler {
                                 length: MemoryLayout<float4x4>.stride,
                                 index: 4)
         computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 5)
-        computeEncoder.setBytes(&Terrain.terrainParams,
+        computeEncoder.setBytes(&terrainParams,
                                 length: MemoryLayout<TerrainParams>.stride,
                                 index: 6)
 
@@ -205,7 +204,7 @@ extension Terrain: Renderable {
         renderEncoder.setTriangleFillMode(.fill)
         renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
         renderEncoder.setVertexTexture(heightMap, index: 0)
-        renderEncoder.setVertexBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
+        renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
 
         renderEncoder.setFragmentTexture(cliffTexture, index: Int(TerrainTextureBase.rawValue))
         renderEncoder.setFragmentTexture(snowTexture, index: Int(TerrainTextureMiddle.rawValue))
