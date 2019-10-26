@@ -31,22 +31,57 @@ float calc_distance(float3 pointA, float3 pointB,
     return camera_distance;
 }
 
-kernel void calculate_heigeht(constant float3 &in_position [[ buffer(0) ]],
-                              device float &heightBuffer [[ buffer(1) ]],
-                              constant TerrainParams &terrain [[ buffer(2) ]],
-                              constant Uniforms &uniforms [[ buffer(3) ]],
-                              texture2d<float> heightMap [[ texture(0) ]])
+kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
+                             device float &heightBuffer [[ buffer(1) ]],
+                             constant TerrainParams &terrain [[ buffer(2) ]],
+                             constant Uniforms &uniforms [[ buffer(3) ]],
+                             constant float3 *control_points [[ buffer(4) ]],
+                             constant Patch &patch [[ buffer(5) ]],
+                             texture2d<float> heightMap [[ texture(0) ]])
 {
 
     float4 position  = float4(in_position, 1.0);
 
-    float2 xy = (position.xz + terrain.size / 2.0) / terrain.size;
+    //    The tessellator provides a uv coordinate between 0 and 1
+    //    for the tessellated patch so that the vertex function can
+    //    calculate its correct rendered position.
 
-    constexpr sampler s(filter::linear, address::repeat);
-    float4 color = heightMap.sample(s, xy) + float4(0.3);
+    // This obviously isn't between 0 & 1
+    // Need to find what the percent value of position.x is between patch.topLeft & patch.topRight
+    float u = position.x;
+    float v = position.z;
+
+    // find the control point this position lives in
+    // then interpolate like we do in the vertex function
+    // 7 horizontal and 7 vertical
+    // find control point by dividing by 7
+    // I think I already do this in swift?
+
+    float2 top = mix(patch.topLeft.xz,
+                     patch.topRight.xz, u);
+    float2 bottom = mix(patch.bottomLeft.xz,
+                        patch.bottomRight.xz, u);
+
+    float2 interpolated = mix(top, bottom, v);
+    float4 interpolatedPosition = float4(interpolated.x, 0.0, interpolated.y, 1.0);
+
+    float2 xy = (interpolatedPosition.xz + terrain.size / 2.0) / terrain.size;
+    constexpr sampler sample;
+    float4 color = heightMap.sample(sample, xy) + float4(0.3);
+
 
     float height = (color.r * 2 - 1) * terrain.height;
-    heightBuffer = height;
+//    heightBuffer = height;
+
+
+
+    /// Old way of doing it without interpolating
+    float2 testxy = (position.xz + terrain.size / 2.0) / terrain.size;
+    constexpr sampler s(filter::linear, address::repeat);
+    float4 testcolor = heightMap.sample(s, testxy) + float4(0.3);
+
+    float testheight = (testcolor.r * 2 - 1) * terrain.height;
+    heightBuffer = testheight;
 }
 
 // This is just creating new vertices
@@ -85,14 +120,16 @@ kernel void tessellation_main(constant float* edge_factors      [[ buffer(0) ]],
 // this can set the height of the new vertices and alter the terrain
 [[ patch(quad, 4) ]]
 vertex TerrainVertexOut
-vertex_terrain(patch_control_point<ControlPoint>
-               control_points [[ stage_in ]],
+vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
                constant float4x4 &mvp [[buffer(1)]],
                uint patchID [[ patch_id ]],
                texture2d<float> heightMap [[ texture(0) ]],
                constant TerrainParams &terrain [[ buffer(6) ]],
                float2 patch_coord [[ position_in_patch ]])
 {
+//    The tessellator provides a uv coordinate between 0 and 1
+//    for the tessellated patch so that the vertex function can
+//    calculate its correct rendered position.
     float u = patch_coord.x;
     float v = patch_coord.y;
 

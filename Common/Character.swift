@@ -66,6 +66,9 @@ class Character: Node {
     let needsXRotationFix = true
     let heightBuffer: MTLBuffer
 
+    let patches: [Patch]
+    var currentPatch: Patch?
+
     init(name: String) {
         let asset = GLTFAsset(filename: name)
         buffers = asset.buffers
@@ -81,6 +84,13 @@ class Character: Node {
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
         heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size, options: .storageModeShared)!
+
+        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
+                                              size: (width: Terrain.terrainParams.size.x,
+                                                     height: Terrain.terrainParams.size.y))
+
+
+        patches = terrainPatches.patches
 
         super.init()
         self.name = name
@@ -106,6 +116,8 @@ class Character: Node {
     }
 
     override func update(deltaTime: Float) {
+
+        currentPatch = patch(for: position)
 
         if position.y == 0 {
             let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
@@ -154,6 +166,35 @@ class Character: Node {
             rotation.y += rotationSpeed
         }
     }
+
+    func patch(for location: float3) -> Patch? {
+        let patch = patches.first { (patch) -> Bool in
+            let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
+            let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
+
+            return horizontal && vertical
+        }
+
+        if let current = currentPatch, let nextPatch = patch, current != nextPatch {
+            print("*** FOUND CURRENT PATCH \(nextPatch)")
+        }
+
+        return patch
+    }
+}
+
+extension Patch: Equatable {
+
+    static public func ==(lhs: Patch, rhs: Patch) -> Bool {
+        assertionFailure("Need to Implement Equatable FOR PATCH"); return false
+    }
+
+    static public func != (lhs: Patch, rhs: Patch) -> Bool {
+        return lhs.topLeft != rhs.topLeft ||
+                lhs.topRight != rhs.topRight ||
+                lhs.bottomLeft != rhs.bottomLeft ||
+                lhs.bottomRight != rhs.bottomRight
+    }
 }
 
 extension Character: Renderable {
@@ -196,7 +237,7 @@ extension Character: Renderable {
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
-        print("*** calculated height \(position.y)")
+
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 
@@ -306,14 +347,21 @@ extension Character: Renderable {
     }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {
-        guard let kernelFunction = Renderer.library?.makeFunction(name: "calculate_heigeht") else {
+        guard let kernelFunction = Renderer.library?.makeFunction(name: "calculate_height") else {
             fatalError("Tessellation shader function not found")
         }
 
         return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
-    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) {
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder,
+                         heightMapTexture: MTLTexture,
+                         terrain: TerrainParams,
+                         uniforms: Uniforms,
+                         controlPointsBuffer: MTLBuffer?) {
+
+        guard var patch = currentPatch else { return }
+
         var position = self.worldTransform.columns.3.xyz
         var terrainParams = terrain
         var uniforms = uniforms
@@ -324,6 +372,8 @@ extension Character: Renderable {
         computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
         computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
         computeEncoder.setTexture(heightMapTexture, index: 0)
+        computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 4)
+        computeEncoder.setBytes(&patch, length: MemoryLayout<Patch>.stride, index: 5)
 
         computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
                                             threadsPerThreadgroup: MTLSizeMake(1, 1, 1))

@@ -15,22 +15,23 @@ class Terrain: Node {
         return 16
     }()
 
-    private let patches = (horizontal: 7, vertical: 7)
-    private var patchCount: Int {
-        return patches.horizontal * patches.vertical
+    static let patches = (horizontal: 7, vertical: 7)
+    static var patchCount: Int {
+        return Terrain.patches.horizontal * Terrain.patches.vertical
     }
 
-    var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
-    private var edgeFactors: [Float] = [4]
-    private var insideFactors: [Float] = [4]
-    private var controlPointsBuffer: MTLBuffer?
-    private var tessellationPipelineState: MTLComputePipelineState
-    private var renderPipelineState: MTLRenderPipelineState
+    static var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
+    var controlPointsBuffer: MTLBuffer?
+
+    var edgeFactors: [Float] = [4]
+    var insideFactors: [Float] = [4]
+    var tessellationPipelineState: MTLComputePipelineState
+    var renderPipelineState: MTLRenderPipelineState
 
     let heightMap: MTLTexture
-    private let cliffTexture: MTLTexture
-    private let snowTexture: MTLTexture
-    private let grassTexture: MTLTexture
+    let cliffTexture: MTLTexture
+    let snowTexture: MTLTexture
+    let grassTexture: MTLTexture
 
     override var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
@@ -39,7 +40,7 @@ class Terrain: Node {
     }
 
     lazy var tessellationFactorsBuffer: MTLBuffer! = {
-        let count = patchCount * (4 + 2)
+        let count = Terrain.patchCount * (4 + 2)
         let size = count * MemoryLayout<Float>.size / 2
         return Renderer.device.makeBuffer(length: size, options: .storageModePrivate)
     }()
@@ -65,11 +66,11 @@ class Terrain: Node {
 
         super.init()
 
-        let controlPoints = createControlPoints(patches: patches,
-                                                size: (width: terrainParams.size.x,
-                                                       height: terrainParams.size.y))
-        controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints,
-                                                         length: MemoryLayout<float3>.stride * controlPoints.count)
+        let controlPoints = Terrain.createControlPoints(patches: Terrain.patches,
+                                                        size: (width: Terrain.terrainParams.size.x,
+                                                               height: Terrain.terrainParams.size.y))
+        controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints.normalized,
+                                                         length: MemoryLayout<float3>.stride * controlPoints.normalized.count)
 
 
     }
@@ -120,13 +121,17 @@ extension Terrain {
      - size: size of plane
      - Returns: an array of patch control points. Each group of four makes one patch.
      **/
-    func createControlPoints(patches: (horizontal: Int, vertical: Int),
-                             size: (width: Float, height: Float)) -> [float3] {
+    static func createControlPoints(patches: (horizontal: Int, vertical: Int),
+                             size: (width: Float, height: Float)) -> (normalized: [float3], patches: [Patch]) {
 
-        var points: [float3] = []
+        var normalizedPoints: [float3] = []
+        var terrainPatches: [Patch] = []
+
         // per patch width and height
         let width = 1 / Float(patches.horizontal)
         let height = 1 / Float(patches.vertical)
+
+
 
         for j in 0..<patches.vertical {
             let row = Float(j)
@@ -137,20 +142,47 @@ extension Terrain {
                 let right = width * column + width
                 let top = height * row + height
 
-                points.append([left, 0, top])
-                points.append([right, 0, top])
-                points.append([right, 0, bottom])
-                points.append([left, 0, bottom])
+                let patch = Patch(topLeft: [left, 0, top],
+                                  topRight: [right, 0, top],
+                                  bottomLeft: [left, 0, bottom],
+                                  bottomRight: [right, 0, bottom])
+
+                normalizedPoints.append(patch.topLeft)
+                normalizedPoints.append(patch.topRight)
+                normalizedPoints.append(patch.bottomRight)
+                normalizedPoints.append(patch.bottomLeft)
+
+                terrainPatches.append(patch)
             }
         }
         // size and convert to Metal coordinates
         // eg. 6 across would be -3 to + 3
-        points = points.map {
+        normalizedPoints = normalizedPoints.map {
             [$0.x * size.width - size.width / 2,
              0,
              $0.z * size.height - size.height / 2]
         }
-        return points
+
+        terrainPatches = terrainPatches.map {
+
+            func update(value: float3) -> float3 {
+                return [value.x * size.width - size.width / 2,
+                        0,
+                        value.z * size.height - size.height / 2]
+            }
+
+            let patch = Patch(topLeft: update(value: $0.topLeft),
+                  topRight: update(value: $0.topRight),
+                  bottomLeft: update(value: $0.bottomLeft),
+                  bottomRight: update(value: $0.bottomRight))
+            return patch
+        }
+
+        for (patch, point) in zip(terrainPatches, normalizedPoints) {
+            print("*** patch \(patch)\n *** point \(point)")
+        }
+
+        return (normalizedPoints, terrainPatches)
     }
 }
 
@@ -175,13 +207,13 @@ extension Terrain: ComputeHandler {
                                 length: MemoryLayout<float4x4>.stride,
                                 index: 4)
         computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 5)
-        computeEncoder.setBytes(&terrainParams,
+        computeEncoder.setBytes(&Terrain.terrainParams,
                                 length: MemoryLayout<TerrainParams>.stride,
                                 index: 6)
 
-        let width = min(patchCount,
+        let width = min(Terrain.patchCount,
                         tessellationPipelineState.threadExecutionWidth)
-        computeEncoder.dispatchThreadgroups(MTLSizeMake(patchCount, 1, 1),
+        computeEncoder.dispatchThreadgroups(MTLSizeMake(Terrain.patchCount, 1, 1),
                                             threadsPerThreadgroup: MTLSizeMake(width, 1, 1))
 
     }
@@ -204,7 +236,7 @@ extension Terrain: Renderable {
         renderEncoder.setTriangleFillMode(.fill)
         renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
         renderEncoder.setVertexTexture(heightMap, index: 0)
-        renderEncoder.setVertexBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
+        renderEncoder.setVertexBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
 
         renderEncoder.setFragmentTexture(cliffTexture, index: Int(TerrainTextureBase.rawValue))
         renderEncoder.setFragmentTexture(snowTexture, index: Int(TerrainTextureMiddle.rawValue))
@@ -212,7 +244,7 @@ extension Terrain: Renderable {
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,
-                                  patchCount: patchCount,
+                                  patchCount: Terrain.patchCount,
                                   patchIndexBuffer: nil,
                                   patchIndexBufferOffset: 0,
                                   instanceCount: 1,
