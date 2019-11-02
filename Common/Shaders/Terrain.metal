@@ -47,6 +47,8 @@ kernel void calculate_height(constant PatchPositions &patchPositions [[ buffer(0
     float realU = (patchPositions.realPosition.x - lowerPosition.x) / (upperPosition.x - lowerPosition.x);
     float realV = (patchPositions.realPosition.z - lowerPosition.z) / (upperPosition.z - lowerPosition.z);
 
+    float mult = (realU + realV) / 2;
+
 
     //    The tessellator provides a uv coordinate between 0 and 1
     //    for the tessellated patch so that the vertex function can
@@ -137,25 +139,47 @@ kernel void calculate_height(constant PatchPositions &patchPositions [[ buffer(0
     float4 upperColor = heightMap.sample(upperSample, upperXy) + float4(0.3);
     float upperHeight = (upperColor.r * 2 - 1) * terrain.height;
 
-    float diff = (upperHeight - lowerHeight) / 2;
-//    heightBuffer = lowerHeight + diff;
 
-    // mix between two heights
-//    heightBuffer = height;
+
+    float d = (lowerHeight - upperHeight) * mult;
+    heightBuffer = lowerHeight + d;
 
 
     float diffU = (upperXy.x - lowerXY.x) * realU;
     float diffV = (upperXy.y - lowerXY.y) * realV;
 
+    float tu = lowerXY.x + diffU;
+    float tv = lowerXY.y + diffV;
+
     constexpr sampler s(filter::linear, address::repeat);
-    float4 testcolor = heightMap.sample(s, float2(lowerXY.x + diffU, lowerXY.y + diffV)) + float4(0.3);
+    float4 testcolor = heightMap.sample(s, float2(tu, tv)) + float4(0.3);
 
     float testheight = (testcolor.r * 2 - 1) * terrain.height;
-    heightBuffer = testheight;
+//    heightBuffer = testheight;
 
 
 
-    g
+    // THE OLD BRANCH
+    float u = (patchPositions.realPosition.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
+    float v = (patchPositions.realPosition.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
+
+    float2 top = mix(patch.topLeft.xz,
+                     patch.topRight.xz, u);
+    float2 bottom = mix(patch.bottomLeft.xz,
+                        patch.bottomRight.xz, u);
+
+    float2 interpolated = mix(bottom, top, v);
+    // - interpolated doesn't seeem to work
+    // I need to check the interpolated position to make sure it makes sense compared to the
+    // percentage between x's and y's
+    float4 interpolatedPosition = float4(interpolated.x, 0.0, interpolated.y, 1.0);
+
+    float2 xy = (interpolatedPosition.xz + terrain.size / 2.0) / terrain.size;
+
+    constexpr sampler t(filter::linear, address::repeat);
+    float4 color = heightMap.sample(t, xy) + float4(0.3);
+    float height = (color.r * 2 - 1) * terrain.height;
+//        heightBuffer = height;
 }
 
 // This is just creating new vertices
