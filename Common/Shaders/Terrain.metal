@@ -140,8 +140,21 @@ kernel void calculate_height(constant PatchPositions &patchPositions [[ buffer(0
     float upperHeight = (upperColor.r * 2 - 1) * terrain.height;
 
 
+    float dff;
 
-    float d = (lowerHeight - upperHeight) * mult;
+    if (lowerHeight < 0 && upperHeight < 0) {
+        float minHeight = min(lowerHeight, upperHeight);
+        float maxHeight = max(lowerHeight, upperHeight);
+        dff = -(abs(minHeight) - abs(maxHeight));
+    } else if (lowerHeight > 0 && upperHeight > 0) {
+        float minHeight = min(lowerHeight, upperHeight);
+        float maxHeight = max(lowerHeight, upperHeight);
+        dff = maxHeight - minHeight;
+    } else {
+        dff = abs(lowerHeight) + abs(upperHeight);
+    }
+
+    float d = dff * realU;
     heightBuffer = lowerHeight + d;
 
 
