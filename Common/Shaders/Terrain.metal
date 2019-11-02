@@ -42,6 +42,10 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
 
     float4 position  = float4(in_position, 1.0);
 
+
+    // check out branch height-calc-in-between-two-patch-points for attempts 
+
+
     //    The tessellator provides a uv coordinate between 0 and 1
     //    for the tessellated patch so that the vertex function can
     //    calculate its correct rendered position.
@@ -87,11 +91,6 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
     // 7 horizontal and 7 vertical
     // find control point by dividing by 7
     // I think I already do this in swift?
-
-    float3 topLeft = patch.topLeft;
-    float3 topRight = patch.topRight;
-    float3 bottomLeft = patch.bottomLeft;
-    float3 bottomRight = patch.bottomRight;
 
     float2 top = mix(patch.topLeft.xz,
                      patch.topRight.xz, u);

@@ -141,6 +141,9 @@ class Prop: Node {
     let heightCalculatePipelineState: MTLComputePipelineState
     let heightBuffer: MTLBuffer
 
+    let patches: [Patch]
+    var currentPatch: Patch?
+
     init(type: PropType) {
 
         self.propType = type
@@ -174,9 +177,17 @@ class Prop: Node {
 
         heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size, options: .storageModeShared)!
 
+        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
+                                              size: (width: Terrain.terrainParams.size.x,
+                                                     height: Terrain.terrainParams.size.y))
+
+
+        patches = terrainPatches.patches
+
         super.init()
         self.name = type.name
         boundingBox = mdlMesh.boundingBox
+        
 
     }
 
@@ -280,8 +291,29 @@ class Prop: Node {
     }
 
     override func update(deltaTime: Float) {
+
+        currentPatch = patch(for: position)
+
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
         position.y = pointer.pointee
+    }
+
+    func patch(for location: float3) -> Patch? {
+        let foundPatches = patches.filter { (patch) -> Bool in
+            let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
+            let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
+
+            return horizontal && vertical
+        }
+
+        //        print("**** patches found for position \(foundPatches.count)")
+        guard let patch = foundPatches.first else { return nil }
+
+        if let current = currentPatch, current != patch {
+            print("*** UPDATE CURRENT PATCH \(patch)")
+        }
+
+        return patch
     }
 }
 
@@ -362,7 +394,10 @@ extension Prop: Renderable {
         }
     }
 
-    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) {
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
+
+        guard var patch = currentPatch else { return }
+
         var position = self.worldTransform.columns.3.xyz
         var terrainParams = terrain
         var uniforms = uniforms
@@ -372,6 +407,8 @@ extension Prop: Renderable {
         computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
         computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
         computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
+        computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 4)
+        computeEncoder.setBytes(&patch, length: MemoryLayout<Patch>.stride, index: 5)
         computeEncoder.setTexture(heightMapTexture, index: 0)
 
         computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
