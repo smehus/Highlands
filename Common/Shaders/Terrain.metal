@@ -43,6 +43,11 @@ kernel void calculate_height(constant PatchPositions &patchPositions [[ buffer(0
     float4 lowerPosition  = float4(patchPositions.lowerPosition, 1.0);
     float4 upperPosition = float4(patchPositions.upperPosition, 1.0);
 
+    // Percentage betweent two patch points
+    float realU = (patchPositions.realPosition.x - lowerPosition.x) / (upperPosition.x - lowerPosition.x);
+    float realV = (patchPositions.realPosition.z - lowerPosition.z) / (upperPosition.z - lowerPosition.z);
+
+
     //    The tessellator provides a uv coordinate between 0 and 1
     //    for the tessellated patch so that the vertex function can
     //    calculate its correct rendered position.
@@ -132,25 +137,25 @@ kernel void calculate_height(constant PatchPositions &patchPositions [[ buffer(0
     float4 upperColor = heightMap.sample(upperSample, upperXy) + float4(0.3);
     float upperHeight = (upperColor.r * 2 - 1) * terrain.height;
 
-    float diff = (lowerHeight + upperHeight) / 2;
-    heightBuffer = diff;
+    float diff = (upperHeight - lowerHeight) / 2;
+//    heightBuffer = lowerHeight + diff;
 
     // mix between two heights
 //    heightBuffer = height;
 
 
-
-    /// Old way of doing it without interpolating
-    float2 testxy = (patchPositions.realPosition.xz + terrain.size / 2.0) / terrain.size;
-
-    float u = (testxy.x - lowerXY.x) / (upperXy.x - lowerXY.x);
-    float v = (testxy.y - lowerXY.y) / (upperXy.y - lowerXY.y);
+    float diffU = (upperXy.x - lowerXY.x) * realU;
+    float diffV = (upperXy.y - lowerXY.y) * realV;
 
     constexpr sampler s(filter::linear, address::repeat);
-    float4 testcolor = heightMap.sample(s, float2(u, v)) + float4(0.3);
+    float4 testcolor = heightMap.sample(s, float2(lowerXY.x + diffU, lowerXY.y + diffV)) + float4(0.3);
 
     float testheight = (testcolor.r * 2 - 1) * terrain.height;
-//    heightBuffer = testheight;
+    heightBuffer = testheight;
+
+
+
+    g
 }
 
 // This is just creating new vertices
