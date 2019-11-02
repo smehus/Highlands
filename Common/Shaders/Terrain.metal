@@ -48,8 +48,39 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
 
     // This obviously isn't between 0 & 1
     // Need to find what the percent value of position.x is between patch.topLeft & patch.topRight
-    float u = position.x;
-    float v = position.z;
+
+    // -35    -2              107
+
+//    -2 - -35 = 33
+    // let b = 33 / (107 - -35)
+    //
+
+
+    // The interpolation shit from the book page: 316
+    // Maybe i just need to figure out what the patch_coord means, since these are supposed to be patch_coord
+    // Or watch that stupid youtube video again...
+
+
+
+//    float topCameraDistance = calc_distance(patch.topLeft,
+//                                         patch.topRight,
+//                                         uniforms.viewMatrix.columns[2].xyz,
+//                                         uniforms.modelMatrix);
+//
+//    float bottomCameraDistance = calc_distance(patch.bottomLeft,
+//                                         patch.bottomRight,
+//                                         uniforms.viewMatrix.columns[2].xyz,
+//                                         uniforms.modelMatrix);
+
+//    float topTesselation = max(4.0, terrain.maxTessellation / topCameraDistance);
+//    float bottomTessllation = max(4.0, terrain.maxTessellation / bottomCameraDistance);
+
+    // this ends up being between 0 - 1
+    float u = (position.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
+    float v = (position.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
+
+//    u = round(u * terrain.maxTessellation) / terrain.maxTessellation;
+//    v = round(v * terrain.maxTessellation) / terrain.maxTessellation;
 
     // find the control point this position lives in
     // then interpolate like we do in the vertex function
@@ -57,21 +88,28 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
     // find control point by dividing by 7
     // I think I already do this in swift?
 
+    float3 topLeft = patch.topLeft;
+    float3 topRight = patch.topRight;
+    float3 bottomLeft = patch.bottomLeft;
+    float3 bottomRight = patch.bottomRight;
+
     float2 top = mix(patch.topLeft.xz,
                      patch.topRight.xz, u);
     float2 bottom = mix(patch.bottomLeft.xz,
                         patch.bottomRight.xz, u);
 
-    float2 interpolated = mix(top, bottom, v);
+    float2 interpolated = mix(bottom, top, v);
+    // - interpolated doesn't seeem to work
+    // I need to check the interpolated position to make sure it makes sense compared to the
+    // percentage between x's and y's
     float4 interpolatedPosition = float4(interpolated.x, 0.0, interpolated.y, 1.0);
 
     float2 xy = (interpolatedPosition.xz + terrain.size / 2.0) / terrain.size;
-    constexpr sampler sample;
+
+    constexpr sampler sample(filter::linear, address::repeat);
     float4 color = heightMap.sample(sample, xy) + float4(0.3);
-
-
     float height = (color.r * 2 - 1) * terrain.height;
-//    heightBuffer = height;
+    heightBuffer = height;
 
 
 
@@ -81,7 +119,7 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
     float4 testcolor = heightMap.sample(s, testxy) + float4(0.3);
 
     float testheight = (testcolor.r * 2 - 1) * terrain.height;
-    heightBuffer = testheight;
+//    heightBuffer = testheight;
 }
 
 // This is just creating new vertices
@@ -103,11 +141,12 @@ kernel void tessellation_main(constant float* edge_factors      [[ buffer(0) ]],
             pointBIndex = 0;
         }
         int edgeIndex = pointBIndex;
+        // This screws up the player height calculation - just use maxTessellation
         float cameraDistance = calc_distance(control_points[pointAIndex + index],
                                              control_points[pointBIndex + index],
                                              camera_position.xyz,
                                              modelMatrix);
-        float tessellation = max(4.0, terrain.maxTessellation / cameraDistance);
+        float tessellation = terrain.maxTessellation;//max(4.0, terrain.maxTessellation / cameraDistance);
         factors[pid].edgeTessellationFactor[edgeIndex] = tessellation;
         totalTessellation += tessellation;
     }

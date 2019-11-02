@@ -68,6 +68,7 @@ class Character: Node {
 
     let patches: [Patch]
     var currentPatch: Patch?
+    var positionInPatch: float3?
 
     init(name: String) {
         let asset = GLTFAsset(filename: name)
@@ -118,6 +119,7 @@ class Character: Node {
     override func update(deltaTime: Float) {
 
         currentPatch = patch(for: position)
+        positionInPatch = positionInPatch(patch: currentPatch)
 
         if position.y == 0 {
             let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
@@ -168,15 +170,18 @@ class Character: Node {
     }
 
     func patch(for location: float3) -> Patch? {
-        let patch = patches.first { (patch) -> Bool in
+        let foundPatches = patches.filter { (patch) -> Bool in
             let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
             let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
 
             return horizontal && vertical
         }
 
-        if let current = currentPatch, let nextPatch = patch, current != nextPatch {
-            print("*** FOUND CURRENT PATCH \(nextPatch)")
+//        print("**** patches found for position \(foundPatches.count)")
+        guard let patch = foundPatches.first else { return nil }
+
+        if let current = currentPatch, current != patch {
+            print("*** UPDATE CURRENT PATCH \(patch)")
         }
 
         return patch
@@ -361,7 +366,10 @@ extension Character: Renderable {
                          controlPointsBuffer: MTLBuffer?) {
 
         guard var patch = currentPatch else { return }
+//        guard let patchPosition = positionInPatch else { return }
 
+
+//        var position = patchPosition
         var position = self.worldTransform.columns.3.xyz
         var terrainParams = terrain
         var uniforms = uniforms
@@ -377,5 +385,24 @@ extension Character: Renderable {
 
         computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
                                             threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
+    }
+
+    func positionInPatch(patch: Patch?) -> float3? {
+        guard let patch = patch else { return nil }
+
+        let worldPos = self.worldTransform.columns.3.xyz
+        let x = (worldPos.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
+        let z = (worldPos.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
+
+        let calculate: (Float) -> Float = { input in
+            let value = [0.25, 0.5, 1.0].sorted { (first, second) -> Bool in
+                return abs(input - first) < abs(input - second)
+            }.first
+
+            return value!
+        }
+
+        let final = float3(calculate(x), 0, calculate(z))
+        return final
     }
 }

@@ -178,8 +178,8 @@ extension Terrain {
             return patch
         }
 
-        for (patch, point) in zip(terrainPatches, normalizedPoints) {
-            print("*** patch \(patch)\n *** point \(point)")
+        for patch in terrainPatches {
+            print("********\n topLeft \(patch.topLeft)\n topRight \(patch.topRight)\n bottomLeft \(patch.bottomLeft)\n bottomRight  \(patch.bottomRight)\n**********\n\n\n\n")
         }
 
         return (normalizedPoints, terrainPatches)
