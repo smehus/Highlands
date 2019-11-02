@@ -179,7 +179,7 @@ extension Terrain {
         }
 
         for patch in terrainPatches {
-            print("********\n topLeft \(patch.topLeft)\n topRight \(patch.topRight)\n bottomLeft \(patch.bottomLeft)\n bottomRight  \(patch.bottomRight)\n**********\n\n\n\n")
+//            print("********\n topLeft \(patch.topLeft)\n topRight \(patch.topRight)\n bottomLeft \(patch.bottomLeft)\n bottomRight  \(patch.bottomRight)\n**********\n\n\n\n")
         }
 
         return (normalizedPoints, terrainPatches)

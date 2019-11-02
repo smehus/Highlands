@@ -32,65 +32,18 @@ float calc_distance(float3 pointA, float3 pointB,
 }
 
 kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
-                             device float &heightBuffer [[ buffer(1) ]],
+                             device float *heightBuffer [[ buffer(1) ]],
                              constant TerrainParams &terrain [[ buffer(2) ]],
                              constant Uniforms &uniforms [[ buffer(3) ]],
                              constant float3 *control_points [[ buffer(4) ]],
                              constant Patch &patch [[ buffer(5) ]],
+                             constant int &buffer_id [[ buffer(6) ]],
                              texture2d<float> heightMap [[ texture(0) ]])
 {
 
     float4 position  = float4(in_position, 1.0);
-
-
-    // check out branch height-calc-in-between-two-patch-points for attempts 
-
-
-    //    The tessellator provides a uv coordinate between 0 and 1
-    //    for the tessellated patch so that the vertex function can
-    //    calculate its correct rendered position.
-
-    // This obviously isn't between 0 & 1
-    // Need to find what the percent value of position.x is between patch.topLeft & patch.topRight
-
-    // -35    -2              107
-
-//    -2 - -35 = 33
-    // let b = 33 / (107 - -35)
-    //
-
-
-    // The interpolation shit from the book page: 316
-    // Maybe i just need to figure out what the patch_coord means, since these are supposed to be patch_coord
-    // Or watch that stupid youtube video again...
-
-
-
-//    float topCameraDistance = calc_distance(patch.topLeft,
-//                                         patch.topRight,
-//                                         uniforms.viewMatrix.columns[2].xyz,
-//                                         uniforms.modelMatrix);
-//
-//    float bottomCameraDistance = calc_distance(patch.bottomLeft,
-//                                         patch.bottomRight,
-//                                         uniforms.viewMatrix.columns[2].xyz,
-//                                         uniforms.modelMatrix);
-
-//    float topTesselation = max(4.0, terrain.maxTessellation / topCameraDistance);
-//    float bottomTessllation = max(4.0, terrain.maxTessellation / bottomCameraDistance);
-
-    // this ends up being between 0 - 1
     float u = (position.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
     float v = (position.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
-
-//    u = round(u * terrain.maxTessellation) / terrain.maxTessellation;
-//    v = round(v * terrain.maxTessellation) / terrain.maxTessellation;
-
-    // find the control point this position lives in
-    // then interpolate like we do in the vertex function
-    // 7 horizontal and 7 vertical
-    // find control point by dividing by 7
-    // I think I already do this in swift?
 
     float2 top = mix(patch.topLeft.xz,
                      patch.topRight.xz, u);
@@ -98,27 +51,14 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
                         patch.bottomRight.xz, u);
 
     float2 interpolated = mix(bottom, top, v);
-    // - interpolated doesn't seeem to work
-    // I need to check the interpolated position to make sure it makes sense compared to the
-    // percentage between x's and y's
-    float4 interpolatedPosition = float4(interpolated.x, 0.0, interpolated.y, 1.0);
 
+    float4 interpolatedPosition = float4(interpolated.x, 0.0, interpolated.y, 1.0);
     float2 xy = (interpolatedPosition.xz + terrain.size / 2.0) / terrain.size;
 
     constexpr sampler sample(filter::linear, address::repeat);
     float4 color = heightMap.sample(sample, xy) + float4(0.3);
     float height = (color.r * 2 - 1) * terrain.height;
-    heightBuffer = height;
-
-
-
-    /// Old way of doing it without interpolating
-    float2 testxy = (position.xz + terrain.size / 2.0) / terrain.size;
-    constexpr sampler s(filter::linear, address::repeat);
-    float4 testcolor = heightMap.sample(s, testxy) + float4(0.3);
-
-    float testheight = (testcolor.r * 2 - 1) * terrain.height;
-//    heightBuffer = testheight;
+    heightBuffer[buffer_id] = height;
 }
 
 // This is just creating new vertices

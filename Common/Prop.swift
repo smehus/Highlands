@@ -175,7 +175,9 @@ class Prop: Node {
 
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
-        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size, options: .storageModeShared)!
+        var bytes: [Float] = transforms.map { _ in return 0.0 }
+        heightBuffer = Renderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
+//        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
 
         let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
                                               size: (width: Terrain.terrainParams.size.x,
@@ -292,10 +294,17 @@ class Prop: Node {
 
     override func update(deltaTime: Float) {
 
-        currentPatch = patch(for: position)
+        var pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: transforms.count)
+        for i in 0..<transforms.count {
+            pointer = pointer.advanced(by: i)
+            transforms[i].position.y = pointer.pointee
 
-        let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
-        position.y = pointer.pointee
+            // Update buffer for renderer
+            var instancePointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
+            instancePointer = instancePointer.advanced(by: i)
+            instancePointer.pointee.modelMatrix = transforms[i].modelMatrix
+            instancePointer.pointee.normalMatrix = transforms[i].normalMatrix
+        }
     }
 
     func patch(for location: float3) -> Patch? {
@@ -310,7 +319,7 @@ class Prop: Node {
         guard let patch = foundPatches.first else { return nil }
 
         if let current = currentPatch, current != patch {
-            print("*** UPDATE CURRENT PATCH \(patch)")
+//            print("*** UPDATE CURRENT PATCH \(patch)")
         }
 
         return patch
@@ -396,22 +405,27 @@ extension Prop: Renderable {
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
 
-        guard var patch = currentPatch else { return }
+        for (index, transform) in transforms.enumerated() {
+            var position = transform.modelMatrix.columns.3.xyz
+            guard var patch = patch(for: position) else { return }
 
-        var position = self.worldTransform.columns.3.xyz
-        var terrainParams = terrain
-        var uniforms = uniforms
 
-        computeEncoder.setComputePipelineState(heightCalculatePipelineState)
-        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
-        computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
-        computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
-        computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
-        computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 4)
-        computeEncoder.setBytes(&patch, length: MemoryLayout<Patch>.stride, index: 5)
-        computeEncoder.setTexture(heightMapTexture, index: 0)
+            var terrainParams = terrain
+            var uniforms = uniforms
+            var transformIndex = index
 
-        computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
-                                            threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
+            computeEncoder.setComputePipelineState(heightCalculatePipelineState)
+            computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+            computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
+            computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
+            computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
+            computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 4)
+            computeEncoder.setBytes(&patch, length: MemoryLayout<Patch>.stride, index: 5)
+            computeEncoder.setBytes(&transformIndex, length: MemoryLayout<Int>.size, index: 6)
+            computeEncoder.setTexture(heightMapTexture, index: 0)
+
+            computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
+                                                threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
+        }
     }
 }

@@ -84,7 +84,7 @@ class Character: Node {
         samplerState = Character.buildSamplerState()
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
-        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size, options: .storageModeShared)!
+        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
 
         let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
                                               size: (width: Terrain.terrainParams.size.x,
@@ -181,7 +181,7 @@ class Character: Node {
         guard let patch = foundPatches.first else { return nil }
 
         if let current = currentPatch, current != patch {
-            print("*** UPDATE CURRENT PATCH \(patch)")
+//            print("*** UPDATE CURRENT PATCH \(patch)")
         }
 
         return patch
@@ -373,6 +373,7 @@ extension Character: Renderable {
         var position = self.worldTransform.columns.3.xyz
         var terrainParams = terrain
         var uniforms = uniforms
+        var index = 0
 
         computeEncoder.setComputePipelineState(heightCalculatePipelineState)
         computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
@@ -382,6 +383,7 @@ extension Character: Renderable {
         computeEncoder.setTexture(heightMapTexture, index: 0)
         computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 4)
         computeEncoder.setBytes(&patch, length: MemoryLayout<Patch>.stride, index: 5)
+        computeEncoder.setBytes(&index, length: MemoryLayout<Int>.size, index: 6)
 
         computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
                                             threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
