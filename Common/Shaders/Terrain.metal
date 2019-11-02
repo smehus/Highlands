@@ -31,7 +31,7 @@ float calc_distance(float3 pointA, float3 pointB,
     return camera_distance;
 }
 
-kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
+kernel void calculate_height(constant PatchPositions &patchPositions [[ buffer(0) ]],
                              device float &heightBuffer [[ buffer(1) ]],
                              constant TerrainParams &terrain [[ buffer(2) ]],
                              constant Uniforms &uniforms [[ buffer(3) ]],
@@ -40,7 +40,8 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
                              texture2d<float> heightMap [[ texture(0) ]])
 {
 
-    float4 position  = float4(in_position, 1.0);
+    float4 lowerPosition  = float4(patchPositions.lowerPosition, 1.0);
+    float4 upperPosition = float4(patchPositions.upperPosition, 1.0);
 
     //    The tessellator provides a uv coordinate between 0 and 1
     //    for the tessellated patch so that the vertex function can
@@ -75,9 +76,18 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
 //    float topTesselation = max(4.0, terrain.maxTessellation / topCameraDistance);
 //    float bottomTessllation = max(4.0, terrain.maxTessellation / bottomCameraDistance);
 
+
+    // find the set postion from the vertices between patch control points // maxTesselation?
+
+    // Do this in swift
+//    float tessellationSegmentWidth = (patch.topRight.x - patch.topLeft.x) / terrain.maxTessellation;
+
+
     // this ends up being between 0 - 1
-    float u = (position.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
-    float v = (position.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
+//    float lowerU = (lowerPosition.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
+//    float lowerV = (lowerPosition.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
+//    float upperU = (upperPosition.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
+//    float upperV = (upperPosition.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
 
 //    u = round(u * terrain.maxTessellation) / terrain.maxTessellation;
 //    v = round(v * terrain.maxTessellation) / terrain.maxTessellation;
@@ -88,35 +98,56 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
     // find control point by dividing by 7
     // I think I already do this in swift?
 
-    float3 topLeft = patch.topLeft;
-    float3 topRight = patch.topRight;
-    float3 bottomLeft = patch.bottomLeft;
-    float3 bottomRight = patch.bottomRight;
+//    float3 topLeft = patch.topLeft;
+//    float3 topRight = patch.topRight;
+//    float3 bottomLeft = patch.bottomLeft;
+//    float3 bottomRight = patch.bottomRight;
 
-    float2 top = mix(patch.topLeft.xz,
-                     patch.topRight.xz, u);
-    float2 bottom = mix(patch.bottomLeft.xz,
-                        patch.bottomRight.xz, u);
-
-    float2 interpolated = mix(bottom, top, v);
+//    float2 top = mix(patch.topLeft.xz,
+//                     patch.topRight.xz, lowerU);
+//    float2 bottom = mix(patch.bottomLeft.xz,
+//                        patch.bottomRight.xz, lowerU);
+//
+//    float2 interpolated = mix(bottom, top, lowerV);
     // - interpolated doesn't seeem to work
     // I need to check the interpolated position to make sure it makes sense compared to the
     // percentage between x's and y's
-    float4 interpolatedPosition = float4(interpolated.x, 0.0, interpolated.y, 1.0);
-
-    float2 xy = (interpolatedPosition.xz + terrain.size / 2.0) / terrain.size;
-
+//    float4 interpolatedPosition = float4(interpolated.x, 0.0, interpolated.y, 1.0);
+    float2 lowerXY = (lowerPosition.xz + terrain.size / 2.0) / terrain.size;
     constexpr sampler sample(filter::linear, address::repeat);
-    float4 color = heightMap.sample(sample, xy) + float4(0.3);
-    float height = (color.r * 2 - 1) * terrain.height;
-    heightBuffer = height;
+    float4 lowerColor = heightMap.sample(sample, lowerXY) + float4(0.3);
+    float lowerHeight = (lowerColor.r * 2 - 1) * terrain.height;
+
+
+
+//    float2 uppperTop = mix(patch.topLeft.xz,
+//                     patch.topRight.xz, upperU);
+//    float2 upperBottom = mix(patch.bottomLeft.xz,
+//                        patch.bottomRight.xz, upperU);
+
+//    float2 upperInterpolated = mix(upperBottom, uppperTop, upperV);
+//    float4 upperInterpolatedPosition = float4(upperInterpolated.x, 0.0, upperInterpolated.y, 1.0);
+    float2 upperXy = (upperPosition.xz + terrain.size / 2.0) / terrain.size;
+    constexpr sampler upperSample(filter::linear, address::repeat);
+    float4 upperColor = heightMap.sample(upperSample, upperXy) + float4(0.3);
+    float upperHeight = (upperColor.r * 2 - 1) * terrain.height;
+
+    float diff = (lowerHeight + upperHeight) / 2;
+    heightBuffer = diff;
+
+    // mix between two heights
+//    heightBuffer = height;
 
 
 
     /// Old way of doing it without interpolating
-    float2 testxy = (position.xz + terrain.size / 2.0) / terrain.size;
+    float2 testxy = (patchPositions.realPosition.xz + terrain.size / 2.0) / terrain.size;
+
+    float u = (testxy.x - lowerXY.x) / (upperXy.x - lowerXY.x);
+    float v = (testxy.y - lowerXY.y) / (upperXy.y - lowerXY.y);
+
     constexpr sampler s(filter::linear, address::repeat);
-    float4 testcolor = heightMap.sample(s, testxy) + float4(0.3);
+    float4 testcolor = heightMap.sample(s, float2(u, v)) + float4(0.3);
 
     float testheight = (testcolor.r * 2 - 1) * terrain.height;
 //    heightBuffer = testheight;

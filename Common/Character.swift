@@ -68,7 +68,7 @@ class Character: Node {
 
     let patches: [Patch]
     var currentPatch: Patch?
-    var positionInPatch: float3?
+    var positionInPatch: PatchPositions?
 
     init(name: String) {
         let asset = GLTFAsset(filename: name)
@@ -119,7 +119,9 @@ class Character: Node {
     override func update(deltaTime: Float) {
 
         currentPatch = patch(for: position)
-        positionInPatch = positionInPatch(patch: currentPatch)
+        if let pos = positionInPatch(patch: currentPatch) {
+            positionInPatch = PatchPositions(lowerPosition: pos.lower, upperPosition: pos.upper, realPosition: worldTransform.columns.3.xyz)
+        }
 
         if position.y == 0 {
             let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
@@ -366,16 +368,14 @@ extension Character: Renderable {
                          controlPointsBuffer: MTLBuffer?) {
 
         guard var patch = currentPatch else { return }
-//        guard let patchPosition = positionInPatch else { return }
+        guard var patchPositions = positionInPatch else { return }
 
-
-//        var position = patchPosition
-        var position = self.worldTransform.columns.3.xyz
+//        var position = self.worldTransform.columns.3.xyz
         var terrainParams = terrain
         var uniforms = uniforms
 
         computeEncoder.setComputePipelineState(heightCalculatePipelineState)
-        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+        computeEncoder.setBytes(&patchPositions, length: MemoryLayout<PatchPositions>.stride, index: 0)
         computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
         computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
         computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
@@ -387,22 +387,33 @@ extension Character: Renderable {
                                             threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
     }
 
-    func positionInPatch(patch: Patch?) -> float3? {
+    func positionInPatch(patch: Patch?) -> (lower: float3, upper: float3)? {
         guard let patch = patch else { return nil }
-
         let worldPos = self.worldTransform.columns.3.xyz
-        let x = (worldPos.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
-        let z = (worldPos.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
 
-        let calculate: (Float) -> Float = { input in
-            let value = [0.25, 0.5, 1.0].sorted { (first, second) -> Bool in
-                return abs(input - first) < abs(input - second)
-            }.first
+        let width = (patch.topRight.x - patch.topLeft.x) / 16
+        let height = (patch.topLeft.z - patch.bottomLeft.z) / 16
 
-            return value!
+        let widthSegments: [Float] = Array(stride(from: patch.topLeft.x, through: patch.topRight.x, by: width))
+        let heightSegments = Array(stride(from: patch.bottomLeft.z, through: patch.topLeft.z, by: height))
+
+        let calculate: (Float, [Float]) -> (lower: Float, upper: Float) = { input, collection in
+//            let value = collection.sorted { (first, second) -> Bool in
+//                return abs(input - first) < abs(input - second)
+//            }.first
+//
+//            return value!
+
+            let lowerValue = collection.reversed().filter { $0 < input }.first!
+            let upperValue = collection.filter { $0 > input }.first!
+
+            return (lowerValue, upperValue)
         }
 
-        let final = float3(calculate(x), 0, calculate(z))
-        return final
+
+        let (xLower, xUpper) = calculate(worldPos.x, widthSegments)
+        let (zLower, zUpper) = calculate(worldPos.z, heightSegments)
+
+        return (float3(xLower, 0, zLower), float3(xUpper, 0, zUpper))
     }
 }
