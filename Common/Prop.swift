@@ -295,13 +295,19 @@ class Prop: Node {
     override func update(deltaTime: Float) {
 
         var pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: transforms.count)
-        for i in 0..<transforms.count {
-            pointer = pointer.advanced(by: i)
+        transforms[0].position.y = pointer.pointee
+
+        var instancePointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
+        instancePointer.pointee.modelMatrix = transforms.first!.modelMatrix
+        instancePointer.pointee.normalMatrix = transforms.first!.normalMatrix
+
+        for i in 1..<transforms.count {
+            pointer = pointer.advanced(by: 1)
             transforms[i].position.y = pointer.pointee
 
+            
             // Update buffer for renderer
-            var instancePointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
-            instancePointer = instancePointer.advanced(by: i)
+            instancePointer = instancePointer.advanced(by: 1)
             instancePointer.pointee.modelMatrix = transforms[i].modelMatrix
             instancePointer.pointee.normalMatrix = transforms[i].normalMatrix
         }

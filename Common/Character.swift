@@ -365,6 +365,7 @@ extension Character: Renderable {
                          uniforms: Uniforms,
                          controlPointsBuffer: MTLBuffer?) {
 
+
         guard var patch = currentPatch else { return }
 //        guard let patchPosition = positionInPatch else { return }
 
