@@ -22,7 +22,7 @@ final class GameScene: Scene {
     let skeleton = Character(name: "boy_walking")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
     let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
-    let water = Water(size: 100)
+    let water = Water(size: 500)
 
     override func setupScene() {
 
@@ -39,11 +39,11 @@ final class GameScene: Scene {
         camera.position = [0, 0, -1.8]
         camera.rotation = [0, 0, 0]
 
-        /*
-        water.position.y = -1
+
+        water.position.y = -7
         water.rotation = [0, 0, radians(fromDegrees: -90)]
         add(node: water)
-
+  /*
         ground.tiling = 4
         ground.scale = [4, 1, 4]
         ground.position = float3(0, -0.03, 0)
