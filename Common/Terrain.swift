@@ -100,12 +100,16 @@ extension Terrain {
         do {
             let pipelineState = try Renderer.device.makeComputePipelineState(function: function)
 
-//            guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else {  fatalError() }
-//            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-//
-//            computeEncoder.setComputePipelineState(pipelineState)
-//            computeEncoder.setTexture(heightMap, index: 0)
-            
+            guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else {  fatalError() }
+            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+
+            let threadsPerGroup = MTLSize(width: 16, height: 16, depth: 1)
+
+            computeEncoder.setComputePipelineState(pipelineState)
+            computeEncoder.setTexture(heightMap, index: 0)
+            computeEncoder.setTexture(normalTexture, index: 1)
+            computeEncoder.dispatchThreadgroups(MTLSizeMake(heightMap.width, heightMap.height, 1), threadsPerThreadgroup: threadsPerGroup)
+            computeEncoder.endEncoding()
 
         } catch {
             fatalError(error.localizedDescription)
