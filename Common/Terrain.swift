@@ -228,10 +228,8 @@ extension Terrain: Renderable {
 
         uniforms.modelMatrix = modelMatrix
 
-        var mvp = uniforms.projectionMatrix * uniforms.viewMatrix * modelMatrix
-
         renderEncoder.setRenderPipelineState(renderPipelineState)
-        renderEncoder.setVertexBytes(&mvp, length: MemoryLayout<float4x4>.stride, index: 1)
+        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
         renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
         renderEncoder.setTriangleFillMode(.fill)
         renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)

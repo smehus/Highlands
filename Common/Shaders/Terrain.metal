@@ -12,6 +12,8 @@ using namespace metal;
 
 struct TerrainVertexOut {
     float4 position [[ position ]];
+    float4 worldPosition;
+    float3 worldNormal;
     float4 color;
     float height;
     float2 uv;
@@ -94,12 +96,48 @@ kernel void tessellation_main(constant float* edge_factors      [[ buffer(0) ]],
 }
 
 
+// This is pulled directly from apples example: DynamicTerrainWithArgumentBuffers
+kernel void TerrainKnl_ComputeNormalsFromHeightmap(texture2d<float> height [[texture(0)]],
+                                                   texture2d<float, access::write> normal [[texture(1)]],
+                                                   constant TerrainParams &terrain [[ buffer(6) ]],
+                                                   uint2 tid [[thread_position_in_grid]])
+{
+    constexpr sampler sam(min_filter::nearest, mag_filter::nearest, mip_filter::none,
+                          address::clamp_to_edge, coord::pixel);
+
+//    float xz_scale = TERRAIN_SCALE / height.get_width();
+    float xz_scale = terrain.size.x + terrain.size.y;
+    float y_scale = terrain.height;
+
+    if (tid.x < height.get_width() && tid.y < height.get_height()) {
+        float h_up     = height.sample(sam, (float2)(tid + uint2(0, 1))).r;
+        float h_down   = height.sample(sam, (float2)(tid - uint2(0, 1))).r;
+        float h_right  = height.sample(sam, (float2)(tid + uint2(1, 0))).r;
+        float h_left   = height.sample(sam, (float2)(tid - uint2(1, 0))).r;
+        float h_center = height.sample(sam, (float2)(tid + uint2(0, 0))).r;
+
+        float3 v_up    = float3( 0,        (h_up    - h_center) * y_scale,  xz_scale);
+        float3 v_down  = float3( 0,        (h_down  - h_center) * y_scale, -xz_scale);
+        float3 v_right = float3( xz_scale, (h_right - h_center) * y_scale,  0);
+        float3 v_left  = float3(-xz_scale, (h_left  - h_center) * y_scale,  0);
+
+        float3 n0 = cross(v_up, v_right);
+        float3 n1 = cross(v_left, v_up);
+        float3 n2 = cross(v_down, v_left);
+        float3 n3 = cross(v_right, v_down);
+
+        float3 n = normalize(n0 + n1 + n2 + n3) * 0.5f + 0.5f;
+
+        normal.write(float4(n.xzy, 1), tid);
+    }
+}
+
 
 // this can set the height of the new vertices and alter the terrain
 [[ patch(quad, 4) ]]
 vertex TerrainVertexOut
 vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
-               constant float4x4 &mvp [[buffer(1)]],
+               constant Uniforms &uniforms [[buffer(1)]],
                uint patchID [[ patch_id ]],
                texture2d<float> heightMap [[ texture(0) ]],
                constant TerrainParams &terrain [[ buffer(6) ]],
@@ -129,10 +167,117 @@ vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
     float height = (color.r * 2 - 1) * terrain.height;
     position.y = height;
 
-    out.position = mvp * position;
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * position;
+    out.worldPosition = uniforms.modelMatrix * position;
+//    out.worldNormal = uniforms.normalMatrix;
     out.uv = xy;
     out.height = height;
     return out;
+}
+
+float3 terrainDiffuseLighting(TerrainVertexOut in,
+                       float3 baseColor,
+                       float3 normalValue,
+                       constant Material &material,
+                       constant FragmentUniforms &fragmentUniforms,
+                       constant Light *lights)
+{
+    float materialShininess = material.shininess;
+    float3 materialSpecularColor = material.specularColor;
+    float3 diffuseColor = 0;
+    float3 ambientColor = 0;
+    float3 specularColor = 0;
+
+    float3 normalDirection = normalValue;
+    normalDirection = normalize(normalDirection);
+
+    for (uint i = 0; i < fragmentUniforms.lightCount; i++) {
+        Light light = lights[i];
+
+        if (light.type == Sunlight) {
+            float3 lightDirection = normalize(light.position);
+
+            // Dot finds angle between sun direction & normal direction
+            // Dot returns between -1 and 1
+            // Saturate clamps between 0 and 1
+            float diffuseIntensity = saturate(dot(lightDirection, normalDirection));
+
+            if (diffuseIntensity > 0) {
+                // reflection
+                float3 reflection = reflect(lightDirection, normalDirection);
+                // vector between camera & fragment
+                float3 cameraPosition = normalize(in.worldPosition.xyz - fragmentUniforms.cameraPosition);
+                // Commented out because I think this is 'light reflection off shininess' thing thats causing the light
+                // But I don't get the same affecta s no sunlight...
+                float specularIntensity = 0;//pow(saturate(dot(reflection, cameraPosition)), materialShininess);
+                specularColor = light.specularColor * materialSpecularColor * specularIntensity;
+            }
+
+            float3 combinedColor = light.color * baseColor * diffuseIntensity * light.intensity;
+            diffuseColor += combinedColor;
+
+            // Use intensity of light to create general light
+            // Removed this to only use intensity on light applied with sunlight - not like pointlight or anything
+//            diffuseColor *= light.intensity;
+        } else if (light.type == Ambientlight) {
+            ambientColor += light.color * light.intensity;
+        } else if (light.type == Pointlight) {
+            // *** Light Bulb ***\\
+
+            // distance between light and fragment
+            float d = distance(light.position, in.worldPosition.xyz);
+
+            // Vector direction between light & fragment
+            float3 lightDirection = normalize(light.position - in.worldPosition.xyz);
+
+            // Standard formula for curved light drop off (attenuation)
+            float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
+
+            // Angle between light direction & normal
+            float diffuseIntensity = saturate(dot(lightDirection, normalDirection));
+
+            // Color with out light drop off
+            float3 color = light.color * baseColor * diffuseIntensity;
+
+            // Light drop off
+            color *= attenuation;
+
+            diffuseColor += color;
+        } else if (light.type == Spotlight) {
+
+            //https://forums.raywenderlich.com/t/chapter-5-cone-direction/50705/2
+            float d = distance(light.position, in.worldPosition.xyz);
+            // Could be outside of the cone direction - This is really direction to the fragment
+            // Could also negate this thing instead of cone direction
+            float3 directionFromLightToFragment = normalize(light.position - in.worldPosition.xyz);
+
+            // Inverting here to put the cone direction & light -> fragment pointing in opposite directions
+            float3 coneDirection = normalize(-light.coneDirection);
+
+            // Find angle (dot product) between direction from light to fragment & the direction of the cone
+            float spotResult = dot(directionFromLightToFragment, coneDirection);
+            float coneAngle = cos(light.coneAngle);
+            if (spotResult > coneAngle) {
+                // Standard formulat for attenuation
+                float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
+
+                // Adding attenuation for distance from center of the cone
+                attenuation *= pow(spotResult, light.coneAttenuation);
+
+                // Inverting the normal direction will flip the 'black section of the light '
+                // When pointing backwards
+                float dotProd = dot(directionFromLightToFragment, normalDirection);
+                float diffuseIntensity = saturate(dotProd);
+                float3 color = light.color * baseColor * diffuseIntensity;
+                color *= attenuation;
+
+                diffuseColor += color;
+            }
+        }
+    }
+
+    return diffuseColor + ambientColor + specularColor;
+
 }
 
 fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
@@ -153,6 +298,9 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
     } else {
         color = snowTexture.sample(sample, in.uv * tiling);
     }
+
+
     return color;
+//    return terrainDiffuseLighting(in, color, <#float3 normalValue#>, <#const constant Material &material#>, <#const constant FragmentUniforms &fragmentUniforms#>, <#const constant Light *lights#>)
 }
 

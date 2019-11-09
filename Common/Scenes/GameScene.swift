@@ -125,17 +125,17 @@ final class GameScene: Scene {
 
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
-//            guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
-//            let position = inputController.player!.position
-//            let forward = inputController.player!.forwardVector
-//            let rotation = inputController.player!.rotation
-//
-//
+            guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
+            let position = inputController.player!.position
+            let forward = inputController.player!.forwardVector
+            let rotation = inputController.player!.rotation
+
+
 //            // Lantern
-//            lights[index].position = position
-//            lights[index].position.y = 3.5
-//            lights[index].position += (forward * 0.8)
-//            lights[index].position.x -= 0.2
+            lights[index].position = position
+            lights[index].position.y = 3.5
+            lights[index].position += (forward * 0.8)
+            lights[index].position.x -= 0.2
 //
 //
 ////            lights[index].position = camera.position
