@@ -33,6 +33,8 @@ class Terrain: Node {
     let snowTexture: MTLTexture
     let grassTexture: MTLTexture
 
+    let normalMapTexture: MTLTexture
+
     override var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
         let rotationMatrix = float4x4(rotation: rotation)
@@ -53,6 +55,20 @@ class Terrain: Node {
             let textureLoader = MTKTextureLoader(device: Renderer.device)
             heightMap = try textureLoader.newTexture(name: textureName, scaleFactor: 1.0,
                                                 bundle: Bundle.main, options: nil)
+
+
+            // Create normal texture
+
+            let texDesc = MTLTextureDescriptor()
+            texDesc.width = heightMap.width
+            texDesc.height = heightMap.height
+            texDesc.pixelFormat = .rg11b10Float
+            texDesc.usage = [.shaderRead, .shaderWrite]
+            texDesc.mipmapLevelCount = Int(log2(Double(max(heightMap.width, heightMap.height))) + 1);
+            texDesc.storageMode = .private
+            normalMapTexture = Renderer.device.makeTexture(descriptor: texDesc)!
+
+            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture)
             cliffTexture = try textureLoader.newTexture(name: "cliff-color", scaleFactor: 1.0,
                                                 bundle: Bundle.main, options: nil)
             snowTexture = try textureLoader.newTexture(name: "snow-color", scaleFactor: 1.0,
@@ -77,6 +93,24 @@ class Terrain: Node {
 }
 
 extension Terrain {
+
+    static func generateTerrainNormalMap(heightMap: MTLTexture, normalTexture: MTLTexture) {
+        guard let function = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else { fatalError() }
+
+        do {
+            let pipelineState = try Renderer.device.makeComputePipelineState(function: function)
+
+//            guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else {  fatalError() }
+//            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+//
+//            computeEncoder.setComputePipelineState(pipelineState)
+//            computeEncoder.setTexture(heightMap, index: 0)
+            
+
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+    }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {
         guard let kernelFunction = Renderer.library?.makeFunction(name: "tessellation_main") else {
