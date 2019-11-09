@@ -108,6 +108,7 @@ extension Terrain {
             computeEncoder.setComputePipelineState(pipelineState)
             computeEncoder.setTexture(heightMap, index: 0)
             computeEncoder.setTexture(normalTexture, index: 1)
+            computeEncoder.setBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.size, index: 3)
             computeEncoder.dispatchThreadgroups(MTLSizeMake(heightMap.width, heightMap.height, 1), threadsPerThreadgroup: threadsPerGroup)
             computeEncoder.endEncoding()
 

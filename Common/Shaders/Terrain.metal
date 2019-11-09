@@ -99,7 +99,7 @@ kernel void tessellation_main(constant float* edge_factors      [[ buffer(0) ]],
 // This is pulled directly from apples example: DynamicTerrainWithArgumentBuffers
 kernel void TerrainKnl_ComputeNormalsFromHeightmap(texture2d<float> height [[texture(0)]],
                                                    texture2d<float, access::write> normal [[texture(1)]],
-                                                   constant TerrainParams &terrain [[ buffer(6) ]],
+                                                   constant TerrainParams &terrain [[ buffer(3) ]],
                                                    uint2 tid [[thread_position_in_grid]])
 {
     constexpr sampler sam(min_filter::nearest, mag_filter::nearest, mip_filter::none,
