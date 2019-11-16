@@ -106,7 +106,7 @@ kernel void TerrainKnl_ComputeNormalsFromHeightmap(texture2d<float> height [[tex
                           address::clamp_to_edge, coord::pixel);
 
 //    float xz_scale = TERRAIN_SCALE / height.get_width();
-    float xz_scale = terrain.size.x + terrain.size.y;
+    float xz_scale = 1;//terrain.size.x * terrain.size.y / height.get_width();
     float y_scale = terrain.height;
 
     if (tid.x < height.get_width() && tid.y < height.get_height()) {
@@ -178,12 +178,9 @@ vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
 float3 terrainDiffuseLighting(TerrainVertexOut in,
                        float3 baseColor,
                        float3 normalValue,
-                       constant Material &material,
                        constant FragmentUniforms &fragmentUniforms,
                        constant Light *lights)
 {
-    float materialShininess = material.shininess;
-    float3 materialSpecularColor = material.specularColor;
     float3 diffuseColor = 0;
     float3 ambientColor = 0;
     float3 specularColor = 0;
@@ -194,32 +191,7 @@ float3 terrainDiffuseLighting(TerrainVertexOut in,
     for (uint i = 0; i < fragmentUniforms.lightCount; i++) {
         Light light = lights[i];
 
-        if (light.type == Sunlight) {
-            float3 lightDirection = normalize(light.position);
-
-            // Dot finds angle between sun direction & normal direction
-            // Dot returns between -1 and 1
-            // Saturate clamps between 0 and 1
-            float diffuseIntensity = saturate(dot(lightDirection, normalDirection));
-
-            if (diffuseIntensity > 0) {
-                // reflection
-                float3 reflection = reflect(lightDirection, normalDirection);
-                // vector between camera & fragment
-                float3 cameraPosition = normalize(in.worldPosition.xyz - fragmentUniforms.cameraPosition);
-                // Commented out because I think this is 'light reflection off shininess' thing thats causing the light
-                // But I don't get the same affecta s no sunlight...
-                float specularIntensity = 0;//pow(saturate(dot(reflection, cameraPosition)), materialShininess);
-                specularColor = light.specularColor * materialSpecularColor * specularIntensity;
-            }
-
-            float3 combinedColor = light.color * baseColor * diffuseIntensity * light.intensity;
-            diffuseColor += combinedColor;
-
-            // Use intensity of light to create general light
-            // Removed this to only use intensity on light applied with sunlight - not like pointlight or anything
-//            diffuseColor *= light.intensity;
-        } else if (light.type == Ambientlight) {
+        if (light.type == Ambientlight) {
             ambientColor += light.color * light.intensity;
         } else if (light.type == Pointlight) {
             // *** Light Bulb ***\\
@@ -281,6 +253,7 @@ float3 terrainDiffuseLighting(TerrainVertexOut in,
 }
 
 fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
+                                 constant Light *lights [[ buffer(BufferIndexLights) ]],
                                  constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                  texture2d<float> cliffTexture [[ texture(TerrainTextureBase) ]],
                                  texture2d<float> snowTexture  [[ texture(TerrainTextureMiddle) ]],
@@ -300,11 +273,12 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
         color = snowTexture.sample(sample, in.uv * tiling);
     }
 
-    constexpr sampler sam(min_filter::linear, mag_filter::linear, mip_filter::nearest);
+    constexpr sampler sam(min_filter::linear, mag_filter::linear);
 
-    float3 normal = normalize(normalMap.sample(sam, in.uv).xzy * 2.0f - 1.0f);
+    float3 normal = normalMap.sample(sam, in.uv).xyz;
 
+    float3 lightedColor = terrainDiffuseLighting(in, color.rgb, normal, fragmentUniforms, lights);
+//    return float4(lightedColor, 1);
     return color;
-//    return terrainDiffuseLighting(in, color, <#float3 normalValue#>, <#const constant Material &material#>, <#const constant FragmentUniforms &fragmentUniforms#>, <#const constant Light *lights#>)
 }
 
