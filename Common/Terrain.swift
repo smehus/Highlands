@@ -278,6 +278,7 @@ extension Terrain: Renderable {
         renderEncoder.setFragmentTexture(cliffTexture, index: Int(TerrainTextureBase.rawValue))
         renderEncoder.setFragmentTexture(snowTexture, index: Int(TerrainTextureMiddle.rawValue))
         renderEncoder.setFragmentTexture(grassTexture, index: Int(TerrainTextureTop.rawValue))
+        renderEncoder.setFragmentTexture(normalMapTexture, index: Int(TerrainNormalMapTexture.rawValue))
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,

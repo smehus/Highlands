@@ -284,7 +284,8 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
                                  constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                  texture2d<float> cliffTexture [[ texture(TerrainTextureBase) ]],
                                  texture2d<float> snowTexture  [[ texture(TerrainTextureMiddle) ]],
-                                 texture2d<float> grassTexture [[ texture(TerrainTextureTop) ]])
+                                 texture2d<float> grassTexture [[ texture(TerrainTextureTop) ]],
+                                 texture2d<float> normalMap [[ texture(TerrainNormalMapTexture) ]])
 {
     //    return in.color;
 
@@ -299,6 +300,9 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
         color = snowTexture.sample(sample, in.uv * tiling);
     }
 
+    constexpr sampler sam(min_filter::linear, mag_filter::linear, mip_filter::nearest);
+
+    float3 normal = normalize(normalMap.sample(sam, in.uv).xzy * 2.0f - 1.0f);
 
     return color;
 //    return terrainDiffuseLighting(in, color, <#float3 normalValue#>, <#const constant Material &material#>, <#const constant FragmentUniforms &fragmentUniforms#>, <#const constant Light *lights#>)

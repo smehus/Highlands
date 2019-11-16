@@ -91,7 +91,8 @@ typedef enum {
     ShadowDepthTexture = 4,
     TerrainTextureBase = 5,
     TerrainTextureMiddle = 6,
-    TerrainTextureTop = 7
+    TerrainTextureTop = 7,
+    TerrainNormalMapTexture = 8
 } Textures;
 
 struct Material {
