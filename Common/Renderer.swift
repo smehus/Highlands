@@ -212,7 +212,7 @@ extension Renderer: MTKViewDelegate {
 
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
-//        drawDebug(encoder: renderEncoder)
+        drawDebug(encoder: renderEncoder)
 
         renderEncoder.endEncoding()
 
@@ -357,7 +357,7 @@ extension Renderer: MTKViewDelegate {
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
         encoder.pushDebugGroup("DEBUG LIGHTS")
         guard let gameScene = scene as? GameScene else { return }
-//        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: gameScene.skeleton.position)
+        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: gameScene.camera.position)
         encoder.popDebugGroup()
     }
 }

@@ -111,8 +111,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 3
-        tpCamera.focusDistance = 4
+        tpCamera.focusHeight = 6
+        tpCamera.focusDistance = 8
         cameras.append(tpCamera)
         currentCameraIndex = 2
 
@@ -133,7 +133,7 @@ final class GameScene: Scene {
 
 //            // Lantern
             lights[index].position = position
-            lights[index].position.y = 3.5
+            lights[index].position.y = position.y + 3.5
             lights[index].position += (forward * 0.8)
             lights[index].position.x -= 0.2
 //

@@ -140,6 +140,7 @@ vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
                constant Uniforms &uniforms [[buffer(1)]],
                uint patchID [[ patch_id ]],
                texture2d<float> heightMap [[ texture(0) ]],
+               texture2d<float> normalTexture [[ texture(NormalTexture) ]],
                constant TerrainParams &terrain [[ buffer(6) ]],
                float2 patch_coord [[ position_in_patch ]])
 {
@@ -169,7 +170,11 @@ vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
 
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * position;
     out.worldPosition = uniforms.modelMatrix * position;
-//    out.worldNormal = uniforms.normalMatrix;
+
+    constexpr sampler sam(min_filter::linear, mag_filter::linear);
+    float3 localNormal = normalTexture.sample(sam, xy).xyz;
+    out.worldNormal = uniforms.normalMatrix * localNormal;
+
     out.uv = xy;
     out.height = height;
     return out;
@@ -206,7 +211,8 @@ float3 terrainDiffuseLighting(TerrainVertexOut in,
             float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * d + light.attenuation.z * d * d);
 
             // Angle between light direction & normal
-            float diffuseIntensity = saturate(dot(lightDirection, normalDirection));
+            float dotProd = dot(lightDirection, normalDirection);
+            float diffuseIntensity = saturate(dotProd);
 
             // Color with out light drop off
             float3 color = light.color * baseColor * diffuseIntensity;
@@ -273,12 +279,11 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
         color = snowTexture.sample(sample, in.uv * tiling);
     }
 
-    constexpr sampler sam(min_filter::linear, mag_filter::linear);
+//    constexpr sampler sam(min_filter::linear, mag_filter::linear);
+//    float3 localNormal = normalMap.sample(sam, in.uv).xyz;
 
-    float3 normal = normalMap.sample(sam, in.uv).xyz;
+    float3 lightColor = terrainDiffuseLighting(in, color.rgb, in.worldNormal, fragmentUniforms, lights);
 
-    float3 lightedColor = terrainDiffuseLighting(in, color.rgb, normal, fragmentUniforms, lights);
-    return float4(lightedColor, 1);
-//    return color;
+    return float4(lightColor, 1);
 }
 

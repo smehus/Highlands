@@ -266,6 +266,7 @@ extension Terrain: Renderable {
         var uniforms = vertex
 
         uniforms.modelMatrix = modelMatrix
+        uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
         renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
@@ -273,7 +274,9 @@ extension Terrain: Renderable {
         renderEncoder.setTriangleFillMode(.fill)
         renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
         renderEncoder.setVertexTexture(heightMap, index: 0)
+        renderEncoder.setVertexTexture(normalMapTexture, index: Int(NormalTexture.rawValue))
         renderEncoder.setVertexBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
+
 
         renderEncoder.setFragmentTexture(cliffTexture, index: Int(TerrainTextureBase.rawValue))
         renderEncoder.setFragmentTexture(snowTexture, index: Int(TerrainTextureMiddle.rawValue))
