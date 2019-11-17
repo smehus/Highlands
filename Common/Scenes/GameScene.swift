@@ -133,7 +133,7 @@ final class GameScene: Scene {
 
 //            // Lantern
             lights[index].position = position
-            lights[index].position.y = position.y + 3.5
+            lights[index].position.y = position.y + 4
             lights[index].position += (forward * 0.8)
             lights[index].position.x -= 0.2
 //

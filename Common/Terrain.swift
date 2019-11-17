@@ -95,9 +95,22 @@ class Terrain: Node {
 extension Terrain {
 
     static func generateTerrainNormalMap(heightMap: MTLTexture, normalTexture: MTLTexture, commandBuffer: MTLCommandBuffer) {
-        guard let function = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else { fatalError("Could not create terrain normal function") }
+        guard let function = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else {
+            print("""
+                ❌❌❌❌❌❌❌❌❌❌
+
+                FAILED TO CREATE GENERATE TERRAIN NORMAL MAP SHADER FUNCTION
+
+                ❌❌❌❌❌❌❌❌
+                """)
+
+            return
+        }
 
         do {
+
+            // This also crashes....
+            // Probably shouldn't be generating terrain normals on every render pass
             let pipelineState = try Renderer.device.makeComputePipelineState(function: function)
 
 //            guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else {  fatalError() }
