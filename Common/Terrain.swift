@@ -95,7 +95,7 @@ class Terrain: Node {
 extension Terrain {
 
     static func generateTerrainNormalMap(heightMap: MTLTexture, normalTexture: MTLTexture, commandBuffer: MTLCommandBuffer) {
-        guard let function = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else { fatalError() }
+        guard let function = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else { fatalError("Could not create terrain normal function") }
 
         do {
             let pipelineState = try Renderer.device.makeComputePipelineState(function: function)

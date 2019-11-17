@@ -172,7 +172,9 @@ vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
     out.worldPosition = uniforms.modelMatrix * position;
 
     constexpr sampler sam(min_filter::linear, mag_filter::linear);
-    float3 localNormal = normalTexture.sample(sam, xy).xyz;
+
+    // reference AAPLTerrainRenderer in DynamicTerrainWithArgumentBuffers exmaple: EvaluateTerrainAtLocation line 235 -> EvaluateTerrainAtLocation in AAPLTerrainRendererUtilities line: 91
+    float3 localNormal = normalize(normalTexture.sample(sam, xy).xzy * 2.0f - 1.0f);
     out.worldNormal = uniforms.normalMatrix * localNormal;
 
     out.uv = xy;
@@ -189,6 +191,8 @@ float3 terrainDiffuseLighting(TerrainVertexOut in,
     float3 diffuseColor = 0;
     float3 ambientColor = 0;
     float3 specularColor = 0;
+    float materialShininess = 0.4;
+    float3 materialSpecularColor = 0.4;
 
     float3 normalDirection = normalValue;
     normalDirection = normalize(normalDirection);
@@ -196,9 +200,32 @@ float3 terrainDiffuseLighting(TerrainVertexOut in,
     for (uint i = 0; i < fragmentUniforms.lightCount; i++) {
         Light light = lights[i];
 
-        if (light.type == Ambientlight) {
+        if (light.type == Sunlight) {
+            float3 lightDirection = normalize(light.position);
+
+            // Dot finds angle between sun direction & normal direction
+            // Dot returns between -1 and 1
+            // Saturate clamps between 0 and 1
+            float diffuseIntensity = saturate(dot(lightDirection, normalDirection));
+
+            if (diffuseIntensity > 0) {
+                // reflection
+                float3 reflection = reflect(lightDirection, normalDirection);
+                // vector between camera & fragment
+                float3 cameraPosition = normalize(in.worldPosition.xyz - fragmentUniforms.cameraPosition);
+                float specularIntensity = pow(saturate(dot(reflection, cameraPosition)), materialShininess);
+                specularColor = light.specularColor * materialSpecularColor * specularIntensity;
+            }
+
+            float3 combinedColor = light.color * baseColor * diffuseIntensity * light.intensity;
+            diffuseColor += combinedColor;
+        }
+
+        else if (light.type == Ambientlight) {
             ambientColor += light.color * light.intensity;
-        } else if (light.type == Pointlight) {
+        }
+
+        else if (light.type == Pointlight) {
             // *** Light Bulb ***\\
 
             // distance between light and fragment
