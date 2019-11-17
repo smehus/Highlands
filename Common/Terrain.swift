@@ -68,7 +68,7 @@ class Terrain: Node {
             texDesc.storageMode = .private
             normalMapTexture = Renderer.device.makeTexture(descriptor: texDesc)!
 
-            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture)
+//            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture)
             cliffTexture = try textureLoader.newTexture(name: "cliff-color", scaleFactor: 1.0,
                                                 bundle: Bundle.main, options: nil)
             snowTexture = try textureLoader.newTexture(name: "snow-color", scaleFactor: 1.0,
@@ -94,13 +94,13 @@ class Terrain: Node {
 
 extension Terrain {
 
-    static func generateTerrainNormalMap(heightMap: MTLTexture, normalTexture: MTLTexture) {
+    static func generateTerrainNormalMap(heightMap: MTLTexture, normalTexture: MTLTexture, commandBuffer: MTLCommandBuffer) {
         guard let function = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else { fatalError() }
 
         do {
             let pipelineState = try Renderer.device.makeComputePipelineState(function: function)
 
-            guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else {  fatalError() }
+//            guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else {  fatalError() }
             guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
 
             let threadsPerGroup = MTLSize(width: 16, height: 16, depth: 1)
@@ -278,7 +278,7 @@ extension Terrain: Renderable {
         renderEncoder.setFragmentTexture(cliffTexture, index: Int(TerrainTextureBase.rawValue))
         renderEncoder.setFragmentTexture(snowTexture, index: Int(TerrainTextureMiddle.rawValue))
         renderEncoder.setFragmentTexture(grassTexture, index: Int(TerrainTextureTop.rawValue))
-        renderEncoder.setFragmentTexture(normalMapTexture, index: Int(TerrainNormalMapTexture.rawValue))
+        renderEncoder.setFragmentTexture(normalMapTexture, index: Int(NormalTexture.rawValue))
 
         renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
                                   patchStart: 0,

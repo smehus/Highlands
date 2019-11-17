@@ -106,7 +106,7 @@ kernel void TerrainKnl_ComputeNormalsFromHeightmap(texture2d<float> height [[tex
                           address::clamp_to_edge, coord::pixel);
 
 //    float xz_scale = TERRAIN_SCALE / height.get_width();
-    float xz_scale = 1;//terrain.size.x * terrain.size.y / height.get_width();
+    float xz_scale = terrain.size.x / height.get_width();
     float y_scale = terrain.height;
 
     if (tid.x < height.get_width() && tid.y < height.get_height()) {
@@ -258,7 +258,7 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
                                  texture2d<float> cliffTexture [[ texture(TerrainTextureBase) ]],
                                  texture2d<float> snowTexture  [[ texture(TerrainTextureMiddle) ]],
                                  texture2d<float> grassTexture [[ texture(TerrainTextureTop) ]],
-                                 texture2d<float> normalMap [[ texture(TerrainNormalMapTexture) ]])
+                                 texture2d<float> normalMap [[ texture(NormalTexture) ]])
 {
     //    return in.color;
 
@@ -278,7 +278,7 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
     float3 normal = normalMap.sample(sam, in.uv).xyz;
 
     float3 lightedColor = terrainDiffuseLighting(in, color.rgb, normal, fragmentUniforms, lights);
-//    return float4(lightedColor, 1);
-    return color;
+    return float4(lightedColor, 1);
+//    return color;
 }
 

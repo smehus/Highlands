@@ -146,6 +146,7 @@ extension Renderer: MTKViewDelegate {
         computeEncoder.popDebugGroup()
         computeEncoder.endEncoding()
 
+        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
 
 
         // Calculate Height
