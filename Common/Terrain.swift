@@ -68,7 +68,9 @@ class Terrain: Node {
             texDesc.storageMode = .private
             normalMapTexture = Renderer.device.makeTexture(descriptor: texDesc)!
 
-//            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture)
+//            let commandBuffer = Renderer.commandQueue.makeCommandBuffer()!
+//            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture, commandBuffer: commandBuffer)
+
             cliffTexture = try textureLoader.newTexture(name: "cliff-color", scaleFactor: 1.0,
                                                 bundle: Bundle.main, options: nil)
             snowTexture = try textureLoader.newTexture(name: "snow-color", scaleFactor: 1.0,

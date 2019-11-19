@@ -291,7 +291,10 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
                                  texture2d<float> cliffTexture [[ texture(TerrainTextureBase) ]],
                                  texture2d<float> snowTexture  [[ texture(TerrainTextureMiddle) ]],
                                  texture2d<float> grassTexture [[ texture(TerrainTextureTop) ]],
-                                 texture2d<float> normalMap [[ texture(NormalTexture) ]])
+                                 texture2d<float> normalMap [[ texture(NormalTexture) ]],
+                                 constant float &farZ [[ buffer(24) ]],
+                                 texturecube<float> shadowColorTexture [[ texture(ShadowColorTexture) ]],
+                                 depthcube<float> shadowDepthTexture [[ texture(ShadowDepthTexture) ]])
 {
     //    return in.color;
 
@@ -299,17 +302,35 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
     float tiling = 16.0;
     float4 color;
     if (in.height < -0.5) {
-        color = grassTexture.sample(sample, in.uv * tiling);
+//        color = grassTexture.sample(sample, in.uv * tiling);
+        color = float4(0, 1, 0, 1);
     } else if (in.height < 5.0) {
-        color = cliffTexture.sample(sample, in.uv * tiling);
+        color = float4(0.3, 0.6, 0.1, 1);
+//        color = cliffTexture.sample(sample, in.uv * tiling);
     } else {
-        color = snowTexture.sample(sample, in.uv * tiling);
+        color = float4(1, 1, 1, 1);
+//        color = snowTexture.sample(sample, in.uv * tiling);
     }
 
 //    constexpr sampler sam(min_filter::linear, mag_filter::linear);
 //    float3 localNormal = normalMap.sample(sam, in.uv).xyz;
 
     float3 lightColor = terrainDiffuseLighting(in, color.rgb, in.worldNormal, fragmentUniforms, lights);
+
+    constexpr sampler s(coord::normalized,
+                        filter::linear,
+                        address::clamp_to_edge,
+                        compare_func:: less);
+
+    float3 fragToLight = in.worldPosition.xyz - lights[0].position;
+    float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
+    float currentDepth = distance(in.worldPosition.xyz, lights[0].position);
+    closestDepth *= farZ;
+
+    float epsilon = 0.1;
+    if (closestDepth.w + epsilon < currentDepth) {
+        lightColor *= 0.6;
+    }
 
     return float4(lightColor, 1);
 }

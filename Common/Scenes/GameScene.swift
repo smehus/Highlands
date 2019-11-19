@@ -52,20 +52,20 @@ final class GameScene: Scene {
         let count = 30
         let offset = 100
          
-        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
-        add(node: tree)
-        physicsController.addStaticBody(node: tree)
-        for i in 0..<count {
-            var transform = Transform()
-
-            var position: float3
-            repeat {
-                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-            } while position.x > 2 && position.z > 2
-
-            transform.position = position
-            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-        }
+//        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
+//        add(node: tree)
+//        physicsController.addStaticBody(node: tree)
+//        for i in 0..<count {
+//            var transform = Transform()
+//
+//            var position: float3
+//            repeat {
+//                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//            } while position.x > 2 && position.z > 2
+//
+//            transform.position = position
+//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+//        }
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
