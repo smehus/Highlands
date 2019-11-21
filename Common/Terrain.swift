@@ -311,6 +311,8 @@ extension Terrain: Renderable {
     }
 
 
-    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) { }
+    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
+        
+    }
 
 }

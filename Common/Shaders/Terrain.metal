@@ -322,9 +322,10 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
                         address::clamp_to_edge,
                         compare_func:: less);
 
-    float3 fragToLight = in.worldPosition.xyz - lights[0].position;
+    Light light = lights[0];
+    float3 fragToLight = in.worldPosition.xyz - light.position;
     float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
-    float currentDepth = distance(in.worldPosition.xyz, lights[0].position);
+    float currentDepth = distance(in.worldPosition.xyz, light.position);
     closestDepth *= farZ;
 
     float epsilon = 0.1;
@@ -335,3 +336,6 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
     return float4(lightColor, 1);
 }
 
+// Shadow texutre is being rendered with isntances - before having the height calculated - thats why the z+ frame has the shadow
+// of the rock up high....
+// Need to render shadows after calculating height
