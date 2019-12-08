@@ -88,7 +88,7 @@ class Terrain: Node {
                                                         size: (width: Terrain.terrainParams.size.x,
                                                                height: Terrain.terrainParams.size.y))
         controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints.normalized,
-                                                         length: MemoryLayout<float3>.stride * controlPoints.normalized.count)
+                                                         length: MemoryLayout<SIMD3<Float>>.stride * controlPoints.normalized.count)
 
 
     }
@@ -156,7 +156,7 @@ extension Terrain {
       vertexDescriptor.attributes[0].bufferIndex = 0
 
       vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-      vertexDescriptor.layouts[0].stride = MemoryLayout<float3>.stride
+      vertexDescriptor.layouts[0].stride = MemoryLayout<SIMD3<Float>>.stride
       descriptor.vertexDescriptor = vertexDescriptor
 
       descriptor.tessellationFactorStepFunction = .perPatch
@@ -176,9 +176,9 @@ extension Terrain {
      - Returns: an array of patch control points. Each group of four makes one patch.
      **/
     static func createControlPoints(patches: (horizontal: Int, vertical: Int),
-                             size: (width: Float, height: Float)) -> (normalized: [float3], patches: [Patch]) {
+                             size: (width: Float, height: Float)) -> (normalized: [SIMD3<Float>], patches: [Patch]) {
 
-        var normalizedPoints: [float3] = []
+        var normalizedPoints: [SIMD3<Float>] = []
         var terrainPatches: [Patch] = []
 
         // per patch width and height
@@ -219,7 +219,7 @@ extension Terrain {
 
         terrainPatches = terrainPatches.map {
 
-            func update(value: float3) -> float3 {
+            func update(value: SIMD3<Float>) -> SIMD3<Float> {
                 return [value.x * size.width - size.width / 2,
                         0,
                         value.z * size.height - size.height / 2]
@@ -254,7 +254,7 @@ extension Terrain: ComputeHandler {
         computeEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, index: 2)
         var cameraPosition = uniforms.viewMatrix.columns.3
         computeEncoder.setBytes(&cameraPosition,
-                                length: MemoryLayout<float4>.stride,
+                                length: MemoryLayout<SIMD4<Float>>.stride,
                                 index: 3)
         var matrix = modelMatrix
         computeEncoder.setBytes(&matrix,
@@ -312,7 +312,8 @@ extension Terrain: Renderable {
 
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
-        
+
+
     }
 
 }

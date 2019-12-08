@@ -18,7 +18,7 @@ class PhysicsController {
     }
 
     func removeBody(node: Node) {
-        if let index = staticBodies.index(where: {
+        if let index = staticBodies.firstIndex(where: {
             $0.self === node
         }) {
             staticBodies.remove(at: index)

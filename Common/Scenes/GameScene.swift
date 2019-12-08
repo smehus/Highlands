@@ -49,7 +49,7 @@ final class GameScene: Scene {
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
         */
-        let count = 30
+        let count = 1
         let offset = 100
          
 //        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))

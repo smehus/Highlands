@@ -69,7 +69,7 @@ class Node {
         }
 
         childNode.children = []
-        guard let index = (children.index { $0 === childNode }) else { return }
+        guard let index = (children.firstIndex { $0 === childNode }) else { return }
         children.remove(at: index)
         childNode.parent = nil
     }
