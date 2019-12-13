@@ -258,9 +258,11 @@ class Prop: Node {
 
         var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
         pointer = pointer.advanced(by: instance)
-        pointer.pointee.modelMatrix = transforms[instance].modelMatrix
-        pointer.pointee.normalMatrix = transforms[instance].normalMatrix
+        pointer.pointee.modelMatrix = transform.modelMatrix
+        pointer.pointee.normalMatrix = transform.normalMatrix
         pointer.pointee.textureID = UInt32(textureID)
+
+
 
 
         // Set matrices for shadow instances
@@ -269,13 +271,13 @@ class Prop: Node {
         shadowTransforms[startingPoint] = transform
 
         shadowPointer = shadowPointer.advanced(by: startingPoint)
-        shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
+        shadowPointer.pointee.modelMatrix = transform.modelMatrix
         shadowPointer.pointee.viewportIndex = UInt32(0)
 
         for i in 1...5 {
             shadowTransforms[i] = transform
             shadowPointer = shadowPointer.advanced(by: 1)
-            shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
+            shadowPointer.pointee.modelMatrix = transform.modelMatrix
             shadowPointer.pointee.viewportIndex = UInt32(i)
         }
     }
@@ -299,37 +301,49 @@ class Prop: Node {
     override func update(deltaTime: Float) {
 
         var pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: transforms.count)
-        transforms[0].position.y = pointer.pointee
-        for i in 0..<shadowTransforms.count {
-            shadowTransforms[i].position.y = pointer.pointee
+
+        for (index, _) in transforms.enumerated() {
+            if index > transforms.startIndex {
+                pointer = pointer.advanced(by: index)
+            }
+
+            // transform
+
+            transforms[index].position.y = pointer.pointee
+
+            // shadow transform
+
+            let shadowStartIndex = index  * 6
+
+            for i in shadowStartIndex...shadowStartIndex + 5 {
+
+                shadowTransforms[i].position.y = pointer.pointee
+            }
         }
 
+
+        // Update buffers
+
         var instancePointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
-        instancePointer.pointee.modelMatrix = transforms.first!.modelMatrix
-        instancePointer.pointee.normalMatrix = transforms.first!.normalMatrix
+        var shadowInstancePointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
 
         // I need to rethink this logic
-        for i in 1..<transforms.count {
-            pointer = pointer.advanced(by: 1)
-            transforms[i].position.y = pointer.pointee
+        for i in 0..<transforms.count {
+            if i > transforms.startIndex {
+                instancePointer = instancePointer.advanced(by: 1)
+            }
 
-            
-            // Update buffer for renderer
-            instancePointer = instancePointer.advanced(by: 1)
             instancePointer.pointee.modelMatrix = transforms[i].modelMatrix
             instancePointer.pointee.normalMatrix = transforms[i].normalMatrix
         }
 
 
-        // NEED TO DO SHADOW TRANSFORMS HERE DAWWWWGGGG
-        // NOT WORKING CAUSE THERES 6 faces of the cube map - 6 transforms per instance
-
-        var shadowInstancePointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
-        shadowInstancePointer.pointee.modelMatrix = shadowTransforms.first!.modelMatrix
-        shadowInstancePointer.pointee.normalMatrix = shadowTransforms.first!.normalMatrix
-
         for i in 1..<shadowTransforms.count {
-            shadowInstancePointer = shadowInstancePointer.advanced(by: 1)
+
+            if i > shadowTransforms.startIndex {
+                shadowInstancePointer = shadowInstancePointer.advanced(by: 1)
+            }
+
             shadowInstancePointer.pointee.modelMatrix = shadowTransforms[i].modelMatrix
             shadowInstancePointer.pointee.normalMatrix = shadowTransforms[i].normalMatrix
         }
