@@ -266,10 +266,14 @@ class Prop: Node {
         // Set matrices for shadow instances
         var shadowPointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
         let startingPoint = instance * 6
+        shadowTransforms[startingPoint] = transform
+
         shadowPointer = shadowPointer.advanced(by: startingPoint)
         shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
         shadowPointer.pointee.viewportIndex = UInt32(0)
-        for i in 1...6 {
+
+        for i in 1...5 {
+            shadowTransforms[i] = transform
             shadowPointer = shadowPointer.advanced(by: 1)
             shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
             shadowPointer.pointee.viewportIndex = UInt32(i)
@@ -304,6 +308,7 @@ class Prop: Node {
         instancePointer.pointee.modelMatrix = transforms.first!.modelMatrix
         instancePointer.pointee.normalMatrix = transforms.first!.normalMatrix
 
+        // I need to rethink this logic
         for i in 1..<transforms.count {
             pointer = pointer.advanced(by: 1)
             transforms[i].position.y = pointer.pointee

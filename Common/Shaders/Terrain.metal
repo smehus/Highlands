@@ -325,12 +325,12 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
     Light light = lights[0];
 
 
-//    float3 fragToLight = light.position - in.worldPosition.xyz;
-    float3 fragToLight = normalize(in.worldPosition.xyz - light.position);
+    float3 fragToLight = in.worldPosition.xyz - light.position;
+//    float3 fragToLight = normalize(in.worldPosition.xyz - light.position);
     float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
-    return closestDepth;
+//    return closestDepth;
 
-    float currentDepth = distance(light.position, in.worldPosition.xyz);
+    float currentDepth = distance(in.worldPosition.xyz, light.position);
 //    float currentDepth = in.worldPosition.z / in.worldPosition.w;
 
 
