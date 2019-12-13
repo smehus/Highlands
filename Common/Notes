@@ -54,3 +54,13 @@ HEIGHT MAPS & COLLSION DETECTION (walking up and down hills)
 https://developer.apple.com/documentation/metal/dynamic_terrain_with_argument_buffersg
 https://www.youtube.com/watch?v=O9v6olrHPwI
 https://www.youtube.com/watch?v=6E2zjfzMs7c
+
+
+*** The issue must be with the heigh calculation before the shadow pass - because the shadow texture sample output looks
+correct when I return the sample without multiplying it by the farz. Its just 6 points higher than it should be... its probably existing at y=0.
+
+
+could be cool if we could do
+shadowTransforms[0...5].position.y = pointer.pointee
+
+and that would set the position of all transforms in that array slice

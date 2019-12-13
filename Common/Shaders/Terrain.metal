@@ -326,10 +326,13 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
 
 
 //    float3 fragToLight = light.position - in.worldPosition.xyz;
-    float3 fragToLight = normalize(light.position - in.worldPosition.xyz);
+    float3 fragToLight = normalize(in.worldPosition.xyz - light.position);
     float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
-    float currentDepth = distance(light.position, in.worldPosition.xyz);
     return closestDepth;
+
+    float currentDepth = distance(light.position, in.worldPosition.xyz);
+//    float currentDepth = in.worldPosition.z / in.worldPosition.w;
+
 
     closestDepth *= farZ;
     float epsilon = 0.1;
@@ -338,7 +341,7 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
     }
 
 
-    // current depth is maxed out...
+    // current depth is maxed out...n
 //    float n = normalize(currentDepth);
     return float4(lightColor, 1);
 }

@@ -296,6 +296,9 @@ class Prop: Node {
 
         var pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: transforms.count)
         transforms[0].position.y = pointer.pointee
+        for i in 0..<shadowTransforms.count {
+            shadowTransforms[i].position.y = pointer.pointee
+        }
 
         var instancePointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
         instancePointer.pointee.modelMatrix = transforms.first!.modelMatrix
@@ -311,9 +314,23 @@ class Prop: Node {
             instancePointer.pointee.modelMatrix = transforms[i].modelMatrix
             instancePointer.pointee.normalMatrix = transforms[i].normalMatrix
         }
+
+
+        // NEED TO DO SHADOW TRANSFORMS HERE DAWWWWGGGG
+        // NOT WORKING CAUSE THERES 6 faces of the cube map - 6 transforms per instance
+
+        var shadowInstancePointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
+        shadowInstancePointer.pointee.modelMatrix = shadowTransforms.first!.modelMatrix
+        shadowInstancePointer.pointee.normalMatrix = shadowTransforms.first!.normalMatrix
+
+        for i in 1..<shadowTransforms.count {
+            shadowInstancePointer = shadowInstancePointer.advanced(by: 1)
+            shadowInstancePointer.pointee.modelMatrix = shadowTransforms[i].modelMatrix
+            shadowInstancePointer.pointee.normalMatrix = shadowTransforms[i].normalMatrix
+        }
     }
 
-    func patch(for location: float3) -> Patch? {
+    func patch(for location: SIMD3<Float>) -> Patch? {
         let foundPatches = patches.filter { (patch) -> Bool in
             let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
             let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z

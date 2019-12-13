@@ -345,7 +345,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
     // Adding Sepia TONE - otherwise just return float4(color, 1)
 
-    discard_fragment();
+//    discard_fragment();
 //    return sepiaShader(float4(color, 1));
     return float4(color, 1);
 }
