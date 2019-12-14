@@ -338,7 +338,7 @@ class Prop: Node {
         }
 
 
-        for i in 1..<shadowTransforms.count {
+        for i in 0..<shadowTransforms.count {
 
             if i > shadowTransforms.startIndex {
                 shadowInstancePointer = shadowInstancePointer.advanced(by: 1)
