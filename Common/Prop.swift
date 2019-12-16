@@ -275,7 +275,7 @@ class Prop: Node {
         shadowPointer.pointee.viewportIndex = UInt32(0)
 
         for i in 1...5 {
-            shadowTransforms[i] = transform
+            shadowTransforms[i + startingPoint] = transform
             shadowPointer = shadowPointer.advanced(by: 1)
             shadowPointer.pointee.modelMatrix = transform.modelMatrix
             shadowPointer.pointee.viewportIndex = UInt32(i)
@@ -304,15 +304,13 @@ class Prop: Node {
 
         for (index, _) in transforms.enumerated() {
             if index > transforms.startIndex {
-                pointer = pointer.advanced(by: index)
+                pointer = pointer.advanced(by: 1)
             }
 
             // transform
-
             transforms[index].position.y = pointer.pointee
 
             // shadow transform
-
             let shadowStartIndex = index  * 6
 
             for i in shadowStartIndex...shadowStartIndex + 5 {
@@ -457,7 +455,7 @@ extension Prop: Renderable {
             var transformIndex = index
 
             computeEncoder.setComputePipelineState(heightCalculatePipelineState)
-            computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+            computeEncoder.setBytes(&position, length: MemoryLayout<SIMD3<Float>>.size, index: 0)
             computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
             computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
             computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)

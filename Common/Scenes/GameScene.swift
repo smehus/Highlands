@@ -49,8 +49,8 @@ final class GameScene: Scene {
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
         */
-        let count = 1
-        let offset = 100
+        let count = 2
+        let offset = 10
          
 //        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
 //        add(node: tree)
@@ -79,7 +79,7 @@ final class GameScene: Scene {
             if i == 0 {
                 transform.position = [0, 0, 3]
             } else {
-                var position: float3
+                var position: SIMD3<Float>
                 repeat {
                     position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
                 } while position.x > 2 && position.z > 2
