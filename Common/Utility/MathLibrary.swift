@@ -28,14 +28,14 @@ extension Float {
 }
 
 extension float4x4 {
-    init(translation t: float3) {
+    init(translation t: SIMD3<Float>) {
         self = matrix_identity_float4x4
         columns.3.x = t.x
         columns.3.y = t.y
         columns.3.z = t.z
     }
 
-    init(scaling: float3) {
+    init(scaling: SIMD3<Float>) {
         self = matrix_identity_float4x4
         columns.0.x = scaling.x
         columns.1.y = scaling.y
@@ -71,7 +71,7 @@ extension float4x4 {
         columns.1.y = cos(angle)
     }
 
-    init(rotation angle: float3) {
+    init(rotation angle: SIMD3<Float>) {
         let rotationX = float4x4(rotationX: angle.x)
         let rotationY = float4x4(rotationY: angle.y)
         let rotationZ = float4x4(rotationZ: angle.z)
@@ -98,11 +98,11 @@ extension float4x4 {
         let xs = ys / aspectRatio
         let zs = farZ / (farZ - nearZ)
 
-        self.init(float4(xs, 0, 0, 0),
-                  float4(0, ys, 0, 0),
+        self.init(SIMD4<Float>(xs, 0, 0, 0),
+                  SIMD4<Float>(0, ys, 0, 0),
                   // - here means it is Right handed dawg
-                  float4(0, 0, zs, 1),
-                  float4(0, 0, -nearZ * zs, 0))
+                  SIMD4<Float>(0, 0, zs, 1),
+                  SIMD4<Float>(0, 0, -nearZ * zs, 0))
 
 // Ray
 //        let lhs = true
@@ -188,10 +188,10 @@ extension float4x4 {
 
 
     init(orthographic rect: Rectangle, near: Float, far: Float) {
-        let X = float4(2 / (rect.right - rect.left), 0, 0, 0)
-        let Y = float4(0, 2 / (rect.top - rect.bottom), 0, 0)
-        let Z = float4(0, 0, 1 / (far - near), 0)
-        let W = float4((rect.left + rect.right) / (rect.left - rect.right),
+        let X = SIMD4<Float>(2 / (rect.right - rect.left), 0, 0, 0)
+        let Y = SIMD4<Float>(0, 2 / (rect.top - rect.bottom), 0, 0)
+        let Z = SIMD4<Float>(0, 0, 1 / (far - near), 0)
+        let W = SIMD4<Float>((rect.left + rect.right) / (rect.left - rect.right),
                        (rect.top + rect.bottom) / (rect.bottom - rect.top),
                        near / (near - far),
                        1)
@@ -210,7 +210,7 @@ extension float3x3 {
 extension float4 {
     var xyz: SIMD3<Float> {
         get {
-            return float3(x, y, z)
+            return SIMD3<Float>(x, y, z)
         }
         set {
             x = newValue.x
@@ -256,11 +256,11 @@ struct FrustumCuller {
         // TODO: This might be broken
         let cameraRotationMatrix: matrix_float3x3 = viewMatrix.upperLeft().inverse
 
-        norm_NearPlane = matrix_multiply(cameraRotationMatrix, float3(0, 0, 1))
+        norm_NearPlane = matrix_multiply(cameraRotationMatrix, SIMD3<Float>(0, 0, 1))
         norm_LeftPlane = matrix_multiply(cameraRotationMatrix,
-                                         float3(cosf(halfAngleApertureWidth), 0, sinf(halfAngleApertureWidth)))
+                                         SIMD3<Float>(cosf(halfAngleApertureWidth), 0, sinf(halfAngleApertureWidth)))
         norm_BottomPlane = matrix_multiply(cameraRotationMatrix,
-                                         float3(0, cosf(halfAngleApertureHeight), sinf(halfAngleApertureHeight)))
+                                         SIMD3<Float>(0, cosf(halfAngleApertureHeight), sinf(halfAngleApertureHeight)))
 
         // TODO: This might be wrong too (-norm_LeftPLane etc etc)
         // we reflect the left plane normal along the view direction (norm_NearPlane) to get the right plane normal :
