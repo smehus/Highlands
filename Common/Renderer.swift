@@ -131,12 +131,6 @@ extension Renderer: MTKViewDelegate {
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
-
-        // Shadow pass
-        let previousUniforms = scene.uniforms
-        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
-        renderShadowPass(renderEncoder: shadowEncoder, view: view)
-
         // Tessellation Pass
         guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
         guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
@@ -146,10 +140,24 @@ extension Renderer: MTKViewDelegate {
         computeEncoder.popDebugGroup()
         computeEncoder.endEncoding()
 
+        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+
+
         // Calculate Height
+
+        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+        heightEncoder.pushDebugGroup("Height pass")
         for renderable in scene.renderables {
-            renderable.calculateHeight(commandBuffer: commandBuffer, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: previousUniforms)
+            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
         }
+        heightEncoder.popDebugGroup()
+        heightEncoder.endEncoding()
+
+
+        // Shadow pass
+        let previousUniforms = scene.uniforms
+        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
+        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
@@ -203,7 +211,7 @@ extension Renderer: MTKViewDelegate {
 
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
-//        drawDebug(encoder: renderEncoder)
+        drawDebug(encoder: renderEncoder)
 
         renderEncoder.endEncoding()
 
@@ -348,7 +356,7 @@ extension Renderer: MTKViewDelegate {
     private func drawDebug(encoder: MTLRenderCommandEncoder) {
         encoder.pushDebugGroup("DEBUG LIGHTS")
         guard let gameScene = scene as? GameScene else { return }
-//        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: gameScene.skeleton.position)
+        debugLights(renderEncoder: encoder, lightType: Pointlight, direction: gameScene.camera.position)
         encoder.popDebugGroup()
     }
 }

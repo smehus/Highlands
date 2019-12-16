@@ -238,8 +238,8 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 
      */
     
-    return sepiaShaderCharacter(float4(color, 1));
-//    return float4(color, 1);
+//    return sepiaShaderCharacter(float4(color, 1));
+    return float4(color, 1);
 
 //
 //    float4 color;

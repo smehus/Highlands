@@ -329,8 +329,12 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
         float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
         float currentDepth = distance(in.worldPosition.xyz, light.position);
-//        return closestDepth;
-        closestDepth *= farZ;
+
+//        closestDepth *= farZ;
+        // This is probalby the intended way to handle this
+        // This makes sense with the current epsilon value.
+        // the other way - epsilon should be like 5.0 instead of 0.1
+        currentDepth = currentDepth / farZ;
 
         float epsilon = 0.1;
         if (closestDepth.w + epsilon < currentDepth) {
@@ -344,6 +348,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
     // Adding Sepia TONE - otherwise just return float4(color, 1)
 
+//    discard_fragment();
 //    return sepiaShader(float4(color, 1));
     return float4(color, 1);
 }

@@ -65,8 +65,10 @@ class Character: Node {
     let heightCalculatePipelineState: MTLComputePipelineState
     let needsXRotationFix = true
     let heightBuffer: MTLBuffer
-    var tessellationPipelineState: MTLComputePipelineState
-    var controlPointsBuffer: MTLBuffer?
+
+    let patches: [Patch]
+    var currentPatch: Patch?
+    var positionInPatch: float3?
 
     init(name: String) {
         let asset = GLTFAsset(filename: name)
@@ -82,17 +84,17 @@ class Character: Node {
         samplerState = Character.buildSamplerState()
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
-        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size, options: .storageModeShared)!
-        tessellationPipelineState = Terrain.buildComputePipelineState()
+        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
+
+        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
+                                              size: (width: Terrain.terrainParams.size.x,
+                                                     height: Terrain.terrainParams.size.y))
+
+
+        patches = terrainPatches.patches
 
         super.init()
         self.name = name
-
-        let controlPoints = Terrain.createControlPoints(patches: Terrain.patches,
-                                                        size: (width: Terrain.terrainParams.size.x,
-                                                               height: Terrain.terrainParams.size.y))
-        controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints,
-                                                         length: MemoryLayout<float3>.stride * controlPoints.count)
     }
 
     private static func buildSamplerState() -> MTLSamplerState {
@@ -115,6 +117,9 @@ class Character: Node {
     }
 
     override func update(deltaTime: Float) {
+
+        currentPatch = patch(for: position)
+        positionInPatch = positionInPatch(patch: currentPatch)
 
         if position.y == 0 {
             let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
@@ -164,35 +169,37 @@ class Character: Node {
         }
     }
 
-    private lazy var heightPipelineState: MTLRenderPipelineState = {
-        let descriptor = MTLRenderPipelineDescriptor()
-        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
-        descriptor.depthAttachmentPixelFormat = .depth32Float
+    func patch(for location: float3) -> Patch? {
+        let foundPatches = patches.filter { (patch) -> Bool in
+            let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
+            let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
 
-        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_calculate_height")
-        descriptor.vertexFunction = vertexFunction
+            return horizontal && vertical
+        }
 
-        let vertexDescriptor = MTLVertexDescriptor()
-        vertexDescriptor.attributes[0].format = .float3
-        vertexDescriptor.attributes[0].offset = 0
-        vertexDescriptor.attributes[0].bufferIndex = 0
+//        print("**** patches found for position \(foundPatches.count)")
+        guard let patch = foundPatches.first else { return nil }
 
-        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-        vertexDescriptor.layouts[0].stride = MemoryLayout<float3>.stride
-        descriptor.vertexDescriptor = vertexDescriptor
+        if let current = currentPatch, current != patch {
+//            print("*** UPDATE CURRENT PATCH \(patch)")
+        }
 
-        descriptor.tessellationFactorStepFunction = .perPatch
-        descriptor.maxTessellationFactor = Terrain.maxTessellation
-        descriptor.tessellationPartitionMode = .pow2
+        return patch
+    }
+}
 
-          return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
-    }()
+extension Patch: Equatable {
 
-    lazy var tessellationFactorsBuffer: MTLBuffer! = {
-        let count = Terrain.patchCount * (4 + 2)
-        let size = count * MemoryLayout<Float>.size / 2
-        return Renderer.device.makeBuffer(length: size, options: .storageModePrivate)
-    }()
+    static public func ==(lhs: Patch, rhs: Patch) -> Bool {
+        assertionFailure("Need to Implement Equatable FOR PATCH"); return false
+    }
+
+    static public func != (lhs: Patch, rhs: Patch) -> Bool {
+        return lhs.topLeft != rhs.topLeft ||
+                lhs.topRight != rhs.topRight ||
+                lhs.bottomLeft != rhs.bottomLeft ||
+                lhs.bottomRight != rhs.bottomRight
+    }
 }
 
 extension Character: Renderable {
@@ -235,7 +242,7 @@ extension Character: Renderable {
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
-        print("*** calculated height \(position.y)")
+
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 
@@ -345,77 +352,60 @@ extension Character: Renderable {
     }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {
-        guard let kernelFunction = Renderer.library?.makeFunction(name: "calculate_heigeht") else {
+        guard let kernelFunction = Renderer.library?.makeFunction(name: "calculate_height") else {
             fatalError("Tessellation shader function not found")
         }
 
         return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
-    func calculateHeight(commandBuffer: MTLCommandBuffer, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) {
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder,
+                         heightMapTexture: MTLTexture,
+                         terrain: TerrainParams,
+                         uniforms: Uniforms,
+                         controlPointsBuffer: MTLBuffer?) {
+
+
+        guard var patch = currentPatch else { return }
+//        guard let patchPosition = positionInPatch else { return }
+
+
+//        var position = patchPosition
         var position = self.worldTransform.columns.3.xyz
         var terrainParams = terrain
         var uniforms = uniforms
+        var index = 0
 
-        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-        computeEncoder.pushDebugGroup("Height Compute Encoder")
+        computeEncoder.setComputePipelineState(heightCalculatePipelineState)
+        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+        computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
+        computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
+        computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
+        computeEncoder.setTexture(heightMapTexture, index: 0)
+        computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 4)
+        computeEncoder.setBytes(&patch, length: MemoryLayout<Patch>.stride, index: 5)
+        computeEncoder.setBytes(&index, length: MemoryLayout<Int>.size, index: 6)
 
-        computeEncoder.setComputePipelineState(tessellationPipelineState)
-        computeEncoder.setBytes(&Terrain.edgeFactors,
-                                length: MemoryLayout<Float>.size * Terrain.edgeFactors.count,
-                                index: 0)
-        computeEncoder.setBytes(&Terrain.insideFactors,
-                                length: MemoryLayout<Float>.size * Terrain.insideFactors.count,
-                                index: 1)
-        computeEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, index: 2)
-        var cameraPosition = uniforms.viewMatrix.columns.3
-        computeEncoder.setBytes(&cameraPosition,
-                                length: MemoryLayout<float4>.stride,
-                                index: 3)
-        var matrix = modelMatrix
-        computeEncoder.setBytes(&matrix,
-                                length: MemoryLayout<float4x4>.stride,
-                                index: 4)
-        computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 5)
-        computeEncoder.setBytes(&terrainParams,
-                                length: MemoryLayout<TerrainParams>.stride,
-                                index: 6)
+        computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
+                                            threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
+    }
 
-        let width = min(Terrain.patchCount,
-                        tessellationPipelineState.threadExecutionWidth)
+    func positionInPatch(patch: Patch?) -> float3? {
+        guard let patch = patch else { return nil }
 
-        computeEncoder.dispatchThreadgroups(MTLSizeMake(Terrain.patchCount, 1, 1),
-                                            threadsPerThreadgroup: MTLSizeMake(width, 1, 1))
-        computeEncoder.popDebugGroup()
-        computeEncoder.endEncoding()
+        let worldPos = self.worldTransform.columns.3.xyz
+        let x = (worldPos.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
+        let z = (worldPos.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);
 
+        let calculate: (Float) -> Float = { input in
+            let value = [0.25, 0.5, 1.0].sorted { (first, second) -> Bool in
+                return abs(input - first) < abs(input - second)
+            }.first
 
-        guard let descriptor = Renderer.mtkView.currentRenderPassDescriptor,
-            let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
+            return value!
+        }
 
-        // Compute Tesselation -> Vertex
-        renderEncoder.pushDebugGroup("Height Render Encoder")
-        renderEncoder.setRenderPipelineState(heightPipelineState)
-        renderEncoder.setVertexBuffer(controlPointsBuffer, offset: 0, index: 0)
-        renderEncoder.setTriangleFillMode(.fill)
-        renderEncoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
-        renderEncoder.setVertexTexture(heightMapTexture, index: 0)
-        renderEncoder.setVertexBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 6)
-
-
-        // Calculate height parameters
-        renderEncoder.setVertexBytes(&position, length: MemoryLayout<float3>.size, index: 7)
-        renderEncoder.setVertexBuffer(heightBuffer, offset: 0, index: 8)
-
-        renderEncoder.drawPatches(numberOfPatchControlPoints: 4,
-                                  patchStart: 0,
-                                  patchCount: Terrain.patchCount,
-                                  patchIndexBuffer: nil,
-                                  patchIndexBufferOffset: 0,
-                                  instanceCount: 1,
-                                  baseInstance: 0)
-
-        renderEncoder.popDebugGroup()
-        renderEncoder.endEncoding()
+        let final = float3(calculate(x), 0, calculate(z))
+        return final
     }
 }

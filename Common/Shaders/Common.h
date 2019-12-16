@@ -11,6 +11,13 @@ typedef struct {
 } TerrainParams;
 
 typedef struct {
+    vector_float3 topLeft;
+    vector_float3 topRight;
+    vector_float3 bottomLeft;
+    vector_float3 bottomRight;
+} Patch;
+
+typedef struct {
     matrix_float4x4 modelMatrix;
     matrix_float4x4 viewMatrix;
     matrix_float4x4 projectionMatrix;

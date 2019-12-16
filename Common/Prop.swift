@@ -141,6 +141,9 @@ class Prop: Node {
     let heightCalculatePipelineState: MTLComputePipelineState
     let heightBuffer: MTLBuffer
 
+    let patches: [Patch]
+    var currentPatch: Patch?
+
     init(type: PropType) {
 
         self.propType = type
@@ -172,11 +175,21 @@ class Prop: Node {
 
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
-        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size, options: .storageModeShared)!
+        var bytes: [Float] = transforms.map { _ in return 0.0 }
+        heightBuffer = Renderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
+//        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
+
+        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
+                                              size: (width: Terrain.terrainParams.size.x,
+                                                     height: Terrain.terrainParams.size.y))
+
+
+        patches = terrainPatches.patches
 
         super.init()
         self.name = type.name
         boundingBox = mdlMesh.boundingBox
+        
 
     }
 
@@ -245,20 +258,26 @@ class Prop: Node {
 
         var pointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
         pointer = pointer.advanced(by: instance)
-        pointer.pointee.modelMatrix = transforms[instance].modelMatrix
-        pointer.pointee.normalMatrix = transforms[instance].normalMatrix
+        pointer.pointee.modelMatrix = transform.modelMatrix
+        pointer.pointee.normalMatrix = transform.normalMatrix
         pointer.pointee.textureID = UInt32(textureID)
+
+
 
 
         // Set matrices for shadow instances
         var shadowPointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
         let startingPoint = instance * 6
+        shadowTransforms[startingPoint] = transform
+
         shadowPointer = shadowPointer.advanced(by: startingPoint)
-        shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
+        shadowPointer.pointee.modelMatrix = transform.modelMatrix
         shadowPointer.pointee.viewportIndex = UInt32(0)
-        for i in 1...6 {
+
+        for i in 1...5 {
+            shadowTransforms[i + startingPoint] = transform
             shadowPointer = shadowPointer.advanced(by: 1)
-            shadowPointer.pointee.modelMatrix = transforms[instance].modelMatrix
+            shadowPointer.pointee.modelMatrix = transform.modelMatrix
             shadowPointer.pointee.viewportIndex = UInt32(i)
         }
     }
@@ -280,8 +299,70 @@ class Prop: Node {
     }
 
     override func update(deltaTime: Float) {
-        let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
-        position.y = pointer.pointee
+
+        var pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: transforms.count)
+
+        for (index, _) in transforms.enumerated() {
+            if index > transforms.startIndex {
+                pointer = pointer.advanced(by: 1)
+            }
+
+            // transform
+            transforms[index].position.y = pointer.pointee
+
+            // shadow transform
+            let shadowStartIndex = index  * 6
+
+            for i in shadowStartIndex...shadowStartIndex + 5 {
+
+                shadowTransforms[i].position.y = pointer.pointee
+            }
+        }
+
+
+        // Update buffers
+
+        var instancePointer = instanceBuffer.contents().bindMemory(to: Instances.self, capacity: transforms.count)
+        var shadowInstancePointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
+
+        // I need to rethink this logic
+        for i in 0..<transforms.count {
+            if i > transforms.startIndex {
+                instancePointer = instancePointer.advanced(by: 1)
+            }
+
+            instancePointer.pointee.modelMatrix = transforms[i].modelMatrix
+            instancePointer.pointee.normalMatrix = transforms[i].normalMatrix
+        }
+
+
+        for i in 0..<shadowTransforms.count {
+
+            if i > shadowTransforms.startIndex {
+                shadowInstancePointer = shadowInstancePointer.advanced(by: 1)
+            }
+
+            shadowInstancePointer.pointee.modelMatrix = shadowTransforms[i].modelMatrix
+            shadowInstancePointer.pointee.normalMatrix = shadowTransforms[i].normalMatrix
+        }
+    }
+
+    func patch(for location: SIMD3<Float>) -> Patch? {
+        let foundPatches = patches.filter { (patch) -> Bool in
+            let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
+            let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
+
+            return horizontal && vertical
+        }
+
+        //        print("**** patches found for position \(foundPatches.count)")
+        guard let patch = foundPatches.first else { return nil }
+
+        if let current = currentPatch, current != patch {
+//            print("*** UPDATE CURRENT PATCH \(patch)")
+        }
+
+        return patch
     }
 }
 
@@ -344,7 +425,7 @@ extension Prop: Renderable {
 
         renderEncoder.setVertexBuffer(shadowInstanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
-        
+
         for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
             renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
         }
@@ -362,19 +443,29 @@ extension Prop: Renderable {
         }
     }
 
-    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms) {
-        var position = self.worldTransform.columns.3.xyz
-        var terrainParams = terrain
-        var uniforms = uniforms
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
 
-        computeEncoder.setComputePipelineState(heightCalculatePipelineState)
-        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
-        computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
-        computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
-        computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
-        computeEncoder.setTexture(heightMapTexture, index: 0)
+        for (index, transform) in transforms.enumerated() {
+            var position = transform.modelMatrix.columns.3.xyz
+            guard var patch = patch(for: position) else { return }
 
-        computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
-                                            threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
+
+            var terrainParams = terrain
+            var uniforms = uniforms
+            var transformIndex = index
+
+            computeEncoder.setComputePipelineState(heightCalculatePipelineState)
+            computeEncoder.setBytes(&position, length: MemoryLayout<SIMD3<Float>>.size, index: 0)
+            computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
+            computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
+            computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
+            computeEncoder.setBuffer(controlPointsBuffer, offset: 0, index: 4)
+            computeEncoder.setBytes(&patch, length: MemoryLayout<Patch>.stride, index: 5)
+            computeEncoder.setBytes(&transformIndex, length: MemoryLayout<Int>.size, index: 6)
+            computeEncoder.setTexture(heightMapTexture, index: 0)
+
+            computeEncoder.dispatchThreadgroups(MTLSizeMake(1, 1, 1),
+                                                threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
+        }
     }
 }

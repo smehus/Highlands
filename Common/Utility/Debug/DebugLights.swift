@@ -59,7 +59,9 @@ extension Renderer {
         for light in scene!.lights where light.type == lightType {
             switch light.type {
             case Pointlight:
-                drawPointLight(renderEncoder: renderEncoder, position: light.position, color: light.color)
+                drawPointLight(renderEncoder: renderEncoder, position: light.position, color: float3(1, 1, 0))
+
+                // Not sure why i have this thing...
 //                drawPointDirectionLight(renderEncoder: renderEncoder, position: light.position, direction: direction, color: float3(1, 1, 0 ))
 
             case Spotlight:
