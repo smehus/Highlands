@@ -11,18 +11,18 @@ import MetalKit
 class Node {
 
     var name = "untitled"
-    var position: float3 = [0, 0, 0]
-    var rotation: float3 = [0, 0, 0] {
+    var position: SIMD3<Float> = [0, 0, 0]
+    var rotation: SIMD3<Float> = [0, 0, 0] {
         didSet {
             let rotationMatrix = float4x4(rotation: rotation)
             quaternion = simd_quatf(rotationMatrix)
         }
     }
-    var scale: float3 = [1, 1, 1]
+    var scale: SIMD3<Float> = [1, 1, 1]
     var quaternion = simd_quatf()
 
     var boundingBox = MDLAxisAlignedBoundingBox()
-    var size: float3 {
+    var size: SIMD3<Float> {
         return boundingBox.maxBounds - boundingBox.minBounds
     }
 

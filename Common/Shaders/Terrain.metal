@@ -333,7 +333,6 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
     float currentDepth = distance(in.worldPosition.xyz, light.position);
 //    float currentDepth = in.worldPosition.z / in.worldPosition.w;
 
-
     closestDepth *= farZ;
     float epsilon = 0.1;
     if (closestDepth.w + epsilon < currentDepth) {

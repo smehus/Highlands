@@ -208,7 +208,7 @@ extension float3x3 {
 }
 
 extension float4 {
-    var xyz: float3 {
+    var xyz: SIMD3<Float> {
         get {
             return float3(x, y, z)
         }
@@ -219,7 +219,7 @@ extension float4 {
         }
     }
 
-    init(_ start: float3, _ end: Float) {
+    init(_ start: SIMD3<Float>, _ end: Float) {
         self.init(start.x, start.y, start.z, end)
     }
 }

@@ -52,8 +52,8 @@ public class CharacterNode {
     public var jointName: String?
     public var mesh: GLTFMesh?
     public var rotationQuaternion = simd_quatf()
-    public var scale = float3(1)
-    public var translation = float3(0)
+    public var scale = SIMD3<Float>(1)
+    public var translation = SIMD3<Float>(0)
     public var matrix: float4x4?
     public var approximateBounds = ""
     public var inverseBindTransform = float4x4.identity()

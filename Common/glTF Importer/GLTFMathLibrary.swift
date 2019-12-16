@@ -38,10 +38,10 @@ extension float4x4 {
     }
     self = matrix_identity_float4x4
     columns = (
-      float4( array[0],  array[1],  array[2],  array[3]),
-      float4( array[4],  array[5],  array[6],  array[7]),
-      float4( array[8],  array[9],  array[10], array[11]),
-      float4( array[12],  array[13],  array[14],  array[15])
+      SIMD4<Float>( array[0],  array[1],  array[2],  array[3]),
+      SIMD4<Float>( array[4],  array[5],  array[6],  array[7]),
+      SIMD4<Float>( array[8],  array[9],  array[10], array[11]),
+      SIMD4<Float>( array[12],  array[13],  array[14],  array[15])
     )
   }
 }
@@ -60,14 +60,14 @@ extension float4 {
     guard array.count == 4 else {
       fatalError("float4 array has \(array.count) elements - a float4 needs 4 elements")
     }
-    self = float4(array[0], array[1], array[2], array[3])
+    self = SIMD4<Float>(array[0], array[1], array[2], array[3])
   }
   
   init(array: [Double]) {
     guard array.count == 4 else {
       fatalError("float4 array has \(array.count) elements - a float4 needs 4 elements")
     }
-    self = float4(Float(array[0]), Float(array[1]), Float(array[2]), Float(array[3]))
+    self = SIMD4<Float>(Float(array[0]), Float(array[1]), Float(array[2]), Float(array[3]))
   }
   
 }
