@@ -27,7 +27,7 @@ class InputController {
 
         let translationSpeed = deltaTime * self.translationSpeed
         let rotationSpeed = deltaTime * self.rotationSpeed
-        var direction = SIMD3<Float>(0)
+        var direction = SIMD3<Float>(repeating: 0)
         for key in directionKeysDown {
             switch key {
             case .w:
@@ -78,8 +78,8 @@ class InputController {
     }
 
     func processEvent(mouse: MouseControl, state: InputState, event: NSEvent) {
-        let delta: float3 = [Float(event.deltaX), Float(event.deltaY), Float(event.deltaZ)]
-        let locationInWindow: float2 = [Float(event.locationInWindow.x), Float(event.locationInWindow.y)]
+        let delta: SIMD3<Float> = [Float(event.deltaX), Float(event.deltaY), Float(event.deltaZ)]
+        let locationInWindow: SIMD2<Float> = [Float(event.locationInWindow.x), Float(event.locationInWindow.y)]
         mouseDelegate?.mouseEvent(mouse: mouse, state: state, delta: delta, location: locationInWindow)
     }
 }

@@ -30,7 +30,7 @@ final class GameScene: Scene {
 
         inputController.keyboardDelegate = self
 
-        terrain.position = float3([0, 0, 0])
+        terrain.position = SIMD3<Float>([0, 0, 0])
 //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
         add(node: terrain)
 
@@ -49,23 +49,24 @@ final class GameScene: Scene {
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
         */
-        let count = 30
-        let offset = 50
+        let count = 200
+        let offset = 100
          
-//        let tree = Prop(type: .instanced(name: "tree_tile", instanceCount: count))
-//        add(node: tree)
-//        physicsController.addStaticBody(node: tree)
-//        for i in 0..<count {
-//            var transform = Transform()
-//
-//            var position: float3
-//            repeat {
-//                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-//            } while position.x > 2 && position.z > 2
-//
-//            transform.position = position
-//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-//        }
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
+        add(node: tree)
+        physicsController.addStaticBody(node: tree)
+        for i in 0..<count {
+            var transform = Transform()
+            transform.scale = [3.0, 3.0, 3.0]
+
+            var position: SIMD3<Float>
+            repeat {
+                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+            } while position.x > 2 && position.z > 2
+
+            transform.position = position
+            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+        }
 
         let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
         let morphTargetNames = ["rock1", "rock2", "rock3"]
@@ -93,7 +94,7 @@ final class GameScene: Scene {
 
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
-//        skeleton.position = [3, 0, 0]
+        skeleton.position = [3, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         add(node: skeleton)
         skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
