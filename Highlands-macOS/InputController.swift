@@ -6,7 +6,7 @@ protocol KeyboardDelegate: class {
 }
 
 protocol MouseDelegate: class {
-    func mouseEvent(mouse: MouseControl, state: InputState, delta: float3, location: float2)
+    func mouseEvent(mouse: MouseControl, state: InputState, delta: SIMD3<Float>, location: SIMD2<Float>)
 }
 
 class InputController {
@@ -18,7 +18,7 @@ class InputController {
     var mouseDelegate: MouseDelegate?
     var useMouse = false
 
-    var translationSpeed: Float = 6.0
+    var translationSpeed: Float = 10.0
     var rotationSpeed: Float = 2.0
 
 
@@ -27,7 +27,7 @@ class InputController {
 
         let translationSpeed = deltaTime * self.translationSpeed
         let rotationSpeed = deltaTime * self.rotationSpeed
-        var direction = float3(0)
+        var direction = SIMD3<Float>(0)
         for key in directionKeysDown {
             switch key {
             case .w:
