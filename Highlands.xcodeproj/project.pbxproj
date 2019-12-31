@@ -13,6 +13,8 @@
 		0222792423BBBB8B005ED8FA /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792223BBBB8B005ED8FA /* Mesh.swift */; };
 		0222792823BBBD55005ED8FA /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		0222792923BBBD55005ED8FA /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
+		0222792B23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */; };
+		0222792C23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */; };
 		02316EFD22FF2943000DA34B /* Boy_UpperBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EF422FF2943000DA34B /* Boy_UpperBody_diffuse.png */; };
 		02316EFE22FF2943000DA34B /* Boy_UpperBody_diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 02316EF422FF2943000DA34B /* Boy_UpperBody_diffuse.png */; };
 		02316EFF22FF2943000DA34B /* boy_walking.gltf in Resources */ = {isa = PBXBuildFile; fileRef = 02316EF522FF2943000DA34B /* boy_walking.gltf */; };
@@ -230,6 +232,7 @@
 /* Begin PBXFileReference section */
 		0222791F23BBB568005ED8FA /* TransformComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformComponent.swift; sourceTree = "<group>"; };
 		0222792223BBBB8B005ED8FA /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
+		0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDLVertexDescriptor+Extensions.swift"; sourceTree = "<group>"; };
 		02316EF422FF2943000DA34B /* Boy_UpperBody_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_UpperBody_diffuse.png; path = BoyWalking/Boy_UpperBody_diffuse.png; sourceTree = SOURCE_ROOT; };
 		02316EF522FF2943000DA34B /* boy_walking.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = boy_walking.gltf; path = BoyWalking/boy_walking.gltf; sourceTree = SOURCE_ROOT; };
 		02316EF622FF2943000DA34B /* Boy_Hair_diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Boy_Hair_diffuse.png; path = BoyWalking/Boy_Hair_diffuse.png; sourceTree = SOURCE_ROOT; };
@@ -661,6 +664,7 @@
 			isa = PBXGroup;
 			children = (
 				A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */,
+				0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -938,6 +942,7 @@
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5CB1E9E21EA848E002CCB94 /* DebugLights.metal in Sources */,
 				02544A9C231AB8360072E47F /* Terrain.metal in Sources */,
+				0222792B23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				0222792023BBB568005ED8FA /* TransformComponent.swift in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				0222792823BBBD55005ED8FA /* Character.swift in Sources */,
@@ -993,6 +998,7 @@
 				A57506CD21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
 				02544A9D231AB8360072E47F /* Terrain.metal in Sources */,
 				A5F08F3E21FCC7A0007E276F /* Shadow.metal in Sources */,
+				0222792C23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				A57506A321CD641300C63081 /* GameView.swift in Sources */,
 				A57506E321CDA2C600C63081 /* GameScene.swift in Sources */,
 				A57506E021CD970B00C63081 /* Scene.swift in Sources */,
@@ -1222,6 +1228,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
@@ -1247,6 +1254,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;

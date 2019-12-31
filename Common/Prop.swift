@@ -8,12 +8,13 @@
 
 import MetalKit
 
-enum PropType {
+enum ModelType {
     case base(name: String, lighting: Bool)
     case instanced(name: String, instanceCount: Int)
     case ground(name: String)
     case morph(textures: [String], morphTargets: [String], instanceCount: Int)
     case water
+    case character
 
     var name: String {
         switch self {
@@ -22,6 +23,7 @@ enum PropType {
         case .morph(_, let targets, _): return targets.first!
         case .instanced(let name, _): return name
         case .water: return "Water"
+        case .character: return "Character"
         }
     }
 
@@ -32,6 +34,7 @@ enum PropType {
         case .morph:
             return "vertex_morph"
         case .water: return "vertex_water"
+        case .character: return "character_vertex_main"
         }
     }
 
@@ -42,6 +45,7 @@ enum PropType {
         case .morph:
             return "fragment_main"
         case .water: return "fragment_water"
+        case .character: return "character_fragment_main"
         }
     }
 

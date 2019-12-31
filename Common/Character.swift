@@ -47,8 +47,10 @@ class Character: Node {
     let animations: [String: AnimationClip]
     var currentTime: Float = 0
     var samplerState: MTLSamplerState
+    static var vertexDescriptor: MDLVertexDescriptor = MDLVertexDescriptor.defaultVertexDescriptor
 
 
+    // Stuff I added \\
     var currentAnimation: AnimationClip?
     var currentAnimationPlaying = false
 
@@ -63,8 +65,34 @@ class Character: Node {
     var positionInPatch: SIMD3<Float>?
 
     init(name: String) {
+        guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else { fatalError() }
 
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let asset = MDLAsset(url: assetURL,
+                             vertexDescriptor: MDLVertexDescriptor.defaultVertexDescriptor,
+                             bufferAllocator: allocator)
 
+        asset.loadTextures()
+
+        var mtkMeshes: [MTKMesh] = []
+        let mdlMeshes = asset.childObjects(of: MDLMesh.self) as! [MDLMesh]
+        _ = mdlMeshes.map { mdlMesh in
+            mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed:
+                MDLVertexAttributeTextureCoordinate,
+                                    tangentAttributeNamed: MDLVertexAttributeTangent,
+                                    bitangentAttributeNamed: MDLVertexAttributeBitangent)
+
+            Character.vertexDescriptor = mdlMesh.vertexDescriptor
+            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
+        }
+
+        meshes = zip(mdlMeshes, mtkMeshes).map {
+            return Mesh(mdlMesh: $0.0,
+                        mtkMesh: $0.1,
+                        startTime: asset.startTime,
+                        endTime: asset.endTime,
+                        modelType: .character)
+        }
 
         samplerState = Character.buildSamplerState()
         heightCalculatePipelineState = Character.buildComputePipelineState()

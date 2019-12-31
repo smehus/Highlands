@@ -16,14 +16,7 @@ class Submesh {
     let pipelineState: MTLRenderPipelineState!
     let shadowPipelineState: MTLRenderPipelineState!
 
-    init(pipelineState: MTLRenderPipelineState, shadowPipelineState: MTLRenderPipelineState, material: MDLMaterial?) {
-        textures = Textures(material: material)
-        self.material = Material(material: material)
-        self.pipelineState = pipelineState
-        self.shadowPipelineState = shadowPipelineState
-    }
-
-    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: PropType) {
+    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: ModelType) {
         self.submesh = submesh
         switch type {
         case .morph(let texNames, _, _):
@@ -103,6 +96,7 @@ private extension Submesh {
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
+
 
         pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
         pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
