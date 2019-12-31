@@ -3,7 +3,7 @@ import Foundation
 
 struct Keyframe {
     var time: Float = 0
-    var value: float3 = [0, 0, 0]
+    var value: SIMD3<Float> = [0, 0, 0]
 }
 
 struct KeyQuaternion {
@@ -45,7 +45,7 @@ class Animation {
         return simd_slerp(previousKey.value, nextKey.value, interpolant)
     }
 
-    func getTranslation(time: Float) -> float3? {
+    func getTranslation(time: Float) -> SIMD3<Float>? {
         guard let lastKeyframe = translations.last else {
             return nil
         }
@@ -64,7 +64,7 @@ class Animation {
         guard let (previousKey, nextKey) = ( keyFramePairs.first {currentTime < $0.next.time} ) else {return nil}
 
         let interpolant = (currentTime - previousKey.time) / (nextKey.time - previousKey.time)
-        return simd_mix(previousKey.value, nextKey.value, float3(interpolant))
+        return simd_mix(previousKey.value, nextKey.value, SIMD3<Float>(repeating: interpolant))
     }
 }
 
