@@ -42,17 +42,18 @@ class Character: Node {
         }
     }
 
-    let buffers: [MTLBuffer]
     let meshes: [Mesh]
-    let animations: [String: AnimationClip]
     var currentTime: Float = 0
     var samplerState: MTLSamplerState
     static var vertexDescriptor: MDLVertexDescriptor = MDLVertexDescriptor.defaultVertexDescriptor
 
 
     // Stuff I added \\
-    var currentAnimation: AnimationClip?
-    var currentAnimationPlaying = false
+
+
+    // Not sure about this tho
+//    var currentAnimation: AnimationClip?
+//    var currentAnimationPlaying = false
 
     var shadowInstanceCount: Int = 0
 
@@ -139,11 +140,21 @@ class Character: Node {
             position.y = pointer.pointee
         }
 
+
+
+        // Run / Update Animations
+        currentTime += deltaTime
+        for mesh in meshes {
+            // TODO: - Make sure this is right?
+            mesh.transform?.setCurrentTransform(at: deltaTime)
+        }
+
+
+        /* DEPRECATED WITH USDA
         guard let animation = currentAnimation, currentAnimationPlaying == true else {
             return
         }
 
-        currentTime += deltaTime
         let time = fmod(currentTime, animation.duration)
         for nodeAnimation in animation.nodeAnimations {
 
@@ -161,6 +172,8 @@ class Character: Node {
                 node.rotationQuaternion = rotationQuaternion
             }
         }
+
+         */
 
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
         position.y = pointer.pointee
@@ -182,7 +195,7 @@ class Character: Node {
         }
     }
 
-    func patch(for location: SiMD3<Float>) -> Patch? {
+    func patch(for location: SIMD3<Float>) -> Patch? {
         let foundPatches = patches.filter { (patch) -> Bool in
             let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
             let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
@@ -217,74 +230,31 @@ extension Patch: Equatable {
 
 extension Character: Renderable {
 
-    func runAnimation(clip animationClip: AnimationClip? = nil) {
-        var clip = animationClip
-        if clip == nil {
-            guard animations.count > 0 else { return }
-            clip = animations[0]
-        } else {
-            clip = animationClip
-        }
-        currentAnimation = clip
-        currentTime = 0
-        currentAnimationPlaying = true
-        // immediately update the initial pose
-        update(deltaTime: 0)
-    }
-
-    func runAnimation(name: String) {
-        guard let clip = (animations.filter { $0.name == name }).first else {
-            return
-        }
-
-        runAnimation(clip: clip)
-    }
-
-    func pauseAnimation() {
-        currentAnimationPlaying = false
-    }
-
-    func resumeAnimation() {
-        currentAnimationPlaying = true
-    }
-
-    func stopAnimation() {
-        currentAnimation = nil
-        currentAnimationPlaying = false
-    }
-
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
 
-
-        // Deprecated with USDA files
-        /*
-        for node in meshNodes {
-            guard let mesh = node.mesh else { continue }
-
-            if let skin = node.skin {
-                for (i, jointNode) in skin.jointNodes.enumerated() {
-                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
-                }
-
-                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
-                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
-                renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
-            }
+        for mesh in meshes {
 
             var uniforms = vertex
-            uniforms.modelMatrix = worldTransform
+            uniforms.modelMatrix = worldTransform * (mesh.transform?.currentTransform ?? float4x4.identity())
             uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
             renderEncoder.setFragmentSamplerState(samplerState, index: 0)
 
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
+            for (index, vertexBuffer) in mesh.mtkMesh.vertexBuffers.enumerated() {
+              renderEncoder.setVertexBuffer(vertexBuffer.buffer,
+                                            offset: 0, index: index)
+            }
+
             for submesh in mesh.submeshes {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
 
-                // Set the texture
+                // Set the textures
                 renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+                renderEncoder.setFragmentTexture(submesh.textures.normal, index: Int(NormalTexture.rawValue))
+                renderEncoder.setFragmentTexture(submesh.textures.roughness, index: Int(RoughnessTexture.rawValue))
 
                 // Set Material
                 var material = submesh.material
@@ -292,26 +262,25 @@ extension Character: Renderable {
                                                length: MemoryLayout<Material>.stride,
                                                index: Int(BufferIndexMaterials.rawValue))
 
-                for attribute in submesh.attributes {
-                    renderEncoder.setVertexBuffer(buffers[attribute.bufferIndex],
-                                                  offset: attribute.offset,
-                                                  index: attribute.index)
-                }
 
-                renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                    indexCount: submesh.indexCount,
-                                                    indexType: submesh.indexType,
-                                                    indexBuffer: submesh.indexBuffer!,
-                                                    indexBufferOffset: submesh.indexBufferOffset)
+                render(renderEncoder: renderEncoder, submesh: submesh)
             }
 
             if debugRenderBoundingBox {
                 debugBoundingBox?.render(renderEncoder: renderEncoder, uniforms: uniforms)
             }
         }
-
-        */
     }
+
+    func render(renderEncoder: MTLRenderCommandEncoder, submesh: Submesh) {
+      let mtkSubmesh = submesh.mtkSubmesh
+      renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                          indexCount: mtkSubmesh.indexCount,
+                                          indexType: mtkSubmesh.indexType,
+                                          indexBuffer: mtkSubmesh.indexBuffer.buffer,
+                                          indexBufferOffset: mtkSubmesh.indexBuffer.offset)
+    }
+
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, startingIndex: Int) {
 /*

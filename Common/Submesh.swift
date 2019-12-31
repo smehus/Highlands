@@ -3,7 +3,7 @@ import MetalKit
 
 class Submesh {
 
-    var submesh: MTKSubmesh?
+    let mtkSubmesh: MTKSubmesh
     struct Textures {
         let baseColor: MTLTexture?
         let normal: MTLTexture?
@@ -17,7 +17,8 @@ class Submesh {
     let shadowPipelineState: MTLRenderPipelineState!
 
     required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: ModelType) {
-        self.submesh = submesh
+        mtkSubmesh = submesh
+
         switch type {
         case .morph(let texNames, _, _):
             textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin, overrideTextures: texNames)
@@ -45,7 +46,7 @@ class Submesh {
 
 // Pipeline state
 private extension Submesh {
-    static func makeFunctionConstants(textures: Textures, type: PropType) -> MTLFunctionConstantValues {
+    static func makeFunctionConstants(textures: Textures, type: ModelType) -> MTLFunctionConstantValues {
         let functionConstants = MTLFunctionConstantValues()
 
         var isGround = type.isGround
@@ -79,7 +80,7 @@ private extension Submesh {
         return functionConstants
     }
 
-    static func makePipelineState(textures: Textures, type: PropType) -> MTLRenderPipelineState {
+    static func makePipelineState(textures: Textures, type: ModelType) -> MTLRenderPipelineState {
         let functionConstants = makeFunctionConstants(textures: textures, type: type)
 
         let library = Renderer.library

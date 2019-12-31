@@ -131,7 +131,7 @@ class Prop: Node {
     var tiling: UInt32 = 1
     let samplerState: MTLSamplerState?
     let debugBoundingBox: DebugBoundingBox
-    let propType: PropType
+    let propType: ModelType
     private(set) var transforms: [Transform]
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
@@ -148,7 +148,7 @@ class Prop: Node {
     let patches: [Patch]
     var currentPatch: Patch?
 
-    init(type: PropType) {
+    init(type: ModelType) {
 
         self.propType = type
         // MDLMesh: Load model from bundle
@@ -404,8 +404,7 @@ extension Prop: Renderable {
             var material = modelSubmesh.material
             renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
 
-            guard let submesh = modelSubmesh.submesh else { continue }
-
+            let submesh = modelSubmesh.mtkSubmesh
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,
@@ -436,7 +435,7 @@ extension Prop: Renderable {
 
         for modelSubmesh in submeshes {
             renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineState)
-            let submesh = modelSubmesh.submesh!
+            let submesh = modelSubmesh.mtkSubmesh
 
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,

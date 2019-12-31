@@ -16,10 +16,7 @@ final class GameScene: Scene {
     let terrain = Terrain(textureName: "hills")
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
-//    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
-//    let skeleton = Character(name: "claire")
-//    let skeleton = Character(name: "skeleton")
-    let skeleton = Character(name: "boy_walking")
+//    let skeleton = Character(name: "boy_walking")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
     let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
     let water = Water(size: 500)
@@ -92,17 +89,17 @@ final class GameScene: Scene {
         }
 
 
-        skeleton.scale = [0.015, 0.015, 0.015]
-        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
-        skeleton.position = [3, 0, 0]
-        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
-        add(node: skeleton)
-        skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
+//        skeleton.scale = [0.015, 0.015, 0.015]
+//        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+//        skeleton.position = [3, 0, 0]
+//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+//        add(node: skeleton)
+//
+//        physicsController.dynamicBody = skeleton
+//        inputController.player = skeleton
 
-        physicsController.dynamicBody = skeleton
-        inputController.player = skeleton
+
 //        skeleton.currentAnimation?.speed = 1.0
-        skeleton.pauseAnimation()
 
 //        lantern.position = CharacterTorch.localPosition
 //        add(node: lantern, parent: skeleton)
@@ -111,11 +108,11 @@ final class GameScene: Scene {
         cameras.append(orthoCamera)
 
 
-        let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 6
-        tpCamera.focusDistance = 8
-        cameras.append(tpCamera)
-        currentCameraIndex = 2
+//        let tpCamera = ThirdPersonCamera(focus: skeleton)
+//        tpCamera.focusHeight = 6
+//        tpCamera.focusDistance = 8
+//        cameras.append(tpCamera)
+        currentCameraIndex = 1
 
 
     }
@@ -126,6 +123,7 @@ final class GameScene: Scene {
 
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
+            /* TODO: - Uncomment these blocks
             guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
             let position = inputController.player!.position
             let forward = inputController.player!.forwardVector
@@ -137,6 +135,9 @@ final class GameScene: Scene {
             lights[index].position.y = position.y + 4
             lights[index].position += (forward * 0.8)
             lights[index].position.x -= 0.2
+ */
+
+
 //
 //
 ////            lights[index].position = camera.position
@@ -171,11 +172,12 @@ final class GameScene: Scene {
         }
     }
 
-    private func find(name: String, in node: CharacterNode) -> CharacterNode? {
-        guard node.name != name else { return node }
-
-        return node.children.compactMap ({ self.find(name: name, in: $0) }).first
-    }
+    // Trying to recursively find a bone
+//    private func find(name: String, in node: CharacterNode) -> CharacterNode? {
+//        guard node.name != name else { return node }
+//
+//        return node.children.compactMap ({ self.find(name: name, in: $0) }).first
+//    }
 
     override func sceneSizeWillChange(to size: CGSize) {
         super.sceneSizeWillChange(to: size)
@@ -201,11 +203,11 @@ extension GameScene: KeyboardDelegate {
         case .key2: currentCameraIndex = 2
         case .w, .s, .a, .d, .left, .right, .up, .down:
             if state == .began {
-                skeleton.resumeAnimation()
+//                skeleton.resumeAnimation()
             }
 
             if state == .ended, keysDown.isEmpty {
-                skeleton.pauseAnimation()
+//                skeleton.pauseAnimation()
             }
         default:
             break
