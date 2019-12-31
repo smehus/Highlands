@@ -12,8 +12,9 @@ struct KeyQuaternion {
 }
 
 
-class Animation {
-    var node: CharacterNode?
+
+
+struct Animation {
 
     var translations: [Keyframe] = []
     var rotations: [KeyQuaternion] = []
@@ -46,10 +47,10 @@ class Animation {
     }
 
     func getTranslation(time: Float) -> SIMD3<Float>? {
-        guard let lastKeyframe = translations.last else {
-            return nil
-        }
+        guard let lastKeyframe = translations.last else { return nil }
+
         var currentTime = time * speed
+
         if let first = translations.first, first.time >= currentTime {
             return first.value
         }

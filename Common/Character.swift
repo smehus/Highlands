@@ -10,7 +10,7 @@ import MetalKit
 
 class CharacterTorch: Prop {
 
-    static let localPosition: float3 = [0.14, 0.85, -1.8]
+    static let localPosition: SIMD3<Float> = [0.14, 0.85, -1.8]
 
     override var worldTransform: float4x4 {
         guard let parent = parent else { fatalError() }
@@ -35,16 +35,6 @@ class CharacterTorch: Prop {
 
 class Character: Node {
 
-    class CharacterSubmesh: Submesh {
-
-        // Adding properties that are already in the MTKSubmesh
-        var attributes: [Attributes] = []
-        var indexCount: Int = 0
-        var indexBuffer: MTLBuffer?
-        var indexBufferOffset: Int = 0
-        var indexType: MTLIndexType = .uint16
-    }
-
     var debugBoundingBox: DebugBoundingBox?
     override var boundingBox: MDLAxisAlignedBoundingBox {
         didSet {
@@ -53,13 +43,15 @@ class Character: Node {
     }
 
     let buffers: [MTLBuffer]
-    let meshNodes: [CharacterNode]
-    let animations: [AnimationClip]
-    let nodes: [CharacterNode]
+    let meshes: [Mesh]
+    let animations: [String: AnimationClip]
     var currentTime: Float = 0
+    var samplerState: MTLSamplerState
+
+
     var currentAnimation: AnimationClip?
     var currentAnimationPlaying = false
-    var samplerState: MTLSamplerState
+
     var shadowInstanceCount: Int = 0
 
     let heightCalculatePipelineState: MTLComputePipelineState
@@ -68,18 +60,11 @@ class Character: Node {
 
     let patches: [Patch]
     var currentPatch: Patch?
-    var positionInPatch: float3?
+    var positionInPatch: SIMD3<Float>?
 
     init(name: String) {
-        let asset = GLTFAsset(filename: name)
-        buffers = asset.buffers
-        animations = asset.animations
-        guard !asset.scenes.isEmpty else { fatalError() }
 
-        // The nodes that contain skinning data which bind vertices to joints.
-        meshNodes = asset.scenes[0].meshNodes
-        
-        nodes = asset.scenes[0].nodes
+
 
         samplerState = Character.buildSamplerState()
         heightCalculatePipelineState = Character.buildComputePipelineState()
@@ -112,7 +97,7 @@ class Character: Node {
     }
 
 
-    override var forwardVector: float3 {
+    override var forwardVector: SIMD3<Float> {
         return normalize([sin(-rotation.z), 0, cos(-rotation.z)])
     }
 
@@ -169,7 +154,7 @@ class Character: Node {
         }
     }
 
-    func patch(for location: float3) -> Patch? {
+    func patch(for location: SiMD3<Float>) -> Patch? {
         let foundPatches = patches.filter { (patch) -> Bool in
             let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
             let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
@@ -243,6 +228,9 @@ extension Character: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
 
+
+        // Deprecated with USDA files
+        /*
         for node in meshNodes {
             guard let mesh = node.mesh else { continue }
 
@@ -293,6 +281,8 @@ extension Character: Renderable {
                 debugBoundingBox?.render(renderEncoder: renderEncoder, uniforms: uniforms)
             }
         }
+
+        */
     }
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, startingIndex: Int) {
@@ -377,7 +367,7 @@ extension Character: Renderable {
         var index = 0
 
         computeEncoder.setComputePipelineState(heightCalculatePipelineState)
-        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+        computeEncoder.setBytes(&position, length: MemoryLayout<SIMD3<Float>>.size, index: 0)
         computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
         computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
         computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
@@ -390,7 +380,7 @@ extension Character: Renderable {
                                             threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
     }
 
-    func positionInPatch(patch: Patch?) -> float3? {
+    func positionInPatch(patch: Patch?) -> SIMD3<Float>? {
         guard let patch = patch else { return nil }
 
         let worldPos = self.worldTransform.columns.3.xyz
@@ -405,7 +395,7 @@ extension Character: Renderable {
             return value!
         }
 
-        let final = float3(calculate(x), 0, calculate(z))
+        let final = SIMD3<Float>(calculate(x), 0, calculate(z))
         return final
     }
 }
