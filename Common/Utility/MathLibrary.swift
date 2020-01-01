@@ -215,16 +215,16 @@ extension float4x4 {
   }
 }
 
-extension float3 {
+extension SIMD3 where Scalar == Float {
   init(array: [Float]) {
     guard array.count == 3 else {
       fatalError("float3 array has \(array.count) elements - a float3 needs 3 elements")
     }
-    self = float3(array[0], array[1], array[2])
+    self = SIMD3<Float>(array[0], array[1], array[2])
   }
 }
 
-extension float4 {
+extension SIMD4 where Scalar == Float {
   init(array: [Float]) {
     guard array.count == 4 else {
       fatalError("float4 array has \(array.count) elements - a float4 needs 4 elements")
@@ -257,7 +257,7 @@ extension float3x3 {
     }
 }
 
-extension float4 {
+extension SIMD4 where Scalar == Float {
     var xyz: SIMD3<Float> {
         get {
             return SIMD3<Float>(x, y, z)
