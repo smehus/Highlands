@@ -66,7 +66,7 @@ class Character: Node {
     var positionInPatch: SIMD3<Float>?
 
     init(name: String) {
-        guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else { fatalError() }
+        guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
 
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL,

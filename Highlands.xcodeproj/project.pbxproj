@@ -59,6 +59,8 @@
 		02BDBEDF23DC96A400FB3EEA /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED623DC96A300FB3EEA /* Skeleton.swift */; };
 		02BDBEE323DC974000FB3EEA /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222791F23BBB568005ED8FA /* TransformComponent.swift */; };
 		02BDBEE423DC974000FB3EEA /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222791F23BBB568005ED8FA /* TransformComponent.swift */; };
+		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
+		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
@@ -261,6 +263,7 @@
 		02BDBED423DC96A300FB3EEA /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		02BDBED623DC96A300FB3EEA /* Skeleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
+		02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = boy_tpose.usdz; sourceTree = SOURCE_ROOT; };
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
@@ -437,6 +440,7 @@
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
+				02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */,
 				02295EC022DB8BAE00A1C90D /* boy */,
 				A539CEE021E2DA40004FD174 /* Human */,
 				A5CBD16321E27FC0001D77EF /* Door */,
@@ -869,6 +873,7 @@
 				A5CB1E8221EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				02316F0D22FF2943000DA34B /* Boy_LowerBody_diffuse.png in Resources */,
 				A59150BE2263BC8B008ED280 /* pillar.mtl in Resources */,
+				02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */,
 				02316EFF22FF2943000DA34B /* boy_walking.gltf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -929,6 +934,7 @@
 				A5CB1E8321EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A5CB1E8521EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				02316F0622FF2943000DA34B /* Boy_Scarf_diffuse.png in Resources */,
+				02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */,
 				A59150CF2263C216008ED280 /* grass_tile.mtl in Resources */,
 				A59150C42263BFDD008ED280 /* grid_texture.png in Resources */,
 				A59150C12263BC8B008ED280 /* pillar.obj in Resources */,

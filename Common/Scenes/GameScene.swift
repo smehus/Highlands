@@ -16,7 +16,7 @@ final class GameScene: Scene {
     let terrain = Terrain(textureName: "hills")
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
-//    let skeleton = Character(name: "boy_walking")
+    let skeleton = Character(name: "boy_tpose")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
     let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
     let water = Water(size: 500)
@@ -89,14 +89,14 @@ final class GameScene: Scene {
         }
 
 
-//        skeleton.scale = [0.015, 0.015, 0.015]
-//        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
-//        skeleton.position = [3, 0, 0]
-//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
-//        add(node: skeleton)
-//
-//        physicsController.dynamicBody = skeleton
-//        inputController.player = skeleton
+        skeleton.scale = [0.015, 0.015, 0.015]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+        skeleton.position = [3, 0, 0]
+        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+        add(node: skeleton)
+
+        physicsController.dynamicBody = skeleton
+        inputController.player = skeleton
 
 
 //        skeleton.currentAnimation?.speed = 1.0
@@ -108,11 +108,11 @@ final class GameScene: Scene {
         cameras.append(orthoCamera)
 
 
-//        let tpCamera = ThirdPersonCamera(focus: skeleton)
-//        tpCamera.focusHeight = 6
-//        tpCamera.focusDistance = 8
-//        cameras.append(tpCamera)
-        currentCameraIndex = 1
+        let tpCamera = ThirdPersonCamera(focus: skeleton)
+        tpCamera.focusHeight = 6
+        tpCamera.focusDistance = 8
+        cameras.append(tpCamera)
+        currentCameraIndex = cameras.endIndex
 
 
     }
