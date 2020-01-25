@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0222792023BBB568005ED8FA /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222791F23BBB568005ED8FA /* TransformComponent.swift */; };
-		0222792123BBB568005ED8FA /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222791F23BBB568005ED8FA /* TransformComponent.swift */; };
 		0222792323BBBB8B005ED8FA /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792223BBBB8B005ED8FA /* Mesh.swift */; };
 		0222792423BBBB8B005ED8FA /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792223BBBB8B005ED8FA /* Mesh.swift */; };
 		0222792823BBBD55005ED8FA /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
@@ -51,10 +49,18 @@
 		0284473F22C0455C00A4E479 /* normal-water.png in Resources */ = {isa = PBXBuildFile; fileRef = 0284473D22C0455C00A4E479 /* normal-water.png */; };
 		0284474122C04EE500A4E479 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
 		0284474222C04EE500A4E479 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
+		02BDBED823DC96A400FB3EEA /* AnimationClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED323DC96A300FB3EEA /* AnimationClip.swift */; };
+		02BDBED923DC96A400FB3EEA /* AnimationClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED323DC96A300FB3EEA /* AnimationClip.swift */; };
+		02BDBEDA23DC96A400FB3EEA /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED423DC96A300FB3EEA /* Animation.swift */; };
+		02BDBEDB23DC96A400FB3EEA /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED423DC96A300FB3EEA /* Animation.swift */; };
+		02BDBEDC23DC96A400FB3EEA /* AnimationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */; };
+		02BDBEDD23DC96A400FB3EEA /* AnimationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */; };
+		02BDBEDE23DC96A400FB3EEA /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED623DC96A300FB3EEA /* Skeleton.swift */; };
+		02BDBEDF23DC96A400FB3EEA /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED623DC96A300FB3EEA /* Skeleton.swift */; };
+		02BDBEE323DC974000FB3EEA /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222791F23BBB568005ED8FA /* TransformComponent.swift */; };
+		02BDBEE423DC974000FB3EEA /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222791F23BBB568005ED8FA /* TransformComponent.swift */; };
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
-		A551AE0821C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
-		A551AE0921C9A4E700FA207B /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551AE0721C9A4E700FA207B /* Animation.swift */; };
 		A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
 		A563DF1321E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
 		A563DF1521E7999F00563EA9 /* Skybox.metal in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1421E7999F00563EA9 /* Skybox.metal */; };
@@ -251,6 +257,10 @@
 		0284473A22C0377500A4E479 /* Water.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Water.metal; sourceTree = "<group>"; };
 		0284473D22C0455C00A4E479 /* normal-water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "normal-water.png"; sourceTree = "<group>"; };
 		0284474022C04EE500A4E479 /* RenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
+		02BDBED323DC96A300FB3EEA /* AnimationClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationClip.swift; sourceTree = "<group>"; };
+		02BDBED423DC96A300FB3EEA /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
+		02BDBED623DC96A300FB3EEA /* Skeleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
@@ -386,6 +396,26 @@
 				0275F18722FF6B5600C7D898 /* Torch.obj */,
 			);
 			path = Torch;
+			sourceTree = "<group>";
+		};
+		02BDBED223DC96A300FB3EEA /* Animation Support */ = {
+			isa = PBXGroup;
+			children = (
+				0222791F23BBB568005ED8FA /* TransformComponent.swift */,
+				02BDBED323DC96A300FB3EEA /* AnimationClip.swift */,
+				02BDBED423DC96A300FB3EEA /* Animation.swift */,
+				02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */,
+				02BDBED623DC96A300FB3EEA /* Skeleton.swift */,
+			);
+			path = "Animation Support";
+			sourceTree = "<group>";
+		};
+		02BDBEE223DC96EC00FB3EEA /* UnusedAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				A551AE0721C9A4E700FA207B /* Animation.swift */,
+			);
+			path = UnusedAnimation;
 			sourceTree = "<group>";
 		};
 		A539CEE021E2DA40004FD174 /* Human */ = {
@@ -544,6 +574,7 @@
 		A57F6A2121B8A1CC002C0632 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				02BDBEE223DC96EC00FB3EEA /* UnusedAnimation */,
 				02544A9E231AC6F20072E47F /* Textures.xcassets */,
 				A57506DD21CD96FF00C63081 /* Scenes */,
 				A57506CE21CD671A00C63081 /* Shaders */,
@@ -558,14 +589,12 @@
 				A5A1CD1D21B9F332002F6F35 /* Prop.swift */,
 				A5A1CD2021B9F718002F6F35 /* Submesh.swift */,
 				A5A1CD2321BA2833002F6F35 /* ViewController.swift */,
-				A551AE0721C9A4E700FA207B /* Animation.swift */,
 				A588D83921CAE1A300652FC2 /* Character.swift */,
 				A57506CF21CD680E00C63081 /* Renderable.swift */,
 				A5F6ABB321CF292D0027D425 /* Notes */,
 				A563DF1B21E8035200563EA9 /* Transform.swift */,
 				0284473722C02DFB00A4E479 /* Water.swift */,
 				02544A98231AB2130072E47F /* Terrain.swift */,
-				0222791F23BBB568005ED8FA /* TransformComponent.swift */,
 				0222792223BBBB8B005ED8FA /* Mesh.swift */,
 			);
 			path = Common;
@@ -607,6 +636,7 @@
 		A57F6A6121B978E3002C0632 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				02BDBED223DC96A300FB3EEA /* Animation Support */,
 				0284474022C04EE500A4E479 /* RenderPass.swift */,
 				A57506C721CD669700C63081 /* Debug */,
 				A575069D21CD63E200C63081 /* PhysicsController.swift */,
@@ -924,6 +954,8 @@
 				A5A1CD1B21B9EFEF002F6F35 /* Camera.swift in Sources */,
 				A58F1A1121E94112003F6F1F /* MorphShader.metal in Sources */,
 				A57506DF21CD970B00C63081 /* Scene.swift in Sources */,
+				02BDBEDA23DC96A400FB3EEA /* Animation.swift in Sources */,
+				02BDBED823DC96A400FB3EEA /* AnimationClip.swift in Sources */,
 				A5CB1EA021EA848E002CCB94 /* DebugLights.swift in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
 				A57506CA21CD669700C63081 /* DebugBoundingBox.metal in Sources */,
@@ -933,19 +965,20 @@
 				A57506D021CD680E00C63081 /* Renderable.swift in Sources */,
 				A5C952C521CE952D00B23364 /* MotionController.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
+				02BDBEDE23DC96A400FB3EEA /* Skeleton.swift in Sources */,
 				0284473822C02DFB00A4E479 /* Water.swift in Sources */,
 				A5A1CD3821BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				A57506CC21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
 				A57506EC21CE942700C63081 /* InputController.swift in Sources */,
-				A551AE0821C9A4E700FA207B /* Animation.swift in Sources */,
 				0284474122C04EE500A4E479 /* RenderPass.swift in Sources */,
 				A57F6A5B21B8CBDF002C0632 /* Shaders.metal in Sources */,
 				A5CB1E9E21EA848E002CCB94 /* DebugLights.metal in Sources */,
 				02544A9C231AB8360072E47F /* Terrain.metal in Sources */,
 				0222792B23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift in Sources */,
-				0222792023BBB568005ED8FA /* TransformComponent.swift in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				0222792823BBBD55005ED8FA /* Character.swift in Sources */,
+				02BDBEDC23DC96A400FB3EEA /* AnimationComponent.swift in Sources */,
+				02BDBEE323DC974000FB3EEA /* TransformComponent.swift in Sources */,
 				A588D83D21CAEE3300652FC2 /* CharacterShaders.metal in Sources */,
 				A57506A021CD63E200C63081 /* PhysicsController.swift in Sources */,
 				A5A1CD2121B9F718002F6F35 /* Submesh.swift in Sources */,
@@ -966,6 +999,7 @@
 				02544A9A231AB2130072E47F /* Terrain.swift in Sources */,
 				A5A9E08F21BC1A8900A6F6BB /* Texturable.swift in Sources */,
 				A5A1CD1C21B9EFEF002F6F35 /* Camera.swift in Sources */,
+				02BDBEDD23DC96A400FB3EEA /* AnimationComponent.swift in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				A5CB1E9F21EA848E002CCB94 /* DebugLights.metal in Sources */,
 				0222792923BBBD55005ED8FA /* Character.swift in Sources */,
@@ -978,8 +1012,8 @@
 				A57F6A5A21B8CBDB002C0632 /* Primitive.swift in Sources */,
 				A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				0284473922C02DFB00A4E479 /* Water.swift in Sources */,
-				A551AE0921C9A4E700FA207B /* Animation.swift in Sources */,
 				A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */,
+				02BDBED923DC96A400FB3EEA /* AnimationClip.swift in Sources */,
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A58F1A1221E94112003F6F1F /* MorphShader.metal in Sources */,
 				A5CB1EA121EA848E002CCB94 /* DebugLights.swift in Sources */,
@@ -988,12 +1022,12 @@
 				A57506A121CD63E200C63081 /* PhysicsController.swift in Sources */,
 				A5A1CD2221B9F718002F6F35 /* Submesh.swift in Sources */,
 				A57506CB21CD669700C63081 /* DebugBoundingBox.metal in Sources */,
-				0222792123BBB568005ED8FA /* TransformComponent.swift in Sources */,
 				0222792423BBBB8B005ED8FA /* Mesh.swift in Sources */,
 				A57F6A6421B978E3002C0632 /* MathLibrary.swift in Sources */,
 				A563DF1D21E8035200563EA9 /* Transform.swift in Sources */,
 				A5A1CD1921B9EC5D002F6F35 /* Node.swift in Sources */,
 				A57506D121CD680E00C63081 /* Renderable.swift in Sources */,
+				02BDBEDF23DC96A400FB3EEA /* Skeleton.swift in Sources */,
 				A575069F21CD63E200C63081 /* InputController.swift in Sources */,
 				A57506CD21CD669700C63081 /* DebugBoundingBox.swift in Sources */,
 				02544A9D231AB8360072E47F /* Terrain.metal in Sources */,
@@ -1001,6 +1035,8 @@
 				0222792C23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				A57506A321CD641300C63081 /* GameView.swift in Sources */,
 				A57506E321CDA2C600C63081 /* GameScene.swift in Sources */,
+				02BDBEE423DC974000FB3EEA /* TransformComponent.swift in Sources */,
+				02BDBEDB23DC96A400FB3EEA /* Animation.swift in Sources */,
 				A57506E021CD970B00C63081 /* Scene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
