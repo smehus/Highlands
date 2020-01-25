@@ -22,6 +22,9 @@ class Submesh {
         switch type {
         case .morph(let texNames, _, _):
             textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin, overrideTextures: texNames)
+        case .character:
+            print("*** CHARACTER MDLSUBMESH MATERIAL \(String(describing: mdlSubmesh.material?.name))")
+            textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin)
         default:
             textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin)
         }
@@ -155,7 +158,14 @@ private extension Submesh.Textures {
                 property.type == .string,
                 let filename = property.stringValue
             else {
-                    return nil
+                if let property = material?.property(with: semantic),
+                    property.type == .texture,
+                    let mdlTexture = property.textureSamplerValue?.texture {
+
+                    return try? Submesh.loadTexture(texture: mdlTexture)
+                }
+
+                return nil
             }
 
             guard let texture = ((try? Submesh.loadTexture(imageName: filename, origin: origin)) as MTLTexture??) else {

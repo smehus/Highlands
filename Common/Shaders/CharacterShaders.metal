@@ -203,21 +203,22 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 
 
     float3 baseColor;
-    if (hasCharacterTextures) {
+//    if (hasCharacterTextures) {
         constexpr sampler s(filter::linear);
         float4 textureColor = baseColorTexture.sample(s, in.uv);
 //        if (textureColor.a < 0.1) { discard_fragment(); }
         baseColor = textureColor.rgb;
 
-    } else {
-        baseColor = material.baseColor;
-    }
+//    }
+//    else {
+//        baseColor = material.baseColor;
+//    }
 
 //    if (baseColor.r == 0 && baseColor.g == 0 && baseColor.b == 0) {
 //        discard_fragment();
 //    }
 
-    float3 color = characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
+    float3 color = baseColor;//characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
 
     /*
      This is for non omnidiretional shadow maps

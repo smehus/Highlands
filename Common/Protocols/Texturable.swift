@@ -48,6 +48,18 @@ extension Texturable {
         return arrayTexture
     }
 
+    static func loadTexture(texture: MDLTexture) throws -> MTLTexture? {
+        let textureLoader = MTKTextureLoader(device: Renderer.device)
+        let textureLoaderOptions: [MTKTextureLoader.Option: Any] =
+            [.origin: MTKTextureLoader.Origin.bottomLeft,
+             .SRGB: false,
+             .generateMipmaps: NSNumber(booleanLiteral: true)]
+
+        let texture = try? textureLoader.newTexture(texture: texture,
+                                                    options: textureLoaderOptions)
+        return texture
+    }
+
     static func loadTexture(imageName: String, origin: MTKTextureLoader.Origin = .topLeft) throws -> MTLTexture? {
         let textureLoader = MTKTextureLoader(device: Renderer.device)
         let textureLoaderOptions: [MTKTextureLoader.Option: Any] =
