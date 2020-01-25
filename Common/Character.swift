@@ -159,9 +159,14 @@ class Character: Node {
 
         // Run / Update Animations
         currentTime += deltaTime
+
+//        You're using the first animation for simplicity. The starter code for the following chapter will refactor the animation code so that you can send a named animation to the model.
         for mesh in meshes {
-            // TODO: - Make sure this is right?
-            mesh.transform?.setCurrentTransform(at: deltaTime)
+            if let animationClip = animations.first?.value {
+                mesh.skeleton?.updatePose(animationClip: animationClip, at: currentTime)
+                mesh.transform?.currentTransform = .identity() }
+            else {
+                mesh.transform?.setCurrentTransform(at: currentTime) }
         }
 
 
@@ -249,6 +254,10 @@ extension Character: Renderable {
 //        renderEncoder.setFrontFacing(.clockwise)
 
         for mesh in meshes {
+
+            if let paletteBuffer = mesh.skeleton?.jointMatrixPaletteBuffer {
+              renderEncoder.setVertexBuffer(paletteBuffer, offset: 0, index: 21)
+            }
 
             var uniforms = vertex
             uniforms.modelMatrix = worldTransform * (mesh.transform?.currentTransform ?? float4x4.identity())

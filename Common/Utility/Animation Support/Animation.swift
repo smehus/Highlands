@@ -3,7 +3,7 @@ import Foundation
 
 struct Keyframe {
     var time: Float = 0
-    var value: float3 = [0, 0, 0]
+    var value: SIMD3<Float> = [0, 0, 0]
 }
 
 struct KeyQuaternion {
@@ -16,7 +16,7 @@ struct Animation {
     var rotations: [KeyQuaternion] = []
     var repeatAnimation = true
 
-    func getTranslation(at time: Float) -> float3? {
+    func getTranslation(at time: Float) -> SIMD3<Float>? {
         guard let lastKeyframe = translations.last else {
             return nil
         }

@@ -95,6 +95,15 @@ enum ModelType {
     var textureOrigin: MTKTextureLoader.Origin {
         return .bottomLeft
     }
+
+    var vertexDescriptor: MDLVertexDescriptor {
+        switch self {
+        case .character:
+            return MDLVertexDescriptor.defaultVertexDescriptor
+        default:
+            return Prop.defaultVertexDescriptor
+        }
+    }
 }
 
 enum ModelError: Error {
