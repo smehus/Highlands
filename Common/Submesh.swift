@@ -84,11 +84,12 @@ private extension Submesh {
         let functionConstants = makeFunctionConstants(textures: textures, type: type)
 
         let library = Renderer.library
-        let vertexFunction = library?.makeFunction(name: type.vertexFunctionName)
+        let vertexFunction: MTLFunction?
         let fragmentFunction: MTLFunction?
 
         do {
             fragmentFunction = try library?.makeFunction(name: type.fragmentFunctionName, constantValues: functionConstants)
+            vertexFunction = try library?.makeFunction(name: type.vertexFunctionName, constantValues: functionConstants)
         } catch {
             fatalError("No Metal function exists")
         }

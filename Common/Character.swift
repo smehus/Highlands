@@ -47,6 +47,7 @@ class Character: Node {
     var samplerState: MTLSamplerState
     static var vertexDescriptor: MDLVertexDescriptor = MDLVertexDescriptor.defaultVertexDescriptor
 
+    private let animations: [String: AnimationClip]
 
     // Stuff I added \\
 
@@ -93,6 +94,20 @@ class Character: Node {
                         startTime: asset.startTime,
                         endTime: asset.endTime,
                         modelType: .character)
+        }
+
+        let assetAnimations = asset.animations.objects.compactMap {
+            $0 as? MDLPackedJointAnimation
+        }
+
+        let animations = Dictionary(uniqueKeysWithValues: assetAnimations.map {
+            ($0.name, AnimationComponent.load(animation: $0))
+        })
+
+        self.animations = animations
+
+        animations.forEach {
+            print("*** ANIMATION \($0.key)")
         }
 
         samplerState = Character.buildSamplerState()
