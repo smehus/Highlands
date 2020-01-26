@@ -29,25 +29,23 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
                                        constant float4x4 *jointMatrices [[ buffer(21) ]],
                                        constant Uniforms &uniforms [[ buffer(BufferIndexUniforms) ]])
 {
-    VertexOut out;  
 
-    // skinning code
+    float4 position = vertexIn.position;
+    float4 normal = float4(vertexIn.normal, 0);
     float4 weights = vertexIn.weights;
     ushort4 joints = vertexIn.joints;
-    float4x4 skinMatrix =
-    weights.x * jointMatrices[joints.x] +
-    weights.y * jointMatrices[joints.y] +
-    weights.z * jointMatrices[joints.z] +
-    weights.w * jointMatrices[joints.w];
-
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
-    // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
-    out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
-    out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
-    out.uv = vertexIn.uv;
-
     float4x4 shadowMatrix = uniforms.shadowMatrix;
-    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * vertexIn.position;
+
+    position = weights.x * (jointMatrices[joints.x] * position) + weights.y * (jointMatrices[joints.y] * position) + weights.z * (jointMatrices[joints.z] * position) + weights.w * (jointMatrices[joints.w] * position);
+    normal = weights.x * (jointMatrices[joints.x] * normal) + weights.y * (jointMatrices[joints.y] * normal) + weights.z * (jointMatrices[joints.z] * normal) + weights.w * (jointMatrices[joints.w] * normal);
+
+    VertexOut out {
+        .position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * position,
+        .worldPosition = uniforms.modelMatrix * vertexIn.position,
+        .worldNormal = uniforms.normalMatrix * normal.xyz,
+        .uv = vertexIn.uv,
+        .shadowPosition = shadowMatrix * uniforms.modelMatrix * vertexIn.position
+    };
 
 //    out.worldTangent = uniforms.normalMatrix * (skinMatrix * vertexIn.tangent).xyz;
 //    float3 bitangent = cross(vertexIn.normal, vertexIn.tangent.xyz) * vertexIn.tangent.w;
