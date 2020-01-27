@@ -17,10 +17,10 @@ struct VertexIn {
 
 struct VertexOut {
     float4 position [[ position ]];
-    float4 worldPosition;
+    float3 worldPosition;
     float3 worldNormal;
-//    float3 worldTangent;
-//    float3 worldBitangent;
+    float3 worldTangent;
+    float3 worldBitangent;
     float2 uv;
     float4 shadowPosition;
 };
@@ -41,15 +41,13 @@ vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
 
     VertexOut out {
         .position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * position,
-        .worldPosition = uniforms.modelMatrix * vertexIn.position,
+        .worldPosition = (uniforms.modelMatrix * position).xyz,
         .worldNormal = uniforms.normalMatrix * normal.xyz,
+        .worldTangent = 0,
+        .worldBitangent = 0,
         .uv = vertexIn.uv,
-        .shadowPosition = shadowMatrix * uniforms.modelMatrix * vertexIn.position
+        .shadowPosition = shadowMatrix * uniforms.modelMatrix * position
     };
-
-//    out.worldTangent = uniforms.normalMatrix * (skinMatrix * vertexIn.tangent).xyz;
-//    float3 bitangent = cross(vertexIn.normal, vertexIn.tangent.xyz) * vertexIn.tangent.w;
-//    out.worldBitangent = uniforms.normalMatrix * (skinMatrix * float4(bitangent, 1)).xyz;
 
     return out;
 }

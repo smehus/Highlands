@@ -61,6 +61,12 @@
 		02BDBEE423DC974000FB3EEA /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222791F23BBB568005ED8FA /* TransformComponent.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
+		02BDBEEC23DD1E6B00FB3EEA /* skeletonWave.usda in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEEB23DD1E6B00FB3EEA /* skeletonWave.usda */; };
+		02BDBEED23DD1E6B00FB3EEA /* skeletonWave.usda in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEEB23DD1E6B00FB3EEA /* skeletonWave.usda */; };
+		02BDBEEF23DD4A8300FB3EEA /* soccerBall.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEEE23DD4A8300FB3EEA /* soccerBall.usdz */; };
+		02BDBEF023DD4A8300FB3EEA /* soccerBall.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEEE23DD4A8300FB3EEA /* soccerBall.usdz */; };
+		02BDBEF223DDD8FF00FB3EEA /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBEF123DDD8FF00FB3EEA /* PBR.metal */; };
+		02BDBEF323DDD8FF00FB3EEA /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBEF123DDD8FF00FB3EEA /* PBR.metal */; };
 		A539CE7C21E29C0A004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A539CE7D21E29C3E004FD174 /* chipped_paint_texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */; };
 		A563DF1221E6EBBE00563EA9 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
@@ -264,6 +270,9 @@
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		02BDBED623DC96A300FB3EEA /* Skeleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = boy_tpose.usdz; sourceTree = SOURCE_ROOT; };
+		02BDBEEB23DD1E6B00FB3EEA /* skeletonWave.usda */ = {isa = PBXFileReference; lastKnownFileType = text; path = skeletonWave.usda; sourceTree = SOURCE_ROOT; };
+		02BDBEEE23DD4A8300FB3EEA /* soccerBall.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; name = soccerBall.usdz; path = "usdpython 0.62/samples/assets/soccerBall.usdz"; sourceTree = SOURCE_ROOT; };
+		02BDBEF123DDD8FF00FB3EEA /* PBR.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PBR.metal; sourceTree = "<group>"; };
 		A539CE7B21E29C0A004FD174 /* chipped_paint_texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chipped_paint_texture.jpg; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
@@ -484,6 +493,7 @@
 		A56ACB3A21C727970069962B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				02BDBEEE23DD4A8300FB3EEA /* soccerBall.usdz */,
 				A563DF1021E6EB9E00563EA9 /* Skybox */,
 				A551AE0621C997C600FA207B /* Props */,
 				A551ADFE21C997C000FA207B /* Characters */,
@@ -515,6 +525,7 @@
 		A57506C021CD65A400C63081 /* Skeleton */ = {
 			isa = PBXGroup;
 			children = (
+				02BDBEEB23DD1E6B00FB3EEA /* skeletonWave.usda */,
 				A57506C121CD65A400C63081 /* skeleton.gltf */,
 				A57506C221CD65A400C63081 /* buffer_skeleton.bin */,
 			);
@@ -533,6 +544,7 @@
 		A57506CE21CD671A00C63081 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				02BDBEF123DDD8FF00FB3EEA /* PBR.metal */,
 				A5CB1E9C21EA848E002CCB94 /* DebugLights.metal */,
 				A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */,
 				A57506C821CD669700C63081 /* DebugBoundingBox.metal */,
@@ -821,6 +833,7 @@
 				0275F18B22FF6B5600C7D898 /* Torch.mtl in Resources */,
 				A59150B92263BA7E008ED280 /* floor_grid.mtl in Resources */,
 				A59150CC2263C216008ED280 /* tree_tile.mtl in Resources */,
+				02BDBEEC23DD1E6B00FB3EEA /* skeletonWave.usda in Resources */,
 				A5CB1E8421EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				0275F18922FF6B5600C7D898 /* Torch.obj in Resources */,
 				A57506B821CD646900C63081 /* treefir.mtl in Resources */,
@@ -867,6 +880,7 @@
 				02316F0322FF2943000DA34B /* boy_walking.bin in Resources */,
 				A5CB1E8621EA74F7002CCB94 /* HRN_LMP_NM.bmp in Resources */,
 				A5819C5B21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
+				02BDBEEF23DD4A8300FB3EEA /* soccerBall.usdz in Resources */,
 				02316F0522FF2943000DA34B /* Boy_Scarf_diffuse.png in Resources */,
 				A57506C321CD65A400C63081 /* skeleton.gltf in Resources */,
 				A59150B62263BA6F008ED280 /* floor_grid.obj in Resources */,
@@ -913,6 +927,7 @@
 				A58F1A0B21E931E5003F6F1F /* rock1.mtl in Resources */,
 				0275F18C22FF6B5600C7D898 /* Torch.mtl in Resources */,
 				0284473F22C0455C00A4E479 /* normal-water.png in Resources */,
+				02BDBEED23DD1E6B00FB3EEA /* skeletonWave.usda in Resources */,
 				02316F0C22FF2943000DA34B /* Boy_Head_diffuse.png in Resources */,
 				02316EFE22FF2943000DA34B /* Boy_UpperBody_diffuse.png in Resources */,
 				02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */,
@@ -930,6 +945,7 @@
 				A5A49167226B7AF8000A6BDD /* scaled_rigged_character.bin in Resources */,
 				A58F1A0921E931E5003F6F1F /* rock1.obj in Resources */,
 				A5819C5C21E59CB400E724BE /* young_lightskinned_female_diffuse2.png in Resources */,
+				02BDBEF023DD4A8300FB3EEA /* soccerBall.usdz in Resources */,
 				A59150BF2263BC8B008ED280 /* pillar.mtl in Resources */,
 				A5CB1E8321EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				A5CB1E8521EA74F7002CCB94 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
@@ -969,6 +985,7 @@
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57506D021CD680E00C63081 /* Renderable.swift in Sources */,
+				02BDBEF223DDD8FF00FB3EEA /* PBR.metal in Sources */,
 				A5C952C521CE952D00B23364 /* MotionController.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
 				02BDBEDE23DC96A400FB3EEA /* Skeleton.swift in Sources */,
@@ -1019,6 +1036,7 @@
 				A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				0284473922C02DFB00A4E479 /* Water.swift in Sources */,
 				A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */,
+				02BDBEF323DDD8FF00FB3EEA /* PBR.metal in Sources */,
 				02BDBED923DC96A400FB3EEA /* AnimationClip.swift in Sources */,
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A58F1A1221E94112003F6F1F /* MorphShader.metal in Sources */,
@@ -1207,14 +1225,14 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Common",
 				);
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Highlands-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1242,6 +1260,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

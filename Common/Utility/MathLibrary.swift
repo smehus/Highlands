@@ -90,6 +90,13 @@ extension float4x4 {
         return float3x3(columns: (x, y, z))
     }
 
+    var upperLeftNormals: float3x3 {
+        let x = columns.0.xyz
+        let y = columns.1.xyz
+        let z = columns.2.xyz
+        return float3x3(columns: (x, y, z))
+    }
+
     init(projectionFov fov: Float, aspectRatio: Float, nearZ: Float, farZ: Float) {
 
         

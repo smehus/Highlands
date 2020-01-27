@@ -48,13 +48,8 @@ class Character: Node {
     static var vertexDescriptor: MDLVertexDescriptor = MDLVertexDescriptor.defaultVertexDescriptor
 
     private let animations: [String: AnimationClip]
-
-    // Stuff I added \\
-
-
-    // Not sure about this tho
-//    var currentAnimation: AnimationClip?
-//    var currentAnimationPlaying = false
+    private var currentAnimation: AnimationClip?
+    private var animationPaused = true
 
     var shadowInstanceCount: Int = 0
 
@@ -67,7 +62,7 @@ class Character: Node {
     var positionInPatch: SIMD3<Float>?
 
     init(name: String) {
-        guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
+        guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else { fatalError() }
 
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL,
@@ -84,6 +79,7 @@ class Character: Node {
                                     tangentAttributeNamed: MDLVertexAttributeTangent,
                                     bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
+
             Character.vertexDescriptor = mdlMesh.vertexDescriptor
             mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
         }
@@ -92,8 +88,7 @@ class Character: Node {
             return Mesh(mdlMesh: $0.0,
                         mtkMesh: $0.1,
                         startTime: asset.startTime,
-                        endTime: asset.endTime,
-                        modelType: .character)
+                        endTime: asset.endTime)
         }
 
         let assetAnimations = asset.animations.objects.compactMap {
@@ -131,8 +126,7 @@ class Character: Node {
         descriptor.sAddressMode = .repeat
         descriptor.tAddressMode = .repeat
         descriptor.mipFilter = .linear
-        // TODO: I don't know why this is crashing me....
-//        descriptor.maxAnisotropy = 0
+        descriptor.maxAnisotropy = 8
         guard let state = Renderer.device.makeSamplerState(descriptor: descriptor) else {
             fatalError()
         }
@@ -145,6 +139,7 @@ class Character: Node {
         return normalize([sin(-rotation.z), 0, cos(-rotation.z)])
     }
 
+    /*
     override func update(deltaTime: Float) {
 
         currentPatch = patch(for: position)
@@ -197,6 +192,20 @@ class Character: Node {
 
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
         position.y = pointer.pointee
+    }
+
+ */
+    override func update(deltaTime: Float) {
+        currentTime += deltaTime
+        for mesh in meshes {
+            if let animationClip = animations.first?.value {
+                mesh.skeleton?.updatePose(animationClip: animationClip,
+                                          at: currentTime)
+                mesh.transform?.currentTransform = .identity()
+            } else {
+                mesh.transform?.setCurrentTransform(at: currentTime)
+            }
+        }
     }
 
     func setLeftRotation(rotationSpeed: Float) {
@@ -253,6 +262,8 @@ extension Character: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
 
+        renderEncoder.setFragmentSamplerState(samplerState, index: 0)
+
         for mesh in meshes {
 
             if let paletteBuffer = mesh.skeleton?.jointMatrixPaletteBuffer {
@@ -260,12 +271,14 @@ extension Character: Renderable {
             }
 
             var uniforms = vertex
-            uniforms.modelMatrix = worldTransform * (mesh.transform?.currentTransform ?? float4x4.identity())
-            uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+            let currentLocalTransform = mesh.transform?.currentTransform ?? .identity()
+            uniforms.modelMatrix = modelMatrix * currentLocalTransform
 
-            renderEncoder.setFragmentSamplerState(samplerState, index: 0)
+            uniforms.normalMatrix = uniforms.modelMatrix.upperLeftNormals
 
-            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+            renderEncoder.setVertexBytes(&uniforms,
+                                         length: MemoryLayout<Uniforms>.stride,
+                                         index: Int(BufferIndexUniforms.rawValue))
 
             for (index, vertexBuffer) in mesh.mtkMesh.vertexBuffers.enumerated() {
               renderEncoder.setVertexBuffer(vertexBuffer.buffer,
@@ -278,7 +291,7 @@ extension Character: Renderable {
                 // Set the textures
                 renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
                 renderEncoder.setFragmentTexture(submesh.textures.normal, index: Int(NormalTexture.rawValue))
-                renderEncoder.setFragmentTexture(submesh.textures.roughness, index: Int(RoughnessTexture.rawValue))
+//                renderEncoder.setFragmentTexture(submesh.textures.roughness, index: Int(RoughnessTexture.rawValue))
 
                 // Set Material
                 var material = submesh.material
@@ -419,4 +432,29 @@ extension Character: Renderable {
         let final = SIMD3<Float>(calculate(x), 0, calculate(z))
         return final
     }
+}
+
+
+extension Character {
+    func runAnimation(name: String) {
+        currentAnimation = animations[name]
+        if currentAnimation != nil {
+            animationPaused = false
+            currentTime = 0
+        }
+    }
+
+    func pauseAnimation() {
+        animationPaused = true
+    }
+
+    func resumeAnimation() {
+        animationPaused = false
+    }
+
+    func stopAnimation() {
+        animationPaused = true
+        currentAnimation = nil
+    }
+
 }

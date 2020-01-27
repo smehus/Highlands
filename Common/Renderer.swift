@@ -145,19 +145,19 @@ extension Renderer: MTKViewDelegate {
 
         // Calculate Height
 
-        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-        heightEncoder.pushDebugGroup("Height pass")
-        for renderable in scene.renderables {
-            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
-        }
-        heightEncoder.popDebugGroup()
-        heightEncoder.endEncoding()
+//        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+//        heightEncoder.pushDebugGroup("Height pass")
+//        for renderable in scene.renderables {
+//            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
+//        }
+//        heightEncoder.popDebugGroup()
+//        heightEncoder.endEncoding()
 
 
         // Shadow pass
         let previousUniforms = scene.uniforms
-        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
-        renderShadowPass(renderEncoder: shadowEncoder, view: view)
+//        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
+//        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
@@ -211,7 +211,7 @@ extension Renderer: MTKViewDelegate {
 
         scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
-        drawDebug(encoder: renderEncoder)
+//        drawDebug(encoder: renderEncoder)
 
         renderEncoder.endEncoding()
 

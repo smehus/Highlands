@@ -16,7 +16,7 @@ final class GameScene: Scene {
     let terrain = Terrain(textureName: "hills")
     let ground = Prop(type: .base(name: "floor_grid", lighting: true))
     let plane = Prop(type: .base(name: "large-plane", lighting: true))
-    let skeleton = Character(name: "boy_tpose")
+    let skeleton = Character(name: "boy_tpose.usdz")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
     let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
     let water = Water(size: 500)
@@ -93,6 +93,7 @@ final class GameScene: Scene {
         skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
         skeleton.position = [3, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+//        skeleton.runAnimation(name: "/boy_tpose/Animations/Armature_mixamo_com_Layer0")
         add(node: skeleton)
 
         physicsController.dynamicBody = skeleton

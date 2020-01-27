@@ -83,8 +83,30 @@ private extension Submesh {
         return functionConstants
     }
 
+    static func makeFunctionConstants(textures: Textures) -> MTLFunctionConstantValues {
+            let functionConstants = MTLFunctionConstantValues()
+            var property = textures.baseColor != nil
+            functionConstants.setConstantValue(&property, type: .bool, index: 0)
+            property = textures.normal != nil
+            functionConstants.setConstantValue(&property, type: .bool, index: 1)
+            property = textures.roughness != nil
+            functionConstants.setConstantValue(&property, type: .bool, index: 2)
+            property = false
+            functionConstants.setConstantValue(&property, type: .bool, index: 3)
+            property = false
+            functionConstants.setConstantValue(&property, type: .bool, index: 4)
+            return functionConstants
+    }
+
     static func makePipelineState(textures: Textures, type: ModelType) -> MTLRenderPipelineState {
-        let functionConstants = makeFunctionConstants(textures: textures, type: type)
+        let functionConstants: MTLFunctionConstantValues
+        switch type {
+        case .character:
+            functionConstants = makeFunctionConstants(textures: textures)
+        default:
+            functionConstants = makeFunctionConstants(textures: textures, type: type)
+        }
+
 
         let library = Renderer.library
         let vertexFunction: MTLFunction?
