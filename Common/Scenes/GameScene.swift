@@ -37,9 +37,9 @@ final class GameScene: Scene {
         camera.rotation = [0, 0, 0]
 
 
-        water.position.y = -7
-        water.rotation = [0, 0, radians(fromDegrees: -90)]
-        add(node: water)
+//        water.position.y = -7
+//        water.rotation = [0, 0, radians(fromDegrees: -90)]
+//        add(node: water)
   /*
         ground.tiling = 4
         ground.scale = [4, 1, 4]
@@ -49,55 +49,55 @@ final class GameScene: Scene {
         let count = 200
         let offset = 100
          
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
-        add(node: tree)
-        physicsController.addStaticBody(node: tree)
-        for i in 0..<count {
-            var transform = Transform()
-            transform.scale = [3.0, 3.0, 3.0]
-
-            var position: SIMD3<Float>
-            repeat {
-                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-            } while position.x > 2 && position.z > 2
-
-            transform.position = position
-            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-        }
-
-        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
-        let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
-
-        add(node: rock)
-        physicsController.addStaticBody(node: rock)
-        for i in 0..<count {
-            var transform = Transform()
-
-            if i == 0 {
-                transform.position = [0, 0, 3]
-            } else {
-                var position: SIMD3<Float>
-                repeat {
-                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-                } while position.x > 2 && position.z > 2
-
-                transform.position = position
-            }
-
-            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-        }
+//        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
+//        add(node: tree)
+//        physicsController.addStaticBody(node: tree)
+//        for i in 0..<count {
+//            var transform = Transform()
+//            transform.scale = [3.0, 3.0, 3.0]
+//
+//            var position: SIMD3<Float>
+//            repeat {
+//                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//            } while position.x > 2 && position.z > 2
+//
+//            transform.position = position
+//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+//        }
+//
+//        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
+//        let morphTargetNames = ["rock1", "rock2", "rock3"]
+//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
+//
+//        add(node: rock)
+//        physicsController.addStaticBody(node: rock)
+//        for i in 0..<count {
+//            var transform = Transform()
+//
+//            if i == 0 {
+//                transform.position = [0, 0, 3]
+//            } else {
+//                var position: SIMD3<Float>
+//                repeat {
+//                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//                } while position.x > 2 && position.z > 2
+//
+//                transform.position = position
+//            }
+//
+//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+//        }
 
 
         skeleton.scale = [0.015, 0.015, 0.015]
-        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+//        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
         skeleton.position = [3, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
 //        skeleton.runAnimation(name: "/boy_tpose/Animations/Armature_mixamo_com_Layer0")
         add(node: skeleton)
 
-        physicsController.dynamicBody = skeleton
-        inputController.player = skeleton
+//        physicsController.dynamicBody = skeleton
+//        inputController.player = skeleton
 
 
 //        skeleton.currentAnimation?.speed = 1.0

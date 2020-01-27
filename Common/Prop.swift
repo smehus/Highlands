@@ -45,7 +45,7 @@ enum ModelType {
         case .morph:
             return "fragment_main"
         case .water: return "fragment_water"
-        case .character: return "character_fragment_main"
+        case .character: return "fragment_mainPBR"
         }
     }
 

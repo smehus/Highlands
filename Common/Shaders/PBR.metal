@@ -114,7 +114,7 @@ fragment float4 fragment_mainPBR(VertexOut in [[stage_in]],
   float3 diffuseColor = light.color * baseColor * nDotl * ambientOcclusion;
   diffuseColor *= 1.0 - metallic;
   float4 finalColor = float4(specularOutput + diffuseColor, 1.0);
-  return float4(1, 0, 0, 1);
+  return finalColor;
 }
 
 /*
@@ -168,6 +168,6 @@ float3 render(Lighting lighting) {
   float3 specularOutput = (Ds * Gs * Fs * lighting.lightColor) * (1.0 + lighting.metallic * lighting.baseColor) + lighting.metallic * lighting.lightColor * lighting.baseColor;
   specularOutput = specularOutput * lighting.ambientOcclusion;
   
-  return float3(0, 0, 0);
+  return specularOutput;
 }
 

@@ -289,9 +289,16 @@ extension Character: Renderable {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
 
                 // Set the textures
-                renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
-                renderEncoder.setFragmentTexture(submesh.textures.normal, index: Int(NormalTexture.rawValue))
-//                renderEncoder.setFragmentTexture(submesh.textures.roughness, index: Int(RoughnessTexture.rawValue))
+                renderEncoder.setFragmentTexture(submesh.textures.baseColor,
+                                                  index: Int(BaseColorTexture.rawValue))
+                 renderEncoder.setFragmentTexture(submesh.textures.normal,
+                                                  index: Int(NormalTexture.rawValue))
+                 renderEncoder.setFragmentTexture(submesh.textures.roughness,
+                                                  index: Int(RoughnessTexture.rawValue))
+                 renderEncoder.setFragmentTexture(submesh.textures.metallic,
+                                                  index: Int(MetallicTexture.rawValue))
+                 renderEncoder.setFragmentTexture(submesh.textures.ao,
+                                                  index: Int(AOTexture.rawValue))
 
                 // Set Material
                 var material = submesh.material

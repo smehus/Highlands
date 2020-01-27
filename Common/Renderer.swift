@@ -132,15 +132,15 @@ extension Renderer: MTKViewDelegate {
         scene.update(deltaTime: deltaTime)
 
         // Tessellation Pass
-        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
-        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
-
-        computeEncoder.pushDebugGroup("Tessellation Pass")
-        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
-        computeEncoder.popDebugGroup()
-        computeEncoder.endEncoding()
-
-        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+//        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
+//        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+//
+////        computeEncoder.pushDebugGroup("Tessellation Pass")
+////        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+////        computeEncoder.popDebugGroup()
+////        computeEncoder.endEncoding()
+////
+////        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
 
 
         // Calculate Height
@@ -209,7 +209,7 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+//        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
 //        drawDebug(encoder: renderEncoder)
 
