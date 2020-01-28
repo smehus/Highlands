@@ -203,7 +203,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     float3 baseColor;
 //    if (hasCharacterTextures) {
         constexpr sampler s(filter::linear);
-        float4 textureColor = baseColorTexture.sample(s, in.uv);
+        float4 textureColor = baseColorTexture.sample(textureSampler, in.uv);
 //        if (textureColor.a < 0.1) { discard_fragment(); }
         baseColor = textureColor.rgb;
 
