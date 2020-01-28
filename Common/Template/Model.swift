@@ -33,7 +33,7 @@ import MetalKit
 
 class Model: TemplateNode {
 
-    let meshes: [TemplateMesh]
+    let meshes: [Mesh]
     var tiling: UInt32 = 1
     let samplerState: MTLSamplerState?
     static var vertexDescriptor: MDLVertexDescriptor = MDLVertexDescriptor.defaultVertexDescriptor
@@ -66,9 +66,9 @@ class Model: TemplateNode {
         }
 
         meshes = zip(mdlMeshes, mtkMeshes).map {
-            TemplateMesh(mdlMesh: $0.0, mtkMesh: $0.1,
+            Mesh(mdlMesh: $0.0, mtkMesh: $0.1,
                  startTime: asset.startTime,
-                 endTime: asset.endTime)
+                 endTime: asset.endTime, modelType: .character)
 
         }
         samplerState = Model.buildSamplerState()

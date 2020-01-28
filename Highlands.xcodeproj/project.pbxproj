@@ -23,8 +23,6 @@
 		0294AE6523DFE526005F2E67 /* TemplatePBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* TemplatePBR.metal */; };
 		0294AE6623DFE526005F2E67 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
 		0294AE6723DFE526005F2E67 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
-		0294AE6A23DFE6AC005F2E67 /* TemplateMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6823DFE6AB005F2E67 /* TemplateMesh.swift */; };
-		0294AE6B23DFE6AC005F2E67 /* TemplateMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6823DFE6AB005F2E67 /* TemplateMesh.swift */; };
 		0294AE6F23DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6E23DFE7EE005F2E67 /* VertexDescriptor.swift */; };
 		0294AE7023DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6E23DFE7EE005F2E67 /* VertexDescriptor.swift */; };
 		0294AE7223DFE80F005F2E67 /* TemplateNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE7123DFE80F005F2E67 /* TemplateNode.swift */; };
@@ -69,6 +67,8 @@
 		0294AEB423E07380005F2E67 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2021B9F718002F6F35 /* Submesh.swift */; };
 		0294AEB623E073CC005F2E67 /* ModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AEB523E073CC005F2E67 /* ModelType.swift */; };
 		0294AEB723E073CC005F2E67 /* ModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AEB523E073CC005F2E67 /* ModelType.swift */; };
+		0294AEBA23E07693005F2E67 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792223BBBB8B005ED8FA /* Mesh.swift */; };
+		0294AEBB23E07693005F2E67 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792223BBBB8B005ED8FA /* Mesh.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
@@ -566,6 +566,7 @@
 				0294AE7223DFE80F005F2E67 /* TemplateNode.swift in Sources */,
 				0294AEA823DFF129005F2E67 /* Terrain.metal in Sources */,
 				0294AEAC23DFF129005F2E67 /* Shaders.metal in Sources */,
+				0294AEBA23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AE6423DFE526005F2E67 /* TemplatePBR.metal in Sources */,
 				0294AE4E23DFE1A8005F2E67 /* TemplateCamera.swift in Sources */,
 				0294AE8823DFECC6005F2E67 /* Animation.swift in Sources */,
@@ -583,7 +584,6 @@
 				0294AE6623DFE526005F2E67 /* TemplateShaders.metal in Sources */,
 				0294AEA023DFF129005F2E67 /* MorphShader.metal in Sources */,
 				0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */,
-				0294AE6A23DFE6AC005F2E67 /* TemplateMesh.swift in Sources */,
 				0294AE8E23DFECC6005F2E67 /* TransformComponent.swift in Sources */,
 				0294AE8623DFECC6005F2E67 /* AnimationClip.swift in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
@@ -615,8 +615,8 @@
 				0294AE5B23DFE2EC005F2E67 /* TemplateRenderable.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
 				0294AE4F23DFE1A8005F2E67 /* TemplateCamera.swift in Sources */,
+				0294AEBB23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AEAD23DFF129005F2E67 /* Shaders.metal in Sources */,
-				0294AE6B23DFE6AC005F2E67 /* TemplateMesh.swift in Sources */,
 				0294AEAF23DFF129005F2E67 /* Water.metal in Sources */,
 				0294AE8D23DFECC6005F2E67 /* Skeleton.swift in Sources */,
 				0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */,
