@@ -86,7 +86,7 @@ fragment float4 fragment_mainPBR(VertexOut in [[stage_in]],
   if (hasMetallicTexture) {
     metallic = metallicTexture.sample(textureSampler, in.uv).r;
   } else {
-//    metallic = material.metallic;
+    metallic = material.metalness;
   }
   // extract roughness
   float roughness;
