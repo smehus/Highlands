@@ -30,9 +30,9 @@ extension Texturable {
         descriptor.width = textures[0].width
         descriptor.height = textures[0].height
         descriptor.arrayLength = textures.count
-        let arrayTexture = Renderer.device.makeTexture(descriptor: descriptor)!
+        let arrayTexture = TemplateRenderer.device.makeTexture(descriptor: descriptor)!
 
-        let commandBuffer = Renderer.commandQueue.makeCommandBuffer()!
+        let commandBuffer = TemplateRenderer.commandQueue.makeCommandBuffer()!
         let blitEncoder = commandBuffer.makeBlitCommandEncoder()!
         let origin = MTLOrigin(x: 0, y: 0, z: 0)
         let size = MTLSize(width: arrayTexture.width,
@@ -61,7 +61,7 @@ extension Texturable {
     }
 
     static func loadTexture(imageName: String, origin: MTKTextureLoader.Origin = .topLeft) throws -> MTLTexture? {
-        let textureLoader = MTKTextureLoader(device: Renderer.device)
+        let textureLoader = MTKTextureLoader(device: TemplateRenderer.device)
         let textureLoaderOptions: [MTKTextureLoader.Option: Any] =
             // TODO: WHAT THE FUCK? gltf textures are loading upside down you dumbass
             [.origin: origin,
@@ -81,7 +81,7 @@ extension Texturable {
 
     static func loadCubeTexture(imageName: String) throws -> MTLTexture {
         // MDLTexure can't load from asset catalog
-        let textureLoader = MTKTextureLoader(device: Renderer.device)
+        let textureLoader = MTKTextureLoader(device: TemplateRenderer.device)
 
         if let texture = MDLTexture(cubeWithImagesNamed: [imageName]) {
             let options: [MTKTextureLoader.Option: Any] =
