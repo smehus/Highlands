@@ -160,10 +160,10 @@ extension Model: TemplateRenderable {
                                                  index: Int(NormalTexture.rawValue))
                 renderEncoder.setFragmentTexture(submesh.textures.roughness,
                                                  index: Int(RoughnessTexture.rawValue))
-                renderEncoder.setFragmentTexture(submesh.textures.metallic,
-                                                 index: Int(MetallicTexture.rawValue))
-                renderEncoder.setFragmentTexture(submesh.textures.ao,
-                                                 index: Int(AOTexture.rawValue))
+//                renderEncoder.setFragmentTexture(submesh.textures.metallic,
+//                                                 index: Int(MetallicTexture.rawValue))
+//                renderEncoder.setFragmentTexture(submesh.textures.ao,
+//                                                 index: Int(AOTexture.rawValue))
 
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
                 var material = submesh.material
