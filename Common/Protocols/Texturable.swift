@@ -49,7 +49,7 @@ extension Texturable {
     }
 
     static func loadTexture(texture: MDLTexture) throws -> MTLTexture? {
-        let textureLoader = MTKTextureLoader(device: Renderer.device)
+        let textureLoader = MTKTextureLoader(device: TemplateRenderer.device)
         let textureLoaderOptions: [MTKTextureLoader.Option: Any] =
             [.origin: MTKTextureLoader.Origin.bottomLeft,
              .SRGB: false,

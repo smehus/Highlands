@@ -55,6 +55,7 @@ typedef struct {
     uint lightCount;
     vector_float3 cameraPosition;
     matrix_float4x4 lightProjectionMatrix;
+    uint tiling;
 } FragmentUniforms;
 
 typedef enum {

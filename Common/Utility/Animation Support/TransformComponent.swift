@@ -16,7 +16,7 @@ class TransformComponent {
 
     init(transform: MDLTransformComponent, object: MDLObject, startTime: TimeInterval, endTime: TimeInterval) {
         duration = Float(endTime - startTime)
-        let frames = 1 / TimeInterval(Renderer.mtkView.preferredFramesPerSecond)
+        let frames = 1 / TimeInterval(TemplateRenderer.fps)
         let timeStride = stride(from: startTime, to: endTime, by: frames)
         keyTransforms = Array(timeStride).map { time in
             // Grabs the transform of usda at time - listed in the usda file?
@@ -28,7 +28,7 @@ class TransformComponent {
         guard duration > 0 else { currentTransform = .identity(); return }
 
         // Just grabs a frame as if it were looping (say if duration was 2.5 & time was 30)
-        let frame = Int(fmod(time, duration) * Float(Renderer.mtkView.preferredFramesPerSecond))
+        let frame = Int(fmod(time, duration) * Float(TemplateRenderer.fps))
 
         if frame < keyTransforms.count {
             currentTransform = keyTransforms[frame]

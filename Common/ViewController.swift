@@ -9,7 +9,7 @@
 import MetalKit
 class ViewController: LocalViewController {
 
-    var renderer: Renderer?
+    var renderer: TemplateRenderer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,12 +17,12 @@ class ViewController: LocalViewController {
             fatalError("metal view not set up in storyboard")
         }
 
-        renderer = Renderer(metalView: metalView)
-        let scene = GameScene(sceneSize: metalView.bounds.size)
-        renderer?.scene = scene
-
-        if let gameView = metalView as? GameView {
-            gameView.inputController = scene.inputController
-        }
+        renderer = TemplateRenderer(metalView: metalView)
+//        let scene = GameScene(sceneSize: metalView.bounds.size)
+//        renderer?.scene = scene
+//
+//        if let gameView = metalView as? GameView {
+//            gameView.inputController = scene.inputController
+//        }
     }
 }
