@@ -81,7 +81,7 @@ class TemplateRenderer: NSObject {
 
     // models
     let skeleton = Model(name: "boy_tpose.usdz")
-//    skeleton.rotation = [.pi / 2, .pi, 0]
+    skeleton.rotation = [.pi / 2, 0, radians(fromDegrees: 180)]
     skeleton.scale = [0.02, 0.02, 0.02]
     models.append(skeleton)
 //    let ground = Model(name: "ground.obj")
