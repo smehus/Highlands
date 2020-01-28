@@ -2,15 +2,11 @@
 import MetalKit
 
 class GameView: MTKView {
-  weak var inputController: InputController?
+//  weak var inputController: InputController?
   
   // for mouse movement
   var trackingArea : NSTrackingArea?
-  var useMouse = false {
-    didSet {
-      inputController?.useMouse = useMouse
-    }
-  }
+  var useMouse = false 
   
   override func updateTrackingAreas() {
     guard let window = NSApplication.shared.mainWindow else { return }
@@ -40,59 +36,59 @@ extension GameView {
     return true
   }
 
-  override func keyDown(with event: NSEvent) {
-    guard let key = KeyboardControl(rawValue: event.keyCode) else {
-      return
-    }
-    let state: InputState = event.isARepeat ? .continued : .began
-    inputController?.processEvent(key: key, state: state)
-  }
+//  override func keyDown(with event: NSEvent) {
+//    guard let key = KeyboardControl(rawValue: event.keyCode) else {
+//      return
+//    }
+//    let state: InputState = event.isARepeat ? .continued : .began
+//    inputController?.processEvent(key: key, state: state)
+//  }
+//  
+//  override func keyUp(with event: NSEvent) {
+//    guard let key = KeyboardControl(rawValue: event.keyCode) else {
+//      return
+//    }
+//    inputController?.processEvent(key: key, state: .ended)
+//  }
   
-  override func keyUp(with event: NSEvent) {
-    guard let key = KeyboardControl(rawValue: event.keyCode) else {
-      return
-    }
-    inputController?.processEvent(key: key, state: .ended)
-  }
-  
-  override func mouseMoved(with event: NSEvent) {
-    inputController?.processEvent(mouse: .mouseMoved, state: .began, event: event)
-    // reset mouse position to center of view
-    guard useMouse else { return }
-    let screenFrame = NSScreen.main?.frame ?? .zero
-    var rect = frame
-    frame = convert(rect, to: nil)
-    rect = window?.convertToScreen(rect) ?? rect
-    CGWarpMouseCursorPosition(NSPoint(x: (rect.origin.x + bounds.midX),
-                                      y: (screenFrame.height - rect.origin.y - bounds.midY) ))
-  }
+//  override func mouseMoved(with event: NSEvent) {
+//    inputController?.processEvent(mouse: .mouseMoved, state: .began, event: event)
+//    // reset mouse position to center of view
+//    guard useMouse else { return }
+//    let screenFrame = NSScreen.main?.frame ?? .zero
+//    var rect = frame
+//    frame = convert(rect, to: nil)
+//    rect = window?.convertToScreen(rect) ?? rect
+//    CGWarpMouseCursorPosition(NSPoint(x: (rect.origin.x + bounds.midX),
+//                                      y: (screenFrame.height - rect.origin.y - bounds.midY) ))
+//  }
   
 
-  override func mouseDown(with event: NSEvent) {
-    inputController?.processEvent(mouse: .leftDown, state: .began, event: event)
-  }
-  
-  override func mouseUp(with event: NSEvent) {
-    inputController?.processEvent(mouse: .leftUp, state: .ended, event: event)
-  }
-  
-  override func mouseDragged(with event: NSEvent) {
-    inputController?.processEvent(mouse: .leftDrag, state: .continued, event: event)
-  }
-  
-  override func rightMouseDown(with event: NSEvent) {
-    inputController?.processEvent(mouse: .rightDown, state: .began, event: event)
-  }
-  
-  override func rightMouseDragged(with event: NSEvent) {
-    inputController?.processEvent(mouse: .rightDrag, state: .continued, event: event)
-  }
-  
-  override func rightMouseUp(with event: NSEvent) {
-    inputController?.processEvent(mouse: .rightUp, state: .ended, event: event)
-  }
-  
-  override func scrollWheel(with event: NSEvent) {
-    inputController?.processEvent(mouse: .scroll, state: .continued, event: event)
-  }
+//  override func mouseDown(with event: NSEvent) {
+//    inputController?.processEvent(mouse: .leftDown, state: .began, event: event)
+//  }
+//
+//  override func mouseUp(with event: NSEvent) {
+//    inputController?.processEvent(mouse: .leftUp, state: .ended, event: event)
+//  }
+//
+//  override func mouseDragged(with event: NSEvent) {
+//    inputController?.processEvent(mouse: .leftDrag, state: .continued, event: event)
+//  }
+//
+//  override func rightMouseDown(with event: NSEvent) {
+//    inputController?.processEvent(mouse: .rightDown, state: .began, event: event)
+//  }
+//
+//  override func rightMouseDragged(with event: NSEvent) {
+//    inputController?.processEvent(mouse: .rightDrag, state: .continued, event: event)
+//  }
+//
+//  override func rightMouseUp(with event: NSEvent) {
+//    inputController?.processEvent(mouse: .rightUp, state: .ended, event: event)
+//  }
+//
+//  override func scrollWheel(with event: NSEvent) {
+//    inputController?.processEvent(mouse: .scroll, state: .continued, event: event)
+//  }
 }

@@ -172,7 +172,7 @@ class Prop: Node {
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap { index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
-            return Submesh(submesh: mtkMesh.submeshes[index], mdlSubmesh: submesh, type: type)
+            return nil//Submesh(submesh: mtkMesh.submeshes[index], mdlSubmesh: submesh)
         } ?? []
 
         samplerState = Prop.buildSamplerState()

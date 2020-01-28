@@ -235,7 +235,7 @@ extension Renderer: MTKViewDelegate {
 //        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
 //        setSpotlight(view: view, sunlight: sunlight)
-        setLantern(view: view, renderEncoder: renderEncoder, sunlight: sunlight)
+//        setLantern(view: view, renderEncoder: renderEncoder, sunlight: sunlight)
 
         renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
         renderEncoder.setFragmentBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
@@ -250,92 +250,92 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.popDebugGroup()
     }
 
-    private func setLantern(view: MTKView, renderEncoder: MTLRenderCommandEncoder, sunlight: Light) {
-        guard let scene = scene else { return }
-        let aspect: Float = 1
-        var near: Float = Camera.NearZ
-        var far: Float = Camera.FarZ
-
-        let projection = float4x4(projectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
-
-
-//        let projection = float4x4(perspectiveProjectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
-        scene.uniforms.projectionMatrix = projection
-        var viewMatrices = [CubeMap]()
-
-        // Is this just because the sphere in demo spinning??
-        let directions: [float3] = [
-            [1, 0, 0],  // Right
-            [-1, 0, 0], // Left
-            [0, 1,  0], // Top
-            [0, -1, 0], // Down
-            [0, 0, 1],  // Front
-            [0, 0, -1]  // Back
-        ]
-
-        let ups: [float3] = [
-            [0, 1,  0], // Right
-            [0, 1,  0], // Left
-            [0, 0, -1], // Top
-            [0, 0,  1], // Down
-            [0, 1,  0], // Front
-            [0, 1,  0]  // Back
-        ]
-
-        var culler_probe = [FrustumCuller]()
-
-        // Build view matrix for each face of the cube map
-        for i in 0..<6 {
-            var map = CubeMap()
-            map.direction = directions[i]
-            map.up = ups[i]
-
-            let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
-            let lookAt = float4x4(lookAtLHEye: position, target: position + directions[i], up: ups[i])
-            map.faceViewMatrix = projection * lookAt
-            viewMatrices.append(map)
-
-            // Create frustums
-            let cullerProbe = FrustumCuller(viewMatrix: map.faceViewMatrix,
-                                            viewPosition: position,
-                                            aspect: 1,
-                                            halfAngleApertureHeight: .pi / 4,
-                                            nearPlaneDistance: near,
-                                            farPlaneDistance: far)
-
-            culler_probe.append(cullerProbe)
-        }
-
-
-        for (actorIdx, renderable) in scene.renderables.enumerated() {
-            guard let prop = renderable as? Prop else { continue }
-
-            let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
-
-            for (transformIdx, transform) in prop.transforms.enumerated() {
-
-                for (faceIdx, probe) in culler_probe.enumerated() {
-//                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
-
-//                        prop.updateShadowBuffer(transformIndex: (transformIdx * 6) + faceIdx, viewPortIndex: faceIdx)
-//                    }
-                }
-            }
-        }
-
-        // setVertexBytes instanceParams
-
-        renderEncoder.setVertexBytes(&viewMatrices,
-                                     length: MemoryLayout<CubeMap>.stride * viewMatrices.count,
-                                     index: Int(BufferIndexCubeFaces.rawValue))
-
-        renderEncoder.setVertexBuffer(instanceParamBuffer,
-                                      offset: 0,
-                                      index: Int(BufferIndexInstanceParams.rawValue))
-
-        renderEncoder.setFragmentBytes(&far, length: MemoryLayout<Float>.stride, index: 10)
-        renderEncoder.setFragmentBytes(&near, length: MemoryLayout<Float>.stride, index: 11)
-    }
+//    private func setLantern(view: MTKView, renderEncoder: MTLRenderCommandEncoder, sunlight: Light) {
+//        guard let scene = scene else { return }
+//        let aspect: Float = 1
+//        var near: Float = Camera.NearZ
+//        var far: Float = Camera.FarZ
+//
+//        let projection = float4x4(projectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
+//
+//
+////        let projection = float4x4(perspectiveProjectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
+//        scene.uniforms.projectionMatrix = projection
+//        var viewMatrices = [CubeMap]()
+//
+//        // Is this just because the sphere in demo spinning??
+//        let directions: [float3] = [
+//            [1, 0, 0],  // Right
+//            [-1, 0, 0], // Left
+//            [0, 1,  0], // Top
+//            [0, -1, 0], // Down
+//            [0, 0, 1],  // Front
+//            [0, 0, -1]  // Back
+//        ]
+//
+//        let ups: [float3] = [
+//            [0, 1,  0], // Right
+//            [0, 1,  0], // Left
+//            [0, 0, -1], // Top
+//            [0, 0,  1], // Down
+//            [0, 1,  0], // Front
+//            [0, 1,  0]  // Back
+//        ]
+//
+//        var culler_probe = [FrustumCuller]()
+//
+//        // Build view matrix for each face of the cube map
+//        for i in 0..<6 {
+//            var map = CubeMap()
+//            map.direction = directions[i]
+//            map.up = ups[i]
+//
+//            let position: float3 = [sunlight.position.x, sunlight.position.y, sunlight.position.z]
+//            let lookAt = float4x4(lookAtLHEye: position, target: position + directions[i], up: ups[i])
+//            map.faceViewMatrix = projection * lookAt
+//            viewMatrices.append(map)
+//
+//            // Create frustums
+//            let cullerProbe = FrustumCuller(viewMatrix: map.faceViewMatrix,
+//                                            viewPosition: position,
+//                                            aspect: 1,
+//                                            halfAngleApertureHeight: .pi / 4,
+//                                            nearPlaneDistance: near,
+//                                            farPlaneDistance: far)
+//
+//            culler_probe.append(cullerProbe)
+//        }
+//
+//
+//        for (actorIdx, renderable) in scene.renderables.enumerated() {
+//            guard let prop = renderable as? Prop else { continue }
+//
+//            let bSphere = vector_float4((prop.boundingBox.maxBounds + prop.boundingBox.minBounds) * 0.5, simd_length(prop.boundingBox.maxBounds - prop.boundingBox.minBounds) * 0.5)
+//
+//            for (transformIdx, transform) in prop.transforms.enumerated() {
+//
+//                for (faceIdx, probe) in culler_probe.enumerated() {
+////                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
+//
+////                        prop.updateShadowBuffer(transformIndex: (transformIdx * 6) + faceIdx, viewPortIndex: faceIdx)
+////                    }
+//                }
+//            }
+//        }
+//
+//        // setVertexBytes instanceParams
+//
+//        renderEncoder.setVertexBytes(&viewMatrices,
+//                                     length: MemoryLayout<CubeMap>.stride * viewMatrices.count,
+//                                     index: Int(BufferIndexCubeFaces.rawValue))
+//
+//        renderEncoder.setVertexBuffer(instanceParamBuffer,
+//                                      offset: 0,
+//                                      index: Int(BufferIndexInstanceParams.rawValue))
+//
+//        renderEncoder.setFragmentBytes(&far, length: MemoryLayout<Float>.stride, index: 10)
+//        renderEncoder.setFragmentBytes(&near, length: MemoryLayout<Float>.stride, index: 11)
+//    }
 
 
     private func setSpotlight(view: MTKView, sunlight: Light) {

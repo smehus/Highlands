@@ -14,22 +14,22 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let terrain = Terrain(textureName: "hills")
-    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
-    let plane = Prop(type: .base(name: "large-plane", lighting: true))
+//    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
+//    let plane = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "boy_tpose.usdz")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
-    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
-    let water = Water(size: 500)
+//    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
+//    let water = Water(size: 500)
 
     override func setupScene() {
 
         skybox = Skybox(textureName: nil)
 
-        inputController.keyboardDelegate = self
+//        inputController.keyboardDelegate = self
 
         terrain.position = SIMD3<Float>([0, 0, 0])
 //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
-        add(node: terrain)
+//        add(node: terrain)
 
 
         lights = lighting()
@@ -95,6 +95,7 @@ final class GameScene: Scene {
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
 //        skeleton.runAnimation(name: "/boy_tpose/Animations/Armature_mixamo_com_Layer0")
         add(node: skeleton)
+
 
 //        physicsController.dynamicBody = skeleton
 //        inputController.player = skeleton
@@ -194,42 +195,42 @@ final class GameScene: Scene {
         orthoCamera.rect = rect
     }
 }
+//
+//#if os(macOS)
+//extension GameScene: KeyboardDelegate {
+//    func keyPressed(key: KeyboardControl, keysDown: Set<KeyboardControl>, state: InputState) -> Bool {
+//        switch key {
+//        case .key0: currentCameraIndex = 0
+//        case .key1: currentCameraIndex = 1
+//        case .key2: currentCameraIndex = 2
+//        case .w, .s, .a, .d, .left, .right, .up, .down:
+//            if state == .began {
+////                skeleton.resumeAnimation()
+//            }
+//
+//            if state == .ended, keysDown.isEmpty {
+////                skeleton.pauseAnimation()
+//            }
+//        default:
+//            break
+//        }
+//
+//        return true
+//    }
+//}
+//
+//#endif
+//
+//#if os(iOS)
+//
+//extension GameScene: KeyboardDelegate {
+//    func didStartMove() {
+//        skeleton.resumeAnimation()
+//    }
+//
+//    func didEndMove() {
+//        skeleton.pauseAnimation()
+//    }
+//}
 
-#if os(macOS)
-extension GameScene: KeyboardDelegate {
-    func keyPressed(key: KeyboardControl, keysDown: Set<KeyboardControl>, state: InputState) -> Bool {
-        switch key {
-        case .key0: currentCameraIndex = 0
-        case .key1: currentCameraIndex = 1
-        case .key2: currentCameraIndex = 2
-        case .w, .s, .a, .d, .left, .right, .up, .down:
-            if state == .began {
-//                skeleton.resumeAnimation()
-            }
-
-            if state == .ended, keysDown.isEmpty {
-//                skeleton.pauseAnimation()
-            }
-        default:
-            break
-        }
-
-        return true
-    }
-}
-
-#endif
-
-#if os(iOS)
-
-extension GameScene: KeyboardDelegate {
-    func didStartMove() {
-        skeleton.resumeAnimation()
-    }
-
-    func didEndMove() {
-        skeleton.pauseAnimation()
-    }
-}
-
-#endif
+//#endif

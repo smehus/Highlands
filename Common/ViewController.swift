@@ -22,7 +22,7 @@ class ViewController: LocalViewController {
         renderer?.scene = scene
 
         if let gameView = metalView as? GameView {
-            gameView.inputController = scene.inputController
+//            gameView.inputController = scene.inputController
         }
     }
 }

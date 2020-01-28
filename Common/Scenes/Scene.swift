@@ -22,8 +22,8 @@ class Scene {
     var renderables = [Renderable]()
     var uniforms = Uniforms()
     var lights: [Light] = []
-    let inputController = InputController()
-    let physicsController = PhysicsController()
+//    let inputController = InputController()
+//    let physicsController = PhysicsController()
     var skybox: Skybox?
 
     init(sceneSize: CGSize) {
@@ -42,15 +42,15 @@ class Scene {
     }
 
     private func updatePlayer(deltaTime: Float) {
-        guard let node = inputController.player else { return }
-        let holdPosition = node.position
-        let holdRotation = node.rotation
-        inputController.updatePlayer(deltaTime: deltaTime)
-        
-        if physicsController.checkCollisions() && isHardCollision() {
-            node.position = holdPosition
-            node.rotation = holdRotation
-        }
+//        guard let node = inputController.player else { return }
+//        let holdPosition = node.position
+//        let holdRotation = node.rotation
+//        inputController.updatePlayer(deltaTime: deltaTime)
+//
+//        if physicsController.checkCollisions() && isHardCollision() {
+//            node.position = holdPosition
+//            node.rotation = holdRotation
+//        }
     }
 
     final func update(deltaTime: Float) {

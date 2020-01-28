@@ -61,7 +61,7 @@ class InputController {
 //            let multiplier = (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
 //            player.position.x += multiplier.x
 //            player.position.z += multiplier.z
-            player.position += (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
+//            player.position += (direction.z * player.forwardVector + direction.x * player.rightVector) * translationSpeed
         }
     }
 
