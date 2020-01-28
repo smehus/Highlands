@@ -31,7 +31,7 @@
 
 import MetalKit
 
-class Model: Node {
+class Model: TemplateNode {
 
     let meshes: [TemplateMesh]
     var tiling: UInt32 = 1
@@ -142,7 +142,7 @@ extension Model: TemplateRenderable {
                 mesh.transform?.currentTransform ?? .identity()
             uniforms.modelMatrix = modelMatrix * currentLocalTransform
 
-            uniforms.normalMatrix = uniforms.modelMatrix.upperLeft()
+            uniforms.normalMatrix = uniforms.modelMatrix.upperLeft
             renderEncoder.setVertexBytes(&uniforms,
                                          length: MemoryLayout<Uniforms>.stride,
                                          index: Int(BufferIndexUniforms.rawValue))
@@ -160,10 +160,10 @@ extension Model: TemplateRenderable {
                                                  index: Int(NormalTexture.rawValue))
                 renderEncoder.setFragmentTexture(submesh.textures.roughness,
                                                  index: Int(RoughnessTexture.rawValue))
-//                renderEncoder.setFragmentTexture(submesh.textures.metallic,
-//                                                 index: Int(MetallicTexture.rawValue))
-//                renderEncoder.setFragmentTexture(submesh.textures.ao,
-//                                                 index: Int(AOTexture.rawValue))
+                renderEncoder.setFragmentTexture(submesh.textures.metallic,
+                                                 index: Int(MetallicTexture.rawValue))
+                renderEncoder.setFragmentTexture(submesh.textures.ao,
+                                                 index: Int(AOTexture.rawValue))
 
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
                 var material = submesh.material

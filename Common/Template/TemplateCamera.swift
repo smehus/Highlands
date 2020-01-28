@@ -31,7 +31,7 @@
 
 import Foundation
 
-class TemplateCamera: Node {
+class TemplateCamera: TemplateNode {
   
   var fovDegrees: Float = 70
   var fovRadians: Float {
@@ -99,7 +99,7 @@ class ArcballCamera: TemplateCamera {
                                               rotation.y,
                                               0])
     let matrix = (rotateMatrix * translateMatrix).inverse
-    position = rotateMatrix.upperLeft() * -matrix.columns.3.xyz
+    position = rotateMatrix.upperLeft * -matrix.columns.3.xyz
     return matrix
   }
   

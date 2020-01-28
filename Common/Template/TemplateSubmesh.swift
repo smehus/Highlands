@@ -128,13 +128,13 @@ private extension TemplateSubmesh.Textures {
             guard let property = material?.property(with: semantic),
                 property.type == .string,
                 let filename = property.stringValue,
-                let texture = try? Submesh.loadTexture(imageName: filename)
+                let texture = try? TemplateSubmesh.loadTexture(imageName: filename)
             else {
                     if let property = material?.property(with: semantic),
                         property.type == .texture,
                         let mdlTexture = property.textureSamplerValue?.texture {
 
-                        return try? Submesh.loadTexture(texture: mdlTexture)
+                        return try? TemplateSubmesh.loadTexture(texture: mdlTexture)
                     }
                     return nil
             }
@@ -151,24 +151,24 @@ private extension TemplateSubmesh.Textures {
 }
 
 private extension Material {
-//  init(material: MDLMaterial?) {
-//    self.init()
-//    if let baseColor = material?.property(with: .baseColor),
-//      baseColor.type == .float3 {
-//      self.baseColor = baseColor.float3Value
-//    }
-//    if let specular = material?.property(with: .specular),
-//      specular.type == .float3 {
-//      self.specularColor = specular.float3Value
-//    }
-//    if let shininess = material?.property(with: .specularExponent),
-//      shininess.type == .float {
-//      self.shininess = shininess.floatValue
-//    }
-//    if let roughness = material?.property(with: .roughness),
-//      roughness.type == .float3 {
-//      self.roughness = roughness.floatValue
-//    }
-//  }
+  init(material: MDLMaterial?) {
+    self.init()
+    if let baseColor = material?.property(with: .baseColor),
+      baseColor.type == .float3 {
+      self.baseColor = baseColor.float3Value
+    }
+    if let specular = material?.property(with: .specular),
+      specular.type == .float3 {
+      self.specularColor = specular.float3Value
+    }
+    if let shininess = material?.property(with: .specularExponent),
+      shininess.type == .float {
+      self.shininess = shininess.floatValue
+    }
+    if let roughness = material?.property(with: .roughness),
+      roughness.type == .float3 {
+      self.roughness = roughness.floatValue
+    }
+  }
 }
 

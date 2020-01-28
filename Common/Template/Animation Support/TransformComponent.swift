@@ -1,5 +1,6 @@
+//
 /**
- * Copyright (c) 2018 Razeware LLC
+ * Copyright (c) 2019 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,34 +29,39 @@
  * THE SOFTWARE.
  */
 
-#include <metal_stdlib>
-using namespace metal;
 
-#import "Common.h"
+import ModelIO
 
-
-struct VertexOut {
-  float4 position [[ position ]];
-  float point_size [[ point_size ]];
-};
-
-vertex VertexOut vertex_light(constant float3 *vertices [[ buffer(0) ]],
-                             constant Uniforms &uniforms [[ buffer(1) ]],
-                              uint id [[vertex_id]])
-{
-  VertexOut out;
-  matrix_float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
-  out.position = mvp * float4(vertices[id], 1);
-  out.point_size = 50.0;
-  return out;
-}
-
-fragment float4 fragment_light(float2 point [[ point_coord]],
-                               constant float3 &color [[ buffer(1) ]]) {
-  float d = distance(point, float2(0.5, 0.5));
-  if (d > 0.5) {
-    discard_fragment();
+class TransformComponent {
+  let keyTransforms: [float4x4]
+  let duration: Float
+  var currentTransform: float4x4 = .identity()
+  
+  init(transform: MDLTransformComponent,
+       object: MDLObject,
+       startTime: TimeInterval,
+       endTime: TimeInterval) {
+    duration = Float(endTime - startTime)
+    let timeStride = stride(from: startTime,
+                            to: endTime,
+                            by: 1 / TimeInterval(TemplateRenderer.fps))
+    keyTransforms = Array(timeStride).map { time in
+      return MDLTransform.globalTransform(with: object, atTime: time)
+    }
   }
-  return float4(color ,1);
+  
+  func setCurrentTransform(at time: Float) {
+    guard duration > 0 else {
+      currentTransform = .identity()
+      return
+    }
+    let frame = Int(fmod(time, duration) * Float(TemplateRenderer.fps))
+    if frame < keyTransforms.count {
+      currentTransform = keyTransforms[frame]
+    } else {
+      currentTransform = keyTransforms.last ?? .identity()
+    }
+  }
 }
+
 

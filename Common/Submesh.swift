@@ -168,7 +168,7 @@ private extension Submesh.Textures {
                 return nil
             }
 
-            guard let texture = ((try? Submesh.loadTexture(imageName: filename, origin: origin)) as MTLTexture??) else {
+            guard let texture = ((try? Submesh.loadTexture(imageName: filename)) as MTLTexture??) else {
                 print("😡 Failed to load texture \(filename)")
                 return nil
             }

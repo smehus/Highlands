@@ -1,5 +1,6 @@
+//
 /**
- * Copyright (c) 2018 Razeware LLC
+ * Copyright (c) 2019 Razeware LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,23 +29,18 @@
  * THE SOFTWARE.
  */
 
-#include <metal_stdlib>
-using namespace metal;
-#import "../../Common/Shaders/Common.h"
+import MetalKit
 
-vertex float4 debug_vertex(const device packed_float3 *vertices [[buffer(21)]],
-                                  constant Uniforms &uniforms [[ buffer(BufferIndexUniforms) ]],
-                                  uint vertex_id [[vertex_id]]
-                                  ) {
-  float4x4 mvp = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix;
-  float4 position;
-  position = mvp * float4(vertices[vertex_id], 1);
-  return position;
+class ViewController: LocalViewController {
+  
+  var renderer: TemplateRenderer?
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    guard let metalView = view as? MTKView else {
+      fatalError("metal view not set up in storyboard")
+    }
+    renderer = TemplateRenderer(metalView: metalView)
+//    addGestureRecognizers(to: metalView)
+  }
 }
-
-fragment float4 debug_fragment() {
-  return float4(1, 0, 0, 1);
-}
-
-
-
