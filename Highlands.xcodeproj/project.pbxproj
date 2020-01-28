@@ -25,8 +25,6 @@
 		0294AE6723DFE526005F2E67 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
 		0294AE6A23DFE6AC005F2E67 /* TemplateMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6823DFE6AB005F2E67 /* TemplateMesh.swift */; };
 		0294AE6B23DFE6AC005F2E67 /* TemplateMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6823DFE6AB005F2E67 /* TemplateMesh.swift */; };
-		0294AE6C23DFE6AC005F2E67 /* TemplateSubmesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6923DFE6AB005F2E67 /* TemplateSubmesh.swift */; };
-		0294AE6D23DFE6AC005F2E67 /* TemplateSubmesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6923DFE6AB005F2E67 /* TemplateSubmesh.swift */; };
 		0294AE6F23DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6E23DFE7EE005F2E67 /* VertexDescriptor.swift */; };
 		0294AE7023DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6E23DFE7EE005F2E67 /* VertexDescriptor.swift */; };
 		0294AE7223DFE80F005F2E67 /* TemplateNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE7123DFE80F005F2E67 /* TemplateNode.swift */; };
@@ -67,6 +65,10 @@
 		0294AEAD23DFF129005F2E67 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9C23DFF129005F2E67 /* Shaders.metal */; };
 		0294AEAE23DFF129005F2E67 /* Water.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9D23DFF129005F2E67 /* Water.metal */; };
 		0294AEAF23DFF129005F2E67 /* Water.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9D23DFF129005F2E67 /* Water.metal */; };
+		0294AEB323E07380005F2E67 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2021B9F718002F6F35 /* Submesh.swift */; };
+		0294AEB423E07380005F2E67 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2021B9F718002F6F35 /* Submesh.swift */; };
+		0294AEB623E073CC005F2E67 /* ModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AEB523E073CC005F2E67 /* ModelType.swift */; };
+		0294AEB723E073CC005F2E67 /* ModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AEB523E073CC005F2E67 /* ModelType.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
@@ -146,6 +148,7 @@
 		0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CharacterShaders.metal; sourceTree = "<group>"; };
 		0294AE9C23DFF129005F2E67 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		0294AE9D23DFF129005F2E67 /* Water.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Water.metal; sourceTree = "<group>"; };
+		0294AEB523E073CC005F2E67 /* ModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelType.swift; sourceTree = "<group>"; };
 		02BDBED323DC96A300FB3EEA /* AnimationClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationClip.swift; sourceTree = "<group>"; };
 		02BDBED423DC96A300FB3EEA /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
@@ -380,6 +383,7 @@
 				0284473722C02DFB00A4E479 /* Water.swift */,
 				02544A98231AB2130072E47F /* Terrain.swift */,
 				0222792223BBBB8B005ED8FA /* Mesh.swift */,
+				0294AEB523E073CC005F2E67 /* ModelType.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -569,6 +573,7 @@
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
 				0294AE8A23DFECC6005F2E67 /* AnimationComponent.swift in Sources */,
 				0294AEA623DFF129005F2E67 /* DebugLights.metal in Sources */,
+				0294AEB623E073CC005F2E67 /* ModelType.swift in Sources */,
 				0294AE9E23DFF129005F2E67 /* Shadow.metal in Sources */,
 				0294AE7E23DFEBF7005F2E67 /* MathLibrary.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
@@ -576,7 +581,6 @@
 				A5C952C521CE952D00B23364 /* MotionController.swift in Sources */,
 				A57506EC21CE942700C63081 /* InputController.swift in Sources */,
 				0294AE6623DFE526005F2E67 /* TemplateShaders.metal in Sources */,
-				0294AE6C23DFE6AC005F2E67 /* TemplateSubmesh.swift in Sources */,
 				0294AEA023DFF129005F2E67 /* MorphShader.metal in Sources */,
 				0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */,
 				0294AE6A23DFE6AC005F2E67 /* TemplateMesh.swift in Sources */,
@@ -589,6 +593,7 @@
 				0294AE8C23DFECC6005F2E67 /* Skeleton.swift in Sources */,
 				0294AE6F23DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */,
 				0294AE5A23DFE2EC005F2E67 /* TemplateRenderable.swift in Sources */,
+				0294AEB323E07380005F2E67 /* Submesh.swift in Sources */,
 				0294AE9123DFED64005F2E67 /* TemplateViewController.swift in Sources */,
 				A57506EE21CE942700C63081 /* GameView.swift in Sources */,
 			);
@@ -600,7 +605,6 @@
 			files = (
 				0294AE9223DFED64005F2E67 /* TemplateViewController.swift in Sources */,
 				0294AE6723DFE526005F2E67 /* TemplateShaders.metal in Sources */,
-				0294AE6D23DFE6AC005F2E67 /* TemplateSubmesh.swift in Sources */,
 				0294AEA323DFF129005F2E67 /* Skybox.metal in Sources */,
 				0294AEAB23DFF129005F2E67 /* CharacterShaders.metal in Sources */,
 				0294AE4D23DFE1A8005F2E67 /* Model.swift in Sources */,
@@ -627,9 +631,11 @@
 				0294AEA123DFF129005F2E67 /* MorphShader.metal in Sources */,
 				0294AE6523DFE526005F2E67 /* TemplatePBR.metal in Sources */,
 				0294AE8B23DFECC6005F2E67 /* AnimationComponent.swift in Sources */,
+				0294AEB723E073CC005F2E67 /* ModelType.swift in Sources */,
 				0294AEA923DFF129005F2E67 /* Terrain.metal in Sources */,
 				0294AE8923DFECC6005F2E67 /* Animation.swift in Sources */,
 				0294AE5823DFE272005F2E67 /* TemplateLighting.swift in Sources */,
+				0294AEB423E07380005F2E67 /* Submesh.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

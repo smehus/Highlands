@@ -33,7 +33,7 @@ import MetalKit
 
 struct TemplateMesh {
     let mtkMesh: MTKMesh
-    let submeshes: [TemplateSubmesh]
+    let submeshes: [Submesh]
     let transform: TransformComponent?
     let skeleton: Skeleton?
 
@@ -49,9 +49,10 @@ struct TemplateMesh {
 
         self.mtkMesh = mtkMesh
         submeshes = zip(mdlMesh.submeshes!, mtkMesh.submeshes).map { mesh in
-            TemplateSubmesh(mdlSubmesh: mesh.0 as! MDLSubmesh,
-                    mtkSubmesh: mesh.1,
-                    hasSkeleton: skeleton != nil)
+//            Submesh(mdlSubmesh: mesh.0 as! MDLSubmesh,
+//                    mtkSubmesh: mesh.1,
+//                    hasSkeleton: skeleton != nil)
+            Submesh(submesh: mesh.1, mdlSubmesh: mesh.0 as! MDLSubmesh, type: .character)
         }
         if let mdlMeshTransform = mdlMesh.transform {
             transform = TransformComponent(transform: mdlMeshTransform,

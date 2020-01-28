@@ -113,7 +113,7 @@ class Model: TemplateNode {
 }
 
 extension Model: TemplateRenderable {
-    func render(renderEncoder: MTLRenderCommandEncoder, submesh: TemplateSubmesh) {
+    func render(renderEncoder: MTLRenderCommandEncoder, submesh: Submesh) {
         let mtkSubmesh = submesh.mtkSubmesh
         renderEncoder.drawIndexedPrimitives(type: .triangle,
                                             indexCount: mtkSubmesh.indexCount,

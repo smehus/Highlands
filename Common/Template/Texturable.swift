@@ -82,7 +82,7 @@ extension Texturable {
         var textures: [MTLTexture] = []
         for textureName in textureNames {
             do {
-                if let texture = try TemplateSubmesh.loadTexture(imageName: textureName) {
+                if let texture = try Submesh.loadTexture(imageName: textureName) {
                     textures.append(texture)
                 }
             } catch {

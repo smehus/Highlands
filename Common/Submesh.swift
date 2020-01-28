@@ -12,12 +12,13 @@ class Submesh {
 
     let textures: Textures
     var material: Material
-
+    let type: ModelType
     let pipelineState: MTLRenderPipelineState!
     let shadowPipelineState: MTLRenderPipelineState!
 
     required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: ModelType) {
         mtkSubmesh = submesh
+        self.type = type
 
         switch type {
         case .morph(let texNames, _, _):
@@ -32,7 +33,7 @@ class Submesh {
         material = Material(material: mdlSubmesh.material)
 
         pipelineState = Submesh.makePipelineState(textures: textures, type: type)
-        shadowPipelineState = Submesh.buildShadowPipelineState()
+        shadowPipelineState = Submesh.buildShadowPipelineState(type: type)
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
@@ -49,52 +50,76 @@ class Submesh {
 
 // Pipeline state
 private extension Submesh {
-    static func makeFunctionConstants(textures: Textures, type: ModelType) -> MTLFunctionConstantValues {
+//    static func makeFunctionConstants(textures: Textures, type: ModelType) -> MTLFunctionConstantValues {
+//        let functionConstants = MTLFunctionConstantValues()
+//
+//        var isGround = type.isGround
+//        var lighting = type.lighting
+//        var blending = type.blending
+//        var property = (textures.baseColor != nil && !type.isTextureArray)
+//
+//        functionConstants.setConstantValue(&property, type: .bool, index: 0)
+//
+//        property = textures.normal != nil
+//        functionConstants.setConstantValue(&property, type: .bool, index: 1)
+//
+//        property = textures.roughness != nil
+//        functionConstants.setConstantValue(&property, type: .bool, index: 2)
+//
+//        property = false
+//        functionConstants.setConstantValue(&property, type: .bool, index: 3)
+//        functionConstants.setConstantValue(&property, type: .bool, index: 4)
+//
+//        functionConstants.setConstantValue(&isGround, type: .bool, index: 5)
+//
+//        // Lighting
+//        functionConstants.setConstantValue(&lighting, type: .bool, index: 6)
+//
+//        // ShouldBlend
+//        functionConstants.setConstantValue(&blending, type: .bool, index: 7)
+//
+//        var isTextureArray = type.isTextureArray
+//        functionConstants.setConstantValue(&isTextureArray, type: .bool, index: 8)
+//
+//        return functionConstants
+//    }
+
+    static func makeFunctionConstants(textures: Textures) -> MTLFunctionConstantValues {
         let functionConstants = MTLFunctionConstantValues()
-
-        var isGround = type.isGround
-        var lighting = type.lighting
-        var blending = type.blending
-        var property = (textures.baseColor != nil && !type.isTextureArray)
-
+        var property = textures.baseColor != nil
         functionConstants.setConstantValue(&property, type: .bool, index: 0)
-
         property = textures.normal != nil
         functionConstants.setConstantValue(&property, type: .bool, index: 1)
-
         property = textures.roughness != nil
         functionConstants.setConstantValue(&property, type: .bool, index: 2)
-
         property = false
         functionConstants.setConstantValue(&property, type: .bool, index: 3)
+        property = false
         functionConstants.setConstantValue(&property, type: .bool, index: 4)
-
-        functionConstants.setConstantValue(&isGround, type: .bool, index: 5)
-
-        // Lighting
-        functionConstants.setConstantValue(&lighting, type: .bool, index: 6)
-
-        // ShouldBlend
-        functionConstants.setConstantValue(&blending, type: .bool, index: 7)
-
-        var isTextureArray = type.isTextureArray
-        functionConstants.setConstantValue(&isTextureArray, type: .bool, index: 8)
-
         return functionConstants
     }
 
+    static func makeVertexFunctionConstants(hasSkeleton: Bool) -> MTLFunctionConstantValues {
+      let functionConstants = MTLFunctionConstantValues()
+      var addSkeleton = hasSkeleton
+      functionConstants.setConstantValue(&addSkeleton, type: .bool, index: 5)
+      return functionConstants
+    }
+
     static func makePipelineState(textures: Textures, type: ModelType) -> MTLRenderPipelineState {
-        let functionConstants = makeFunctionConstants(textures: textures, type: type)
+        let vertexContants = makeVertexFunctionConstants(hasSkeleton: true)
+        let fragmentConstants = makeFunctionConstants(textures: textures)
+
 
         let library = TemplateRenderer.library
         let vertexFunction: MTLFunction?
         let fragmentFunction: MTLFunction?
 
         do {
-            fragmentFunction = try library?.makeFunction(name: type.fragmentFunctionName, constantValues: functionConstants)
-            vertexFunction = try library?.makeFunction(name: type.vertexFunctionName, constantValues: functionConstants)
+            vertexFunction = try library?.makeFunction(name: type.vertexFunctionName, constantValues: vertexContants)
+            fragmentFunction = try library?.makeFunction(name: type.fragmentFunctionName, constantValues: fragmentConstants)
         } catch {
-            fatalError("No Metal function exists")
+            fatalError(error.localizedDescription)
         }
 
         var pipelineState: MTLRenderPipelineState
@@ -110,7 +135,7 @@ private extension Submesh {
 //        pipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
 //        pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
 //        pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
-        pipelineDescriptor.sampleCount = Renderer.sampleCount
+//        pipelineDescriptor.sampleCount = TemplateRenderer.sampleCount
 
 
         do {
@@ -121,7 +146,7 @@ private extension Submesh {
         return pipelineState
     }
 
-    static func buildShadowPipelineState() -> MTLRenderPipelineState {
+    static func buildShadowPipelineState(type: ModelType) -> MTLRenderPipelineState {
 
         let constants = MTLFunctionConstantValues()
         var isSkinned = false
@@ -136,7 +161,7 @@ private extension Submesh {
             pipelineDescriptor.vertexFunction = try TemplateRenderer.library!.makeFunction(name: "vertex_omni_depth", constantValues: constants)
             pipelineDescriptor.fragmentFunction = try TemplateRenderer.library!.makeFunction(name: "fragment_depth", constantValues: constants)
             pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
-            pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
+            pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
             pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
             pipelineDescriptor.inputPrimitiveTopology = .triangle
             pipelineState = try TemplateRenderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)

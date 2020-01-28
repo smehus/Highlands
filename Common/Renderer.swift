@@ -37,7 +37,7 @@ final class Renderer: NSObject {
             fatalError("GPU not available")
         }
 
-        metalView.sampleCount = Renderer.sampleCount
+        Renderer.sampleCount = metalView.sampleCount
         metalView.depthStencilPixelFormat = .depth32Float
         metalView.device = device
         Renderer.device = device
