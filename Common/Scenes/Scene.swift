@@ -24,7 +24,7 @@ class Scene {
     var lights: [Light] = []
 //    let inputController = InputController()
 //    let physicsController = PhysicsController()
-    var skybox: Skybox?
+//    var skybox: Skybox?
 
     init(sceneSize: CGSize) {
         self.sceneSize = sceneSize

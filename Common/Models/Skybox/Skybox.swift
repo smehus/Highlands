@@ -102,7 +102,7 @@ class Skybox {
         viewMatrix.columns.3 = [0, 0, 0, 1]
         var viewProjectionMatrix = uniforms.projectionMatrix * viewMatrix
         renderEncoder.setVertexBytes(&viewProjectionMatrix, length: MemoryLayout<float4x4>.stride, index: 1)
-        renderEncoder.setFragmentTexture(texture, index: Int(BufferIndexSkybox.rawValue))
+//        renderEncoder.setFragmentTexture(texture, index: Int(BufferIndexSkybox.rawValue))
 
         let submesh = mesh.submeshes[0]
         renderEncoder.drawIndexedPrimitives(type: .triangle,

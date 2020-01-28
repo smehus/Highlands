@@ -53,11 +53,11 @@ class Character: Node {
 
     var shadowInstanceCount: Int = 0
 
-    let heightCalculatePipelineState: MTLComputePipelineState
+//    let heightCalculatePipelineState: MTLComputePipelineState
     let needsXRotationFix = true
     let heightBuffer: MTLBuffer
 
-    let patches: [Patch]
+//    let patches: [Patch]
     var currentPatch: Patch?
     var positionInPatch: SIMD3<Float>?
 
@@ -106,16 +106,16 @@ class Character: Node {
         }
 
         samplerState = Character.buildSamplerState()
-        heightCalculatePipelineState = Character.buildComputePipelineState()
+//        heightCalculatePipelineState = Character.buildComputePipelineState()
 
         heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
 
-        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
-                                              size: (width: Terrain.terrainParams.size.x,
-                                                     height: Terrain.terrainParams.size.y))
-
-
-        patches = terrainPatches.patches
+//        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
+//                                              size: (width: Terrain.terrainParams.size.x,
+//                                                     height: Terrain.terrainParams.size.y))
+//
+//
+//        patches = terrainPatches.patches
 
         super.init()
         self.name = name
@@ -225,21 +225,21 @@ class Character: Node {
     }
 
     func patch(for location: SIMD3<Float>) -> Patch? {
-        let foundPatches = patches.filter { (patch) -> Bool in
-            let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
-            let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
+//        let foundPatches = patches.filter { (patch) -> Bool in
+//            let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
+//            let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
+//
+//            return horizontal && vertical
+//        }
+//
+////        print("**** patches found for position \(foundPatches.count)")
+//        guard let patch = foundPatches.first else { return nil }
+//
+//        if let current = currentPatch, current != patch {
+////            print("*** UPDATE CURRENT PATCH \(patch)")
+//        }
 
-            return horizontal && vertical
-        }
-
-//        print("**** patches found for position \(foundPatches.count)")
-        guard let patch = foundPatches.first else { return nil }
-
-        if let current = currentPatch, current != patch {
-//            print("*** UPDATE CURRENT PATCH \(patch)")
-        }
-
-        return patch
+        return nil
     }
 }
 

@@ -13,7 +13,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let terrain = Terrain(textureName: "hills")
+//    let terrain = Terrain(textureName: "hills")
 //    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
 //    let plane = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "boy_tpose.usdz")
@@ -23,11 +23,11 @@ final class GameScene: Scene {
 
     override func setupScene() {
 
-        skybox = Skybox(textureName: nil)
+//        skybox = Skybox(textureName: nil)
 
 //        inputController.keyboardDelegate = self
 
-        terrain.position = SIMD3<Float>([0, 0, 0])
+//        terrain.position = SIMD3<Float>([0, 0, 0])
 //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
 //        add(node: terrain)
 
