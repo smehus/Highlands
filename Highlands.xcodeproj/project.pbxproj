@@ -49,6 +49,8 @@
 		0284473F22C0455C00A4E479 /* normal-water.png in Resources */ = {isa = PBXBuildFile; fileRef = 0284473D22C0455C00A4E479 /* normal-water.png */; };
 		0284474122C04EE500A4E479 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
 		0284474222C04EE500A4E479 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
+		0294AEB123DFF645005F2E67 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AEB023DFF644005F2E67 /* PBR.metal */; };
+		0294AEB223DFF645005F2E67 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AEB023DFF644005F2E67 /* PBR.metal */; };
 		02BDBED823DC96A400FB3EEA /* AnimationClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED323DC96A300FB3EEA /* AnimationClip.swift */; };
 		02BDBED923DC96A400FB3EEA /* AnimationClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED323DC96A300FB3EEA /* AnimationClip.swift */; };
 		02BDBEDA23DC96A400FB3EEA /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED423DC96A300FB3EEA /* Animation.swift */; };
@@ -259,6 +261,7 @@
 		0284473A22C0377500A4E479 /* Water.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Water.metal; sourceTree = "<group>"; };
 		0284473D22C0455C00A4E479 /* normal-water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "normal-water.png"; sourceTree = "<group>"; };
 		0284474022C04EE500A4E479 /* RenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
+		0294AEB023DFF644005F2E67 /* PBR.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PBR.metal; sourceTree = "<group>"; };
 		02BDBED323DC96A300FB3EEA /* AnimationClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationClip.swift; sourceTree = "<group>"; };
 		02BDBED423DC96A300FB3EEA /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
@@ -533,6 +536,7 @@
 		A57506CE21CD671A00C63081 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				0294AEB023DFF644005F2E67 /* PBR.metal */,
 				A5CB1E9C21EA848E002CCB94 /* DebugLights.metal */,
 				A588D83C21CAEE3300652FC2 /* CharacterShaders.metal */,
 				A57506C821CD669700C63081 /* DebugBoundingBox.metal */,
@@ -969,6 +973,7 @@
 				A5A1CD2421BA2833002F6F35 /* ViewController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				A57506D021CD680E00C63081 /* Renderable.swift in Sources */,
+				0294AEB123DFF645005F2E67 /* PBR.metal in Sources */,
 				A5C952C521CE952D00B23364 /* MotionController.swift in Sources */,
 				A57F6A5921B8CBDA002C0632 /* Primitive.swift in Sources */,
 				02BDBEDE23DC96A400FB3EEA /* Skeleton.swift in Sources */,
@@ -1019,6 +1024,7 @@
 				A5A1CD3921BA2972002F6F35 /* RendererExtensions.swift in Sources */,
 				0284473922C02DFB00A4E479 /* Water.swift in Sources */,
 				A57F6A5C21B8CBDF002C0632 /* Shaders.metal in Sources */,
+				0294AEB223DFF645005F2E67 /* PBR.metal in Sources */,
 				02BDBED923DC96A400FB3EEA /* AnimationClip.swift in Sources */,
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
 				A58F1A1221E94112003F6F1F /* MorphShader.metal in Sources */,
