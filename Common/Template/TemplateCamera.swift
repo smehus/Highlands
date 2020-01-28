@@ -31,7 +31,7 @@
 
 import Foundation
 
-class TemplateCamera: TemplateNode {
+class TemplateCamera: Node {
   
   var fovDegrees: Float = 70
   var fovRadians: Float {

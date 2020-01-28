@@ -12,9 +12,9 @@ import CoreGraphics
 class Scene {
 
     var sceneSize: CGSize
-    var cameras = [Camera()]
+    var cameras = [TemplateCamera()]
     var currentCameraIndex = 0
-    var camera: Camera {
+    var camera: TemplateCamera {
         return cameras[currentCameraIndex]
     }
 

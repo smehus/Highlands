@@ -38,19 +38,19 @@ class InputController {
                 direction.z -= 1
             case .d:
                 direction.x += 1
-            case .left, .q:
-                if let character = player as? Character, character.needsXRotationFix {
-                    player.rotation.z += rotationSpeed
-                } else {
-                    player.rotation.y -= rotationSpeed
-                }
+            case .left, .q: break
+//                if let character = player as? Character, character.needsXRotationFix {
+//                    player.rotation.z += rotationSpeed
+//                } else {
+//                    player.rotation.y -= rotationSpeed
+//                }
 
-            case .right, .e:
-                if let character = player as? Character, character.needsXRotationFix {
-                    player.rotation.z -= rotationSpeed
-                } else {
-                    player.rotation.y += rotationSpeed
-                }
+            case .right, .e: break
+//                if let character = player as? Character, character.needsXRotationFix {
+//                    player.rotation.z -= rotationSpeed
+//                } else {
+//                    player.rotation.y += rotationSpeed
+//                }
             default:
                 break
             }

@@ -31,7 +31,7 @@
 
 import MetalKit
 
-class Model: TemplateNode {
+class Model: Node {
 
     let meshes: [Mesh]
     var tiling: UInt32 = 1

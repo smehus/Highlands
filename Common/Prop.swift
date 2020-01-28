@@ -13,7 +13,7 @@ enum ModelError: Error {
     case missingVertexBuffer
 }
 
-class Prop: TemplateNode {
+class Prop: Node {
 
     static var defaultVertexDescriptor: MDLVertexDescriptor = {
         let vertexDescriptor = MDLVertexDescriptor()
@@ -70,7 +70,7 @@ class Prop: TemplateNode {
                                 bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
         Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-        let mtkMesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+        let mtkMesh = try! MTKMesh(mesh: mdlMesh, device: TemplateRenderer.device)
         mesh = mtkMesh
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap { index, element in
@@ -92,8 +92,8 @@ class Prop: TemplateNode {
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
         var bytes: [Float] = transforms.map { _ in return 0.0 }
-        heightBuffer = Renderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
-//        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
+        heightBuffer = TemplateRenderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
+//        heightBuffer = TemplateRenderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
 
         let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
                                               size: (width: Terrain.terrainParams.size.x,
@@ -118,7 +118,7 @@ class Prop: TemplateNode {
 //                                bitangentAttributeNamed: MDLVertexAttributeBitangent)
 //
 //        Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-//        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+//        let mesh = try! MTKMesh(mesh: mdlMesh, device: TemplateRenderer.device)
 //        self.mesh = mesh
 //
 //        submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
@@ -143,7 +143,7 @@ class Prop: TemplateNode {
 
     static func loadMesh(name: String) -> MDLMesh {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
-        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let allocator = MTKMeshBufferAllocator(device: TemplateRenderer.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
         return asset.object(at: 0) as! MDLMesh
     }
@@ -156,7 +156,7 @@ class Prop: TemplateNode {
         }
 
         guard
-            let instanceBuffer = Renderer.device
+            let instanceBuffer = TemplateRenderer.device
                 .makeBuffer(bytes: instances, length: MemoryLayout<Instances>.stride * instances.count)
         else {
             fatalError()
@@ -211,7 +211,7 @@ class Prop: TemplateNode {
         descriptor.tAddressMode = .repeat
         descriptor.mipFilter = .linear
         descriptor.maxAnisotropy = 8
-        return Renderer.device.makeSamplerState(descriptor: descriptor)
+        return TemplateTemplateRenderer.device.makeSamplerState(descriptor: descriptor)
     }
 
     override func update(deltaTime: Float) {
