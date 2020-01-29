@@ -33,8 +33,6 @@
 		0294AE8D23DFECC6005F2E67 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE8423DFECC6005F2E67 /* Skeleton.swift */; };
 		0294AE8E23DFECC6005F2E67 /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE8523DFECC6005F2E67 /* TransformComponent.swift */; };
 		0294AE8F23DFECC6005F2E67 /* TransformComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE8523DFECC6005F2E67 /* TransformComponent.swift */; };
-		0294AE9123DFED64005F2E67 /* TemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9023DFED64005F2E67 /* TemplateViewController.swift */; };
-		0294AE9223DFED64005F2E67 /* TemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9023DFED64005F2E67 /* TemplateViewController.swift */; };
 		0294AE9E23DFF129005F2E67 /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9523DFF129005F2E67 /* Shadow.metal */; };
 		0294AE9F23DFF129005F2E67 /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9523DFF129005F2E67 /* Shadow.metal */; };
 		0294AEA023DFF129005F2E67 /* MorphShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9623DFF129005F2E67 /* MorphShader.metal */; };
@@ -104,6 +102,8 @@
 		02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CB1E9D21EA848E002CCB94 /* DebugLights.swift */; };
 		02A38F4023E1414600E26E19 /* TemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE4723DFE15F005F2E67 /* TemplateRenderer.swift */; };
 		02A38F4123E1414700E26E19 /* TemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE4723DFE15F005F2E67 /* TemplateRenderer.swift */; };
+		02A38F4223E1422A00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
+		02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
@@ -605,6 +605,7 @@
 				0294AEC023E0774A005F2E67 /* Node.swift in Sources */,
 				0294AEA823DFF129005F2E67 /* Terrain.metal in Sources */,
 				0294AEAC23DFF129005F2E67 /* Shaders.metal in Sources */,
+				02A38F4223E1422A00E26E19 /* ViewController.swift in Sources */,
 				0294AEBA23E07693005F2E67 /* Mesh.swift in Sources */,
 				02A38F4023E1414600E26E19 /* TemplateRenderer.swift in Sources */,
 				0294AED623E07C56005F2E67 /* Skybox.swift in Sources */,
@@ -648,7 +649,6 @@
 				0294AEB323E07380005F2E67 /* Submesh.swift in Sources */,
 				02A38F3223E12D7700E26E19 /* Camera.swift in Sources */,
 				0294AED823E07DFD005F2E67 /* Texturable.swift in Sources */,
-				0294AE9123DFED64005F2E67 /* TemplateViewController.swift in Sources */,
 				A57506EE21CE942700C63081 /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -658,7 +658,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0294AED123E07896005F2E67 /* InputController.swift in Sources */,
-				0294AE9223DFED64005F2E67 /* TemplateViewController.swift in Sources */,
 				0294AE6723DFE526005F2E67 /* TemplateShaders.metal in Sources */,
 				02A38F2923E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
 				0294AEA323DFF129005F2E67 /* Skybox.metal in Sources */,
@@ -667,6 +666,7 @@
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				0294AE8723DFECC6005F2E67 /* AnimationClip.swift in Sources */,
 				0294AE5B23DFE2EC005F2E67 /* TemplateRenderable.swift in Sources */,
+				02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */,
 				02A38F4123E1414700E26E19 /* TemplateRenderer.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
 				0294AE4F23DFE1A8005F2E67 /* TemplateCamera.swift in Sources */,

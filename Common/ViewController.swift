@@ -9,7 +9,7 @@
 import MetalKit
 class ViewController: LocalViewController {
 
-    var renderer: TemplateRenderer?
+    var renderer: RendererBlueprint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,7 +17,7 @@ class ViewController: LocalViewController {
             fatalError("metal view not set up in storyboard")
         }
 
-        renderer = TemplateRenderer(metalView: metalView)
+        renderer = RendererBlueprint(metalView: metalView)
 //        let scene = GameScene(sceneSize: metalView.bounds.size)
 //        renderer?.scene = scene
 //

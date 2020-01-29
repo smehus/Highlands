@@ -37,6 +37,7 @@ class TemplateRenderer: NSObject {
   static var library: MTLLibrary!
   static var colorPixelFormat: MTLPixelFormat!
   static var fps: Int!
+    static var mtkView: MTKView!
 
   var uniforms = Uniforms()
   var fragmentUniforms = FragmentUniforms()
@@ -70,6 +71,7 @@ class TemplateRenderer: NSObject {
     TemplateRenderer.colorPixelFormat = metalView.colorPixelFormat
     TemplateRenderer.fps = metalView.preferredFramesPerSecond
     TemplateRenderer.drawableSize = metalView.drawableSize
+    TemplateRenderer.mtkView = metalView
     
     metalView.device = device
     metalView.depthStencilPixelFormat = .depth32Float
