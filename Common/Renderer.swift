@@ -26,12 +26,20 @@ final class Renderer: NSObject {
         return buildLightPipelineState()
     }()
 
-    lazy var camera: Camera = {
-        let camera = Camera()
-        camera.position = [5, 0 , 5]
+//    lazy var camera: Camera = {
+//        let camera = Camera()
+//        camera.position = [5, 0 , 5]
+//
+//        return camera
+//    }()
 
+      lazy var camera: TemplateCamera = {
+        let camera = ArcballCamera()
+        camera.distance = 8
+        camera.target = [0, 1.3, 0]
+    //    camera.rotation.x = Float(-15).degreesToRadians
         return camera
-    }()
+      }()
 
     var uniforms = Uniforms()
 
@@ -137,6 +145,7 @@ extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         scene?.sceneSizeWillChange(to: size)
         buildShadowTexture(size: size)
+        camera.aspect = Float(view.bounds.width)/Float(view.bounds.height)
     }
 
     func draw(in view: MTKView) {
@@ -215,8 +224,8 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
         renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
         
-        var farZ = Camera.FarZ
-        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
+//        var farZ = Camera.FarZ
+//        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
         uniforms.viewMatrix = camera.viewMatrix
         uniforms.projectionMatrix = camera.projectionMatrix
@@ -242,6 +251,7 @@ extension Renderer: MTKViewDelegate {
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
         commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
     }
 
     func renderShadowPass(renderEncoder: MTLRenderCommandEncoder, view: MTKView) {
