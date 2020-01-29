@@ -42,6 +42,7 @@ class TemplateRenderer: NSObject {
   var fragmentUniforms = FragmentUniforms()
   let depthStencilState: MTLDepthStencilState
   let lighting = TemplateLighting()
+    static var drawableSize: CGSize!
 
   lazy var camera: TemplateCamera = {
     let camera = ArcballCamera()
@@ -68,6 +69,7 @@ class TemplateRenderer: NSObject {
     TemplateRenderer.library = device.makeDefaultLibrary()
     TemplateRenderer.colorPixelFormat = metalView.colorPixelFormat
     TemplateRenderer.fps = metalView.preferredFramesPerSecond
+    TemplateRenderer.drawableSize = metalView.drawableSize
     
     metalView.device = device
     metalView.depthStencilPixelFormat = .depth32Float

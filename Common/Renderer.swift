@@ -3,7 +3,7 @@ import MetalKit
 
 final class Renderer: NSObject {
 
-    static let sampleCount = 1
+    static var sampleCount = 1
 
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!

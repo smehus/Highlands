@@ -62,6 +62,79 @@ func radians(fromDegrees degrees: Float) -> Float {
 // MARK:- float4x4
 extension float4x4 {
 
+        init(projectionFov fov: Float, aspectRatio: Float, nearZ: Float, farZ: Float) {
+
+
+             // Apple
+            let ys = 1 / tanf(fov * 0.5)
+            let xs = ys / aspectRatio
+            let zs = farZ / (farZ - nearZ)
+
+            self.init(SIMD4<Float>(xs, 0, 0, 0),
+                      SIMD4<Float>(0, ys, 0, 0),
+                      // - here means it is Right handed dawg
+                      SIMD4<Float>(0, 0, zs, 1),
+                      SIMD4<Float>(0, 0, -nearZ * zs, 0))
+
+    // Ray
+    //        let lhs = true
+    //        let y = 1 / tan(fov * 0.5)
+    //        let x = y / aspectRatio
+    //        let z = lhs ? farZ / (farZ - nearZ) : farZ / (nearZ - farZ)
+    //        let X = float4( x,  0,  0,  0)
+    //        let Y = float4( 0,  y,  0,  0)
+    //        let Z = lhs ? float4( 0,  0, z, 1) : float4( 0,  0,  z, -1)
+    //        let W = lhs ? float4( 0,  0,  -nearZ * z,  0) : float4( 0,  0,  z * nearZ,  0)
+    //
+    //        self.init()
+    //        columns = (X, Y, Z, W)
+
+
+    //        let ys = 1 / tan(fov * 0.5)
+    //        let xs = ys / aspectRatio
+    //        let zRange = farZ - nearZ
+    //
+    //        let zs = -(farZ + nearZ) / zRange
+    //        let wz = -2 * farZ * nearZ / zRange
+    //
+    //        self.init(float4(xs,  0,  0,  0),
+    //                  float4( 0, ys,  0,  0),
+    //                  float4( 0,  0, zs, 1),
+    //                  float4( 0,  0, wz,  0))
+
+        }
+
+    init(array: [Float]) {
+        guard array.count == 16 else {
+            fatalError("presented array has \(array.count) elements - a float4x4 needs 16 elements")
+        }
+        self = matrix_identity_float4x4
+        columns = (
+            SIMD4<Float>( array[0],  array[1],  array[2],  array[3]),
+            SIMD4<Float>( array[4],  array[5],  array[6],  array[7]),
+            SIMD4<Float>( array[8],  array[9],  array[10], array[11]),
+            SIMD4<Float>( array[12],  array[13],  array[14],  array[15])
+        )
+    }
+
+
+    init(lookAtLHEye eye: vector_float3, target: vector_float3, up: vector_float3) {
+
+        // LH: Target - Camera
+        // RH: Camera - Target
+
+        let z: vector_float3  = simd_normalize(target - eye);
+        let x: vector_float3  = simd_normalize(simd_cross(up, z));
+        let y: vector_float3  = simd_cross(z, x);
+        let t: vector_float3 = vector_float3(-simd_dot(x, eye), -simd_dot(y, eye), -simd_dot(z, eye));
+
+
+        self.init(array: [x.x, y.x, z.x, 0,
+                          x.y, y.y, z.y, 0,
+                          x.z, y.z, z.z, 0,
+                          t.x, t.y, t.z, 1])
+    }
+
     var upperLeftNormals: float3x3 {
         let x = columns.0.xyz
         let y = columns.1.xyz
@@ -246,3 +319,69 @@ extension float4 {
   }
 }
 
+// Ported from https://developer.apple.com/documentation/metal/reflections_with_layer_selection
+struct FrustumCuller {
+
+    var position: vector_float3
+
+    // planes normals :
+    var norm_NearPlane: vector_float3
+    var norm_LeftPlane: vector_float3
+    var norm_RightPlane: vector_float3
+    var norm_BottomPlane: vector_float3
+    var norm_TopPlane: vector_float3
+
+    // near / far distances from the frustum's origin
+    var dist_Near: Float
+    var dist_Far: Float
+
+    init(viewMatrix: matrix_float4x4,
+                  viewPosition: vector_float3,
+                  aspect: Float,
+                  halfAngleApertureHeight: Float,
+                  nearPlaneDistance: Float,
+                  farPlaneDistance: Float)
+    {
+
+        position = viewPosition
+        dist_Far = farPlaneDistance
+        dist_Near = nearPlaneDistance
+
+        let halfAngleApertureWidth: Float = halfAngleApertureHeight * aspect
+        // TODO: This might be broken
+        let cameraRotationMatrix: matrix_float3x3 = viewMatrix.upperLeft.inverse
+
+        norm_NearPlane = matrix_multiply(cameraRotationMatrix, SIMD3<Float>(0, 0, 1))
+        norm_LeftPlane = matrix_multiply(cameraRotationMatrix,
+                                         SIMD3<Float>(cosf(halfAngleApertureWidth), 0, sinf(halfAngleApertureWidth)))
+        norm_BottomPlane = matrix_multiply(cameraRotationMatrix,
+                                         SIMD3<Float>(0, cosf(halfAngleApertureHeight), sinf(halfAngleApertureHeight)))
+
+        // TODO: This might be wrong too (-norm_LeftPLane etc etc)
+        // we reflect the left plane normal along the view direction (norm_NearPlane) to get the right plane normal :
+        norm_RightPlane = -norm_LeftPlane + norm_NearPlane * (simd_dot(norm_NearPlane, norm_LeftPlane) * 2);
+        // we do the same, to get the top plane normal, from the bottom plane :
+        norm_TopPlane = -norm_BottomPlane + norm_NearPlane * (simd_dot(norm_NearPlane, norm_BottomPlane) * 2);
+    }
+
+    func Intersects (actorPosition: vector_float3, bSphere: vector_float4) -> Bool {
+
+        var bSphere = bSphere
+        let position_f4: vector_float4  = vector_float4(actorPosition.x, actorPosition.y, actorPosition.z, 0.0)
+        bSphere += position_f4;
+
+        let bSphereRadius: Float = bSphere.w;
+        let camToSphere: vector_float3 = bSphere.xyz - position;
+
+        if (simd_dot (camToSphere + norm_NearPlane * (bSphereRadius-dist_Near), norm_NearPlane) < 0) { return false }
+        if (simd_dot (camToSphere - norm_NearPlane * (bSphereRadius+dist_Far),  -norm_NearPlane) < 0) { return false }
+
+        if (simd_dot (camToSphere + norm_LeftPlane * bSphereRadius, norm_LeftPlane) < 0) { return false }
+        if (simd_dot (camToSphere + norm_RightPlane * bSphereRadius, norm_RightPlane) < 0) { return false }
+
+        if (simd_dot (camToSphere + norm_BottomPlane * bSphereRadius, norm_BottomPlane) < 0) { return false }
+        if (simd_dot (camToSphere + norm_TopPlane * bSphereRadius, norm_TopPlane) < 0) { return false }
+
+        return true
+    }
+}

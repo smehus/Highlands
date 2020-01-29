@@ -90,6 +90,22 @@
 		02A38F2923E11BEC00E26E19 /* Patch+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A38F2723E11BEC00E26E19 /* Patch+Extensions.swift */; };
 		02A38F2A23E11C0D00E26E19 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		02A38F2B23E11C0D00E26E19 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
+		02A38F2C23E12D1000E26E19 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E121CDA2C600C63081 /* GameScene.swift */; };
+		02A38F2D23E12D1100E26E19 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506E121CDA2C600C63081 /* GameScene.swift */; };
+		02A38F2E23E12D1A00E26E19 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
+		02A38F2F23E12D1B00E26E19 /* Water.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284473722C02DFB00A4E479 /* Water.swift */; };
+		02A38F3023E12D5C00E26E19 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
+		02A38F3123E12D5C00E26E19 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284474022C04EE500A4E479 /* RenderPass.swift */; };
+		02A38F3223E12D7700E26E19 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */; };
+		02A38F3323E12D7800E26E19 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1A21B9EFEF002F6F35 /* Camera.swift */; };
+		02A38F3423E1377300E26E19 /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A2421B8A3E5002C0632 /* Primitive.swift */; };
+		02A38F3523E1377300E26E19 /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A2421B8A3E5002C0632 /* Primitive.swift */; };
+		02A38F3623E1380400E26E19 /* RendererExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */; };
+		02A38F3723E1380500E26E19 /* RendererExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */; };
+		02A38F3823E1387000E26E19 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A2221B8A1E0002C0632 /* Renderer.swift */; };
+		02A38F3923E1387100E26E19 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A2221B8A1E0002C0632 /* Renderer.swift */; };
+		02A38F3A23E1389600E26E19 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CB1E9D21EA848E002CCB94 /* DebugLights.swift */; };
+		02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CB1E9D21EA848E002CCB94 /* DebugLights.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
@@ -586,12 +602,14 @@
 				0294AEA223DFF129005F2E67 /* Skybox.metal in Sources */,
 				0294AE5723DFE272005F2E67 /* TemplateLighting.swift in Sources */,
 				0294AEAE23DFF129005F2E67 /* Water.metal in Sources */,
+				02A38F3023E12D5C00E26E19 /* RenderPass.swift in Sources */,
 				0294AEC223E077D5005F2E67 /* Terrain.swift in Sources */,
 				0294AEC023E0774A005F2E67 /* Node.swift in Sources */,
 				0294AEA823DFF129005F2E67 /* Terrain.metal in Sources */,
 				0294AEAC23DFF129005F2E67 /* Shaders.metal in Sources */,
 				0294AEBA23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AED623E07C56005F2E67 /* Skybox.swift in Sources */,
+				02A38F3A23E1389600E26E19 /* DebugLights.swift in Sources */,
 				02A38F2823E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
 				0294AE6423DFE526005F2E67 /* TemplatePBR.metal in Sources */,
 				02A38F2A23E11C0D00E26E19 /* Character.swift in Sources */,
@@ -607,7 +625,9 @@
 				0294AEA623DFF129005F2E67 /* DebugLights.metal in Sources */,
 				0294AEB623E073CC005F2E67 /* ModelType.swift in Sources */,
 				0294AE9E23DFF129005F2E67 /* Shadow.metal in Sources */,
+				02A38F3423E1377300E26E19 /* Primitive.swift in Sources */,
 				0294AE7E23DFEBF7005F2E67 /* MathLibrary.swift in Sources */,
+				02A38F2E23E12D1A00E26E19 /* Water.swift in Sources */,
 				0294AED423E07C2F005F2E67 /* PhysicsController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				0294AE4823DFE15F005F2E67 /* TemplateRenderer.swift in Sources */,
@@ -621,11 +641,15 @@
 				0294AE8E23DFECC6005F2E67 /* TransformComponent.swift in Sources */,
 				0294AE8623DFECC6005F2E67 /* AnimationClip.swift in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
+				02A38F3823E1387000E26E19 /* Renderer.swift in Sources */,
 				0294AEA423DFF129005F2E67 /* DebugBoundingBox.metal in Sources */,
+				02A38F2C23E12D1000E26E19 /* GameScene.swift in Sources */,
 				0294AE4C23DFE1A8005F2E67 /* Model.swift in Sources */,
 				0294AE8C23DFECC6005F2E67 /* Skeleton.swift in Sources */,
 				0294AE5A23DFE2EC005F2E67 /* TemplateRenderable.swift in Sources */,
+				02A38F3623E1380400E26E19 /* RendererExtensions.swift in Sources */,
 				0294AEB323E07380005F2E67 /* Submesh.swift in Sources */,
+				02A38F3223E12D7700E26E19 /* Camera.swift in Sources */,
 				0294AED823E07DFD005F2E67 /* Texturable.swift in Sources */,
 				0294AE9123DFED64005F2E67 /* TemplateViewController.swift in Sources */,
 				A57506EE21CE942700C63081 /* GameView.swift in Sources */,
@@ -650,9 +674,11 @@
 				0294AE5B23DFE2EC005F2E67 /* TemplateRenderable.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
 				0294AE4F23DFE1A8005F2E67 /* TemplateCamera.swift in Sources */,
+				02A38F3723E1380500E26E19 /* RendererExtensions.swift in Sources */,
 				0294AEBB23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AEAD23DFF129005F2E67 /* Shaders.metal in Sources */,
 				0294AEAF23DFF129005F2E67 /* Water.metal in Sources */,
+				02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */,
 				0294AE8D23DFECC6005F2E67 /* Skeleton.swift in Sources */,
 				0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */,
 				0294AED923E07DFD005F2E67 /* Texturable.swift in Sources */,
@@ -663,9 +689,13 @@
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
 				0294AEC323E077D6005F2E67 /* Terrain.swift in Sources */,
 				0294AECF23E07884005F2E67 /* Renderable.swift in Sources */,
+				02A38F2F23E12D1B00E26E19 /* Water.swift in Sources */,
 				0294AEA723DFF129005F2E67 /* DebugLights.metal in Sources */,
 				0294AEA523DFF129005F2E67 /* DebugBoundingBox.metal in Sources */,
+				02A38F3923E1387100E26E19 /* Renderer.swift in Sources */,
 				0294AE9F23DFF129005F2E67 /* Shadow.metal in Sources */,
+				02A38F2D23E12D1100E26E19 /* GameScene.swift in Sources */,
+				02A38F3323E12D7800E26E19 /* Camera.swift in Sources */,
 				0294AEA123DFF129005F2E67 /* MorphShader.metal in Sources */,
 				0294AE6523DFE526005F2E67 /* TemplatePBR.metal in Sources */,
 				0294AE8B23DFECC6005F2E67 /* AnimationComponent.swift in Sources */,
@@ -678,6 +708,8 @@
 				0294AEA923DFF129005F2E67 /* Terrain.metal in Sources */,
 				0294AE8923DFECC6005F2E67 /* Animation.swift in Sources */,
 				0294AE5823DFE272005F2E67 /* TemplateLighting.swift in Sources */,
+				02A38F3523E1377300E26E19 /* Primitive.swift in Sources */,
+				02A38F3123E12D5C00E26E19 /* RenderPass.swift in Sources */,
 				0294AECB23E07845005F2E67 /* DebugBoundingBox.swift in Sources */,
 				0294AEB423E07380005F2E67 /* Submesh.swift in Sources */,
 			);

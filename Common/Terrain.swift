@@ -239,7 +239,7 @@ extension Terrain {
         return (normalizedPoints, terrainPatches)
     }
 }
-/*
+
 
 extension Terrain: ComputeHandler {
     func compute(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) {
@@ -272,7 +272,7 @@ extension Terrain: ComputeHandler {
 
     }
 }
-
+/*
 extension Terrain: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 
