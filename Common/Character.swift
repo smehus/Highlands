@@ -412,5 +412,12 @@ extension Character: TemplateRenderable {
                 uniforms: Uniforms,
                 fragmentUniforms fragment: FragmentUniforms) {
 
+        var fragmentUniforms = fragment
+        fragmentUniforms.tiling = 1
+        renderEncoder.setFragmentBytes(&fragmentUniforms,
+                                       length: MemoryLayout<FragmentUniforms>.stride,
+                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+
+        render(renderEncoder: renderEncoder, uniforms: uniforms)
     }
 }

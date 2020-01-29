@@ -88,6 +88,8 @@
 		02A38F2623E11B7C00E26E19 /* Prop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1D21B9F332002F6F35 /* Prop.swift */; };
 		02A38F2823E11BEC00E26E19 /* Patch+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A38F2723E11BEC00E26E19 /* Patch+Extensions.swift */; };
 		02A38F2923E11BEC00E26E19 /* Patch+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A38F2723E11BEC00E26E19 /* Patch+Extensions.swift */; };
+		02A38F2A23E11C0D00E26E19 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
+		02A38F2B23E11C0D00E26E19 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A588D83921CAE1A300652FC2 /* Character.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
@@ -592,6 +594,7 @@
 				0294AED623E07C56005F2E67 /* Skybox.swift in Sources */,
 				02A38F2823E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
 				0294AE6423DFE526005F2E67 /* TemplatePBR.metal in Sources */,
+				02A38F2A23E11C0D00E26E19 /* Character.swift in Sources */,
 				0294AED223E07A2C005F2E67 /* Transform.swift in Sources */,
 				0294AE4E23DFE1A8005F2E67 /* TemplateCamera.swift in Sources */,
 				02A38F2123E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */,
@@ -668,6 +671,7 @@
 				0294AE8B23DFECC6005F2E67 /* AnimationComponent.swift in Sources */,
 				02A38F2223E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				0294AECD23E07867005F2E67 /* Scene.swift in Sources */,
+				02A38F2B23E11C0D00E26E19 /* Character.swift in Sources */,
 				0294AED523E07C30005F2E67 /* PhysicsController.swift in Sources */,
 				0294AED723E07C57005F2E67 /* Skybox.swift in Sources */,
 				0294AEB723E073CC005F2E67 /* ModelType.swift in Sources */,
