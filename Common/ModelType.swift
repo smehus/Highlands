@@ -100,7 +100,7 @@ enum ModelType {
     var vertexDescriptor: MDLVertexDescriptor {
         switch self {
         case .character:
-            return Model.vertexDescriptor
+            return Character.vertexDescriptor
         default:
             return MDLVertexDescriptor.defaultVertexDescriptor
         }

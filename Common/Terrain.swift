@@ -44,7 +44,7 @@ class Terrain: Node {
     lazy var tessellationFactorsBuffer: MTLBuffer! = {
         let count = Terrain.patchCount * (4 + 2)
         let size = count * MemoryLayout<Float>.size / 2
-        return TemplateRenderer.device.makeBuffer(length: size, options: .storageModePrivate)
+        return RendererBlueprint.device.makeBuffer(length: size, options: .storageModePrivate)
     }()
 
     init(textureName: String) {
@@ -52,7 +52,7 @@ class Terrain: Node {
         tessellationPipelineState = Terrain.buildComputePipelineState()
 
         do {
-            let textureLoader = MTKTextureLoader(device: TemplateRenderer.device)
+            let textureLoader = MTKTextureLoader(device: RendererBlueprint.device)
             heightMap = try textureLoader.newTexture(name: textureName, scaleFactor: 1.0,
                                                 bundle: Bundle.main, options: nil)
 
@@ -66,9 +66,9 @@ class Terrain: Node {
             texDesc.usage = [.shaderRead, .shaderWrite]
             texDesc.mipmapLevelCount = Int(log2(Double(max(heightMap.width, heightMap.height))) + 1);
             texDesc.storageMode = .private
-            normalMapTexture = TemplateRenderer.device.makeTexture(descriptor: texDesc)!
+            normalMapTexture = RendererBlueprint.device.makeTexture(descriptor: texDesc)!
 
-//            let commandBuffer = TemplateRenderer.commandQueue.makeCommandBuffer()!
+//            let commandBuffer = RendererBlueprint.commandQueue.makeCommandBuffer()!
 //            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture, commandBuffer: commandBuffer)
 
             cliffTexture = try textureLoader.newTexture(name: "cliff-color", scaleFactor: 1.0,
@@ -87,7 +87,7 @@ class Terrain: Node {
         let controlPoints = Terrain.createControlPoints(patches: Terrain.patches,
                                                         size: (width: Terrain.terrainParams.size.x,
                                                                height: Terrain.terrainParams.size.y))
-        controlPointsBuffer = TemplateRenderer.device.makeBuffer(bytes: controlPoints.normalized,
+        controlPointsBuffer = RendererBlueprint.device.makeBuffer(bytes: controlPoints.normalized,
                                                          length: MemoryLayout<SIMD3<Float>>.stride * controlPoints.normalized.count)
 
 
@@ -97,7 +97,7 @@ class Terrain: Node {
 extension Terrain {
 
     static func generateTerrainNormalMap(heightMap: MTLTexture, normalTexture: MTLTexture, commandBuffer: MTLCommandBuffer) {
-        guard let function = TemplateRenderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else {
+        guard let function = RendererBlueprint.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else {
             print("""
                 ❌❌❌❌❌❌❌❌❌❌
 
@@ -113,9 +113,9 @@ extension Terrain {
 
             // This also crashes....
             // Probably shouldn't be generating terrain normals on every render pass
-            let pipelineState = try TemplateRenderer.device.makeComputePipelineState(function: function)
+            let pipelineState = try RendererBlueprint.device.makeComputePipelineState(function: function)
 
-//            guard let commandBuffer = TemplateRenderer.commandQueue.makeCommandBuffer() else {  fatalError() }
+//            guard let commandBuffer = RendererBlueprint.commandQueue.makeCommandBuffer() else {  fatalError() }
             guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
 
             let threadsPerGroup = MTLSize(width: 16, height: 16, depth: 1)
@@ -133,11 +133,11 @@ extension Terrain {
     }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {
-        guard let kernelFunction = TemplateRenderer.library?.makeFunction(name: "tessellation_main") else {
+        guard let kernelFunction = RendererBlueprint.library?.makeFunction(name: "tessellation_main") else {
             fatalError("Tessellation shader function not found")
         }
 
-        return try! TemplateRenderer.device.makeComputePipelineState(function: kernelFunction)
+        return try! RendererBlueprint.device.makeComputePipelineState(function: kernelFunction)
     }
 
     static func buildRenderPipelineState() -> MTLRenderPipelineState {
@@ -145,8 +145,8 @@ extension Terrain {
       descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
       descriptor.depthAttachmentPixelFormat = .depth32Float
 
-      let vertexFunction = TemplateRenderer.library?.makeFunction(name: "vertex_terrain")
-      let fragmentFunction = TemplateRenderer.library?.makeFunction(name: "fragment_terrain")
+      let vertexFunction = RendererBlueprint.library?.makeFunction(name: "vertex_terrain")
+      let fragmentFunction = RendererBlueprint.library?.makeFunction(name: "fragment_terrain")
       descriptor.vertexFunction = vertexFunction
       descriptor.fragmentFunction = fragmentFunction
 
@@ -163,7 +163,7 @@ extension Terrain {
       descriptor.maxTessellationFactor = maxTessellation
       descriptor.tessellationPartitionMode = .pow2
 
-        return try! TemplateRenderer.device.makeRenderPipelineState(descriptor: descriptor)
+        return try! RendererBlueprint.device.makeRenderPipelineState(descriptor: descriptor)
     }
 }
 

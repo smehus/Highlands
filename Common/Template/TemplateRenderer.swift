@@ -137,7 +137,7 @@ extension TemplateRenderer: MTKViewDelegate {
     for model in models {
       renderEncoder.pushDebugGroup(model.name)
       model.render(renderEncoder: renderEncoder,
-                   uniforms: uniforms,
+                    uniforms: uniforms,
                    fragmentUniforms: fragmentUniforms)
       renderEncoder.popDebugGroup()
     }

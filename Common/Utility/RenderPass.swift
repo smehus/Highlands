@@ -45,7 +45,7 @@ class RenderPass {
     descriptor.storageMode = .private
     descriptor.textureType = .type2D
     descriptor.usage = [.renderTarget, .shaderRead]
-    guard let texture = TemplateRenderer.device.makeTexture(descriptor: descriptor) else {
+    guard let texture = RendererBlueprint.device.makeTexture(descriptor: descriptor) else {
       fatalError("Texture not created")
     }
     texture.label = label

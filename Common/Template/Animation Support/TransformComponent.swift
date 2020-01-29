@@ -44,7 +44,7 @@ class TransformComponent {
     duration = Float(endTime - startTime)
     let timeStride = stride(from: startTime,
                             to: endTime,
-                            by: 1 / TimeInterval(TemplateRenderer.fps))
+                            by: 1 / TimeInterval(RendererBlueprint.fps))
     keyTransforms = Array(timeStride).map { time in
       return MDLTransform.globalTransform(with: object, atTime: time)
     }
@@ -55,7 +55,7 @@ class TransformComponent {
       currentTransform = .identity()
       return
     }
-    let frame = Int(fmod(time, duration) * Float(TemplateRenderer.fps))
+    let frame = Int(fmod(time, duration) * Float(RendererBlueprint.fps))
     if frame < keyTransforms.count {
       currentTransform = keyTransforms[frame]
     } else {

@@ -70,7 +70,7 @@ class Prop: Node {
                                 bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
         Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-        let mtkMesh = try! MTKMesh(mesh: mdlMesh, device: TemplateRenderer.device)
+        let mtkMesh = try! MTKMesh(mesh: mdlMesh, device: RendererBlueprint.device)
         mesh = mtkMesh
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap { index, element in
@@ -92,8 +92,8 @@ class Prop: Node {
         heightCalculatePipelineState = Prop.buildComputePipelineState()
 
         var bytes: [Float] = transforms.map { _ in return 0.0 }
-        heightBuffer = TemplateRenderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
-//        heightBuffer = TemplateRenderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
+        heightBuffer = RendererBlueprint.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
+//        heightBuffer = RendererBlueprint.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
 
         let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
                                               size: (width: Terrain.terrainParams.size.x,
@@ -110,11 +110,11 @@ class Prop: Node {
     }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {
-        guard let kernelFunction = TemplateRenderer.library?.makeFunction(name: "calculate_height") else {
+        guard let kernelFunction = RendererBlueprint.library?.makeFunction(name: "calculate_height") else {
             fatalError("Tessellation shader function not found")
         }
 
-        return try! TemplateRenderer.device.makeComputePipelineState(function: kernelFunction)
+        return try! RendererBlueprint.device.makeComputePipelineState(function: kernelFunction)
     }
 
 //    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
@@ -126,7 +126,7 @@ class Prop: Node {
 //                                bitangentAttributeNamed: MDLVertexAttributeBitangent)
 //
 //        Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-//        let mesh = try! MTKMesh(mesh: mdlMesh, device: TemplateRenderer.device)
+//        let mesh = try! MTKMesh(mesh: mdlMesh, device: RendererBlueprint.device)
 //        self.mesh = mesh
 //
 //        submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
@@ -151,7 +151,7 @@ class Prop: Node {
 
     static func loadMesh(name: String) -> MDLMesh {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
-        let allocator = MTKMeshBufferAllocator(device: TemplateRenderer.device)
+        let allocator = MTKMeshBufferAllocator(device: RendererBlueprint.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
         return asset.object(at: 0) as! MDLMesh
     }
@@ -164,7 +164,7 @@ class Prop: Node {
         }
 
         guard
-            let instanceBuffer = TemplateRenderer.device
+            let instanceBuffer = RendererBlueprint.device
                 .makeBuffer(bytes: instances, length: MemoryLayout<Instances>.stride * instances.count)
         else {
             fatalError()
@@ -219,7 +219,7 @@ class Prop: Node {
         descriptor.tAddressMode = .repeat
         descriptor.mipFilter = .linear
         descriptor.maxAnisotropy = 8
-        return TemplateRenderer.device.makeSamplerState(descriptor: descriptor)
+        return RendererBlueprint.device.makeSamplerState(descriptor: descriptor)
     }
 
     override func update(deltaTime: Float) {
