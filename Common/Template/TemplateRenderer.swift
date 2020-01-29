@@ -52,7 +52,7 @@ class TemplateRenderer: NSObject {
   }()
 
   // Array of Models allows for rendering multiple models
-  var models: [Model] = []
+  var models: [TemplateRenderable] = []
 
   var currentTime: Float = 0
   var ballVelocity: Float = 0
@@ -80,7 +80,7 @@ class TemplateRenderer: NSObject {
     mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
 
     // models
-    let skeleton = Model(name: "boy_tpose.usdz")
+    let skeleton = Character(name: "boy_tpose.usdz")
     skeleton.rotation = [.pi / 2, 0, radians(fromDegrees: 180)]
     skeleton.scale = [0.02, 0.02, 0.02]
     models.append(skeleton)
@@ -117,7 +117,7 @@ extension TemplateRenderer: MTKViewDelegate {
     
     let deltaTime = 1 / Float(TemplateRenderer.fps)
     for model in models {
-      model.update(deltaTime: deltaTime)
+      (model as? Character)?.update(deltaTime: deltaTime)
     }
     
     renderEncoder.setDepthStencilState(depthStencilState)

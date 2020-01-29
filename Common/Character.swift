@@ -67,7 +67,7 @@ class Character: Node {
     var positionInPatch: SIMD3<Float>?
 
     init(name: String) {
-        guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
+        guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else { fatalError() }
 
         let allocator = MTKMeshBufferAllocator(device: TemplateRenderer.device)
         let asset = MDLAsset(url: assetURL,
@@ -242,7 +242,7 @@ extension Character: Renderable {
         for mesh in meshes {
 
             if let paletteBuffer = mesh.skeleton?.jointMatrixPaletteBuffer {
-              renderEncoder.setVertexBuffer(paletteBuffer, offset: 0, index: 21)
+              renderEncoder.setVertexBuffer(paletteBuffer, offset: 0, index: 22)
             }
 
             var uniforms = vertex
