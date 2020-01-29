@@ -26,6 +26,25 @@ final class Renderer: NSObject {
         return buildLightPipelineState()
     }()
 
+    lazy var camera: Camera = {
+        let camera = Camera()
+        camera.position = [5, 0 , 5]
+
+        return camera
+    }()
+
+    var uniforms = Uniforms()
+
+    lazy var lights: [Light] = {
+        return lighting()
+    }()
+
+    lazy var character: Character = {
+        let character = Character(name: "boy_tpose.usdz")
+        character.scale = [0.02, 0.02, 0.02]
+        character.rotation = [radians(fromDegrees: 90), 0 , radians(fromDegrees: 180)]
+        return character
+    }()
     
     var shadowDepthTexture: MTLTexture!
     var shadowColorTexture: MTLTexture!
@@ -122,14 +141,15 @@ extension Renderer: MTKViewDelegate {
 
     func draw(in view: MTKView) {
         guard let descriptor = view.currentRenderPassDescriptor,
-            let commandBuffer = Renderer.commandQueue.makeCommandBuffer(),
-            let scene = scene
+            let commandBuffer = Renderer.commandQueue.makeCommandBuffer()
+//            let scene = scene
         else {
             return
         } 
 
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
-        scene.update(deltaTime: deltaTime)
+        character.update(deltaTime: deltaTime)
+//        scene.update(deltaTime: deltaTime)
 
 //        // Tessellation Pass
 //        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
@@ -154,10 +174,10 @@ extension Renderer: MTKViewDelegate {
 //        heightEncoder.endEncoding()
 
 
-        // Shadow pass
-        let previousUniforms = scene.uniforms
-        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
-        renderShadowPass(renderEncoder: shadowEncoder, view: view)
+//        // Shadow pass
+//        let previousUniforms = scene.uniforms
+//        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
+//        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
@@ -167,8 +187,8 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setCullMode(.back)
 
         var fragmentUniforms = FragmentUniforms()
-        fragmentUniforms.cameraPosition = scene.camera.position
-        fragmentUniforms.lightCount = UInt32(scene.lights.count)
+        fragmentUniforms.cameraPosition = camera.position
+        fragmentUniforms.lightCount = UInt32(lights.count)
 //        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
 //                                                          near: 0.01,
 //                                                          far: 16,
@@ -180,16 +200,16 @@ extension Renderer: MTKViewDelegate {
 //        scene.uniforms = previousUniforms
 //        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
 //        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
-        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
-        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
+//        scene.uniforms.viewMatrix = camera.viewMatrix//previousUniforms.viewMatrix
+//        scene.uniforms.projectionMatrix = camera.projectionMatrix//previousUniforms.projectionMatrix
 
-        renderEncoder.setFragmentBytes(&fragmentUniforms,
-                                       length: MemoryLayout<FragmentUniforms>.stride,
-                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+//        renderEncoder.setFragmentBytes(&fragmentUniforms,
+//                                       length: MemoryLayout<FragmentUniforms>.stride,
+//                                       index: Int(BufferIndexFragmentUniforms.rawValue))
 
         
-        renderEncoder.setFragmentBytes(&scene.lights,
-                                       length: MemoryLayout<Light>.stride * scene.lights.count,
+        renderEncoder.setFragmentBytes(&lights,
+                                       length: MemoryLayout<Light>.stride * lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
         renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
@@ -198,18 +218,22 @@ extension Renderer: MTKViewDelegate {
         var farZ = Camera.FarZ
         renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-        for renderable in scene.renderables {
-            // Allow set up for off screen targets
-            renderable.renderToTarget(with: commandBuffer)
-        }
+        uniforms.viewMatrix = camera.viewMatrix
+        uniforms.projectionMatrix = camera.projectionMatrix
 
-        for renderable in scene.renderables {
-            renderEncoder.pushDebugGroup(renderable.name)
-            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-            renderEncoder.popDebugGroup()
-        }
+        character.render(renderEncoder: renderEncoder, uniforms: uniforms, fragmentUniforms: fragmentUniforms)
+//        for renderable in scene.renderables {
+//            // Allow set up for off screen targets
+//            renderable.renderToTarget(with: commandBuffer)
+//        }
+//
+//        for renderable in scene.renderables {
+//            renderEncoder.pushDebugGroup(renderable.name)
+//            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+//            renderEncoder.popDebugGroup()
+//        }
 
-        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+//        scene?.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
         drawDebug(encoder: renderEncoder)
 
