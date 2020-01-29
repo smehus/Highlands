@@ -1,7 +1,7 @@
 
 import MetalKit
 
-typealias RendererBlueprint = TemplateRenderer
+typealias RendererBlueprint = Renderer
 
 extension Renderer {
 }

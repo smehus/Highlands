@@ -13,23 +13,23 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let terrain = Terrain(textureName: "hills")
-    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
-    let plane = Prop(type: .base(name: "large-plane", lighting: true))
-    let skeleton = Character(name: "boy_tpose")
+//    let terrain = Terrain(textureName: "hills")
+//    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
+//    let plane = Prop(type: .base(name: "large-plane", lighting: true))
+    let skeleton = Character(name: "boy_tpose.usdz")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
-    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
-    let water = Water(size: 500)
+//    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
+//    let water = Water(size: 500)
 
     override func setupScene() {
 
         skybox = Skybox(textureName: nil)
 
         inputController.keyboardDelegate = self
-
-        terrain.position = SIMD3<Float>([0, 0, 0])
-//        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
-        add(node: terrain)
+//
+//        terrain.position = SIMD3<Float>([0, 0, 0])
+////        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
+//        add(node: terrain)
 
 
         lights = lighting()
@@ -37,9 +37,9 @@ final class GameScene: Scene {
         camera.rotation = [0, 0, 0]
 
 
-        water.position.y = -7
-        water.rotation = [0, 0, radians(fromDegrees: -90)]
-        add(node: water)
+//        water.position.y = -7
+//        water.rotation = [0, 0, radians(fromDegrees: -90)]
+//        add(node: water)
   /*
         ground.tiling = 4
         ground.scale = [4, 1, 4]
@@ -90,7 +90,7 @@ final class GameScene: Scene {
 
 
         skeleton.scale = [0.015, 0.015, 0.015]
-        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
         skeleton.position = [3, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         add(node: skeleton)
@@ -110,7 +110,7 @@ final class GameScene: Scene {
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
         tpCamera.focusHeight = 6
-        tpCamera.focusDistance = 8
+        tpCamera.focusDistance = 4
         cameras.append(tpCamera)
         currentCameraIndex = cameras.endIndex - 1
 

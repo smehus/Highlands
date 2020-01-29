@@ -131,27 +131,27 @@ extension Renderer: MTKViewDelegate {
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
-        // Tessellation Pass
-        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
-        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
-
-        computeEncoder.pushDebugGroup("Tessellation Pass")
-        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
-        computeEncoder.popDebugGroup()
-        computeEncoder.endEncoding()
-
-        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
-
-
-        // Calculate Height
-
-        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-        heightEncoder.pushDebugGroup("Height pass")
-        for renderable in scene.renderables {
-            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
-        }
-        heightEncoder.popDebugGroup()
-        heightEncoder.endEncoding()
+//        // Tessellation Pass
+//        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
+//        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+//
+//        computeEncoder.pushDebugGroup("Tessellation Pass")
+//        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+//        computeEncoder.popDebugGroup()
+//        computeEncoder.endEncoding()
+//
+//        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+//
+//
+//        // Calculate Height
+//
+//        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+//        heightEncoder.pushDebugGroup("Height pass")
+//        for renderable in scene.renderables {
+//            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
+//        }
+//        heightEncoder.popDebugGroup()
+//        heightEncoder.endEncoding()
 
 
         // Shadow pass

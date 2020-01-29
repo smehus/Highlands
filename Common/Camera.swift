@@ -70,11 +70,12 @@ class ThirdPersonCamera: Camera {
     }
 
     override var viewMatrix: float4x4 {
-        setRotatingCamera()
+//        setRotatingCamera()
+        setNonRotatingCamera()
         return float4x4(lookAtLHEye: position, target: focus.position, up: [0, 1, 0])
 
 
-//        setNonRotatingCamera()
+
 //        return super.viewMatrix
     }
 

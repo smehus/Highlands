@@ -100,10 +100,10 @@
 		02A38F3923E1387100E26E19 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A2221B8A1E0002C0632 /* Renderer.swift */; };
 		02A38F3A23E1389600E26E19 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CB1E9D21EA848E002CCB94 /* DebugLights.swift */; };
 		02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CB1E9D21EA848E002CCB94 /* DebugLights.swift */; };
-		02A38F4023E1414600E26E19 /* TemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE4723DFE15F005F2E67 /* TemplateRenderer.swift */; };
-		02A38F4123E1414700E26E19 /* TemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE4723DFE15F005F2E67 /* TemplateRenderer.swift */; };
 		02A38F4223E1422A00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
 		02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
+		02A38F4423E143BB00E26E19 /* TemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE4723DFE15F005F2E67 /* TemplateRenderer.swift */; };
+		02A38F4523E143BB00E26E19 /* TemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE4723DFE15F005F2E67 /* TemplateRenderer.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
@@ -606,8 +606,8 @@
 				0294AEA823DFF129005F2E67 /* Terrain.metal in Sources */,
 				0294AEAC23DFF129005F2E67 /* Shaders.metal in Sources */,
 				02A38F4223E1422A00E26E19 /* ViewController.swift in Sources */,
+				02A38F4423E143BB00E26E19 /* TemplateRenderer.swift in Sources */,
 				0294AEBA23E07693005F2E67 /* Mesh.swift in Sources */,
-				02A38F4023E1414600E26E19 /* TemplateRenderer.swift in Sources */,
 				0294AED623E07C56005F2E67 /* Skybox.swift in Sources */,
 				02A38F3A23E1389600E26E19 /* DebugLights.swift in Sources */,
 				02A38F2823E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
@@ -667,7 +667,7 @@
 				0294AE8723DFECC6005F2E67 /* AnimationClip.swift in Sources */,
 				0294AE5B23DFE2EC005F2E67 /* TemplateRenderable.swift in Sources */,
 				02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */,
-				02A38F4123E1414700E26E19 /* TemplateRenderer.swift in Sources */,
+				02A38F4523E143BB00E26E19 /* TemplateRenderer.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
 				0294AE4F23DFE1A8005F2E67 /* TemplateCamera.swift in Sources */,
 				02A38F3723E1380500E26E19 /* RendererExtensions.swift in Sources */,
