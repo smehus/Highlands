@@ -23,8 +23,6 @@
 		0294AE6523DFE526005F2E67 /* TemplatePBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* TemplatePBR.metal */; };
 		0294AE6623DFE526005F2E67 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
 		0294AE6723DFE526005F2E67 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
-		0294AE6F23DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6E23DFE7EE005F2E67 /* VertexDescriptor.swift */; };
-		0294AE7023DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6E23DFE7EE005F2E67 /* VertexDescriptor.swift */; };
 		0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE7E23DFEBF7005F2E67 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE7D23DFEBF7005F2E67 /* MathLibrary.swift */; };
@@ -84,6 +82,12 @@
 		0294AED723E07C57005F2E67 /* Skybox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A563DF1121E6EBBE00563EA9 /* Skybox.swift */; };
 		0294AED823E07DFD005F2E67 /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
 		0294AED923E07DFD005F2E67 /* Texturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9E08D21BC1A1800A6F6BB /* Texturable.swift */; };
+		02A38F2123E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */; };
+		02A38F2223E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */; };
+		02A38F2523E11B7C00E26E19 /* Prop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1D21B9F332002F6F35 /* Prop.swift */; };
+		02A38F2623E11B7C00E26E19 /* Prop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD1D21B9F332002F6F35 /* Prop.swift */; };
+		02A38F2823E11BEC00E26E19 /* Patch+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A38F2723E11BEC00E26E19 /* Patch+Extensions.swift */; };
+		02A38F2923E11BEC00E26E19 /* Patch+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A38F2723E11BEC00E26E19 /* Patch+Extensions.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
@@ -164,6 +168,7 @@
 		0294AE9C23DFF129005F2E67 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		0294AE9D23DFF129005F2E67 /* Water.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Water.metal; sourceTree = "<group>"; };
 		0294AEB523E073CC005F2E67 /* ModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelType.swift; sourceTree = "<group>"; };
+		02A38F2723E11BEC00E26E19 /* Patch+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Patch+Extensions.swift"; sourceTree = "<group>"; };
 		02BDBED323DC96A300FB3EEA /* AnimationClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationClip.swift; sourceTree = "<group>"; };
 		02BDBED423DC96A300FB3EEA /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
@@ -453,6 +458,7 @@
 			children = (
 				A5A1CD3721BA2972002F6F35 /* RendererExtensions.swift */,
 				0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */,
+				02A38F2723E11BEC00E26E19 /* Patch+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -584,9 +590,11 @@
 				0294AEAC23DFF129005F2E67 /* Shaders.metal in Sources */,
 				0294AEBA23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AED623E07C56005F2E67 /* Skybox.swift in Sources */,
+				02A38F2823E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
 				0294AE6423DFE526005F2E67 /* TemplatePBR.metal in Sources */,
 				0294AED223E07A2C005F2E67 /* Transform.swift in Sources */,
 				0294AE4E23DFE1A8005F2E67 /* TemplateCamera.swift in Sources */,
+				02A38F2123E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				0294AE8823DFECC6005F2E67 /* Animation.swift in Sources */,
 				0294AECC23E07867005F2E67 /* Scene.swift in Sources */,
 				0294AEAA23DFF129005F2E67 /* CharacterShaders.metal in Sources */,
@@ -600,6 +608,7 @@
 				0294AED423E07C2F005F2E67 /* PhysicsController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				0294AE4823DFE15F005F2E67 /* TemplateRenderer.swift in Sources */,
+				02A38F2523E11B7C00E26E19 /* Prop.swift in Sources */,
 				A5C952C521CE952D00B23364 /* MotionController.swift in Sources */,
 				A57506EC21CE942700C63081 /* InputController.swift in Sources */,
 				0294AECA23E07845005F2E67 /* DebugBoundingBox.swift in Sources */,
@@ -612,7 +621,6 @@
 				0294AEA423DFF129005F2E67 /* DebugBoundingBox.metal in Sources */,
 				0294AE4C23DFE1A8005F2E67 /* Model.swift in Sources */,
 				0294AE8C23DFECC6005F2E67 /* Skeleton.swift in Sources */,
-				0294AE6F23DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */,
 				0294AE5A23DFE2EC005F2E67 /* TemplateRenderable.swift in Sources */,
 				0294AEB323E07380005F2E67 /* Submesh.swift in Sources */,
 				0294AED823E07DFD005F2E67 /* Texturable.swift in Sources */,
@@ -628,6 +636,7 @@
 				0294AED123E07896005F2E67 /* InputController.swift in Sources */,
 				0294AE9223DFED64005F2E67 /* TemplateViewController.swift in Sources */,
 				0294AE6723DFE526005F2E67 /* TemplateShaders.metal in Sources */,
+				02A38F2923E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
 				0294AEA323DFF129005F2E67 /* Skybox.metal in Sources */,
 				0294AEC123E0774A005F2E67 /* Node.swift in Sources */,
 				0294AEAB23DFF129005F2E67 /* CharacterShaders.metal in Sources */,
@@ -645,18 +654,19 @@
 				0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */,
 				0294AED923E07DFD005F2E67 /* Texturable.swift in Sources */,
 				0294AE7F23DFEBF7005F2E67 /* MathLibrary.swift in Sources */,
+				02A38F2623E11B7C00E26E19 /* Prop.swift in Sources */,
 				0294AE8F23DFECC6005F2E67 /* TransformComponent.swift in Sources */,
 				0294AED323E07A2D005F2E67 /* Transform.swift in Sources */,
 				A5A1CD2721BA2880002F6F35 /* ViewControllerExtension.swift in Sources */,
 				0294AEC323E077D6005F2E67 /* Terrain.swift in Sources */,
 				0294AECF23E07884005F2E67 /* Renderable.swift in Sources */,
-				0294AE7023DFE7EE005F2E67 /* VertexDescriptor.swift in Sources */,
 				0294AEA723DFF129005F2E67 /* DebugLights.metal in Sources */,
 				0294AEA523DFF129005F2E67 /* DebugBoundingBox.metal in Sources */,
 				0294AE9F23DFF129005F2E67 /* Shadow.metal in Sources */,
 				0294AEA123DFF129005F2E67 /* MorphShader.metal in Sources */,
 				0294AE6523DFE526005F2E67 /* TemplatePBR.metal in Sources */,
 				0294AE8B23DFECC6005F2E67 /* AnimationComponent.swift in Sources */,
+				02A38F2223E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				0294AECD23E07867005F2E67 /* Scene.swift in Sources */,
 				0294AED523E07C30005F2E67 /* PhysicsController.swift in Sources */,
 				0294AED723E07C57005F2E67 /* Skybox.swift in Sources */,

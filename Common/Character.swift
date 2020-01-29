@@ -69,7 +69,7 @@ class Character: Node {
     init(name: String) {
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
 
-        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let allocator = MTKMeshBufferAllocator(device: TemplateRenderer.device)
         let asset = MDLAsset(url: assetURL,
                              vertexDescriptor: MDLVertexDescriptor.defaultVertexDescriptor,
                              bufferAllocator: allocator)
@@ -85,7 +85,7 @@ class Character: Node {
                                     bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
             Character.vertexDescriptor = mdlMesh.vertexDescriptor
-            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
+            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: TemplateRenderer.device))
         }
 
         meshes = zip(mdlMeshes, mtkMeshes).map {
@@ -113,7 +113,7 @@ class Character: Node {
         samplerState = Character.buildSamplerState()
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
-        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
+        heightBuffer = TemplateRenderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
 
         let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
                                               size: (width: Terrain.terrainParams.size.x,
@@ -133,7 +133,7 @@ class Character: Node {
         descriptor.mipFilter = .linear
         // TODO: I don't know why this is crashing me....
 //        descriptor.maxAnisotropy = 0
-        guard let state = Renderer.device.makeSamplerState(descriptor: descriptor) else {
+        guard let state = TemplateRenderer.device.makeSamplerState(descriptor: descriptor) else {
             fatalError()
         }
 
@@ -234,20 +234,6 @@ class Character: Node {
     }
 }
 
-extension Patch: Equatable {
-
-    static public func ==(lhs: Patch, rhs: Patch) -> Bool {
-        assertionFailure("Need to Implement Equatable FOR PATCH"); return false
-    }
-
-    static public func != (lhs: Patch, rhs: Patch) -> Bool {
-        return lhs.topLeft != rhs.topLeft ||
-                lhs.topRight != rhs.topRight ||
-                lhs.bottomLeft != rhs.bottomLeft ||
-                lhs.bottomRight != rhs.bottomRight
-    }
-}
-
 extension Character: Renderable {
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
@@ -317,7 +303,7 @@ extension Character: Renderable {
                 }
 
                 let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
-                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
+                let buffer = TemplateRenderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
                 renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
             }
 
@@ -363,11 +349,11 @@ extension Character: Renderable {
     }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {
-        guard let kernelFunction = Renderer.library?.makeFunction(name: "calculate_height") else {
+        guard let kernelFunction = TemplateRenderer.library?.makeFunction(name: "calculate_height") else {
             fatalError("Tessellation shader function not found")
         }
 
-        return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
+        return try! TemplateRenderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder,
@@ -418,5 +404,13 @@ extension Character: Renderable {
 
         let final = SIMD3<Float>(calculate(x), 0, calculate(z))
         return final
+    }
+}
+
+extension Character: TemplateRenderable {
+    func render(renderEncoder: MTLRenderCommandEncoder,
+                uniforms: Uniforms,
+                fragmentUniforms fragment: FragmentUniforms) {
+
     }
 }

@@ -89,7 +89,7 @@ class Prop: Node {
         shadowTransforms = Prop.buildTransforms(instanceCount: instanceCount * 6)
         shadowInstanceBuffer = Prop.buildInstanceBuffer(transforms: shadowTransforms)
 
-        heightCalculatePipelineState = Character.buildComputePipelineState()
+        heightCalculatePipelineState = Prop.buildComputePipelineState()
 
         var bytes: [Float] = transforms.map { _ in return 0.0 }
         heightBuffer = TemplateRenderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
@@ -107,6 +107,14 @@ class Prop: Node {
         boundingBox = mdlMesh.boundingBox
         
 
+    }
+
+    static func buildComputePipelineState() -> MTLComputePipelineState {
+        guard let kernelFunction = TemplateRenderer.library?.makeFunction(name: "calculate_height") else {
+            fatalError("Tessellation shader function not found")
+        }
+
+        return try! TemplateRenderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
 //    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
@@ -211,7 +219,7 @@ class Prop: Node {
         descriptor.tAddressMode = .repeat
         descriptor.mipFilter = .linear
         descriptor.maxAnisotropy = 8
-        return TemplateTemplateRenderer.device.makeSamplerState(descriptor: descriptor)
+        return TemplateRenderer.device.makeSamplerState(descriptor: descriptor)
     }
 
     override func update(deltaTime: Float) {
