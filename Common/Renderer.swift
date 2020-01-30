@@ -225,6 +225,7 @@ extension Renderer: MTKViewDelegate {
         }
 
         for renderable in scene.renderables {
+            guard !(renderable is Character) else { continue }
             renderEncoder.pushDebugGroup(renderable.name)
             renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
             renderEncoder.popDebugGroup()
@@ -239,7 +240,7 @@ extension Renderer: MTKViewDelegate {
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
         commandBuffer.commit()
-        commandBuffer.waitUntilCompleted()
+//        commandBuffer.waitUntilCompleted()
     }
 
     func renderShadowPass(renderEncoder: MTLRenderCommandEncoder, view: MTKView) {

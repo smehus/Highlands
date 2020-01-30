@@ -112,7 +112,7 @@ final class GameScene: Scene {
         tpCamera.focusDistance = 4
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
-        currentCameraIndex = cameras.endIndex - 1
+        currentCameraIndex = cameras.startIndex
 
 
     }
