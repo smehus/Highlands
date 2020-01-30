@@ -55,10 +55,6 @@
 		020E1D7723E2799B00A61642 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED623DC96A300FB3EEA /* Skeleton.swift */; };
 		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
-		0294AE6423DFE526005F2E67 /* TemplatePBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* TemplatePBR.metal */; };
-		0294AE6523DFE526005F2E67 /* TemplatePBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* TemplatePBR.metal */; };
-		0294AE6623DFE526005F2E67 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
-		0294AE6723DFE526005F2E67 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
 		0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE7E23DFEBF7005F2E67 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE7D23DFEBF7005F2E67 /* MathLibrary.swift */; };
@@ -75,8 +71,6 @@
 		0294AEA723DFF129005F2E67 /* DebugLights.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9923DFF129005F2E67 /* DebugLights.metal */; };
 		0294AEA823DFF129005F2E67 /* Terrain.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9A23DFF129005F2E67 /* Terrain.metal */; };
 		0294AEA923DFF129005F2E67 /* Terrain.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9A23DFF129005F2E67 /* Terrain.metal */; };
-		0294AEAA23DFF129005F2E67 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
-		0294AEAB23DFF129005F2E67 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
 		0294AEAC23DFF129005F2E67 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9C23DFF129005F2E67 /* Shaders.metal */; };
 		0294AEAD23DFF129005F2E67 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9C23DFF129005F2E67 /* Shaders.metal */; };
 		0294AEAE23DFF129005F2E67 /* Water.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9D23DFF129005F2E67 /* Water.metal */; };
@@ -702,12 +696,10 @@
 				0294AED623E07C56005F2E67 /* Skybox.swift in Sources */,
 				02A38F3A23E1389600E26E19 /* DebugLights.swift in Sources */,
 				02A38F2823E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
-				0294AE6423DFE526005F2E67 /* TemplatePBR.metal in Sources */,
 				02A38F2A23E11C0D00E26E19 /* Character.swift in Sources */,
 				0294AED223E07A2C005F2E67 /* Transform.swift in Sources */,
 				02A38F2123E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				0294AECC23E07867005F2E67 /* Scene.swift in Sources */,
-				0294AEAA23DFF129005F2E67 /* CharacterShaders.metal in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
 				0294AECE23E07883005F2E67 /* Renderable.swift in Sources */,
 				0294AEA623DFF129005F2E67 /* DebugLights.metal in Sources */,
@@ -724,7 +716,6 @@
 				A57506EC21CE942700C63081 /* InputController.swift in Sources */,
 				0294AECA23E07845005F2E67 /* DebugBoundingBox.swift in Sources */,
 				020E1D6E23E2799B00A61642 /* TransformComponent.swift in Sources */,
-				0294AE6623DFE526005F2E67 /* TemplateShaders.metal in Sources */,
 				0294AEA023DFF129005F2E67 /* MorphShader.metal in Sources */,
 				0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
@@ -747,11 +738,9 @@
 			files = (
 				020E1D7623E2799B00A61642 /* AnimationComponent.swift in Sources */,
 				0294AED123E07896005F2E67 /* InputController.swift in Sources */,
-				0294AE6723DFE526005F2E67 /* TemplateShaders.metal in Sources */,
 				02A38F2923E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
 				0294AEA323DFF129005F2E67 /* Skybox.metal in Sources */,
 				0294AEC123E0774A005F2E67 /* Node.swift in Sources */,
-				0294AEAB23DFF129005F2E67 /* CharacterShaders.metal in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
@@ -778,7 +767,6 @@
 				02A38F2D23E12D1100E26E19 /* GameScene.swift in Sources */,
 				02A38F3323E12D7800E26E19 /* Camera.swift in Sources */,
 				0294AEA123DFF129005F2E67 /* MorphShader.metal in Sources */,
-				0294AE6523DFE526005F2E67 /* TemplatePBR.metal in Sources */,
 				02A38F2223E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				0294AECD23E07867005F2E67 /* Scene.swift in Sources */,
 				02A38F2B23E11C0D00E26E19 /* Character.swift in Sources */,
