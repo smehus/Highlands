@@ -16,7 +16,7 @@ final class GameScene: Scene {
     let terrain = Terrain(textureName: "hills")
 //    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
 //    let plane = Prop(type: .base(name: "large-plane", lighting: true))
-    let skeleton = Character(name: "boy_tpose.usdz")
+    let skeleton = Character(name: "boy_tpose")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 //    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
     let water = Water(size: 500)
@@ -109,7 +109,7 @@ final class GameScene: Scene {
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
         tpCamera.focusHeight = 6
-        tpCamera.focusDistance = 4
+        tpCamera.focusDistance = 8
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
         currentCameraIndex = cameras.startIndex
@@ -223,11 +223,11 @@ extension GameScene: KeyboardDelegate {
 
 extension GameScene: KeyboardDelegate {
     func didStartMove() {
-//        skeleton.resumeAnimation()
+        skeleton.resumeAnimation()
     }
 
     func didEndMove() {
-//        skeleton.pauseAnimation()
+        skeleton.pauseAnimation()
     }
 }
 

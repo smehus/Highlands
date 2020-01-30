@@ -3,7 +3,7 @@ import MetalKit
 
 final class Renderer: NSObject {
 
-    static var sampleCount = 1
+    static let sampleCount = 1
 
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
@@ -26,33 +26,6 @@ final class Renderer: NSObject {
         return buildLightPipelineState()
     }()
 
-//    lazy var camera: Camera = {
-//        let camera = Camera()
-//        camera.position = [5, 0 , 5]
-//
-//        return camera
-//    }()
-//
-//      lazy var camera: TemplateCamera = {
-//        let camera = ArcballCamera()
-//        camera.distance = 8
-//        camera.target = [0, 1.3, 0]
-//    //    camera.rotation.x = Float(-15).degreesToRadians
-//        return camera
-//      }()
-//
-//    var uniforms = Uniforms()
-//
-//    lazy var lights: [Light] = {
-//        return lighting()
-//    }()
-
-//    lazy var character: Character = {
-//        let character = Character(name: "boy_tpose.usdz")
-//        character.scale = [0.02, 0.02, 0.02]
-//        character.rotation = [radians(fromDegrees: 90), 0 , radians(fromDegrees: 180)]
-//        return character
-//    }()
     
     var shadowDepthTexture: MTLTexture!
     var shadowColorTexture: MTLTexture!
@@ -64,7 +37,7 @@ final class Renderer: NSObject {
             fatalError("GPU not available")
         }
 
-        Renderer.sampleCount = metalView.sampleCount
+        metalView.sampleCount = Renderer.sampleCount
         metalView.depthStencilPixelFormat = .depth32Float
         metalView.device = device
         Renderer.device = device
@@ -145,7 +118,6 @@ extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         scene?.sceneSizeWillChange(to: size)
         buildShadowTexture(size: size)
-//        camera.aspect = Float(view.bounds.width)/Float(view.bounds.height)
     }
 
     func draw(in view: MTKView) {
@@ -159,7 +131,7 @@ extension Renderer: MTKViewDelegate {
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
-//        // Tessellation Pass
+        // Tessellation Pass
         guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
         guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
 
@@ -171,7 +143,7 @@ extension Renderer: MTKViewDelegate {
         Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
 
 
-//        // Calculate Height
+        // Calculate Height
 
         guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
         heightEncoder.pushDebugGroup("Height pass")
@@ -182,7 +154,7 @@ extension Renderer: MTKViewDelegate {
         heightEncoder.endEncoding()
 
 
-//        // Shadow pass
+        // Shadow pass
         let previousUniforms = scene.uniforms
         guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
@@ -197,12 +169,20 @@ extension Renderer: MTKViewDelegate {
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
         fragmentUniforms.lightCount = UInt32(scene.lights.count)
-        fragmentUniforms.tiling = 1
+        // I think i need to set tilin herer for the character
 //        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
 //                                                          near: 0.01,
 //                                                          far: 16,
 //                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
-        scene.uniforms = previousUniforms
+
+        // Reset uniforms so projection is correct
+        // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
+        // goodddddddd damniiitttttt
+//        scene.uniforms = previousUniforms
+//        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
+//        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
+        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
+        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
 
         renderEncoder.setFragmentBytes(&fragmentUniforms,
                                        length: MemoryLayout<FragmentUniforms>.stride,

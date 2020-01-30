@@ -40,26 +40,26 @@ class DebugBoundingBox {
 
   init(boundingBox: MDLAxisAlignedBoundingBox) {
     self.boundingBox = boundingBox
-    let library = RendererBlueprint.device.makeDefaultLibrary()
+    let library = Renderer.device.makeDefaultLibrary()
     let vertexFunction = library?.makeFunction(name: "debug_vertex")
     let fragmentFunction = library?.makeFunction(name: "debug_fragment")
     
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
-    pipelineDescriptor.colorAttachments[0].pixelFormat = RendererBlueprint.colorPixelFormat
+    pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
     
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
     do {
-      pipelineState = try RendererBlueprint.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+      pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
     } catch let error {
       fatalError(error.localizedDescription)
     }
     vertices = DebugBoundingBox.createMeshFromBoundingBox(boundingBox: boundingBox)
     
-    self.boundingBoxMeshBuffer = RendererBlueprint.device.makeBuffer(bytes: vertices,
+    self.boundingBoxMeshBuffer = Renderer.device.makeBuffer(bytes: vertices,
                           length: vertices.count * MemoryLayout<Float>.size, options: [])!
-    self.boundingBoxIndexBuffer = RendererBlueprint.device.makeBuffer(bytes: indices,
+    self.boundingBoxIndexBuffer = Renderer.device.makeBuffer(bytes: indices,
                           length: indices.count * MemoryLayout<UInt16>.size, options: [])!
     self.boundingBoxIndexCount = indices.count
   }

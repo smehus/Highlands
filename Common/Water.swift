@@ -24,30 +24,30 @@ class Water: Node {
 
     init(size: Float) {
         do {
-            let plane = Primitive.makePlane(device: RendererBlueprint.device, size: size)
+            let plane = Primitive.makePlane(device: Renderer.device, size: size)
             mdlMesh = plane
 
-            mesh = try MTKMesh(mesh: plane, device: RendererBlueprint.device)
+            mesh = try MTKMesh(mesh: plane, device: Renderer.device)
             waterNormalTexture = try Submesh.loadTexture(imageName: "normal-water.png")!
 
 
 
-            let library = RendererBlueprint.device.makeDefaultLibrary()!
+            let library = Renderer.device.makeDefaultLibrary()!
             let descriptor = MTLRenderPipelineDescriptor()
             descriptor.vertexFunction = library.makeFunction(name: "vertex_water")
             descriptor.fragmentFunction = library.makeFunction(name: "fragment_water")
-            descriptor.colorAttachments[0].pixelFormat = RendererBlueprint.colorPixelFormat
-            descriptor.depthAttachmentPixelFormat = .depth32Float
+            descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+            descriptor.depthAttachmentPixelFormat = Renderer.depthPixelFormat
             descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-            pipelineState = try RendererBlueprint.device.makeRenderPipelineState(descriptor: descriptor)
+            pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
 
-            reflectionRenderPass = RenderPass(name: "reflection", size: RendererBlueprint.drawableSize)
-            refractionRenderPass = RenderPass(name: "refraction", size: RendererBlueprint.drawableSize)
+            reflectionRenderPass = RenderPass(name: "reflection", size: Renderer.drawableSize)
+            refractionRenderPass = RenderPass(name: "refraction", size: Renderer.drawableSize)
 
             let stencilDescriptor = MTLDepthStencilDescriptor()
             stencilDescriptor.depthCompareFunction = .less
             stencilDescriptor.isDepthWriteEnabled = true
-            depthStencilState = RendererBlueprint.device.makeDepthStencilState(descriptor: stencilDescriptor)!
+            depthStencilState = Renderer.device.makeDepthStencilState(descriptor: stencilDescriptor)!
 
         } catch {
             fatalError(error.localizedDescription)

@@ -29,7 +29,7 @@ struct Skeleton {
 
         let bufferSize = jointPaths.count * MemoryLayout<float4x4>.stride
         jointMatrixPaletteBuffer =
-            TemplateRenderer.device.makeBuffer(length: bufferSize,
+            Renderer.device.makeBuffer(length: bufferSize,
                                        options: [])
     }
 

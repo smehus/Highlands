@@ -56,7 +56,7 @@ private extension Submesh {
         let fragmentConstants = type.fragmentFunctionConstants(textures: textures)
 
 
-        let library = RendererBlueprint.library
+        let library = Renderer.library
         let vertexFunction: MTLFunction?
         let fragmentFunction: MTLFunction?
 
@@ -80,11 +80,11 @@ private extension Submesh {
 //        pipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
 //        pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
 //        pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
-//        pipelineDescriptor.sampleCount = RendererBlueprint.sampleCount
+        pipelineDescriptor.sampleCount = Renderer.sampleCount
 
 
         do {
-            pipelineState = try RendererBlueprint.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+            pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         } catch let error {
             fatalError(error.localizedDescription)
         }
@@ -103,13 +103,13 @@ private extension Submesh {
         var pipelineState: MTLRenderPipelineState
         do {
             let pipelineDescriptor = MTLRenderPipelineDescriptor()
-            pipelineDescriptor.vertexFunction = try RendererBlueprint.library!.makeFunction(name: "vertex_omni_depth", constantValues: constants)
-            pipelineDescriptor.fragmentFunction = try RendererBlueprint.library!.makeFunction(name: "fragment_depth", constantValues: constants)
+            pipelineDescriptor.vertexFunction = try Renderer.library!.makeFunction(name: "vertex_omni_depth", constantValues: constants)
+            pipelineDescriptor.fragmentFunction = try Renderer.library!.makeFunction(name: "fragment_depth", constantValues: constants)
             pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
-            pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
+            pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(Prop.defaultVertexDescriptor)
             pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
             pipelineDescriptor.inputPrimitiveTopology = .triangle
-            pipelineState = try RendererBlueprint.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+            pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         } catch let error {
             fatalError(error.localizedDescription)
         }

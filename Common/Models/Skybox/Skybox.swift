@@ -24,7 +24,7 @@ class Skybox {
     let depthStencilState: MTLDepthStencilState?
 
     init(textureName: String?) {
-        let allocator = MTKMeshBufferAllocator(device: RendererBlueprint.device)
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let cube = MDLMesh(boxWithExtent: [1, 1, 1],
                            segments: [1, 1, 1],
                            inwardNormals: true,
@@ -32,7 +32,7 @@ class Skybox {
                            allocator: allocator)
 
         do {
-            mesh = try MTKMesh(mesh: cube, device: RendererBlueprint.device)
+            mesh = try MTKMesh(mesh: cube, device: Renderer.device)
         } catch {
             fatalError("failed to create skybox mesh")
         }
@@ -60,7 +60,7 @@ class Skybox {
 
 
         do {
-            let textureLoader = MTKTextureLoader(device: RendererBlueprint.device)
+            let textureLoader = MTKTextureLoader(device: Renderer.device)
             texture = try textureLoader.newTexture(texture: skyTexture, options: nil)
         } catch {
             print(error.localizedDescription)
@@ -73,19 +73,19 @@ class Skybox {
         let descriptor = MTLDepthStencilDescriptor()
         descriptor.depthCompareFunction = .lessEqual
         descriptor.isDepthWriteEnabled = true
-        return RendererBlueprint.device.makeDepthStencilState(descriptor: descriptor)
+        return Renderer.device.makeDepthStencilState(descriptor: descriptor)
     }
 
     private static func buildPipelineState(vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {
         let descriptor = MTLRenderPipelineDescriptor()
-        descriptor.colorAttachments[0].pixelFormat = RendererBlueprint.colorPixelFormat
+        descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
         descriptor.depthAttachmentPixelFormat = .depth32Float
-//        descriptor.sampleCount = RendererBlueprint.sampleCount
-        descriptor.vertexFunction = RendererBlueprint.library?.makeFunction(name: "vertexSkybox")
-        descriptor.fragmentFunction = RendererBlueprint.library?.makeFunction(name: "fragmentSkybox")
+        descriptor.sampleCount = Renderer.sampleCount
+        descriptor.vertexFunction = Renderer.library?.makeFunction(name: "vertexSkybox")
+        descriptor.fragmentFunction = Renderer.library?.makeFunction(name: "fragmentSkybox")
         descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)
         do {
-            return try RendererBlueprint.device.makeRenderPipelineState(descriptor: descriptor)
+            return try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
         } catch {
             fatalError(error.localizedDescription)
         }

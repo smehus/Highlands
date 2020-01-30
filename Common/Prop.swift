@@ -70,7 +70,7 @@ class Prop: Node {
                                 bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
         Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-        let mtkMesh = try! MTKMesh(mesh: mdlMesh, device: RendererBlueprint.device)
+        let mtkMesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
         mesh = mtkMesh
 
         submeshes = mdlMesh.submeshes?.enumerated().compactMap { index, element in
@@ -92,8 +92,8 @@ class Prop: Node {
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
         var bytes: [Float] = transforms.map { _ in return 0.0 }
-        heightBuffer = RendererBlueprint.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
-//        heightBuffer = RendererBlueprint.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
+        heightBuffer = Renderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
+//        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
 
         let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
                                               size: (width: Terrain.terrainParams.size.x,
@@ -118,7 +118,7 @@ class Prop: Node {
 //                                bitangentAttributeNamed: MDLVertexAttributeBitangent)
 //
 //        Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-//        let mesh = try! MTKMesh(mesh: mdlMesh, device: RendererBlueprint.device)
+//        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
 //        self.mesh = mesh
 //
 //        submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
@@ -143,7 +143,7 @@ class Prop: Node {
 
     static func loadMesh(name: String) -> MDLMesh {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
-        let allocator = MTKMeshBufferAllocator(device: RendererBlueprint.device)
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: Prop.defaultVertexDescriptor, bufferAllocator: allocator)
         return asset.object(at: 0) as! MDLMesh
     }
@@ -156,7 +156,7 @@ class Prop: Node {
         }
 
         guard
-            let instanceBuffer = RendererBlueprint.device
+            let instanceBuffer = Renderer.device
                 .makeBuffer(bytes: instances, length: MemoryLayout<Instances>.stride * instances.count)
         else {
             fatalError()
@@ -211,7 +211,7 @@ class Prop: Node {
         descriptor.tAddressMode = .repeat
         descriptor.mipFilter = .linear
         descriptor.maxAnisotropy = 8
-        return RendererBlueprint.device.makeSamplerState(descriptor: descriptor)
+        return Renderer.device.makeSamplerState(descriptor: descriptor)
     }
 
     override func update(deltaTime: Float) {

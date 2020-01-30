@@ -67,9 +67,9 @@ class Character: Node {
     var positionInPatch: SIMD3<Float>?
 
     init(name: String) {
-        guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else { fatalError() }
+        guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
 
-        let allocator = MTKMeshBufferAllocator(device: RendererBlueprint.device)
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL,
                              vertexDescriptor: MDLVertexDescriptor.defaultVertexDescriptor,
                              bufferAllocator: allocator)
@@ -85,7 +85,7 @@ class Character: Node {
                                     bitangentAttributeNamed: MDLVertexAttributeBitangent)
 
             Character.vertexDescriptor = mdlMesh.vertexDescriptor
-            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: RendererBlueprint.device))
+            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
         }
 
         meshes = zip(mdlMeshes, mtkMeshes).map {
@@ -113,7 +113,7 @@ class Character: Node {
         samplerState = Character.buildSamplerState()
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
-        heightBuffer = RendererBlueprint.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
+        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
 
         let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
                                               size: (width: Terrain.terrainParams.size.x,
@@ -131,9 +131,9 @@ class Character: Node {
         descriptor.sAddressMode = .repeat
         descriptor.tAddressMode = .repeat
         descriptor.mipFilter = .linear
-        // TODO: I don't know why this is crashing me....
-//        descriptor.maxAnisotropy = 0
-        guard let state = RendererBlueprint.device.makeSamplerState(descriptor: descriptor) else {
+//         TODO: I don't know why this is crashing me....
+        descriptor.maxAnisotropy = 8
+        guard let state = Renderer.device.makeSamplerState(descriptor: descriptor) else {
             fatalError()
         }
 
@@ -303,7 +303,7 @@ extension Character: Renderable {
                 }
 
                 let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
-                let buffer = RendererBlueprint.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
+                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
                 renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
             }
 
@@ -349,11 +349,11 @@ extension Character: Renderable {
     }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {
-        guard let kernelFunction = RendererBlueprint.library?.makeFunction(name: "calculate_height") else {
+        guard let kernelFunction = Renderer.library?.makeFunction(name: "calculate_height") else {
             fatalError("Tessellation shader function not found")
         }
 
-        return try! RendererBlueprint.device.makeComputePipelineState(function: kernelFunction)
+        return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder,
@@ -407,7 +407,7 @@ extension Character: Renderable {
     }
 }
 
-extension Character: TemplateRenderable {
+extension Character {
     func render(renderEncoder: MTLRenderCommandEncoder,
                 uniforms: Uniforms,
                 fragmentUniforms fragment: FragmentUniforms) {
