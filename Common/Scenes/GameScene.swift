@@ -64,29 +64,29 @@ final class GameScene: Scene {
             transform.position = position
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
-//
-//        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
-//        let morphTargetNames = ["rock1", "rock2", "rock3"]
-//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
-//
-//        add(node: rock)
-//        physicsController.addStaticBody(node: rock)
-//        for i in 0..<count {
-//            var transform = Transform()
-//
-//            if i == 0 {
-//                transform.position = [0, 0, 3]
-//            } else {
-//                var position: SIMD3<Float>
-//                repeat {
-//                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-//                } while position.x > 2 && position.z > 2
-//
-//                transform.position = position
-//            }
-//
-//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-//        }
+
+        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
+        let morphTargetNames = ["rock1", "rock2", "rock3"]
+        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
+
+        add(node: rock)
+        physicsController.addStaticBody(node: rock)
+        for i in 0..<count {
+            var transform = Transform()
+
+            if i == 0 {
+                transform.position = [0, 0, 3]
+            } else {
+                var position: SIMD3<Float>
+                repeat {
+                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+                } while position.x > 2 && position.z > 2
+
+                transform.position = position
+            }
+
+            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+        }
 
 
         skeleton.scale = [0.015, 0.015, 0.015]
@@ -112,7 +112,8 @@ final class GameScene: Scene {
         tpCamera.focusDistance = 8
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
-        currentCameraIndex = cameras.endIndex - 1
+        currentCameraIndex = cameras.startIndex
+
 
 
     }
