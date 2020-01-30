@@ -169,6 +169,7 @@ extension Renderer: MTKViewDelegate {
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
         fragmentUniforms.lightCount = UInt32(scene.lights.count)
+        fragmentUniforms.tiling = 1
         // I think i need to set tilin herer for the character
 //        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
 //                                                          near: 0.01,
@@ -205,7 +206,6 @@ extension Renderer: MTKViewDelegate {
         }
 
         for renderable in scene.renderables {
-            guard !(renderable is Character) else { continue }
             renderEncoder.pushDebugGroup(renderable.name)
             renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
             renderEncoder.popDebugGroup()
@@ -220,7 +220,7 @@ extension Renderer: MTKViewDelegate {
         guard let drawable = view.currentDrawable else { return }
         commandBuffer.present(drawable)
         commandBuffer.commit()
-//        commandBuffer.waitUntilCompleted()
+        commandBuffer.waitUntilCompleted()
     }
 
     func renderShadowPass(renderEncoder: MTLRenderCommandEncoder, view: MTKView) {
