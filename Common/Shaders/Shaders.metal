@@ -12,7 +12,6 @@ using namespace metal;
 
 constant bool hasColorTexture [[ function_constant(0) ]];
 constant bool hasNormalTexture [[ function_constant(1) ]];
-constant bool isGroundTexture [[ function_constant(5) ]];
 constant bool includeLighting [[ function_constant(6) ]];
 constant bool includeBlending [[ function_constant(7) ]];
 constant bool hasColorTextureArray [[ function_constant(8) ]];
@@ -84,9 +83,7 @@ float3 diffuseLighting(VertexOut in,
     // [0, 0, -1] - so any light facing -z would be black
     // -1z for a normal doesn't seem to make sense? But maybe the planes are getting rotated
     float3 normalDirection;
-    if (isGroundTexture) {
-        normalDirection = float3(0, 1, 0);
-    } else if (hasNormalTexture) {
+    if (hasNormalTexture) {
         normalDirection = float3x3(in.worldTangent, in.worldBitangent, in.worldNormal) * normalValue;
     } else {
         // Using the tangents multiplied by the value will reverse the normals if not using a normal map

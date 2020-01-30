@@ -105,4 +105,84 @@ enum ModelType {
             return MDLVertexDescriptor.defaultVertexDescriptor
         }
     }
+
+    func fragmentFunctionConstants(textures: Submesh.Textures) -> MTLFunctionConstantValues {
+        switch self {
+        case .character:
+            return characterFragmentFunctionConstants(textures: textures)
+        default:
+            return defaultFragmentFunctionConstants(textures: textures)
+        }
+    }
+
+    func vertexFunctionConstants(textures: Submesh.Textures) -> MTLFunctionConstantValues {
+        switch self {
+        case .character:
+            return characterVertexFunctionConstants(hasSkeleton: true)
+        default:
+            return defaultFragmentFunctionConstants(textures: textures)
+        }
+    }
+}
+
+// Character
+extension ModelType {
+    private func characterFragmentFunctionConstants(textures: Submesh.Textures) -> MTLFunctionConstantValues {
+        let functionConstants = MTLFunctionConstantValues()
+        var property = textures.baseColor != nil
+        functionConstants.setConstantValue(&property, type: .bool, index: 0)
+        property = textures.normal != nil
+        functionConstants.setConstantValue(&property, type: .bool, index: 1)
+        property = textures.roughness != nil
+        functionConstants.setConstantValue(&property, type: .bool, index: 2)
+        property = false
+        functionConstants.setConstantValue(&property, type: .bool, index: 3)
+        property = false
+        functionConstants.setConstantValue(&property, type: .bool, index: 4)
+        return functionConstants
+    }
+
+    private func characterVertexFunctionConstants(hasSkeleton: Bool) -> MTLFunctionConstantValues {
+      let functionConstants = MTLFunctionConstantValues()
+      var addSkeleton = hasSkeleton
+      functionConstants.setConstantValue(&addSkeleton, type: .bool, index: 5)
+      return functionConstants
+    }
+
+}
+
+
+// Props
+extension ModelType {
+    private func defaultFragmentFunctionConstants(textures: Submesh.Textures) -> MTLFunctionConstantValues {
+        let functionConstants = MTLFunctionConstantValues()
+
+        var isLighting = lighting
+        var isBlending = blending
+        var property = (textures.baseColor != nil && !isTextureArray)
+
+        functionConstants.setConstantValue(&property, type: .bool, index: 0)
+
+        property = textures.normal != nil
+        functionConstants.setConstantValue(&property, type: .bool, index: 1)
+
+        property = textures.roughness != nil
+        functionConstants.setConstantValue(&property, type: .bool, index: 2)
+
+        property = false
+        functionConstants.setConstantValue(&property, type: .bool, index: 3)
+        functionConstants.setConstantValue(&property, type: .bool, index: 4)
+
+
+        // Lighting
+        functionConstants.setConstantValue(&isLighting, type: .bool, index: 6)
+
+        // ShouldBlend
+        functionConstants.setConstantValue(&isBlending, type: .bool, index: 7)
+
+        var isTexArray = isTextureArray
+        functionConstants.setConstantValue(&isTexArray, type: .bool, index: 8)
+
+        return functionConstants
+    }
 }

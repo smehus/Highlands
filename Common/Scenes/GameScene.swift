@@ -46,24 +46,24 @@ final class GameScene: Scene {
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
         */
-//        let count = 200
-//        let offset = 100
-//
-//        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
-//        add(node: tree)
-//        physicsController.addStaticBody(node: tree)
-//        for i in 0..<count {
-//            var transform = Transform()
-//            transform.scale = [3.0, 3.0, 3.0]
-//
-//            var position: SIMD3<Float>
-//            repeat {
-//                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-//            } while position.x > 2 && position.z > 2
-//
-//            transform.position = position
-//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-//        }
+        let count = 2
+        let offset = 10
+
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
+        add(node: tree)
+        physicsController.addStaticBody(node: tree)
+        for i in 0..<count {
+            var transform = Transform()
+            transform.scale = [3.0, 3.0, 3.0]
+
+            var position: SIMD3<Float>
+            repeat {
+                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+            } while position.x > 2 && position.z > 2
+
+            transform.position = position
+            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+        }
 //
 //        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
 //        let morphTargetNames = ["rock1", "rock2", "rock3"]
@@ -93,27 +93,26 @@ final class GameScene: Scene {
         skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
         skeleton.position = [0, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+//        skeleton.currentAnimation.speed = 1.0
         add(node: skeleton)
 
         physicsController.dynamicBody = skeleton
         inputController.player = skeleton
 
-
-//        skeleton.currentAnimation?.speed = 1.0
-
 //        lantern.position = CharacterTorch.localPosition
 //        add(node: lantern, parent: skeleton)
-//        orthoCamera.position = [0, 2, 0]
-//        orthoCamera.rotation.x = .pi / 2
-//        cameras.append(orthoCamera)
-//
-//
+
+        orthoCamera.position = [0, 2, 0]
+        orthoCamera.rotation.x = .pi / 2
+        cameras.append(orthoCamera)
+
+
         let tpCamera = ThirdPersonCamera(focus: skeleton)
         tpCamera.focusHeight = 6
         tpCamera.focusDistance = 4
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
-        currentCameraIndex = cameras.startIndex
+        currentCameraIndex = cameras.endIndex - 1
 
 
     }
@@ -183,15 +182,15 @@ final class GameScene: Scene {
     override func sceneSizeWillChange(to size: CGSize) {
         super.sceneSizeWillChange(to: size)
 
-//        let cameraSize: Float = 10
-//        let ratio = Float(sceneSize.width / sceneSize.height)
-//
-//        let rect = Rectangle(left: -cameraSize * ratio,
-//                             right: cameraSize * ratio,
-//                             top: cameraSize,
-//                             bottom: -cameraSize)
-//
-//        orthoCamera.rect = rect
+        let cameraSize: Float = 10
+        let ratio = Float(sceneSize.width / sceneSize.height)
+
+        let rect = Rectangle(left: -cameraSize * ratio,
+                             right: cameraSize * ratio,
+                             top: cameraSize,
+                             bottom: -cameraSize)
+
+        orthoCamera.rect = rect
     }
 }
 

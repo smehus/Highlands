@@ -50,65 +50,10 @@ class Submesh {
 
 // Pipeline state
 private extension Submesh {
-//    static func makeFunctionConstants(textures: Textures, type: ModelType) -> MTLFunctionConstantValues {
-//        let functionConstants = MTLFunctionConstantValues()
-//
-//        var isGround = type.isGround
-//        var lighting = type.lighting
-//        var blending = type.blending
-//        var property = (textures.baseColor != nil && !type.isTextureArray)
-//
-//        functionConstants.setConstantValue(&property, type: .bool, index: 0)
-//
-//        property = textures.normal != nil
-//        functionConstants.setConstantValue(&property, type: .bool, index: 1)
-//
-//        property = textures.roughness != nil
-//        functionConstants.setConstantValue(&property, type: .bool, index: 2)
-//
-//        property = false
-//        functionConstants.setConstantValue(&property, type: .bool, index: 3)
-//        functionConstants.setConstantValue(&property, type: .bool, index: 4)
-//
-//        functionConstants.setConstantValue(&isGround, type: .bool, index: 5)
-//
-//        // Lighting
-//        functionConstants.setConstantValue(&lighting, type: .bool, index: 6)
-//
-//        // ShouldBlend
-//        functionConstants.setConstantValue(&blending, type: .bool, index: 7)
-//
-//        var isTextureArray = type.isTextureArray
-//        functionConstants.setConstantValue(&isTextureArray, type: .bool, index: 8)
-//
-//        return functionConstants
-//    }
 
-    static func makeFunctionConstants(textures: Textures) -> MTLFunctionConstantValues {
-        let functionConstants = MTLFunctionConstantValues()
-        var property = textures.baseColor != nil
-        functionConstants.setConstantValue(&property, type: .bool, index: 0)
-        property = textures.normal != nil
-        functionConstants.setConstantValue(&property, type: .bool, index: 1)
-        property = textures.roughness != nil
-        functionConstants.setConstantValue(&property, type: .bool, index: 2)
-        property = false
-        functionConstants.setConstantValue(&property, type: .bool, index: 3)
-        property = false
-        functionConstants.setConstantValue(&property, type: .bool, index: 4)
-        return functionConstants
-    }
-
-    static func makeVertexFunctionConstants(hasSkeleton: Bool) -> MTLFunctionConstantValues {
-      let functionConstants = MTLFunctionConstantValues()
-      var addSkeleton = hasSkeleton
-      functionConstants.setConstantValue(&addSkeleton, type: .bool, index: 5)
-      return functionConstants
-    }
-
-    static func makePipelineState(textures: Textures, type: ModelType) -> MTLRenderPipelineState {
-        let vertexContants = makeVertexFunctionConstants(hasSkeleton: true)
-        let fragmentConstants = makeFunctionConstants(textures: textures)
+    static func makePipelineState(textures: Submesh.Textures, type: ModelType) -> MTLRenderPipelineState {
+        let vertexContants = type.vertexFunctionConstants(textures: textures)
+        let fragmentConstants = type.fragmentFunctionConstants(textures: textures)
 
 
         let library = RendererBlueprint.library
@@ -129,8 +74,8 @@ private extension Submesh {
 
 
         pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
-        pipelineDescriptor.colorAttachments[0].pixelFormat = RendererBlueprint.colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        pipelineDescriptor.depthAttachmentPixelFormat = Renderer.depthPixelFormat
 //        pipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
 //        pipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
 //        pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
@@ -193,7 +138,7 @@ private extension Submesh.Textures {
                 return nil
             }
 
-            guard let texture = ((try? Submesh.loadTexture(imageName: filename)) as MTLTexture??) else {
+            guard let texture = ((try? Submesh.loadTexture(imageName: filename, origin: origin)) as MTLTexture??) else {
                 print("😡 Failed to load texture \(filename)")
                 return nil
             }
