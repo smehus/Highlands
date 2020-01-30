@@ -62,11 +62,10 @@ class Scene {
     }
 
     private func update(nodes: [Node], deltaTime: Float) {
-        (nodes.first as! Character).update(deltaTime: deltaTime)
-//        nodes.forEach { node in
-//            node.update(deltaTime: deltaTime)
-////            update(nodes: node.children, deltaTime: deltaTime)
-//        }
+        nodes.forEach { node in
+            node.update(deltaTime: deltaTime)
+            update(nodes: node.children, deltaTime: deltaTime)
+        }
     }
 
     func updateScene(deltaTime: Float) {
@@ -77,7 +76,7 @@ class Scene {
         if let parent = parent {
             parent.add(childNode: node)
         } else {
-//            rootNode.add(childNode: node)
+            rootNode.add(childNode: node)
         }
 
         guard render == true, let renderable = node as? Renderable else { return }

@@ -12,34 +12,34 @@ import ModelIO
 
 final class GameScene: Scene {
 
-//    let orthoCamera = OrthographicCamera()
-//    let terrain = Terrain(textureName: "hills")
+    let orthoCamera = OrthographicCamera()
+    let terrain = Terrain(textureName: "hills")
 //    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
 //    let plane = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "boy_tpose.usdz")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 //    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
-//    let water = Water(size: 500)
+    let water = Water(size: 500)
 
     override func setupScene() {
 
-//        skybox = Skybox(textureName: nil)
+        skybox = Skybox(textureName: nil)
 
-//        inputController.keyboardDelegate = self
-//
-//        terrain.position = SIMD3<Float>([0, 0, 0])
-////        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
-//        add(node: terrain)
+        inputController.keyboardDelegate = self
+
+        terrain.position = SIMD3<Float>([0, 0, 0])
+//        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
+        add(node: terrain)
 
 
         lights = lighting()
-//        camera.position = [0, 0, -1.8]
-//        camera.rotation = [0, 0, 0]
+        camera.position = [0, 0, -1.8]
+        camera.rotation = [0, 0, 0]
 
 
-//        water.position.y = -7
-//        water.rotation = [0, 0, radians(fromDegrees: -90)]
-//        add(node: water)
+        water.position.y = -7
+        water.rotation = [0, 0, radians(fromDegrees: -90)]
+        add(node: water)
   /*
         ground.tiling = 4
         ground.scale = [4, 1, 4]
@@ -112,7 +112,7 @@ final class GameScene: Scene {
 //        tpCamera.focusHeight = 6
 //        tpCamera.focusDistance = 4
 //        cameras.append(tpCamera)
-        cameras.first?.position = [0, -2 , 3]
+        cameras.first?.position = [0, 4 , 3]
         currentCameraIndex = cameras.startIndex
 
 

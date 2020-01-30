@@ -272,7 +272,7 @@ extension Terrain: ComputeHandler {
 
     }
 }
-/*
+
 extension Terrain: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 
@@ -317,4 +317,3 @@ extension Terrain: Renderable {
     }
 
 }
-*/

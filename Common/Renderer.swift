@@ -157,36 +157,35 @@ extension Renderer: MTKViewDelegate {
         } 
 
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
-//        character.update(deltaTime: deltaTime)
         scene.update(deltaTime: deltaTime)
 
 //        // Tessellation Pass
-//        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
-//        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
-//
-//        computeEncoder.pushDebugGroup("Tessellation Pass")
-//        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
-//        computeEncoder.popDebugGroup()
-//        computeEncoder.endEncoding()
-//
-//        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
-//
-//
+        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
+        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+
+        computeEncoder.pushDebugGroup("Tessellation Pass")
+        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+        computeEncoder.popDebugGroup()
+        computeEncoder.endEncoding()
+
+        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+
+
 //        // Calculate Height
-//
-//        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-//        heightEncoder.pushDebugGroup("Height pass")
-//        for renderable in scene.renderables {
-//            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
-//        }
-//        heightEncoder.popDebugGroup()
-//        heightEncoder.endEncoding()
+
+        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+        heightEncoder.pushDebugGroup("Height pass")
+        for renderable in scene.renderables {
+            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
+        }
+        heightEncoder.popDebugGroup()
+        heightEncoder.endEncoding()
 
 
 //        // Shadow pass
         let previousUniforms = scene.uniforms
-//        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
-//        renderShadowPass(renderEncoder: shadowEncoder, view: view)
+        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
+        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
@@ -203,13 +202,7 @@ extension Renderer: MTKViewDelegate {
 //                                                          near: 0.01,
 //                                                          far: 16,
 //                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
-
-        // Reset uniforms so projection is correct
-        // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
-        // goodddddddd damniiitttttt
         scene.uniforms = previousUniforms
-//        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
-//        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
 
         renderEncoder.setFragmentBytes(&fragmentUniforms,
                                        length: MemoryLayout<FragmentUniforms>.stride,
@@ -226,26 +219,20 @@ extension Renderer: MTKViewDelegate {
         var farZ = Camera.FarZ
         renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-//        uniforms.viewMatrix = camera.viewMatrix
-//        uniforms.projectionMatrix = camera.projectionMatrix
+        for renderable in scene.renderables {
+            // Allow set up for off screen targets
+            renderable.renderToTarget(with: commandBuffer)
+        }
 
-//        character.render(renderEncoder: renderEncoder, uniforms: uniforms, fragmentUniforms: fragmentUniforms)
-//        for renderable in scene.renderables {
-//            // Allow set up for off screen targets
-//            renderable.renderToTarget(with: commandBuffer)
-//        }
-//
         for renderable in scene.renderables {
             renderEncoder.pushDebugGroup(renderable.name)
             renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
             renderEncoder.popDebugGroup()
         }
 
-//
-//        (scene.renderables.first as! Character).render(renderEncoder: renderEncoder, uniforms: scene.uniforms, fragmentUniforms: fragmentUniforms)
-//        scene?.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
-//        drawDebug(encoder: renderEncoder)
+        drawDebug(encoder: renderEncoder)
 
         renderEncoder.endEncoding()
 

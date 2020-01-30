@@ -7,6 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		020E1D4A23E2618100A61642 /* treefir.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3523E2618100A61642 /* treefir.mtl */; };
+		020E1D4B23E2618100A61642 /* treefir.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3523E2618100A61642 /* treefir.mtl */; };
+		020E1D4C23E2618100A61642 /* treefir.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3623E2618100A61642 /* treefir.obj */; };
+		020E1D4D23E2618100A61642 /* treefir.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3623E2618100A61642 /* treefir.obj */; };
+		020E1D4E23E2618100A61642 /* large-plane.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3823E2618100A61642 /* large-plane.mtl */; };
+		020E1D4F23E2618100A61642 /* large-plane.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3823E2618100A61642 /* large-plane.mtl */; };
+		020E1D5023E2618100A61642 /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3923E2618100A61642 /* plane.obj */; };
+		020E1D5123E2618100A61642 /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3923E2618100A61642 /* plane.obj */; };
+		020E1D5223E2618100A61642 /* plane.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3A23E2618100A61642 /* plane.mtl */; };
+		020E1D5323E2618100A61642 /* plane.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3A23E2618100A61642 /* plane.mtl */; };
+		020E1D5423E2618100A61642 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3B23E2618100A61642 /* ground.png */; };
+		020E1D5523E2618100A61642 /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3B23E2618100A61642 /* ground.png */; };
+		020E1D5623E2618100A61642 /* large-plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3C23E2618100A61642 /* large-plane.obj */; };
+		020E1D5723E2618100A61642 /* large-plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3C23E2618100A61642 /* large-plane.obj */; };
+		020E1D5823E2618100A61642 /* normal-water.png in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3D23E2618100A61642 /* normal-water.png */; };
+		020E1D5923E2618100A61642 /* normal-water.png in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3D23E2618100A61642 /* normal-water.png */; };
+		020E1D5A23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3F23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl */; };
+		020E1D5B23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D3F23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl */; };
+		020E1D5C23E2618100A61642 /* HRN_LMP_NM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4023E2618100A61642 /* HRN_LMP_NM.bmp */; };
+		020E1D5D23E2618100A61642 /* HRN_LMP_NM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4023E2618100A61642 /* HRN_LMP_NM.bmp */; };
+		020E1D5E23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4123E2618100A61642 /* HRN_LMP_CM.bmp */; };
+		020E1D5F23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4123E2618100A61642 /* HRN_LMP_CM.bmp */; };
+		020E1D6023E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4223E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj */; };
+		020E1D6123E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4223E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj */; };
+		020E1D6223E2618100A61642 /* rock2.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4423E2618100A61642 /* rock2.obj */; };
+		020E1D6323E2618100A61642 /* rock2.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4423E2618100A61642 /* rock2.obj */; };
+		020E1D6423E2618100A61642 /* rock3.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4523E2618100A61642 /* rock3.obj */; };
+		020E1D6523E2618100A61642 /* rock3.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4523E2618100A61642 /* rock3.obj */; };
+		020E1D6623E2618100A61642 /* rock1.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4623E2618100A61642 /* rock1.obj */; };
+		020E1D6723E2618100A61642 /* rock1.obj in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4623E2618100A61642 /* rock1.obj */; };
+		020E1D6823E2618100A61642 /* rock1.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4723E2618100A61642 /* rock1.mtl */; };
+		020E1D6923E2618100A61642 /* rock1.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4723E2618100A61642 /* rock1.mtl */; };
+		020E1D6A23E2618100A61642 /* rock2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4823E2618100A61642 /* rock2.mtl */; };
+		020E1D6B23E2618100A61642 /* rock2.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4823E2618100A61642 /* rock2.mtl */; };
+		020E1D6C23E2618100A61642 /* rock3.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4923E2618100A61642 /* rock3.mtl */; };
+		020E1D6D23E2618100A61642 /* rock3.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 020E1D4923E2618100A61642 /* rock3.mtl */; };
 		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		0294AE4E23DFE1A8005F2E67 /* TemplateCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE4B23DFE1A8005F2E67 /* TemplateCamera.swift */; };
@@ -147,6 +183,24 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		020E1D3523E2618100A61642 /* treefir.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = treefir.mtl; sourceTree = "<group>"; };
+		020E1D3623E2618100A61642 /* treefir.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = treefir.obj; sourceTree = "<group>"; };
+		020E1D3823E2618100A61642 /* large-plane.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "large-plane.mtl"; sourceTree = "<group>"; };
+		020E1D3923E2618100A61642 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
+		020E1D3A23E2618100A61642 /* plane.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.mtl; sourceTree = "<group>"; };
+		020E1D3B23E2618100A61642 /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
+		020E1D3C23E2618100A61642 /* large-plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "large-plane.obj"; sourceTree = "<group>"; };
+		020E1D3D23E2618100A61642 /* normal-water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "normal-water.png"; sourceTree = "<group>"; };
+		020E1D3F23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SA_LD_Medieval_Horn_Lantern.mtl; sourceTree = "<group>"; };
+		020E1D4023E2618100A61642 /* HRN_LMP_NM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_NM.bmp; sourceTree = "<group>"; };
+		020E1D4123E2618100A61642 /* HRN_LMP_CM.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = HRN_LMP_CM.bmp; sourceTree = "<group>"; };
+		020E1D4223E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SA_LD_Medieval_Horn_Lantern.obj; sourceTree = "<group>"; };
+		020E1D4423E2618100A61642 /* rock2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock2.obj; sourceTree = "<group>"; };
+		020E1D4523E2618100A61642 /* rock3.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock3.obj; sourceTree = "<group>"; };
+		020E1D4623E2618100A61642 /* rock1.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock1.obj; sourceTree = "<group>"; };
+		020E1D4723E2618100A61642 /* rock1.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock1.mtl; sourceTree = "<group>"; };
+		020E1D4823E2618100A61642 /* rock2.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock2.mtl; sourceTree = "<group>"; };
+		020E1D4923E2618100A61642 /* rock3.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rock3.mtl; sourceTree = "<group>"; };
 		0222791F23BBB568005ED8FA /* TransformComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformComponent.swift; sourceTree = "<group>"; };
 		0222792223BBBB8B005ED8FA /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDLVertexDescriptor+Extensions.swift"; sourceTree = "<group>"; };
@@ -252,6 +306,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		020E1D3323E2618100A61642 /* Props */ = {
+			isa = PBXGroup;
+			children = (
+				020E1D3423E2618100A61642 /* Tree */,
+				020E1D3723E2618100A61642 /* Ground */,
+				020E1D3D23E2618100A61642 /* normal-water.png */,
+				020E1D3E23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern_OBJ */,
+				020E1D4323E2618100A61642 /* Rocks */,
+			);
+			path = Props;
+			sourceTree = "<group>";
+		};
+		020E1D3423E2618100A61642 /* Tree */ = {
+			isa = PBXGroup;
+			children = (
+				020E1D3523E2618100A61642 /* treefir.mtl */,
+				020E1D3623E2618100A61642 /* treefir.obj */,
+			);
+			path = Tree;
+			sourceTree = "<group>";
+		};
+		020E1D3723E2618100A61642 /* Ground */ = {
+			isa = PBXGroup;
+			children = (
+				020E1D3823E2618100A61642 /* large-plane.mtl */,
+				020E1D3923E2618100A61642 /* plane.obj */,
+				020E1D3A23E2618100A61642 /* plane.mtl */,
+				020E1D3B23E2618100A61642 /* ground.png */,
+				020E1D3C23E2618100A61642 /* large-plane.obj */,
+			);
+			path = Ground;
+			sourceTree = "<group>";
+		};
+		020E1D3E23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern_OBJ */ = {
+			isa = PBXGroup;
+			children = (
+				020E1D3F23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl */,
+				020E1D4023E2618100A61642 /* HRN_LMP_NM.bmp */,
+				020E1D4123E2618100A61642 /* HRN_LMP_CM.bmp */,
+				020E1D4223E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj */,
+			);
+			path = SA_LD_Medieval_Horn_Lantern_OBJ;
+			sourceTree = "<group>";
+		};
+		020E1D4323E2618100A61642 /* Rocks */ = {
+			isa = PBXGroup;
+			children = (
+				020E1D4423E2618100A61642 /* rock2.obj */,
+				020E1D4523E2618100A61642 /* rock3.obj */,
+				020E1D4623E2618100A61642 /* rock1.obj */,
+				020E1D4723E2618100A61642 /* rock1.mtl */,
+				020E1D4823E2618100A61642 /* rock2.mtl */,
+				020E1D4923E2618100A61642 /* rock3.mtl */,
+			);
+			path = Rocks;
+			sourceTree = "<group>";
+		};
 		0294AE4623DFE15F005F2E67 /* Template */ = {
 			isa = PBXGroup;
 			children = (
@@ -312,13 +423,6 @@
 			path = Characters;
 			sourceTree = "<group>";
 		};
-		A551AE0621C997C600FA207B /* Props */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Props;
-			sourceTree = "<group>";
-		};
 		A563DF1021E6EB9E00563EA9 /* Skybox */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,8 +434,8 @@
 		A56ACB3A21C727970069962B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				020E1D3323E2618100A61642 /* Props */,
 				A563DF1021E6EB9E00563EA9 /* Skybox */,
-				A551AE0621C997C600FA207B /* Props */,
 				A551ADFE21C997C000FA207B /* Characters */,
 			);
 			path = Models;
@@ -570,11 +674,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				020E1D6423E2618100A61642 /* rock3.obj in Resources */,
+				020E1D5423E2618100A61642 /* ground.png in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
+				020E1D5023E2618100A61642 /* plane.obj in Resources */,
+				020E1D5623E2618100A61642 /* large-plane.obj in Resources */,
+				020E1D6C23E2618100A61642 /* rock3.mtl in Resources */,
+				020E1D5C23E2618100A61642 /* HRN_LMP_NM.bmp in Resources */,
+				020E1D6023E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */,
+				020E1D6A23E2618100A61642 /* rock2.mtl in Resources */,
+				020E1D6823E2618100A61642 /* rock1.mtl in Resources */,
+				020E1D6223E2618100A61642 /* rock2.obj in Resources */,
+				020E1D4E23E2618100A61642 /* large-plane.mtl in Resources */,
+				020E1D4A23E2618100A61642 /* treefir.mtl in Resources */,
+				020E1D5E23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */,
+				020E1D5A23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
+				020E1D6623E2618100A61642 /* rock1.obj in Resources */,
+				020E1D5223E2618100A61642 /* plane.mtl in Resources */,
+				020E1D4C23E2618100A61642 /* treefir.obj in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
+				020E1D5823E2618100A61642 /* normal-water.png in Resources */,
 				02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -583,10 +705,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				020E1D5923E2618100A61642 /* normal-water.png in Resources */,
+				020E1D5F23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */,
+				020E1D4B23E2618100A61642 /* treefir.mtl in Resources */,
 				02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */,
+				020E1D6923E2618100A61642 /* rock1.mtl in Resources */,
+				020E1D5123E2618100A61642 /* plane.obj in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
+				020E1D5723E2618100A61642 /* large-plane.obj in Resources */,
+				020E1D6D23E2618100A61642 /* rock3.mtl in Resources */,
+				020E1D5523E2618100A61642 /* ground.png in Resources */,
+				020E1D4D23E2618100A61642 /* treefir.obj in Resources */,
+				020E1D6723E2618100A61642 /* rock1.obj in Resources */,
+				020E1D5323E2618100A61642 /* plane.mtl in Resources */,
+				020E1D6B23E2618100A61642 /* rock2.mtl in Resources */,
+				020E1D6123E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
+				020E1D6323E2618100A61642 /* rock2.obj in Resources */,
+				020E1D6523E2618100A61642 /* rock3.obj in Resources */,
+				020E1D5D23E2618100A61642 /* HRN_LMP_NM.bmp in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
 				02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */,
+				020E1D4F23E2618100A61642 /* large-plane.mtl in Resources */,
+				020E1D5B23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
