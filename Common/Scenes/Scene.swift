@@ -42,15 +42,15 @@ class Scene {
     }
 
     private func updatePlayer(deltaTime: Float) {
-        guard let node = inputController.player else { return }
-        let holdPosition = node.position
-        let holdRotation = node.rotation
-        inputController.updatePlayer(deltaTime: deltaTime)
-        
-        if physicsController.checkCollisions() && isHardCollision() {
-            node.position = holdPosition
-            node.rotation = holdRotation
-        }
+//        guard let node = inputController.player else { return }
+//        let holdPosition = node.position
+//        let holdRotation = node.rotation
+//        inputController.updatePlayer(deltaTime: deltaTime)
+//
+//        if physicsController.checkCollisions() && isHardCollision() {
+//            node.position = holdPosition
+//            node.rotation = holdRotation
+//        }
     }
 
     final func update(deltaTime: Float) {
@@ -58,14 +58,15 @@ class Scene {
         uniforms.projectionMatrix = camera.projectionMatrix
         uniforms.viewMatrix = camera.viewMatrix
         updateScene(deltaTime: deltaTime)
-        update(nodes: rootNode.children, deltaTime: deltaTime)
+        update(nodes: renderables as! [Node], deltaTime: deltaTime)
     }
 
     private func update(nodes: [Node], deltaTime: Float) {
-        nodes.forEach { node in
-            node.update(deltaTime: deltaTime)
-            update(nodes: node.children, deltaTime: deltaTime)
-        }
+        (nodes.first as! Character).update(deltaTime: deltaTime)
+//        nodes.forEach { node in
+//            node.update(deltaTime: deltaTime)
+////            update(nodes: node.children, deltaTime: deltaTime)
+//        }
     }
 
     func updateScene(deltaTime: Float) {
@@ -76,7 +77,7 @@ class Scene {
         if let parent = parent {
             parent.add(childNode: node)
         } else {
-            rootNode.add(childNode: node)
+//            rootNode.add(childNode: node)
         }
 
         guard render == true, let renderable = node as? Renderable else { return }

@@ -32,27 +32,27 @@ final class Renderer: NSObject {
 //
 //        return camera
 //    }()
+//
+//      lazy var camera: TemplateCamera = {
+//        let camera = ArcballCamera()
+//        camera.distance = 8
+//        camera.target = [0, 1.3, 0]
+//    //    camera.rotation.x = Float(-15).degreesToRadians
+//        return camera
+//      }()
+//
+//    var uniforms = Uniforms()
+//
+//    lazy var lights: [Light] = {
+//        return lighting()
+//    }()
 
-      lazy var camera: TemplateCamera = {
-        let camera = ArcballCamera()
-        camera.distance = 8
-        camera.target = [0, 1.3, 0]
-    //    camera.rotation.x = Float(-15).degreesToRadians
-        return camera
-      }()
-
-    var uniforms = Uniforms()
-
-    lazy var lights: [Light] = {
-        return lighting()
-    }()
-
-    lazy var character: Character = {
-        let character = Character(name: "boy_tpose.usdz")
-        character.scale = [0.02, 0.02, 0.02]
-        character.rotation = [radians(fromDegrees: 90), 0 , radians(fromDegrees: 180)]
-        return character
-    }()
+//    lazy var character: Character = {
+//        let character = Character(name: "boy_tpose.usdz")
+//        character.scale = [0.02, 0.02, 0.02]
+//        character.rotation = [radians(fromDegrees: 90), 0 , radians(fromDegrees: 180)]
+//        return character
+//    }()
     
     var shadowDepthTexture: MTLTexture!
     var shadowColorTexture: MTLTexture!
@@ -145,20 +145,20 @@ extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         scene?.sceneSizeWillChange(to: size)
         buildShadowTexture(size: size)
-        camera.aspect = Float(view.bounds.width)/Float(view.bounds.height)
+//        camera.aspect = Float(view.bounds.width)/Float(view.bounds.height)
     }
 
     func draw(in view: MTKView) {
         guard let descriptor = view.currentRenderPassDescriptor,
-            let commandBuffer = Renderer.commandQueue.makeCommandBuffer()
-//            let scene = scene
+            let commandBuffer = Renderer.commandQueue.makeCommandBuffer(),
+            let scene = scene
         else {
             return
         } 
 
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
-        character.update(deltaTime: deltaTime)
-//        scene.update(deltaTime: deltaTime)
+//        character.update(deltaTime: deltaTime)
+        scene.update(deltaTime: deltaTime)
 
 //        // Tessellation Pass
 //        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
@@ -184,7 +184,7 @@ extension Renderer: MTKViewDelegate {
 
 
 //        // Shadow pass
-//        let previousUniforms = scene.uniforms
+        let previousUniforms = scene.uniforms
 //        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
 //        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
@@ -196,8 +196,9 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.setCullMode(.back)
 
         var fragmentUniforms = FragmentUniforms()
-        fragmentUniforms.cameraPosition = camera.position
-        fragmentUniforms.lightCount = UInt32(lights.count)
+        fragmentUniforms.cameraPosition = scene.camera.position
+        fragmentUniforms.lightCount = UInt32(scene.lights.count)
+        fragmentUniforms.tiling = 1
 //        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
 //                                                          near: 0.01,
 //                                                          far: 16,
@@ -206,45 +207,45 @@ extension Renderer: MTKViewDelegate {
         // Reset uniforms so projection is correct
         // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
         // goodddddddd damniiitttttt
-//        scene.uniforms = previousUniforms
+        scene.uniforms = previousUniforms
 //        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
 //        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
-//        scene.uniforms.viewMatrix = camera.viewMatrix//previousUniforms.viewMatrix
-//        scene.uniforms.projectionMatrix = camera.projectionMatrix//previousUniforms.projectionMatrix
 
-//        renderEncoder.setFragmentBytes(&fragmentUniforms,
-//                                       length: MemoryLayout<FragmentUniforms>.stride,
-//                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+        renderEncoder.setFragmentBytes(&fragmentUniforms,
+                                       length: MemoryLayout<FragmentUniforms>.stride,
+                                       index: Int(BufferIndexFragmentUniforms.rawValue))
 
         
-        renderEncoder.setFragmentBytes(&lights,
-                                       length: MemoryLayout<Light>.stride * lights.count,
+        renderEncoder.setFragmentBytes(&scene.lights,
+                                       length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
         renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
         renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
         
-//        var farZ = Camera.FarZ
-//        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
+        var farZ = Camera.FarZ
+        renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-        uniforms.viewMatrix = camera.viewMatrix
-        uniforms.projectionMatrix = camera.projectionMatrix
+//        uniforms.viewMatrix = camera.viewMatrix
+//        uniforms.projectionMatrix = camera.projectionMatrix
 
-        character.render(renderEncoder: renderEncoder, uniforms: uniforms, fragmentUniforms: fragmentUniforms)
+//        character.render(renderEncoder: renderEncoder, uniforms: uniforms, fragmentUniforms: fragmentUniforms)
 //        for renderable in scene.renderables {
 //            // Allow set up for off screen targets
 //            renderable.renderToTarget(with: commandBuffer)
 //        }
 //
-//        for renderable in scene.renderables {
-//            renderEncoder.pushDebugGroup(renderable.name)
-//            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-//            renderEncoder.popDebugGroup()
-//        }
+        for renderable in scene.renderables {
+            renderEncoder.pushDebugGroup(renderable.name)
+            renderable.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+            renderEncoder.popDebugGroup()
+        }
 
+//
+//        (scene.renderables.first as! Character).render(renderEncoder: renderEncoder, uniforms: scene.uniforms, fragmentUniforms: fragmentUniforms)
 //        scene?.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
-        drawDebug(encoder: renderEncoder)
+//        drawDebug(encoder: renderEncoder)
 
         renderEncoder.endEncoding()
 

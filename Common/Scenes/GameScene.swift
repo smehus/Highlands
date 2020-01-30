@@ -12,7 +12,7 @@ import ModelIO
 
 final class GameScene: Scene {
 
-    let orthoCamera = OrthographicCamera()
+//    let orthoCamera = OrthographicCamera()
 //    let terrain = Terrain(textureName: "hills")
 //    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
 //    let plane = Prop(type: .base(name: "large-plane", lighting: true))
@@ -23,9 +23,9 @@ final class GameScene: Scene {
 
     override func setupScene() {
 
-        skybox = Skybox(textureName: nil)
+//        skybox = Skybox(textureName: nil)
 
-        inputController.keyboardDelegate = self
+//        inputController.keyboardDelegate = self
 //
 //        terrain.position = SIMD3<Float>([0, 0, 0])
 ////        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
@@ -33,8 +33,8 @@ final class GameScene: Scene {
 
 
         lights = lighting()
-        camera.position = [0, 0, -1.8]
-        camera.rotation = [0, 0, 0]
+//        camera.position = [0, 0, -1.8]
+//        camera.rotation = [0, 0, 0]
 
 
 //        water.position.y = -7
@@ -46,73 +46,74 @@ final class GameScene: Scene {
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
         */
-        let count = 200
-        let offset = 100
-         
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
-        add(node: tree)
-        physicsController.addStaticBody(node: tree)
-        for i in 0..<count {
-            var transform = Transform()
-            transform.scale = [3.0, 3.0, 3.0]
-
-            var position: SIMD3<Float>
-            repeat {
-                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-            } while position.x > 2 && position.z > 2
-
-            transform.position = position
-            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-        }
-
-        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
-        let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
-
-        add(node: rock)
-        physicsController.addStaticBody(node: rock)
-        for i in 0..<count {
-            var transform = Transform()
-
-            if i == 0 {
-                transform.position = [0, 0, 3]
-            } else {
-                var position: SIMD3<Float>
-                repeat {
-                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-                } while position.x > 2 && position.z > 2
-
-                transform.position = position
-            }
-
-            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-        }
+//        let count = 200
+//        let offset = 100
+//
+//        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
+//        add(node: tree)
+//        physicsController.addStaticBody(node: tree)
+//        for i in 0..<count {
+//            var transform = Transform()
+//            transform.scale = [3.0, 3.0, 3.0]
+//
+//            var position: SIMD3<Float>
+//            repeat {
+//                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//            } while position.x > 2 && position.z > 2
+//
+//            transform.position = position
+//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+//        }
+//
+//        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
+//        let morphTargetNames = ["rock1", "rock2", "rock3"]
+//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
+//
+//        add(node: rock)
+//        physicsController.addStaticBody(node: rock)
+//        for i in 0..<count {
+//            var transform = Transform()
+//
+//            if i == 0 {
+//                transform.position = [0, 0, 3]
+//            } else {
+//                var position: SIMD3<Float>
+//                repeat {
+//                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//                } while position.x > 2 && position.z > 2
+//
+//                transform.position = position
+//            }
+//
+//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+//        }
 
 
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
-        skeleton.position = [3, 0, 0]
-        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+        skeleton.position = [0, 0, 0]
+//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         add(node: skeleton)
 
-        physicsController.dynamicBody = skeleton
-        inputController.player = skeleton
+//        physicsController.dynamicBody = skeleton
+//        inputController.player = skeleton
 
 
 //        skeleton.currentAnimation?.speed = 1.0
 
 //        lantern.position = CharacterTorch.localPosition
 //        add(node: lantern, parent: skeleton)
-        orthoCamera.position = [0, 2, 0]
-        orthoCamera.rotation.x = .pi / 2
-        cameras.append(orthoCamera)
-
-
-        let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 6
-        tpCamera.focusDistance = 4
-        cameras.append(tpCamera)
-        currentCameraIndex = cameras.endIndex - 1
+//        orthoCamera.position = [0, 2, 0]
+//        orthoCamera.rotation.x = .pi / 2
+//        cameras.append(orthoCamera)
+//
+//
+//        let tpCamera = ThirdPersonCamera(focus: skeleton)
+//        tpCamera.focusHeight = 6
+//        tpCamera.focusDistance = 4
+//        cameras.append(tpCamera)
+        cameras.first?.position = [0, -2 , 3]
+        currentCameraIndex = cameras.startIndex
 
 
     }
@@ -182,15 +183,15 @@ final class GameScene: Scene {
     override func sceneSizeWillChange(to size: CGSize) {
         super.sceneSizeWillChange(to: size)
 
-        let cameraSize: Float = 10
-        let ratio = Float(sceneSize.width / sceneSize.height)
-
-        let rect = Rectangle(left: -cameraSize * ratio,
-                             right: cameraSize * ratio,
-                             top: cameraSize,
-                             bottom: -cameraSize)
-
-        orthoCamera.rect = rect
+//        let cameraSize: Float = 10
+//        let ratio = Float(sceneSize.width / sceneSize.height)
+//
+//        let rect = Rectangle(left: -cameraSize * ratio,
+//                             right: cameraSize * ratio,
+//                             top: cameraSize,
+//                             bottom: -cameraSize)
+//
+//        orthoCamera.rect = rect
     }
 }
 
@@ -223,11 +224,11 @@ extension GameScene: KeyboardDelegate {
 
 extension GameScene: KeyboardDelegate {
     func didStartMove() {
-        skeleton.resumeAnimation()
+//        skeleton.resumeAnimation()
     }
 
     func didEndMove() {
-        skeleton.pauseAnimation()
+//        skeleton.pauseAnimation()
     }
 }
 
