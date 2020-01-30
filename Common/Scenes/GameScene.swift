@@ -92,11 +92,11 @@ final class GameScene: Scene {
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
         skeleton.position = [0, 0, 0]
-//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
         add(node: skeleton)
 
-//        physicsController.dynamicBody = skeleton
-//        inputController.player = skeleton
+        physicsController.dynamicBody = skeleton
+        inputController.player = skeleton
 
 
 //        skeleton.currentAnimation?.speed = 1.0
@@ -108,10 +108,10 @@ final class GameScene: Scene {
 //        cameras.append(orthoCamera)
 //
 //
-//        let tpCamera = ThirdPersonCamera(focus: skeleton)
-//        tpCamera.focusHeight = 6
-//        tpCamera.focusDistance = 4
-//        cameras.append(tpCamera)
+        let tpCamera = ThirdPersonCamera(focus: skeleton)
+        tpCamera.focusHeight = 6
+        tpCamera.focusDistance = 4
+        cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
         currentCameraIndex = cameras.startIndex
 

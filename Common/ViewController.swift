@@ -18,14 +18,11 @@ class ViewController: LocalViewController {
         }
 
         renderer = RendererBlueprint(metalView: metalView)
-        if let r = renderer as? Renderer {
-            let scene = GameScene(sceneSize: metalView.bounds.size)
-            r.scene = scene
-        }
+        let scene = GameScene(sceneSize: metalView.bounds.size)
+        renderer?.scene = scene
 
-//
-//        if let gameView = metalView as? GameView {
-//            gameView.inputController = scene.inputController
-//        }
+        if let gameView = metalView as? GameView {
+            gameView.inputController = scene.inputController
+        }
     }
 }

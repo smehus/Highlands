@@ -42,15 +42,15 @@ class Scene {
     }
 
     private func updatePlayer(deltaTime: Float) {
-//        guard let node = inputController.player else { return }
-//        let holdPosition = node.position
-//        let holdRotation = node.rotation
-//        inputController.updatePlayer(deltaTime: deltaTime)
-//
-//        if physicsController.checkCollisions() && isHardCollision() {
-//            node.position = holdPosition
-//            node.rotation = holdRotation
-//        }
+        guard let node = inputController.player else { return }
+        let holdPosition = node.position
+        let holdRotation = node.rotation
+        inputController.updatePlayer(deltaTime: deltaTime)
+        
+        if physicsController.checkCollisions() && isHardCollision() {
+            node.position = holdPosition
+            node.rotation = holdRotation
+        }
     }
 
     final func update(deltaTime: Float) {
@@ -58,7 +58,7 @@ class Scene {
         uniforms.projectionMatrix = camera.projectionMatrix
         uniforms.viewMatrix = camera.viewMatrix
         updateScene(deltaTime: deltaTime)
-        update(nodes: renderables as! [Node], deltaTime: deltaTime)
+        update(nodes: rootNode.children, deltaTime: deltaTime)
     }
 
     private func update(nodes: [Node], deltaTime: Float) {
