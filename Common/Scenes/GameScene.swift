@@ -16,7 +16,7 @@ final class GameScene: Scene {
     let terrain = Terrain(textureName: "hills")
 //    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
 //    let plane = Prop(type: .base(name: "large-plane", lighting: true))
-    let skeleton = Character(name: "boy_tpose")
+    let skeleton = Character(name: "walking_boy")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 //    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
     let water = Water(size: 500)
@@ -37,7 +37,7 @@ final class GameScene: Scene {
         camera.rotation = [0, 0, 0]
 
 
-        water.position.y = -7
+        water.position.y = -4
         water.rotation = [0, 0, radians(fromDegrees: -90)]
         add(node: water)
   /*
@@ -47,7 +47,7 @@ final class GameScene: Scene {
         add(node: ground)
         */
         let count = 10
-        let offset = 50
+        let offset = 20
 
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
         add(node: tree)
@@ -124,7 +124,7 @@ final class GameScene: Scene {
 
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
-             
+
             guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
             let position = inputController.player!.position
             let forward = inputController.player!.forwardVector

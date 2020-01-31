@@ -20,6 +20,7 @@ final class Renderer: NSObject {
 
     private var depthStencilState: MTLDepthStencilState!
     private var instanceParamBuffer: MTLBuffer
+    private var updateTerrain = true
 
     static var mtkView: MTKView!
     lazy var lightPipelineState: MTLRenderPipelineState = {
@@ -132,15 +133,21 @@ extension Renderer: MTKViewDelegate {
         scene.update(deltaTime: deltaTime)
 
         // Tessellation Pass
+
         guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
-        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
 
-        computeEncoder.pushDebugGroup("Tessellation Pass")
-        terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
-        computeEncoder.popDebugGroup()
-        computeEncoder.endEncoding()
+        if updateTerrain {
+            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+            computeEncoder.pushDebugGroup("Tessellation Pass")
+            terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+            computeEncoder.popDebugGroup()
+            computeEncoder.endEncoding()
 
-        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+            Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+
+            updateTerrain = false
+        }
+
 
 
         // Calculate Height

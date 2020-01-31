@@ -20,7 +20,7 @@ class Terrain: Node {
         return Terrain.patches.horizontal * Terrain.patches.vertical
     }
 
-    static var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
+    static var terrainParams = TerrainParams(size: [200, 200], height: 30, maxTessellation: UInt32(maxTessellation))
     var controlPointsBuffer: MTLBuffer?
 
     var edgeFactors: [Float] = [4]
