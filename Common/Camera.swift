@@ -10,7 +10,7 @@ import Foundation
 
 class Camera: Node {
 
-    static var FarZ: Float = 500
+    static var FarZ: Float = 50
     static var NearZ: Float = 0.01
 
     var fovDegrees: Float = 90
