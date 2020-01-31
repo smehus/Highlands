@@ -46,8 +46,8 @@ final class GameScene: Scene {
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
         */
-        let count = 100
-        let offset = 200
+        let count = 10
+        let offset = 50
 
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
         add(node: tree)
@@ -112,7 +112,7 @@ final class GameScene: Scene {
         tpCamera.focusDistance = 8
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
-        currentCameraIndex = cameras.startIndex
+        currentCameraIndex = cameras.endIndex - 1
 
 
 
@@ -124,7 +124,7 @@ final class GameScene: Scene {
 
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
-            /* TODO: - Uncomment these blocks
+             
             guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
             let position = inputController.player!.position
             let forward = inputController.player!.forwardVector
@@ -136,7 +136,7 @@ final class GameScene: Scene {
             lights[index].position.y = position.y + 4
             lights[index].position += (forward * 0.8)
             lights[index].position.x -= 0.2
- */
+
 
 
 //
