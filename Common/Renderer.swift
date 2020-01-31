@@ -32,6 +32,27 @@ final class Renderer: NSObject {
     var shadowColorTexture: MTLTexture!
     let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
 
+
+    var albedoTexture: MTLTexture!
+    var normalTexture: MTLTexture!
+    var positionTexture: MTLTexture!
+    var depthTexture: MTLTexture!
+
+    var gBufferRenderPassDescriptor: MTLRenderPassDescriptor!
+
+    var compositionPipelineState: MTLRenderPipelineState!
+    var quadVerticesBuffer: MTLBuffer!
+    var quadTexCoordsBuffer: MTLBuffer!
+    let quadVertices: [Float] = [ -1.0, 1.0,
+                                  1.0, -1.0, -1.0, -1.0, -1.0, 1.0,
+                                  1.0, 1.0,
+                                  1.0, -1.0 ]
+    let quadTexCoords: [Float] = [ 0.0, 0.0,
+                                   1.0, 1.0,
+                                   0.0, 1.0,
+                                   0.0, 0.0, 1.0, 0.0, 1.0, 1.0
+    ]
+
     init(metalView: MTKView) {
         Renderer.mtkView = metalView
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -59,7 +80,39 @@ final class Renderer: NSObject {
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
 
+        quadVerticesBuffer = Renderer.device.makeBuffer(bytes: quadVertices, length: MemoryLayout<Float>.size * quadVertices.count, options: [])
+        quadVerticesBuffer.label = "Quad vertices"
 
+        quadTexCoordsBuffer = Renderer.device.makeBuffer(bytes: quadTexCoords, length: MemoryLayout<Float>.size * quadTexCoords.count, options: [])
+        quadTexCoordsBuffer.label = "Quad texCoords"
+
+        buildCompositionPipelineState()
+    }
+
+    func buildGBufferRenderPassDescriptor(size: CGSize) {
+
+        gBufferRenderPassDescriptor = MTLRenderPassDescriptor()
+        buildGbufferTextures(size: size)
+        let textures: [MTLTexture] = [albedoTexture,
+                                      normalTexture,
+                                      positionTexture]
+
+        for (position, texture) in textures.enumerated() {
+            gBufferRenderPassDescriptor.setUpColorAttachment( position: position, texture: texture)
+        }
+
+        gBufferRenderPassDescriptor.setUpDepthAttachment(texture: depthTexture)
+    }
+
+    func buildGbufferTextures(size: CGSize) {
+        albedoTexture = buildTexture(pixelFormat: .bgra8Unorm,
+                                     size: size, label: "Albedo texture")
+        normalTexture = buildTexture(pixelFormat: .rgba16Float,
+                                     size: size, label: "Normal texture")
+        positionTexture = buildTexture(pixelFormat: .rgba16Float,
+                                       size: size, label: "Position texture")
+        depthTexture = buildTexture(pixelFormat: .depth32Float,
+                                    size: size, label: "Depth texture")
     }
 
     func buildCubeTexture(pixelFormat: MTLPixelFormat, size: Int) -> MTLTexture {
@@ -98,8 +151,8 @@ final class Renderer: NSObject {
     }
 
     func buildShadowTexture(size: CGSize) {
-//        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
-//        shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
+        //        shadowTexture = buildTexture(pixelFormat: .depth32Float, size: size, label: "Shadow")
+        //        shadowRenderPassDescriptor.setUpDepthAttachment(texture: shadowTexture)
 
         // Pointlights
         shadowDepthTexture = buildCubeTexture(pixelFormat: .depth32Float, size: Int(size.width))
@@ -113,97 +166,126 @@ final class Renderer: NSObject {
         descriptor.isDepthWriteEnabled = true
         depthStencilState = Renderer.device.makeDepthStencilState(descriptor: descriptor)
     }
+
+    func buildCompositionPipelineState() {
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        descriptor.depthAttachmentPixelFormat = .depth32Float
+        descriptor.label = "Composition state"
+
+        descriptor.vertexFunction = Renderer.library!.makeFunction(name: "compositionVert")
+        descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "compositionFrag")
+
+        do {
+            compositionPipelineState = try Renderer.device.makeRenderPipelineState( descriptor: descriptor)
+        } catch let error {
+            fatalError(error.localizedDescription)
+        }
+    }
 }
 
 extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         scene?.sceneSizeWillChange(to: size)
         buildShadowTexture(size: size)
+        buildGBufferRenderPassDescriptor(size: size)
     }
 
     func draw(in view: MTKView) {
         guard let descriptor = view.currentRenderPassDescriptor,
             let commandBuffer = Renderer.commandQueue.makeCommandBuffer(),
             let scene = scene
-        else {
-            return
+            else {
+                return
         } 
 
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
         // Tessellation Pass
-
-        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
-
-        if updateTerrain {
-            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
-            computeEncoder.pushDebugGroup("Tessellation Pass")
-            terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
-            computeEncoder.popDebugGroup()
-            computeEncoder.endEncoding()
-
-            Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
-
-            updateTerrain = false
-        }
-
-
-
-        // Calculate Height
-
-        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-        heightEncoder.pushDebugGroup("Height pass")
-        for renderable in scene.renderables {
-            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
-        }
-        heightEncoder.popDebugGroup()
-        heightEncoder.endEncoding()
+        //
+        //        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
+        //
+        //        if updateTerrain {
+        //            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+        //            computeEncoder.pushDebugGroup("Tessellation Pass")
+        //            terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+        //            computeEncoder.popDebugGroup()
+        //            computeEncoder.endEncoding()
+        //
+        //            Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+        //
+        //            updateTerrain = false
+        //        }
+        //
+        //
+        //
+        //        // Calculate Height
+        //
+        //        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+        //        heightEncoder.pushDebugGroup("Height pass")
+        //        for renderable in scene.renderables {
+        //            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
+        //        }
+        //        heightEncoder.popDebugGroup()
+        //        heightEncoder.endEncoding()
 
 
         // Shadow pass
-        let previousUniforms = scene.uniforms
-        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
-        renderShadowPass(renderEncoder: shadowEncoder, view: view)
-
-        // Main pass
-        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
-        renderEncoder.pushDebugGroup("Main pass")
-        renderEncoder.label = "Main encoder"
-        renderEncoder.setDepthStencilState(depthStencilState)
-        renderEncoder.setCullMode(.back)
+        var previousUniforms = scene.uniforms
+        //        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
+        //        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
         fragmentUniforms.lightCount = UInt32(scene.lights.count)
         fragmentUniforms.tiling = 1
-        // I think i need to set tilin herer for the character
-//        fragmentUniforms.lightProjectionMatrix = float4x4(projectionFov: radians(fromDegrees: 90),
-//                                                          near: 0.01,
-//                                                          far: 16,
-//                                                          aspect: Float(view.bounds.width) / Float(view.bounds.height))
 
-        // Reset uniforms so projection is correct
-        // GOOOOOOD LOORD i'm totally resetting the shadow matrix here
-        // goodddddddd damniiitttttt
-//        scene.uniforms = previousUniforms
-//        scene.uniforms.modelMatrix = previousUniforms.modelMatrix
-//        scene.uniforms.normalMatrix = previousUniforms.normalMatrix
-        scene.uniforms.viewMatrix = previousUniforms.viewMatrix
-        scene.uniforms.projectionMatrix = previousUniforms.projectionMatrix
+        // main pass
+        renderGbufferPass(commandBuffer: commandBuffer, uniforms: &previousUniforms, fragmentUniforms: &fragmentUniforms)
+
+        //        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
+        //        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
+
+
+        guard let compositionEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
+        renderCompositionPass(renderEncoder: compositionEncoder, fragmentUniforms: &fragmentUniforms)
+        
+
+        guard let drawable = view.currentDrawable else { return }
+        commandBuffer.present(drawable)
+        commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
+    }
+}
+
+extension Renderer {
+    func renderGbufferPass(commandBuffer: MTLCommandBuffer, uniforms: inout Uniforms, fragmentUniforms: inout FragmentUniforms) {
+
+        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: gBufferRenderPassDescriptor) else { fatalError() }
+        guard let scene = scene else { fatalError() }
+
+        renderEncoder.pushDebugGroup("Gbuffer pass")
+        renderEncoder.label = "Gbuffer encoder"
+        //        renderEncoder.setRenderPipelineState(gBufferPipelineState)
+        renderEncoder.setDepthStencilState(depthStencilState)
+        renderEncoder.setCullMode(.back)
+
+
+        scene.uniforms.viewMatrix = uniforms.viewMatrix
+        scene.uniforms.projectionMatrix = uniforms.projectionMatrix
 
         renderEncoder.setFragmentBytes(&fragmentUniforms,
                                        length: MemoryLayout<FragmentUniforms>.stride,
                                        index: Int(BufferIndexFragmentUniforms.rawValue))
 
-        
+
+        // this needs to go somwehre else
         renderEncoder.setFragmentBytes(&scene.lights,
                                        length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
-        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
-        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
-        
+
         var farZ = Camera.FarZ
         renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
@@ -218,18 +300,40 @@ extension Renderer: MTKViewDelegate {
             renderEncoder.popDebugGroup()
         }
 
-        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-
-        drawDebug(encoder: renderEncoder)
+        //        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
         renderEncoder.endEncoding()
+        renderEncoder.popDebugGroup()
 
-        guard let drawable = view.currentDrawable else { return }
-        commandBuffer.present(drawable)
-        commandBuffer.commit()
-        commandBuffer.waitUntilCompleted()
     }
 
+    func renderCompositionPass(renderEncoder: MTLRenderCommandEncoder, fragmentUniforms: inout FragmentUniforms) {
+        guard let scene = scene else { fatalError() }
+
+        renderEncoder.pushDebugGroup("Composition pass")
+        renderEncoder.label = "Composition encoder"
+
+        renderEncoder.setRenderPipelineState(compositionPipelineState)
+        renderEncoder.setDepthStencilState(depthStencilState)
+
+        renderEncoder.setVertexBuffer(quadVerticesBuffer, offset: 0, index: 0)
+        renderEncoder.setVertexBuffer(quadTexCoordsBuffer, offset: 0, index: 1)
+
+        renderEncoder.setFragmentTexture(albedoTexture, index: 0)
+        renderEncoder.setFragmentTexture(normalTexture, index: 1)
+        renderEncoder.setFragmentTexture(positionTexture, index: 2)
+
+        renderEncoder.setFragmentBytes(&scene.lights, length: MemoryLayout<Light>.stride * scene.lights.count, index: 2)
+        renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: 3)
+
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: quadVertices.count)
+
+        renderEncoder.endEncoding()
+        renderEncoder.popDebugGroup()
+    }
+}
+
+extension Renderer {
     func renderShadowPass(renderEncoder: MTLRenderCommandEncoder, view: MTKView) {
         guard let scene = scene else { return }
         renderEncoder.pushDebugGroup("Shadow pass")
@@ -241,10 +345,10 @@ extension Renderer: MTKViewDelegate {
 
         var sunlight = scene.lights.first!
 
-//        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
-//        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
+        //        let rect = Rectangle(left: -8, right: 8, top: 8, bottom: -8)
+        //        scene.uniforms.projectionMatrix = float4x4(orthographic: rect, near: 0.1, far: 16)
 
-//        setSpotlight(view: view, sunlight: sunlight)
+        //        setSpotlight(view: view, sunlight: sunlight)
         setLantern(view: view, renderEncoder: renderEncoder, sunlight: sunlight)
 
         renderEncoder.setVertexBytes(&sunlight, length: MemoryLayout<Light>.stride, index: Int(BufferIndexLights.rawValue))
@@ -269,7 +373,7 @@ extension Renderer: MTKViewDelegate {
         let projection = float4x4(projectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
 
 
-//        let projection = float4x4(perspectiveProjectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
+        //        let projection = float4x4(perspectiveProjectionFov: radians(fromDegrees: 90), aspectRatio: aspect, nearZ: near, farZ: far)
         scene.uniforms.projectionMatrix = projection
         var viewMatrices = [CubeMap]()
 
@@ -325,10 +429,10 @@ extension Renderer: MTKViewDelegate {
             for (transformIdx, transform) in prop.transforms.enumerated() {
 
                 for (faceIdx, probe) in culler_probe.enumerated() {
-//                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
+                    //                    if probe.Intersects(actorPosition: transform.position, bSphere: bSphere) {
 
-//                        prop.updateShadowBuffer(transformIndex: (transformIdx * 6) + faceIdx, viewPortIndex: faceIdx)
-//                    }
+                    //                        prop.updateShadowBuffer(transformIndex: (transformIdx * 6) + faceIdx, viewPortIndex: faceIdx)
+                    //                    }
                 }
             }
         }
@@ -352,7 +456,7 @@ extension Renderer: MTKViewDelegate {
         guard let scene = scene else { return }
         let aspect = Float(view.bounds.width) / Float(view.bounds.height)
         scene.uniforms.projectionMatrix = float4x4(projectionFov: radians(fromDegrees: 70), aspectRatio: aspect, nearZ: 0.01, farZ: 16)
-//        scene.uniforms.projectionMatrix = float4x4(perspectiveProjectionFov: radians(fromDegrees: 70), aspectRatio: aspect, nearZ: 0.01, farZ: 16)
+        //        scene.uniforms.projectionMatrix = float4x4(perspectiveProjectionFov: radians(fromDegrees: 70), aspectRatio: aspect, nearZ: 0.01, farZ: 16)
 
 
         let position: float3 = [-sunlight.position.x, -sunlight.position.y, -sunlight.position.z]
@@ -392,6 +496,14 @@ private extension MTLRenderPassDescriptor {
 
         renderTargetArrayLength = 6
 
+    }
+
+    func setUpColorAttachment(position: Int, texture: MTLTexture) {
+        let attachment: MTLRenderPassColorAttachmentDescriptor = colorAttachments[position]
+        attachment.texture = texture
+        attachment.loadAction = .clear
+        attachment.storeAction = .store
+        attachment.clearColor = MTLClearColorMake(0.73, 0.92, 1, 1)
     }
 }
 

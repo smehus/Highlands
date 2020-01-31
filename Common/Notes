@@ -64,3 +64,10 @@ could be cool if we could do
 shadowTransforms[0...5].position.y = pointer.pointee
 
 and that would set the position of all transforms in that array slice
+
+
+
+GBUFFER -
+Keep the current vertex & fragment shaders for each model
+However, you need to render the final colors to the albedo textures etc
+basically copy what the gbuffer fragment example is doing in each of the fragment shaders i'm using

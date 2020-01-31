@@ -35,6 +35,12 @@ struct VertexOut {
     float4 shadowPosition;
 };
 
+struct PropGbufferOut {
+  float4 albedo [[color(0)]];
+  float4 normal [[color(1)]];
+  float4 position [[color(2)]];
+};
+
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
                              constant Instances *instances [[ buffer(BufferIndexInstances) ]],
                              uint instanceID [[ instance_id ]],
@@ -212,7 +218,7 @@ float4 sepiaShader(float4 color) {
     return output;
 }
 
-fragment float4 fragment_main(VertexOut in [[ stage_in ]],
+fragment PropGbufferOut fragment_main(VertexOut in [[ stage_in ]],
                               constant Light *lights [[ buffer(BufferIndexLights) ]],
                               sampler textureSampler [[ sampler(0) ]],
                               constant Material &material [[ buffer(BufferIndexMaterials) ]],
@@ -256,16 +262,18 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
     baseColor = distanceFog(in.position, baseColor);
 
-    float3 color;
-
-    if (includeLighting) {
-        color = diffuseLighting(in, baseColor.xyz, normalValue, material, fragmentUniforms, lights);
-    } else {
-        color = baseColor.xyz;
-    }
 
 
-    if (lights[0].type == Spotlight) {
+//    float3 color;
+//
+//    if (includeLighting) {
+//        color = diffuseLighting(in, baseColor.xyz, normalValue, material, fragmentUniforms, lights);
+//    } else {
+//        color = baseColor.xyz;
+//    }
+
+
+//    if (lights[0].type == Spotlight) {
     
         // SPOTLIGHT SHADOW MAP
         // Commented out cause the texture is now a cube yo
@@ -283,11 +291,11 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         }
          */
 
-    } else if (lights[0].type == Pointlight) {
-        constexpr sampler s(coord::normalized,
-                            filter::linear,
-                            address::clamp_to_edge,
-                            compare_func:: less);
+//    } else if (lights[0].type == Pointlight) {
+//        constexpr sampler s(coord::normalized,
+//                            filter::linear,
+//                            address::clamp_to_edge,
+//                            compare_func:: less);
 
 //        The vertex shader and fragment shader are largely similar to the original shadow mapping shaders: the differences being that the fragment shader no longer requires a fragment position in light space (shadow matrixz) as we can now sample the depth values using a direction vector.
 
@@ -299,7 +307,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
         // shadow matrix -> matrix from point of view from light
         // Light space = shadow matrix !!!!
 
-        Light light = lights[0];
+//        Light light = lights[0];
 //        float3 lightDirection = normalize(light.position - in.position.xyz);
 ////        lightDirection.y = 1 - lightDirection.y;
 //
@@ -321,25 +329,25 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 //        T sample_compare(sampler s, float3 coord, float compare_value) const
 
 
-
-        float3 fragToLight = in.worldPosition.xyz - light.position;
-
-        float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
-        float currentDepth = distance(in.worldPosition.xyz, light.position);
-
-//        closestDepth *= farZ;
-        // This is probalby the intended way to handle this
-        // This makes sense with the current epsilon value.
-        // the other way - epsilon should be like 5.0 instead of 0.1
-        currentDepth = currentDepth / farZ;
-
-        float epsilon = 0.1;
-        if (closestDepth.w + epsilon < currentDepth) {
-            color *= 0.6;
-        }
+//
+//        float3 fragToLight = in.worldPosition.xyz - light.position;
+//
+//        float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
+//        float currentDepth = distance(in.worldPosition.xyz, light.position);
+//
+////        closestDepth *= farZ;
+//        // This is probalby the intended way to handle this
+//        // This makes sense with the current epsilon value.
+//        // the other way - epsilon should be like 5.0 instead of 0.1
+//        currentDepth = currentDepth / farZ;
+//
+//        float epsilon = 0.1;
+//        if (closestDepth.w + epsilon < currentDepth) {
+//            color *= 0.6;
+//        }
 
 //        return float4(closestDepth, 1);
-    }
+//    }
 
 //    float4 fogOFWar = fogOFWar(in.worldPosition.xyz, float4(color, 1));
 
@@ -347,5 +355,27 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
 //    discard_fragment();
 //    return sepiaShader(float4(color, 1));
-    return float4(color, 1);
+
+    PropGbufferOut out;
+
+    out.albedo = baseColor;
+    out.albedo.a = 0;
+    out.normal = float4(normalValue, 1.0);
+    out.position = in.worldPosition;
+
+     Light light = lights[0];
+
+    float3 fragToLight = in.worldPosition.xyz - light.position;
+
+    
+    float4 closestDepth = shadowColorTexture.sample(textureSampler, fragToLight);
+    float currentDepth = distance(in.worldPosition.xyz, light.position);
+    currentDepth = currentDepth / farZ;
+
+    float epsilon = 0.1;
+    if (closestDepth.w + epsilon < currentDepth) {
+        out.albedo.a = 1;
+    }
+
+    return out;
 }
