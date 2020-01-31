@@ -55,12 +55,12 @@
 		020E1D7723E2799B00A61642 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BDBED623DC96A300FB3EEA /* Skeleton.swift */; };
 		020E1D7A23E2936100A61642 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
 		020E1D7B23E2936200A61642 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
-		020E1D7C23E293DE00A61642 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
-		020E1D7D23E293DF00A61642 /* TemplateShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6323DFE526005F2E67 /* TemplateShaders.metal */; };
-		020E1D7E23E293E100A61642 /* TemplatePBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* TemplatePBR.metal */; };
-		020E1D7F23E293E100A61642 /* TemplatePBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* TemplatePBR.metal */; };
+		020E1D7E23E293E100A61642 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* PBR.metal */; };
+		020E1D7F23E293E100A61642 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* PBR.metal */; };
 		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
+		0277614823E3A985003E4DD5 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
+		0277614923E3A985003E4DD5 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
 		0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE9E23DFF129005F2E67 /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9523DFF129005F2E67 /* Shadow.metal */; };
@@ -198,8 +198,7 @@
 		02544A9E231AC6F20072E47F /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Textures.xcassets; path = ../Textures.xcassets; sourceTree = "<group>"; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
 		0284474022C04EE500A4E479 /* RenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
-		0294AE6223DFE526005F2E67 /* TemplatePBR.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = TemplatePBR.metal; sourceTree = "<group>"; };
-		0294AE6323DFE526005F2E67 /* TemplateShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = TemplateShaders.metal; sourceTree = "<group>"; };
+		0294AE6223DFE526005F2E67 /* PBR.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PBR.metal; sourceTree = "<group>"; };
 		0294AE7D23DFEBF7005F2E67 /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
 		0294AE9323DFEE99005F2E67 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		0294AE9523DFF129005F2E67 /* Shadow.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shadow.metal; sourceTree = "<group>"; };
@@ -413,8 +412,7 @@
 				0294AE9A23DFF129005F2E67 /* Terrain.metal */,
 				0294AE9D23DFF129005F2E67 /* Water.metal */,
 				0294AE9323DFEE99005F2E67 /* Common.h */,
-				0294AE6223DFE526005F2E67 /* TemplatePBR.metal */,
-				0294AE6323DFE526005F2E67 /* TemplateShaders.metal */,
+				0294AE6223DFE526005F2E67 /* PBR.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -705,7 +703,7 @@
 				02A38F2123E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */,
 				0294AECC23E07867005F2E67 /* Scene.swift in Sources */,
 				020E1D7A23E2936100A61642 /* MathLibrary.swift in Sources */,
-				020E1D7E23E293E100A61642 /* TemplatePBR.metal in Sources */,
+				020E1D7E23E293E100A61642 /* PBR.metal in Sources */,
 				A57F6A3621B8CB42002C0632 /* LocalViewController.swift in Sources */,
 				0294AECE23E07883005F2E67 /* Renderable.swift in Sources */,
 				0294AEA623DFF129005F2E67 /* DebugLights.metal in Sources */,
@@ -724,12 +722,12 @@
 				0294AEA023DFF129005F2E67 /* MorphShader.metal in Sources */,
 				0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
+				0277614823E3A985003E4DD5 /* CharacterShaders.metal in Sources */,
 				02A38F3823E1387000E26E19 /* Renderer.swift in Sources */,
 				0294AEA423DFF129005F2E67 /* DebugBoundingBox.metal in Sources */,
 				02A38F2C23E12D1000E26E19 /* GameScene.swift in Sources */,
 				020E1D7023E2799B00A61642 /* Animation.swift in Sources */,
 				02A38F3623E1380400E26E19 /* RendererExtensions.swift in Sources */,
-				020E1D7C23E293DE00A61642 /* TemplateShaders.metal in Sources */,
 				0294AEB323E07380005F2E67 /* Submesh.swift in Sources */,
 				020E1D6F23E2799B00A61642 /* AnimationClip.swift in Sources */,
 				02A38F3223E12D7700E26E19 /* Camera.swift in Sources */,
@@ -747,6 +745,7 @@
 				02A38F2923E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
 				0294AEA323DFF129005F2E67 /* Skybox.metal in Sources */,
 				0294AEC123E0774A005F2E67 /* Node.swift in Sources */,
+				0277614923E3A985003E4DD5 /* CharacterShaders.metal in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,
@@ -754,7 +753,6 @@
 				0294AEBB23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AEAD23DFF129005F2E67 /* Shaders.metal in Sources */,
 				0294AEAF23DFF129005F2E67 /* Water.metal in Sources */,
-				020E1D7D23E293DF00A61642 /* TemplateShaders.metal in Sources */,
 				02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */,
 				020E1D7423E2799B00A61642 /* AnimationClip.swift in Sources */,
 				0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */,
@@ -780,7 +778,7 @@
 				0294AED723E07C57005F2E67 /* Skybox.swift in Sources */,
 				0294AEB723E073CC005F2E67 /* ModelType.swift in Sources */,
 				0294AEA923DFF129005F2E67 /* Terrain.metal in Sources */,
-				020E1D7F23E293E100A61642 /* TemplatePBR.metal in Sources */,
+				020E1D7F23E293E100A61642 /* PBR.metal in Sources */,
 				02A38F3523E1377300E26E19 /* Primitive.swift in Sources */,
 				02A38F3123E12D5C00E26E19 /* RenderPass.swift in Sources */,
 				020E1D7B23E2936200A61642 /* MathLibrary.swift in Sources */,

@@ -30,23 +30,20 @@ enum ModelType {
 
     var vertexFunctionName: String {
         switch self {
-        case .base, .instanced, .ground:
-            return "vertex_main"
-        case .morph:
-            return "vertex_morph"
+        case .base, .instanced, .ground: return "vertex_main"
+        case .morph: return "vertex_morph"
         case .water: return "vertex_water"
-        case .character: return "template_vertex_main"
+        case .character: return "character_vertex_main"
         }
     }
 
     var fragmentFunctionName: String {
         switch self {
-        case .base, .instanced, .ground:
-            return "fragment_main"
-        case .morph:
-            return "fragment_main"
+        case .base, .instanced, .ground: return "fragment_main"
+        case .morph: return "fragment_main"
         case .water: return "fragment_water"
-        case .character: return "fragment_mainPBR"
+        case .character: return "character_fragment_main"
+//        case .character: return "fragment_mainPBR"
         }
     }
 
@@ -108,8 +105,8 @@ enum ModelType {
 
     func fragmentFunctionConstants(textures: Submesh.Textures) -> MTLFunctionConstantValues {
         switch self {
-        case .character:
-            return ModelType.characterFragmentFunctionConstants(textures: textures)
+//        case .character:
+//            return ModelType.characterFragmentFunctionConstants(textures: textures)
         default:
             return ModelType.defaultFragmentFunctionConstants(textures: textures, type: self)
         }
