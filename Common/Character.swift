@@ -262,9 +262,19 @@ extension Character: Renderable {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
 
                 // Set the textures
-                renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
-                renderEncoder.setFragmentTexture(submesh.textures.normal, index: Int(NormalTexture.rawValue))
-                renderEncoder.setFragmentTexture(submesh.textures.roughness, index: Int(RoughnessTexture.rawValue))
+                if let colorTexture = submesh.textures.baseColor {
+                    renderEncoder.useResource(colorTexture, usage: .read)
+                }
+
+                if let normalTexture = submesh.textures.normal {
+                    renderEncoder.useResource(normalTexture, usage: .read)
+                }
+
+                if let roughnessTexture = submesh.textures.roughness {
+                    renderEncoder.useResource(roughnessTexture, usage: .read)
+                }
+
+                renderEncoder.setFragmentBuffer(submesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
 
                 // Set Material
                 var material = submesh.material

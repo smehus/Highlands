@@ -69,8 +69,8 @@ typedef enum {
     BufferIndexSkyboxDiffuse = 21,
     BufferIndexBRDFLut = 22,
     BufferIndexCubeFaces = 23,
-    BufferIndexInstanceParams = 24
-
+    BufferIndexInstanceParams = 24,
+    BufferIndexTextures = 25
 } BufferIndices;
 
 typedef enum {

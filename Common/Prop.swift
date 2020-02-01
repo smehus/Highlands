@@ -308,10 +308,20 @@ extension Prop: Renderable {
         for modelSubmesh in submeshes {
             
             renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: 2)
-            
+
+            if let colorTexture = modelSubmesh.textures.baseColor {
+                renderEncoder.useResource(colorTexture, usage: .read)
+            }
+
+            if let normalTexture = modelSubmesh.textures.normal {
+                renderEncoder.useResource(normalTexture, usage: .read)
+            }
+
+            if let roughnessTexture = modelSubmesh.textures.roughness {
+                renderEncoder.useResource(roughnessTexture, usage: .read)
+            }
+
+            renderEncoder.setFragmentBuffer(modelSubmesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
 
             var material = modelSubmesh.material
             renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))

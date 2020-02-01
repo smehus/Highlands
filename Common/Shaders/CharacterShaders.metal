@@ -26,6 +26,12 @@ struct VertexOut {
   float2 uv;
 };
 
+struct CharacterTextures {
+    texture2d<float> baseColorTexture;
+    texture2d<float> normalTexture;
+    texture2d_array<float> baseColorTextureArray;
+};
+
 vertex VertexOut character_vertex_main(const VertexIn vertexIn [[stage_in]],
                              constant float4x4 *jointMatrices [[buffer(22),
                                                                 function_constant(hasSkeleton)]],
@@ -200,7 +206,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                         constant Light *lights [[ buffer(BufferIndexLights) ]],
-                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
+                                        constant CharacterTextures &textures [[buffer(BufferIndexTextures)]],
                                         // currently using omnidirectional shadow map : texturecube
 //                                        texture2d<float> shadowTexture [[ texture(ShadowColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
@@ -210,7 +216,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     float3 baseColor;
 //    if (hasCharacterTextures) {
         constexpr sampler s(filter::linear);
-        float4 textureColor = baseColorTexture.sample(s, in.uv);
+        float4 textureColor = textures.baseColorTexture.sample(s, in.uv);
 //        if (textureColor.a < 0.1) { discard_fragment(); }
         baseColor = textureColor.rgb;
 

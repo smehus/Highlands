@@ -13,8 +13,12 @@ class Submesh {
     let textures: Textures
     var material: Material
     let type: ModelType
-    let pipelineState: MTLRenderPipelineState!
-    let shadowPipelineState: MTLRenderPipelineState!
+    var pipelineState: MTLRenderPipelineState!
+    var shadowPipelineState: MTLRenderPipelineState!
+
+    var texturesBuffer: MTLBuffer!
+    var vertexFunction: MTLFunction?
+    var fragmentFunction: MTLFunction?
 
     required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: ModelType) {
         mtkSubmesh = submesh
@@ -32,8 +36,26 @@ class Submesh {
 
         material = Material(material: mdlSubmesh.material)
 
-        pipelineState = Submesh.makePipelineState(textures: textures, type: type)
+
         shadowPipelineState = Submesh.buildShadowPipelineState(type: type)
+        pipelineState = makePipelineState(textures: textures, type: type)
+
+        let textureEncoder = fragmentFunction!.makeArgumentEncoder(bufferIndex: Int(BufferIndexTextures.rawValue))
+        texturesBuffer = Renderer.device.makeBuffer(length: textureEncoder.encodedLength, options: [])!
+        texturesBuffer.label = "Prop Texture Buffer"
+        textureEncoder.setArgumentBuffer(texturesBuffer, offset: 0)
+
+        if let colorTexture = textures.baseColor {
+            textureEncoder.setTexture(colorTexture, index: 0)
+        }
+
+        if let normalTexture = textures.normal {
+            textureEncoder.setTexture(normalTexture, index: 1)
+        }
+
+        if let roughnessTexture = textures.roughness {
+            textureEncoder.setTexture(roughnessTexture, index: 2)
+        }
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
@@ -51,14 +73,12 @@ class Submesh {
 // Pipeline state
 private extension Submesh {
 
-    static func makePipelineState(textures: Submesh.Textures, type: ModelType) -> MTLRenderPipelineState {
+    func makePipelineState(textures: Submesh.Textures, type: ModelType) -> MTLRenderPipelineState {
         let vertexContants = type.vertexFunctionConstants(textures: textures)
         let fragmentConstants = type.fragmentFunctionConstants(textures: textures)
 
 
         let library = Renderer.library
-        let vertexFunction: MTLFunction?
-        let fragmentFunction: MTLFunction?
 
         do {
             vertexFunction = try library?.makeFunction(name: type.vertexFunctionName, constantValues: vertexContants)
@@ -71,7 +91,6 @@ private extension Submesh {
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
-
 
         pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
         pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
