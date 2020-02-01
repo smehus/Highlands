@@ -75,7 +75,7 @@ final class Renderer: NSObject {
         metalView.clearColor = MTLClearColor(red: 0, green: 0,
                                              blue: 0, alpha: 1)
         metalView.delegate = self
-        mtkView(metalView, drawableSizeWillChange: metalView.bounds.size)
+        mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
 
         buildDepthStencilState()
         buildShadowTexture(size: metalView.drawableSize)
