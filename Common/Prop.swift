@@ -317,9 +317,9 @@ extension Prop: Renderable {
                 renderEncoder.useResource(normalTexture, usage: .read)
             }
 
-            if let roughnessTexture = modelSubmesh.textures.roughness {
-                renderEncoder.useResource(roughnessTexture, usage: .read)
-            }
+//            if let roughnessTexture = modelSubmesh.textures.roughness {
+//                renderEncoder.useResource(roughnessTexture, usage: .read)
+//            }
 
             renderEncoder.setFragmentBuffer(modelSubmesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
 

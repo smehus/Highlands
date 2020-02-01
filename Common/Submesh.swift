@@ -52,10 +52,6 @@ class Submesh {
         if let normalTexture = textures.normal {
             textureEncoder.setTexture(normalTexture, index: 1)
         }
-
-        if let roughnessTexture = textures.roughness {
-            textureEncoder.setTexture(roughnessTexture, index: 2)
-        }
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {

@@ -270,9 +270,9 @@ extension Character: Renderable {
                     renderEncoder.useResource(normalTexture, usage: .read)
                 }
 
-                if let roughnessTexture = submesh.textures.roughness {
-                    renderEncoder.useResource(roughnessTexture, usage: .read)
-                }
+//                if let roughnessTexture = submesh.textures.roughness {
+//                    renderEncoder.useResource(roughnessTexture, usage: .read)
+//                }
 
                 renderEncoder.setFragmentBuffer(submesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
 

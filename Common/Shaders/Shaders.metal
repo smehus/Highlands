@@ -38,8 +38,7 @@ struct VertexOut {
 struct PropTextures {
     texture2d<float> baseColorTexture;
     texture2d<float> normalTexture;
-    texture2d<float> roughnessTexture;
-    texture2d_array<float> baseColorTextureArray;
+//    texture2d_array<float> baseColorTextureArray;
 };
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -236,7 +235,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     // has map_kd aka Color texture.
     // Basically checks the submesh was able to load the texture in map_kd
     if (hasColorTextureArray) {
-        baseColor = textures.baseColorTextureArray.sample(textureSampler, in.uv, in.textureID);
+//        baseColor = textures.baseColorTextureArray.sample(textureSampler, in.uv, in.textureID);
     } else if (hasColorTexture) {
         baseColor = textures.baseColorTexture.sample(textureSampler, in.uv * tiling);
     } else {

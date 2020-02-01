@@ -29,7 +29,6 @@ struct VertexOut {
 struct CharacterTextures {
     texture2d<float> baseColorTexture;
     texture2d<float> normalTexture;
-    texture2d_array<float> baseColorTextureArray;
 };
 
 vertex VertexOut character_vertex_main(const VertexIn vertexIn [[stage_in]],
