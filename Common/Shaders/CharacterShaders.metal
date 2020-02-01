@@ -26,6 +26,12 @@ struct VertexOut {
   float2 uv;
 };
 
+struct CharacterGbufferOut {
+  float4 albedo [[color(0)]];
+  float4 normal [[color(1)]];
+  float4 position [[color(2)]];
+};
+
 vertex VertexOut character_vertex_main(const VertexIn vertexIn [[stage_in]],
                              constant float4x4 *jointMatrices [[buffer(22),
                                                                 function_constant(hasSkeleton)]],
@@ -196,7 +202,7 @@ float4 sepiaShaderCharacter(float4 color) {
     return output;
 }
 
-fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
+fragment CharacterGbufferOut character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                         constant Light *lights [[ buffer(BufferIndexLights) ]],
@@ -243,9 +249,14 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
     }
 
      */
+
+    CharacterGbufferOut out;
+    out.albedo = float4(color, 0);
+    out.normal = float4(normalize(in.worldNormal), 1.0);
+    out.position = float4(in.worldPosition, 1.0);
     
 //    return sepiaShaderCharacter(float4(color, 1));
-    return float4(color, 1);
+    return out;
 
 //
 //    float4 color;

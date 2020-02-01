@@ -202,39 +202,37 @@ extension Renderer: MTKViewDelegate {
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
-        // Tessellation Pass
-        //
-        //        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
-        //
-        //        if updateTerrain {
-        //            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
-        //            computeEncoder.pushDebugGroup("Tessellation Pass")
-        //            terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
-        //            computeEncoder.popDebugGroup()
-        //            computeEncoder.endEncoding()
-        //
-        //            Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
-        //
-        //            updateTerrain = false
-        //        }
-        //
-        //
-        //
-        //        // Calculate Height
-        //
-        //        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-        //        heightEncoder.pushDebugGroup("Height pass")
-        //        for renderable in scene.renderables {
-        //            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
-        //        }
-        //        heightEncoder.popDebugGroup()
-        //        heightEncoder.endEncoding()
+//        Tessellation Pass
+
+        guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
+
+        if updateTerrain {
+            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+            computeEncoder.pushDebugGroup("Tessellation Pass")
+            terrain.compute(computeEncoder: computeEncoder, uniforms: scene.uniforms)
+            computeEncoder.popDebugGroup()
+            computeEncoder.endEncoding()
+
+            Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+
+            updateTerrain = false
+        }
+
+        // Calculate Height
+
+        guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+        heightEncoder.pushDebugGroup("Height pass")
+        for renderable in scene.renderables {
+            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: scene.uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
+        }
+        heightEncoder.popDebugGroup()
+        heightEncoder.endEncoding()
 
 
         // Shadow pass
         var previousUniforms = scene.uniforms
-        //        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
-        //        renderShadowPass(renderEncoder: shadowEncoder, view: view)
+        guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
+        renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position
@@ -243,10 +241,6 @@ extension Renderer: MTKViewDelegate {
 
         // main pass
         renderGbufferPass(commandBuffer: commandBuffer, uniforms: &previousUniforms, fragmentUniforms: &fragmentUniforms)
-
-        //        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
-        //        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
-
 
         guard let compositionEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderCompositionPass(renderEncoder: compositionEncoder, fragmentUniforms: &fragmentUniforms)
@@ -285,6 +279,9 @@ extension Renderer {
                                        length: MemoryLayout<Light>.stride * scene.lights.count,
                                        index: Int(BufferIndexLights.rawValue))
 
+        renderEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
+        renderEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
+
 
         var farZ = Camera.FarZ
         renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
@@ -300,7 +297,7 @@ extension Renderer {
             renderEncoder.popDebugGroup()
         }
 
-        //        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
+        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
         renderEncoder.endEncoding()
         renderEncoder.popDebugGroup()

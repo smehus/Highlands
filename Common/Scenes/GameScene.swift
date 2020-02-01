@@ -13,7 +13,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-//    let terrain = Terrain(textureName: "hills")
+    let terrain = Terrain(textureName: "hills")
 //    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
 //    let plane = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "walking_boy")
@@ -27,9 +27,9 @@ final class GameScene: Scene {
 
         inputController.keyboardDelegate = self
 
-//        terrain.position = SIMD3<Float>([0, 0, 0])
-////        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
-//        add(node: terrain)
+        terrain.position = SIMD3<Float>([0, 0, 0])
+//        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
+        add(node: terrain)
 
 
         lights = lighting()
@@ -89,30 +89,30 @@ final class GameScene: Scene {
         }
 
 
-//        skeleton.scale = [0.015, 0.015, 0.015]
-//        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
-//        skeleton.position = [0, 0, 0]
-//        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
-////        skeleton.currentAnimation.speed = 1.0
-//        add(node: skeleton)
-////
-//        physicsController.dynamicBody = skeleton
-//        inputController.player = skeleton
+        skeleton.scale = [0.015, 0.015, 0.015]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
+        skeleton.position = [0, 0, 0]
+        skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+//        skeleton.currentAnimation.speed = 1.0
+        add(node: skeleton)
 //
-////        lantern.position = CharacterTorch.localPosition
-////        add(node: lantern, parent: skeleton)
-//
-//        orthoCamera.position = [0, 2, 0]
-//        orthoCamera.rotation.x = .pi / 2
-//        cameras.append(orthoCamera)
-//
-//
-//        let tpCamera = ThirdPersonCamera(focus: skeleton)
-//        tpCamera.focusHeight = 6
-//        tpCamera.focusDistance = 8
-//        cameras.append(tpCamera)
-//        cameras.first?.position = [0, 4 , 3]
-//        currentCameraIndex = cameras.endIndex - 1
+        physicsController.dynamicBody = skeleton
+        inputController.player = skeleton
+
+//        lantern.position = CharacterTorch.localPosition
+//        add(node: lantern, parent: skeleton)
+
+        orthoCamera.position = [0, 2, 0]
+        orthoCamera.rotation.x = .pi / 2
+        cameras.append(orthoCamera)
+
+
+        let tpCamera = ThirdPersonCamera(focus: skeleton)
+        tpCamera.focusHeight = 6
+        tpCamera.focusDistance = 8
+        cameras.append(tpCamera)
+        cameras.first?.position = [0, 4 , 3]
+        currentCameraIndex = cameras.endIndex - 1
 
 
 
@@ -125,17 +125,17 @@ final class GameScene: Scene {
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
 
-//            guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
-//            let position = inputController.player!.position
-//            let forward = inputController.player!.forwardVector
-//            let rotation = inputController.player!.rotation
-//
-//
-////            // Lantern
-//            lights[index].position = position
-//            lights[index].position.y = position.y + 4
-//            lights[index].position += (forward * 0.8)
-//            lights[index].position.x -= 0.2
+            guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
+            let position = inputController.player!.position
+            let forward = inputController.player!.forwardVector
+            let rotation = inputController.player!.rotation
+
+
+//            // Lantern
+            lights[index].position = position
+            lights[index].position.y = position.y + 4
+            lights[index].position += (forward * 0.8)
+            lights[index].position.x -= 0.2
 
 
 

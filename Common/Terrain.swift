@@ -141,27 +141,29 @@ extension Terrain {
     }
 
     static func buildRenderPipelineState() -> MTLRenderPipelineState {
-      let descriptor = MTLRenderPipelineDescriptor()
-      descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
-      descriptor.depthAttachmentPixelFormat = .depth32Float
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        descriptor.colorAttachments[1].pixelFormat = .rgba16Float
+        descriptor.colorAttachments[2].pixelFormat = .rgba16Float
+        descriptor.depthAttachmentPixelFormat = .depth32Float
 
-      let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
-      let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
-      descriptor.vertexFunction = vertexFunction
-      descriptor.fragmentFunction = fragmentFunction
+        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
+        let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
+        descriptor.vertexFunction = vertexFunction
+        descriptor.fragmentFunction = fragmentFunction
 
-      let vertexDescriptor = MTLVertexDescriptor()
-      vertexDescriptor.attributes[0].format = .float3
-      vertexDescriptor.attributes[0].offset = 0
-      vertexDescriptor.attributes[0].bufferIndex = 0
+        let vertexDescriptor = MTLVertexDescriptor()
+        vertexDescriptor.attributes[0].format = .float3
+        vertexDescriptor.attributes[0].offset = 0
+        vertexDescriptor.attributes[0].bufferIndex = 0
 
-      vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-      vertexDescriptor.layouts[0].stride = MemoryLayout<SIMD3<Float>>.stride
-      descriptor.vertexDescriptor = vertexDescriptor
+        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
+        vertexDescriptor.layouts[0].stride = MemoryLayout<SIMD3<Float>>.stride
+        descriptor.vertexDescriptor = vertexDescriptor
 
-      descriptor.tessellationFactorStepFunction = .perPatch
-      descriptor.maxTessellationFactor = maxTessellation
-      descriptor.tessellationPartitionMode = .pow2
+        descriptor.tessellationFactorStepFunction = .perPatch
+        descriptor.maxTessellationFactor = maxTessellation
+        descriptor.tessellationPartitionMode = .pow2
 
         return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
     }

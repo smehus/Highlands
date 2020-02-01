@@ -79,6 +79,8 @@ class Skybox {
     private static func buildPipelineState(vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {
         let descriptor = MTLRenderPipelineDescriptor()
         descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        descriptor.colorAttachments[1].pixelFormat = .rgba16Float
+        descriptor.colorAttachments[2].pixelFormat = .rgba16Float
         descriptor.depthAttachmentPixelFormat = .depth32Float
         descriptor.sampleCount = Renderer.sampleCount
         descriptor.vertexFunction = Renderer.library?.makeFunction(name: "vertexSkybox")
@@ -97,11 +99,10 @@ class Skybox {
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers[0].buffer, offset: 0, index: 0)
 
-        var viewMatrix = uniforms.viewMatrix
+        var uniforms = uniforms
         // zero out translation so skybox doesn't move
-        viewMatrix.columns.3 = [0, 0, 0, 1]
-        var viewProjectionMatrix = uniforms.projectionMatrix * viewMatrix
-        renderEncoder.setVertexBytes(&viewProjectionMatrix, length: MemoryLayout<float4x4>.stride, index: 1)
+        uniforms.viewMatrix.columns.3 = [0, 0, 0, 1]
+        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
         renderEncoder.setFragmentTexture(texture, index: Int(BufferIndexSkybox.rawValue))
 
         let submesh = mesh.submeshes[0]

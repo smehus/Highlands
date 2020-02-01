@@ -19,6 +19,13 @@ struct TerrainVertexOut {
     float2 uv;
 };
 
+
+struct TerrainGbufferOut {
+  float4 albedo [[color(0)]];
+  float4 normal [[color(1)]];
+  float4 position [[color(2)]];
+};
+
 struct ControlPoint {
     float4 position [[ attribute(0) ]];
 };
@@ -285,7 +292,7 @@ float3 terrainDiffuseLighting(TerrainVertexOut in,
 
 }
 
-fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
+fragment TerrainGbufferOut fragment_terrain(TerrainVertexOut in [[ stage_in ]],
                                  constant Light *lights [[ buffer(BufferIndexLights) ]],
                                  constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                  texture2d<float> cliffTexture [[ texture(TerrainTextureBase) ]],
@@ -315,7 +322,7 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
 //    constexpr sampler sam(min_filter::linear, mag_filter::linear);
 //    float3 localNormal = normalMap.sample(sam, in.uv).xyz;
 
-    float3 lightColor = terrainDiffuseLighting(in, color.rgb, in.worldNormal, fragmentUniforms, lights);
+    float3 lightColor = color.rgb;//terrainDiffuseLighting(in, color.rgb, in.worldNormal, fragmentUniforms, lights);
 
     constexpr sampler s(coord::normalized,
                         filter::linear,
@@ -337,15 +344,18 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
     float epsilon = 0.001;
     currentDepth = (currentDepth / farZ) + epsilon;
 
+    TerrainGbufferOut out;
+    out.albedo = float4(lightColor, 0);
+    out.normal = float4(normalize(in.worldNormal), 1);
+    out.position = in.worldPosition;
 
     if (closestDepth.w < currentDepth) {
-        lightColor *= 0.6;
+        out.albedo.a = 1.0;
     }
-
 
     // current depth is maxed out...n
 //    float n = normalize(currentDepth);
-    return float4(lightColor, 1);
+    return out;
 }
 
 // Shadow texutre is being rendered with isntances - before having the height calculated - thats why the z+ frame has the shadow

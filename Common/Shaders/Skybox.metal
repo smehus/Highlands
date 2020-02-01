@@ -16,19 +16,34 @@ struct VertexIn {
 
 struct VertexOut {
     float4 position [[ position ]];
+    float4 worldPosition;
     float3 textureCoordinates;
 };
 
-vertex VertexOut vertexSkybox(const VertexIn in [[ stage_in ]], constant float4x4 &viewProjection [[ buffer(1) ]]) {
+struct SkyGbufferOut {
+  float4 albedo [[color(0)]];
+  float4 normal [[color(1)]];
+  float4 position [[color(2)]];
+};
+
+vertex VertexOut vertexSkybox(const VertexIn in [[ stage_in ]], constant Uniforms &uniforms [[ buffer(1) ]]) {
 
     VertexOut out;
-    out.position = (viewProjection * in.position).xyww;
+    out.position = (uniforms.projectionMatrix * uniforms.viewMatrix * in.position).xyww;
+    out.worldPosition = (uniforms.viewMatrix * in.position).xyww;
     out.textureCoordinates = in.position.xyz;
     return out;
 }
 
-fragment half4 fragmentSkybox(VertexOut in [[ stage_in ]], texturecube<half> cubeTexture [[ texture (BufferIndexSkybox) ]]) {
+fragment SkyGbufferOut fragmentSkybox(VertexOut in [[ stage_in ]], texturecube<half> cubeTexture [[ texture (BufferIndexSkybox) ]]) {
     constexpr sampler default_sampler(filter::linear);
     half4 color = cubeTexture.sample(default_sampler, in.textureCoordinates);
-    return color;
+
+    SkyGbufferOut out;
+    out.albedo = float4(color);
+    out.albedo = 0;
+//    out.normal = float4(0, 0, 0, 1);
+    out.position = in.worldPosition;
+
+    return out;
 }

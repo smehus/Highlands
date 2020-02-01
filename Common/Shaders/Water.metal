@@ -23,6 +23,12 @@ struct VertexOut {
     float3 worldNormal;
 };
 
+struct WaterGbufferOut {
+  float4 albedo [[color(0)]];
+  float4 normal [[color(1)]];
+  float4 position [[color(2)]];
+};
+
 vertex VertexOut vertex_water(const VertexIn vertex_in [[ stage_in ]],
                               constant Uniforms &uniforms [[ buffer(BufferIndexUniforms)]]) {
     VertexOut vertex_out;
@@ -122,7 +128,7 @@ float4 sepiaShaderWater(float4 color) {
     return output;
 }
 
-fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
+fragment WaterGbufferOut fragment_water(VertexOut vertex_in [[ stage_in ]],
                                texture2d<float> reflectionTexture [[ texture(0) ]],
                                texture2d<float> refractionTexture [[ texture(1) ]],
                                texture2d<float> normalTexture [[ texture(2) ]],
@@ -163,10 +169,15 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     }
 
     // Check out ray sample project challenge for lighting against the normalTexture rather than the geometry
-    float3 color = waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
+//    float3 color = waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
+
+    WaterGbufferOut out;
+    out.albedo = baseColor;
+    out.normal = float4(normalize(vertex_in.worldNormal), 1.0);
+    out.position = vertex_in.worldPosition;
 
 //    return sepiaShaderWater(float4(color, 1));
-    return float4(color, 1);
+    return out;
 }
 
 
