@@ -69,7 +69,6 @@
 		0277615223E3B9A5003E4DD5 /* walking_boy.usd in Resources */ = {isa = PBXBuildFile; fileRef = 0277615023E3B9A4003E4DD5 /* walking_boy.usd */; };
 		0277615423E46E53003E4DD5 /* GBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0277615323E46E53003E4DD5 /* GBuffer.metal */; };
 		0277615523E46E92003E4DD5 /* GBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0277615323E46E53003E4DD5 /* GBuffer.metal */; };
-		0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE9E23DFF129005F2E67 /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9523DFF129005F2E67 /* Shadow.metal */; };
 		0294AE9F23DFF129005F2E67 /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9523DFF129005F2E67 /* Shadow.metal */; };
@@ -742,7 +741,6 @@
 				0294AECA23E07845005F2E67 /* DebugBoundingBox.swift in Sources */,
 				020E1D6E23E2799B00A61642 /* TransformComponent.swift in Sources */,
 				0294AEA023DFF129005F2E67 /* MorphShader.metal in Sources */,
-				0294AE7B23DFEA53005F2E67 /* GameView.swift in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				0277614823E3A985003E4DD5 /* CharacterShaders.metal in Sources */,
 				02A38F3823E1387000E26E19 /* Renderer.swift in Sources */,
@@ -973,7 +971,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Common",
 				);
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Highlands-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -985,7 +983,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1031,15 +1029,18 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Common",
 				);
+				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = "Highlands-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;

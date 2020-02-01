@@ -224,11 +224,11 @@ extension GameScene: KeyboardDelegate {
 
 extension GameScene: KeyboardDelegate {
     func didStartMove() {
-        skeleton.resumeAnimation()
+//        skeleton.resumeAnimation()
     }
 
     func didEndMove() {
-        skeleton.pauseAnimation()
+//        skeleton.pauseAnimation()
     }
 }
 

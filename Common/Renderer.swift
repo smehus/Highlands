@@ -242,6 +242,7 @@ extension Renderer: MTKViewDelegate {
         // main pass
         renderGbufferPass(commandBuffer: commandBuffer, uniforms: &previousUniforms, fragmentUniforms: &fragmentUniforms)
 
+        // composition pass
         guard let compositionEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderCompositionPass(renderEncoder: compositionEncoder, fragmentUniforms: &fragmentUniforms)
         
@@ -297,8 +298,6 @@ extension Renderer {
             renderEncoder.popDebugGroup()
         }
 
-        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
-
         renderEncoder.endEncoding()
         renderEncoder.popDebugGroup()
 
@@ -324,6 +323,8 @@ extension Renderer {
         renderEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.stride, index: 3)
 
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: quadVertices.count)
+
+        scene.skybox?.render(renderEncoder: renderEncoder, uniforms: scene.uniforms)
 
         renderEncoder.endEncoding()
         renderEncoder.popDebugGroup()

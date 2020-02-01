@@ -132,7 +132,7 @@ class Character: Node {
         descriptor.tAddressMode = .repeat
         descriptor.mipFilter = .linear
 //         TODO: I don't know why this is crashing me....
-        descriptor.maxAnisotropy = 8
+//        descriptor.maxAnisotropy = 0
         guard let state = Renderer.device.makeSamplerState(descriptor: descriptor) else {
             fatalError()
         }
