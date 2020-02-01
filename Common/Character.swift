@@ -10,7 +10,7 @@ import MetalKit
 
 class CharacterTorch: Prop {
 
-    static let localPosition: float3 = [0.14, 0.85, -1.8]
+    static let localPosition: SIMD3<Float> = [0.14, 0.85, -1.8]
 
     override var worldTransform: float4x4 {
         guard let parent = parent else { fatalError() }
@@ -35,16 +35,6 @@ class CharacterTorch: Prop {
 
 class Character: Node {
 
-    class CharacterSubmesh: Submesh {
-
-        // Adding properties that are already in the MTKSubmesh
-        var attributes: [Attributes] = []
-        var indexCount: Int = 0
-        var indexBuffer: MTLBuffer?
-        var indexBufferOffset: Int = 0
-        var indexType: MTLIndexType = .uint16
-    }
-
     var debugBoundingBox: DebugBoundingBox?
     override var boundingBox: MDLAxisAlignedBoundingBox {
         didSet {
@@ -52,14 +42,20 @@ class Character: Node {
         }
     }
 
-    let buffers: [MTLBuffer]
-    let meshNodes: [CharacterNode]
-    let animations: [AnimationClip]
-    let nodes: [CharacterNode]
+    let meshes: [Mesh]
     var currentTime: Float = 0
-    var currentAnimation: AnimationClip?
-    var currentAnimationPlaying = false
     var samplerState: MTLSamplerState
+    static var vertexDescriptor: MDLVertexDescriptor = MDLVertexDescriptor.defaultVertexDescriptor
+
+    private let animations: [String: AnimationClip]
+
+    // Stuff I added \\
+
+
+    // Not sure about this tho
+//    var currentAnimation: AnimationClip?
+//    var currentAnimationPlaying = false
+
     var shadowInstanceCount: Int = 0
 
     let heightCalculatePipelineState: MTLComputePipelineState
@@ -68,18 +64,51 @@ class Character: Node {
 
     let patches: [Patch]
     var currentPatch: Patch?
-    var positionInPatch: float3?
+    var positionInPatch: SIMD3<Float>?
 
     init(name: String) {
-        let asset = GLTFAsset(filename: name)
-        buffers = asset.buffers
-        animations = asset.animations
-        guard !asset.scenes.isEmpty else { fatalError() }
+        guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
 
-        // The nodes that contain skinning data which bind vertices to joints.
-        meshNodes = asset.scenes[0].meshNodes
-        
-        nodes = asset.scenes[0].nodes
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let asset = MDLAsset(url: assetURL,
+                             vertexDescriptor: MDLVertexDescriptor.defaultVertexDescriptor,
+                             bufferAllocator: allocator)
+
+        asset.loadTextures()
+
+        var mtkMeshes: [MTKMesh] = []
+        let mdlMeshes = asset.childObjects(of: MDLMesh.self) as! [MDLMesh]
+        _ = mdlMeshes.map { mdlMesh in
+            mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed:
+                MDLVertexAttributeTextureCoordinate,
+                                    tangentAttributeNamed: MDLVertexAttributeTangent,
+                                    bitangentAttributeNamed: MDLVertexAttributeBitangent)
+
+            Character.vertexDescriptor = mdlMesh.vertexDescriptor
+            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
+        }
+
+        meshes = zip(mdlMeshes, mtkMeshes).map {
+            return Mesh(mdlMesh: $0.0,
+                        mtkMesh: $0.1,
+                        startTime: asset.startTime,
+                        endTime: asset.endTime,
+                        modelType: .character)
+        }
+
+        let assetAnimations = asset.animations.objects.compactMap {
+            $0 as? MDLPackedJointAnimation
+        }
+
+        let animations = Dictionary(uniqueKeysWithValues: assetAnimations.map {
+            ($0.name, AnimationComponent.load(animation: $0))
+        })
+
+        self.animations = animations
+
+        animations.forEach {
+            print("*** ANIMATION \($0.key)")
+        }
 
         samplerState = Character.buildSamplerState()
         heightCalculatePipelineState = Character.buildComputePipelineState()
@@ -102,8 +131,8 @@ class Character: Node {
         descriptor.sAddressMode = .repeat
         descriptor.tAddressMode = .repeat
         descriptor.mipFilter = .linear
-        // TODO: I don't know why this is crashing me....
-//        descriptor.maxAnisotropy = 0
+//         TODO: I don't know why this is crashing me....
+        descriptor.maxAnisotropy = 8
         guard let state = Renderer.device.makeSamplerState(descriptor: descriptor) else {
             fatalError()
         }
@@ -112,7 +141,7 @@ class Character: Node {
     }
 
 
-    override var forwardVector: float3 {
+    override var forwardVector: SIMD3<Float> {
         return normalize([sin(-rotation.z), 0, cos(-rotation.z)])
     }
 
@@ -126,11 +155,26 @@ class Character: Node {
             position.y = pointer.pointee
         }
 
+
+
+        // Run / Update Animations
+        currentTime += deltaTime
+
+//        You're using the first animation for simplicity. The starter code for the following chapter will refactor the animation code so that you can send a named animation to the model.
+        for mesh in meshes {
+            if let animationClip = animations.first?.value {
+                mesh.skeleton?.updatePose(animationClip: animationClip, at: currentTime)
+                mesh.transform?.currentTransform = .identity() }
+            else {
+                mesh.transform?.setCurrentTransform(at: currentTime) }
+        }
+
+
+        /* DEPRECATED WITH USDA
         guard let animation = currentAnimation, currentAnimationPlaying == true else {
             return
         }
 
-        currentTime += deltaTime
         let time = fmod(currentTime, animation.duration)
         for nodeAnimation in animation.nodeAnimations {
 
@@ -148,6 +192,8 @@ class Character: Node {
                 node.rotationQuaternion = rotationQuaternion
             }
         }
+
+         */
 
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
         position.y = pointer.pointee
@@ -169,7 +215,7 @@ class Character: Node {
         }
     }
 
-    func patch(for location: float3) -> Patch? {
+    func patch(for location: SIMD3<Float>) -> Patch? {
         let foundPatches = patches.filter { (patch) -> Bool in
             let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
             let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
@@ -188,87 +234,47 @@ class Character: Node {
     }
 }
 
-extension Patch: Equatable {
-
-    static public func ==(lhs: Patch, rhs: Patch) -> Bool {
-        assertionFailure("Need to Implement Equatable FOR PATCH"); return false
-    }
-
-    static public func != (lhs: Patch, rhs: Patch) -> Bool {
-        return lhs.topLeft != rhs.topLeft ||
-                lhs.topRight != rhs.topRight ||
-                lhs.bottomLeft != rhs.bottomLeft ||
-                lhs.bottomRight != rhs.bottomRight
-    }
-}
-
 extension Character: Renderable {
-
-    func runAnimation(clip animationClip: AnimationClip? = nil) {
-        var clip = animationClip
-        if clip == nil {
-            guard animations.count > 0 else { return }
-            clip = animations[0]
-        } else {
-            clip = animationClip
-        }
-        currentAnimation = clip
-        currentTime = 0
-        currentAnimationPlaying = true
-        // immediately update the initial pose
-        update(deltaTime: 0)
-    }
-
-    func runAnimation(name: String) {
-        guard let clip = (animations.filter { $0.name == name }).first else {
-            return
-        }
-
-        runAnimation(clip: clip)
-    }
-
-    func pauseAnimation() {
-        currentAnimationPlaying = false
-    }
-
-    func resumeAnimation() {
-        currentAnimationPlaying = true
-    }
-
-    func stopAnimation() {
-        currentAnimation = nil
-        currentAnimationPlaying = false
-    }
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
 
-        for node in meshNodes {
-            guard let mesh = node.mesh else { continue }
+        for mesh in meshes {
 
-            if let skin = node.skin {
-                for (i, jointNode) in skin.jointNodes.enumerated() {
-                    skin.jointMatrixPalette[i] = node.globalTransform.inverse * jointNode.globalTransform * jointNode.inverseBindTransform
-                }
-
-                let length = MemoryLayout<float4x4>.stride * skin.jointMatrixPalette.count
-                let buffer = Renderer.device.makeBuffer(bytes: &skin.jointMatrixPalette, length: length, options: [])
-                renderEncoder.setVertexBuffer(buffer, offset: 0, index: 21)
+            if let paletteBuffer = mesh.skeleton?.jointMatrixPaletteBuffer {
+              renderEncoder.setVertexBuffer(paletteBuffer, offset: 0, index: 22)
             }
 
             var uniforms = vertex
-            uniforms.modelMatrix = worldTransform
+            uniforms.modelMatrix = worldTransform * (mesh.transform?.currentTransform ?? float4x4.identity())
             uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
             renderEncoder.setFragmentSamplerState(samplerState, index: 0)
 
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
+            for (index, vertexBuffer) in mesh.mtkMesh.vertexBuffers.enumerated() {
+              renderEncoder.setVertexBuffer(vertexBuffer.buffer,
+                                            offset: 0, index: index)
+            }
+
             for submesh in mesh.submeshes {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
 
-                // Set the texture
-                renderEncoder.setFragmentTexture(submesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
+                // Set the textures
+                if let colorTexture = submesh.textures.baseColor {
+                    renderEncoder.useResource(colorTexture, usage: .read)
+                }
+
+                if let normalTexture = submesh.textures.normal {
+                    renderEncoder.useResource(normalTexture, usage: .read)
+                }
+
+//                if let roughnessTexture = submesh.textures.roughness {
+//                    renderEncoder.useResource(roughnessTexture, usage: .read)
+//                }
+
+                renderEncoder.setFragmentBuffer(submesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
 
                 // Set Material
                 var material = submesh.material
@@ -276,17 +282,8 @@ extension Character: Renderable {
                                                length: MemoryLayout<Material>.stride,
                                                index: Int(BufferIndexMaterials.rawValue))
 
-                for attribute in submesh.attributes {
-                    renderEncoder.setVertexBuffer(buffers[attribute.bufferIndex],
-                                                  offset: attribute.offset,
-                                                  index: attribute.index)
-                }
 
-                renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                    indexCount: submesh.indexCount,
-                                                    indexType: submesh.indexType,
-                                                    indexBuffer: submesh.indexBuffer!,
-                                                    indexBufferOffset: submesh.indexBufferOffset)
+                render(renderEncoder: renderEncoder, submesh: submesh)
             }
 
             if debugRenderBoundingBox {
@@ -294,6 +291,16 @@ extension Character: Renderable {
             }
         }
     }
+
+    func render(renderEncoder: MTLRenderCommandEncoder, submesh: Submesh) {
+      let mtkSubmesh = submesh.mtkSubmesh
+      renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                          indexCount: mtkSubmesh.indexCount,
+                                          indexType: mtkSubmesh.indexType,
+                                          indexBuffer: mtkSubmesh.indexBuffer.buffer,
+                                          indexBufferOffset: mtkSubmesh.indexBuffer.offset)
+    }
+
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, startingIndex: Int) {
 /*
@@ -377,7 +384,7 @@ extension Character: Renderable {
         var index = 0
 
         computeEncoder.setComputePipelineState(heightCalculatePipelineState)
-        computeEncoder.setBytes(&position, length: MemoryLayout<float3>.size, index: 0)
+        computeEncoder.setBytes(&position, length: MemoryLayout<SIMD3<Float>>.size, index: 0)
         computeEncoder.setBuffer(heightBuffer, offset: 0, index: 1)
         computeEncoder.setBytes(&terrainParams, length: MemoryLayout<TerrainParams>.stride, index: 2)
         computeEncoder.setBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 3)
@@ -390,7 +397,7 @@ extension Character: Renderable {
                                             threadsPerThreadgroup: MTLSizeMake(1, 1, 1))
     }
 
-    func positionInPatch(patch: Patch?) -> float3? {
+    func positionInPatch(patch: Patch?) -> SIMD3<Float>? {
         guard let patch = patch else { return nil }
 
         let worldPos = self.worldTransform.columns.3.xyz
@@ -405,7 +412,22 @@ extension Character: Renderable {
             return value!
         }
 
-        let final = float3(calculate(x), 0, calculate(z))
+        let final = SIMD3<Float>(calculate(x), 0, calculate(z))
         return final
+    }
+}
+
+extension Character {
+    func render(renderEncoder: MTLRenderCommandEncoder,
+                uniforms: Uniforms,
+                fragmentUniforms fragment: FragmentUniforms) {
+
+        var fragmentUniforms = fragment
+        fragmentUniforms.tiling = 1
+        renderEncoder.setFragmentBytes(&fragmentUniforms,
+                                       length: MemoryLayout<FragmentUniforms>.stride,
+                                       index: Int(BufferIndexFragmentUniforms.rawValue))
+
+        render(renderEncoder: renderEncoder, uniforms: uniforms)
     }
 }

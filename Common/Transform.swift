@@ -8,10 +8,11 @@
 
 import Foundation
 
+/// Used for instances
 struct Transform {
-    var position = SIMD3<Float>(0)
-    var rotation = SIMD3<Float>(0)
-    var scale = SIMD3<Float>(1)
+    var position = SIMD3<Float>(repeating: 0)
+    var rotation = SIMD3<Float>(repeating: 0)
+    var scale = SIMD3<Float>(repeating: 1)
 
     var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)

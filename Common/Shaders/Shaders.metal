@@ -12,7 +12,6 @@ using namespace metal;
 
 constant bool hasColorTexture [[ function_constant(0) ]];
 constant bool hasNormalTexture [[ function_constant(1) ]];
-constant bool isGroundTexture [[ function_constant(5) ]];
 constant bool includeLighting [[ function_constant(6) ]];
 constant bool includeBlending [[ function_constant(7) ]];
 constant bool hasColorTextureArray [[ function_constant(8) ]];
@@ -34,6 +33,12 @@ struct VertexOut {
     float3 worldBitangent;
     uint textureID [[ flat ]];
     float4 shadowPosition;
+};
+
+struct PropTextures {
+    texture2d<float> baseColorTexture;
+    texture2d<float> normalTexture;
+//    texture2d_array<float> baseColorTextureArray;
 };
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
@@ -84,9 +89,7 @@ float3 diffuseLighting(VertexOut in,
     // [0, 0, -1] - so any light facing -z would be black
     // -1z for a normal doesn't seem to make sense? But maybe the planes are getting rotated
     float3 normalDirection;
-    if (isGroundTexture) {
-        normalDirection = float3(0, 1, 0);
-    } else if (hasNormalTexture) {
+    if (hasNormalTexture) {
         normalDirection = float3x3(in.worldTangent, in.worldBitangent, in.worldNormal) * normalValue;
     } else {
         // Using the tangents multiplied by the value will reverse the normals if not using a normal map
@@ -220,11 +223,9 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
                               sampler textureSampler [[ sampler(0) ]],
                               constant Material &material [[ buffer(BufferIndexMaterials) ]],
                               constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
-                              texture2d<float> baseColorTexture [[ texture(BaseColorTexture), function_constant(hasColorTexture) ]],
-                              texture2d_array<float> baseColorTextureArray [[ texture(BaseColorTexture), function_constant(hasColorTextureArray) ]],
+                              constant PropTextures &textures [[buffer(BufferIndexTextures)]],
                               texturecube<float> shadowColorTexture [[ texture(ShadowColorTexture) ]],
                               depthcube<float> shadowDepthTexture [[ texture(ShadowDepthTexture) ]],
-                              texture2d<float> normalTexture [[ texture(NormalTexture), function_constant(hasNormalTexture) ]],
                               constant float &farZ [[ buffer(24) ]],
                               constant uint &tiling [[ buffer(22) ]])
 
@@ -234,9 +235,9 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     // has map_kd aka Color texture.
     // Basically checks the submesh was able to load the texture in map_kd
     if (hasColorTextureArray) {
-        baseColor = baseColorTextureArray.sample(textureSampler, in.uv, in.textureID);
+//        baseColor = textures.baseColorTextureArray.sample(textureSampler, in.uv, in.textureID);
     } else if (hasColorTexture) {
-        baseColor = baseColorTexture.sample(textureSampler, in.uv * tiling);
+        baseColor = textures.baseColorTexture.sample(textureSampler, in.uv * tiling);
     } else {
         baseColor = float4(material.baseColor, 1);
     }
@@ -246,7 +247,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
     if (hasNormalTexture) {
         // Use normal texture map values
         // get more fake shadow detail
-        normalValue = normalTexture.sample(textureSampler, in.uv * tiling).rgb;
+        normalValue = textures.normalTexture.sample(textureSampler, in.uv * tiling).rgb;
         // makes value between 0 and 1
         normalValue = normalValue * 2 - 1;
     } else {

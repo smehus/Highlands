@@ -2,58 +2,68 @@
 using namespace metal;
 #import "Common.h"
 
-constant bool hasCharacterTextures [[ function_constant(UV) ]];
+#import "Common.h"
+
+constant bool hasSkeleton [[function_constant(5)]];
+
 
 struct VertexIn {
-    float4 position [[ attribute(Position) ]];
-    float3 normal [[ attribute(Normal) ]];
-    float2 uv [[ attribute(UV), function_constant(hasCharacterTextures) ]];
-//    float4 tangent [[ attribute(Tangent) ]];
-//    float3 bitangent [[ attribute(Bitangent) ]];
-    float4 color [[ attribute(Color) ]];
-    ushort4 joints [[ attribute(Joints) ]];
-    float4 weights [[ attribute(Weights) ]];
+  float4 position [[attribute(Position)]];
+  float3 normal [[attribute(Normal)]];
+  float2 uv [[attribute(UV)]];
+  float3 tangent [[attribute(Tangent)]];
+  float3 bitangent [[attribute(Bitangent)]];
+  ushort4 joints [[attribute(Joints)]];
+  float4 weights [[attribute(Weights)]];
 };
 
 struct VertexOut {
-    float4 position [[ position ]];
-    float4 worldPosition;
-    float3 worldNormal;
-//    float3 worldTangent;
-//    float3 worldBitangent;
-    float2 uv;
-    float4 shadowPosition;
+  float4 position [[position]];
+  float3 worldPosition;
+  float3 worldNormal;
+  float3 worldTangent;
+  float3 worldBitangent;
+  float2 uv;
 };
 
-vertex VertexOut character_vertex_main(const VertexIn vertexIn [[ stage_in ]],
-                                       constant float4x4 *jointMatrices [[ buffer(21) ]],
-                                       constant Uniforms &uniforms [[ buffer(BufferIndexUniforms) ]])
-{
-    VertexOut out;  
+struct CharacterTextures {
+    texture2d<float> baseColorTexture;
+    texture2d<float> normalTexture;
+};
 
-    // skinning code
+vertex VertexOut character_vertex_main(const VertexIn vertexIn [[stage_in]],
+                             constant float4x4 *jointMatrices [[buffer(22),
+                                                                function_constant(hasSkeleton)]],
+                             constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]])
+{
+  float4 position = vertexIn.position;
+  float4 normal = float4(vertexIn.normal, 0);
+
+  if (hasSkeleton) {
     float4 weights = vertexIn.weights;
     ushort4 joints = vertexIn.joints;
-    float4x4 skinMatrix =
-    weights.x * jointMatrices[joints.x] +
-    weights.y * jointMatrices[joints.y] +
-    weights.z * jointMatrices[joints.z] +
-    weights.w * jointMatrices[joints.w];
+    position =
+    weights.x * (jointMatrices[joints.x] * position) +
+    weights.y * (jointMatrices[joints.y] * position) +
+    weights.z * (jointMatrices[joints.z] * position) +
+    weights.w * (jointMatrices[joints.w] * position);
+    normal =
+    weights.x * (jointMatrices[joints.x] * normal) +
+    weights.y * (jointMatrices[joints.y] * normal) +
+    weights.z * (jointMatrices[joints.z] * normal) +
+    weights.w * (jointMatrices[joints.w] * normal);
+  }
 
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * skinMatrix * vertexIn.position;
-    // FIXME: The skin matrix was causing the black 'directionFromLightToFragment' spot thingy.
-    out.worldPosition = uniforms.modelMatrix * /*skinMatrix */ vertexIn.position;
-    out.worldNormal = uniforms.normalMatrix * (/*skinMatrix */ float4(vertexIn.normal, 1)).xyz;
-    out.uv = vertexIn.uv;
-
-    float4x4 shadowMatrix = uniforms.shadowMatrix;
-    out.shadowPosition = shadowMatrix * uniforms.modelMatrix * vertexIn.position;
-
-//    out.worldTangent = uniforms.normalMatrix * (skinMatrix * vertexIn.tangent).xyz;
-//    float3 bitangent = cross(vertexIn.normal, vertexIn.tangent.xyz) * vertexIn.tangent.w;
-//    out.worldBitangent = uniforms.normalMatrix * (skinMatrix * float4(bitangent, 1)).xyz;
-
-    return out;
+  VertexOut out {
+    .position = uniforms.projectionMatrix * uniforms.viewMatrix
+    * uniforms.modelMatrix * position,
+    .worldPosition = (uniforms.modelMatrix * position).xyz,
+    .worldNormal = uniforms.normalMatrix * normal.xyz,
+    .worldTangent = 0,
+    .worldBitangent = 0,
+    .uv = vertexIn.uv
+  };
+  return out;
 }
 
 
@@ -195,7 +205,7 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
                                         sampler textureSampler [[ sampler(0) ]],
                                         constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                         constant Light *lights [[ buffer(BufferIndexLights) ]],
-                                        texture2d<float> baseColorTexture [[ texture(BaseColorTexture) ]],
+                                        constant CharacterTextures &textures [[buffer(BufferIndexTextures)]],
                                         // currently using omnidirectional shadow map : texturecube
 //                                        texture2d<float> shadowTexture [[ texture(ShadowColorTexture) ]],
                                         constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
@@ -203,21 +213,22 @@ fragment float4 character_fragment_main(VertexOut in [[ stage_in ]],
 
 
     float3 baseColor;
-    if (hasCharacterTextures) {
+//    if (hasCharacterTextures) {
         constexpr sampler s(filter::linear);
-        float4 textureColor = baseColorTexture.sample(s, in.uv);
+        float4 textureColor = textures.baseColorTexture.sample(s, in.uv);
 //        if (textureColor.a < 0.1) { discard_fragment(); }
         baseColor = textureColor.rgb;
 
-    } else {
-        baseColor = material.baseColor;
-    }
+//    }
+//    else {
+//        baseColor = material.baseColor;
+//    }
 
 //    if (baseColor.r == 0 && baseColor.g == 0 && baseColor.b == 0) {
 //        discard_fragment();
 //    }
 
-    float3 color = characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
+    float3 color = baseColor;//characterDiffuseLighting(in, baseColor, normalize(in.worldNormal), material, fragmentUniforms, lights);
 
     /*
      This is for non omnidiretional shadow maps

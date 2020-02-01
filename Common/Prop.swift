@@ -8,90 +8,6 @@
 
 import MetalKit
 
-enum PropType {
-    case base(name: String, lighting: Bool)
-    case instanced(name: String, instanceCount: Int)
-    case ground(name: String)
-    case morph(textures: [String], morphTargets: [String], instanceCount: Int)
-    case water
-
-    var name: String {
-        switch self {
-        case .base(let name, _): return name
-        case .ground(let name): return name
-        case .morph(_, let targets, _): return targets.first!
-        case .instanced(let name, _): return name
-        case .water: return "Water"
-        }
-    }
-
-    var vertexFunctionName: String {
-        switch self {
-        case .base, .instanced, .ground:
-            return "vertex_main"
-        case .morph:
-            return "vertex_morph"
-        case .water: return "vertex_water"
-        }
-    }
-
-    var fragmentFunctionName: String {
-        switch self {
-        case .base, .instanced, .ground:
-            return "fragment_main"
-        case .morph:
-            return "fragment_main"
-        case .water: return "fragment_water"
-        }
-    }
-
-    var isInstanced: Bool {
-        switch self {
-        case .morph, .instanced: return true
-        default: return false
-        }
-    }
-
-    var isTextureArray: Bool {
-        switch self {
-        case .morph: return true
-        default: return false
-        }
-    }
-
-    var instanceCount: Int {
-        switch self {
-        case .morph(_, _, let count):
-            return count
-        case .instanced(_, let instanceCount):
-            return instanceCount
-        default:
-            return 1
-        }
-    }
-
-    var isGround: Bool {
-        switch self {
-        case .ground: return true
-        default: return false
-        }
-    }
-
-    var blending: Bool {
-        return false
-    }
-
-    var lighting: Bool {
-        switch self {
-        case .base(_, let lighting): return lighting
-        default: return true
-        }
-    }
-
-    var textureOrigin: MTKTextureLoader.Origin {
-        return .bottomLeft
-    }
-}
 
 enum ModelError: Error {
     case missingVertexBuffer
@@ -127,7 +43,7 @@ class Prop: Node {
     var tiling: UInt32 = 1
     let samplerState: MTLSamplerState?
     let debugBoundingBox: DebugBoundingBox
-    let propType: PropType
+    let propType: ModelType
     private(set) var transforms: [Transform]
     let instanceCount: Int
     var instanceBuffer: MTLBuffer
@@ -144,7 +60,7 @@ class Prop: Node {
     let patches: [Patch]
     var currentPatch: Patch?
 
-    init(type: PropType) {
+    init(type: ModelType) {
 
         self.propType = type
         // MDLMesh: Load model from bundle
@@ -392,16 +308,25 @@ extension Prop: Renderable {
         for modelSubmesh in submeshes {
             
             renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.baseColor, index: Int(BaseColorTexture.rawValue))
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.normal, index: Int(NormalTexture.rawValue))
-            renderEncoder.setFragmentTexture(modelSubmesh.textures.roughness, index: 2)
-            
+
+            if let colorTexture = modelSubmesh.textures.baseColor {
+                renderEncoder.useResource(colorTexture, usage: .read)
+            }
+
+            if let normalTexture = modelSubmesh.textures.normal {
+                renderEncoder.useResource(normalTexture, usage: .read)
+            }
+
+//            if let roughnessTexture = modelSubmesh.textures.roughness {
+//                renderEncoder.useResource(roughnessTexture, usage: .read)
+//            }
+
+            renderEncoder.setFragmentBuffer(modelSubmesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
 
             var material = modelSubmesh.material
             renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
 
-            guard let submesh = modelSubmesh.submesh else { continue }
-
+            let submesh = modelSubmesh.mtkSubmesh
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,
                                                 indexType: submesh.indexType,
@@ -432,7 +357,7 @@ extension Prop: Renderable {
 
         for modelSubmesh in submeshes {
             renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineState)
-            let submesh = modelSubmesh.submesh!
+            let submesh = modelSubmesh.mtkSubmesh
 
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: submesh.indexCount,

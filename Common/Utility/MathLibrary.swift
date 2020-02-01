@@ -200,6 +200,56 @@ extension float4x4 {
     }
 }
 
+extension float4x4 {
+  init(array: [Float]) {
+    guard array.count == 16 else {
+      fatalError("presented array has \(array.count) elements - a float4x4 needs 16 elements")
+    }
+    self = matrix_identity_float4x4
+    columns = (
+      SIMD4<Float>( array[0],  array[1],  array[2],  array[3]),
+      SIMD4<Float>( array[4],  array[5],  array[6],  array[7]),
+      SIMD4<Float>( array[8],  array[9],  array[10], array[11]),
+      SIMD4<Float>( array[12],  array[13],  array[14],  array[15])
+    )
+  }
+}
+
+extension SIMD3 where Scalar == Float {
+  init(array: [Float]) {
+    guard array.count == 3 else {
+      fatalError("float3 array has \(array.count) elements - a float3 needs 3 elements")
+    }
+    self = SIMD3<Float>(array[0], array[1], array[2])
+  }
+}
+
+extension SIMD4 where Scalar == Float {
+  init(array: [Float]) {
+    guard array.count == 4 else {
+      fatalError("float4 array has \(array.count) elements - a float4 needs 4 elements")
+    }
+    self = SIMD4<Float>(array[0], array[1], array[2], array[3])
+  }
+
+  init(array: [Double]) {
+    guard array.count == 4 else {
+      fatalError("float4 array has \(array.count) elements - a float4 needs 4 elements")
+    }
+    self = SIMD4<Float>(Float(array[0]), Float(array[1]), Float(array[2]), Float(array[3]))
+  }
+
+}
+
+extension simd_quatf {
+  init(array: [Float]) {
+    guard array.count == 4 else {
+      fatalError("quaternion array has \(array.count) elements - a quaternion needs 4 Floats")
+    }
+    self = simd_quatf(ix: array[0], iy: array[1], iz: array[2], r: array[3])
+  }
+}
+
 extension float3x3 {
     init(normalFrom4x4 matrix: float4x4) {
         self.init()
@@ -207,7 +257,7 @@ extension float3x3 {
     }
 }
 
-extension float4 {
+extension SIMD4 where Scalar == Float {
     var xyz: SIMD3<Float> {
         get {
             return SIMD3<Float>(x, y, z)

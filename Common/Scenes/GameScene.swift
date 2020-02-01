@@ -14,14 +14,11 @@ final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
     let terrain = Terrain(textureName: "hills")
-    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
-    let plane = Prop(type: .base(name: "large-plane", lighting: true))
-//    let skeleton = Character(name: "firstHuman_rigged_1_working_walk")
-//    let skeleton = Character(name: "claire")
-//    let skeleton = Character(name: "skeleton")
-    let skeleton = Character(name: "boy_walking")
+//    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
+//    let plane = Prop(type: .base(name: "large-plane", lighting: true))
+    let skeleton = Character(name: "walking_boy")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
-    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
+//    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
     let water = Water(size: 500)
 
     override func setupScene() {
@@ -40,7 +37,7 @@ final class GameScene: Scene {
         camera.rotation = [0, 0, 0]
 
 
-        water.position.y = -7
+        water.position.y = -4
         water.rotation = [0, 0, radians(fromDegrees: -90)]
         add(node: water)
   /*
@@ -49,9 +46,9 @@ final class GameScene: Scene {
         ground.position = float3(0, -0.03, 0)
         add(node: ground)
         */
-        let count = 200
-        let offset = 100
-         
+        let count = 10
+        let offset = 20
+
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
         add(node: tree)
         physicsController.addStaticBody(node: tree)
@@ -93,19 +90,18 @@ final class GameScene: Scene {
 
 
         skeleton.scale = [0.015, 0.015, 0.015]
-        skeleton.rotation = [radians(fromDegrees: 90), 0, 0]
-        skeleton.position = [3, 0, 0]
+        skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
+        skeleton.position = [0, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
+//        skeleton.currentAnimation.speed = 1.0
         add(node: skeleton)
-        skeleton.runAnimation(name: "Armature|mixamo.com|Layer0")
-
+//
         physicsController.dynamicBody = skeleton
         inputController.player = skeleton
-//        skeleton.currentAnimation?.speed = 1.0
-        skeleton.pauseAnimation()
 
 //        lantern.position = CharacterTorch.localPosition
 //        add(node: lantern, parent: skeleton)
+
         orthoCamera.position = [0, 2, 0]
         orthoCamera.rotation.x = .pi / 2
         cameras.append(orthoCamera)
@@ -115,7 +111,9 @@ final class GameScene: Scene {
         tpCamera.focusHeight = 6
         tpCamera.focusDistance = 8
         cameras.append(tpCamera)
-        currentCameraIndex = 2
+        cameras.first?.position = [0, 4 , 3]
+        currentCameraIndex = cameras.endIndex - 1
+
 
 
     }
@@ -126,6 +124,7 @@ final class GameScene: Scene {
 
     override func updateScene(deltaTime: Float) {
         for index in 0..<lights.count {
+
             guard lights[index].type == Spotlight || lights[index].type == Pointlight else { continue }
             let position = inputController.player!.position
             let forward = inputController.player!.forwardVector
@@ -137,6 +136,9 @@ final class GameScene: Scene {
             lights[index].position.y = position.y + 4
             lights[index].position += (forward * 0.8)
             lights[index].position.x -= 0.2
+
+
+
 //
 //
 ////            lights[index].position = camera.position
@@ -171,11 +173,12 @@ final class GameScene: Scene {
         }
     }
 
-    private func find(name: String, in node: CharacterNode) -> CharacterNode? {
-        guard node.name != name else { return node }
-
-        return node.children.compactMap ({ self.find(name: name, in: $0) }).first
-    }
+    // Trying to recursively find a bone
+//    private func find(name: String, in node: CharacterNode) -> CharacterNode? {
+//        guard node.name != name else { return node }
+//
+//        return node.children.compactMap ({ self.find(name: name, in: $0) }).first
+//    }
 
     override func sceneSizeWillChange(to size: CGSize) {
         super.sceneSizeWillChange(to: size)
@@ -201,11 +204,11 @@ extension GameScene: KeyboardDelegate {
         case .key2: currentCameraIndex = 2
         case .w, .s, .a, .d, .left, .right, .up, .down:
             if state == .began {
-                skeleton.resumeAnimation()
+//                skeleton.resumeAnimation()
             }
 
             if state == .ended, keysDown.isEmpty {
-                skeleton.pauseAnimation()
+//                skeleton.pauseAnimation()
             }
         default:
             break
@@ -221,11 +224,11 @@ extension GameScene: KeyboardDelegate {
 
 extension GameScene: KeyboardDelegate {
     func didStartMove() {
-        skeleton.resumeAnimation()
+//        skeleton.resumeAnimation()
     }
 
     func didEndMove() {
-        skeleton.pauseAnimation()
+//        skeleton.pauseAnimation()
     }
 }
 
