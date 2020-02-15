@@ -132,6 +132,8 @@ extension Renderer: MTKViewDelegate {
         let deltaTime = 1 / Float(view.preferredFramesPerSecond)
         scene.update(deltaTime: deltaTime)
 
+
+
         // Tessellation Pass
 
         guard let terrain = scene.renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
@@ -147,8 +149,6 @@ extension Renderer: MTKViewDelegate {
 
             updateTerrain = false
         }
-
-
 
         // Calculate Height
 
@@ -172,6 +172,10 @@ extension Renderer: MTKViewDelegate {
         renderEncoder.label = "Main encoder"
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setCullMode(.back)
+
+        if let heap = TextureController.heap {
+            renderEncoder.useHeap(heap)
+        }
 
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = scene.camera.position

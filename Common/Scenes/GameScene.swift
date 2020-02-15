@@ -116,6 +116,8 @@ final class GameScene: Scene {
 
 
 
+        super.setupScene()
+
     }
 
     override func isHardCollision() -> Bool {

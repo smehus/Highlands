@@ -262,13 +262,15 @@ extension Character: Renderable {
                 renderEncoder.setRenderPipelineState(submesh.pipelineState)
 
                 // Set the textures
-                if let baseColorIndex = submesh.baseColorIndex {
-                    renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
-                }
-
-                if let normalIndex = submesh.normalIndex {
-                    renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
-                }
+                // USING HEAP IN RENDERER INSTEAD
+                // but still using the texturesBuffer?
+//                if let baseColorIndex = submesh.baseColorIndex {
+//                    renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
+//                }
+//
+//                if let normalIndex = submesh.normalIndex {
+//                    renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
+//                }
 
 //                if let roughnessTexture = submesh.textures.roughness {
 //                    renderEncoder.useResource(roughnessTexture, usage: .read)

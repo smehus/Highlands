@@ -33,7 +33,9 @@ class Scene {
     }
 
     func setupScene() {
-        assertionFailure("Must Subclass Scene")
+        // Must call super.setupScene at the end of subclass setupScene
+        // To allow for models to be created first
+        TextureController.heap = TextureController.buildHeap()
     }
 
     func isHardCollision() -> Bool {

@@ -309,13 +309,14 @@ extension Prop: Renderable {
             
             renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
 
-            if let baseColorIndex = modelSubmesh.baseColorIndex {
-                renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
-            }
-
-            if let normalIndex = modelSubmesh.normalIndex {
-                renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
-            }
+            // Check out character for why this is commented out
+//            if let baseColorIndex = modelSubmesh.baseColorIndex {
+//                renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
+//            }
+//
+//            if let normalIndex = modelSubmesh.normalIndex {
+//                renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
+//            }
 
 //            if let roughnessTexture = modelSubmesh.textures.roughness {
 //                renderEncoder.useResource(roughnessTexture, usage: .read)
