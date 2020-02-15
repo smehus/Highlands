@@ -10,7 +10,10 @@ class Submesh {
         let roughness: MTLTexture?
     }
 
-    let textures: Textures
+
+    var baseColorIndex: Int?
+    var normalIndex: Int?
+    var roughnessIndex: Int?
     var material: Material
     let type: ModelType
     var pipelineState: MTLRenderPipelineState!
@@ -20,6 +23,8 @@ class Submesh {
     var vertexFunction: MTLFunction?
     var fragmentFunction: MTLFunction?
 
+    private let textures: Textures
+
     required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, type: ModelType) {
         mtkSubmesh = submesh
         self.type = type
@@ -27,16 +32,15 @@ class Submesh {
         switch type {
         case .morph(let texNames, _, _):
             textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin, overrideTextures: texNames)
-        case .character:
-            print("*** CHARACTER MDLSUBMESH MATERIAL \(String(describing: mdlSubmesh.material?.name))")
-            textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin)
         default:
             textures = Textures(material: mdlSubmesh.material, origin: type.textureOrigin)
         }
 
+        if let texturesBaseColor = textures.baseColor { baseColorIndex = TextureController.addTexture(texture: texturesBaseColor) }
+        if let normTexture = textures.normal { normalIndex = TextureController.addTexture(texture: normTexture) }
+        if let rougTex = textures.roughness { roughnessIndex = TextureController.addTexture(texture: rougTex) }
+
         material = Material(material: mdlSubmesh.material)
-
-
         shadowPipelineState = Submesh.buildShadowPipelineState(type: type)
         pipelineState = makePipelineState(textures: textures, type: type)
 
@@ -45,13 +49,8 @@ class Submesh {
         texturesBuffer.label = "Prop Texture Buffer"
         textureEncoder.setArgumentBuffer(texturesBuffer, offset: 0)
 
-        if let colorTexture = textures.baseColor {
-            textureEncoder.setTexture(colorTexture, index: 0)
-        }
-
-        if let normalTexture = textures.normal {
-            textureEncoder.setTexture(normalTexture, index: 1)
-        }
+        if let index = baseColorIndex { textureEncoder.setTexture(TextureController.textures[index], index: 0) }
+        if let index = normalIndex { textureEncoder.setTexture(TextureController.textures[index], index: 1) }
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {

@@ -64,3 +64,6 @@ could be cool if we could do
 shadowTransforms[0...5].position.y = pointer.pointee
 
 and that would set the position of all transforms in that array slice
+
+
+make movemnt relative to the frames per second so that its consistent between fps

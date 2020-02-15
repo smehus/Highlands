@@ -137,6 +137,8 @@
 		02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
+		02D25A2023F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
+		02D25A2123F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
 		A57506EE21CE942700C63081 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EB21CE942700C63081 /* GameView.swift */; };
 		A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3321B8CB42002C0632 /* AppDelegate.swift */; };
@@ -225,6 +227,7 @@
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		02BDBED623DC96A300FB3EEA /* Skeleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = boy_tpose.usdz; sourceTree = SOURCE_ROOT; };
+		02D25A1F23F8975200CD8130 /* TextureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureController.swift; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
 		A563DF1B21E8035200563EA9 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
@@ -528,6 +531,7 @@
 				A57506C721CD669700C63081 /* Debug */,
 				A575069D21CD63E200C63081 /* PhysicsController.swift */,
 				A57F6A6221B978E3002C0632 /* MathLibrary.swift */,
+				02D25A1F23F8975200CD8130 /* TextureController.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -741,6 +745,7 @@
 				0277614823E3A985003E4DD5 /* CharacterShaders.metal in Sources */,
 				02A38F3823E1387000E26E19 /* Renderer.swift in Sources */,
 				0294AEA423DFF129005F2E67 /* DebugBoundingBox.metal in Sources */,
+				02D25A2023F8975200CD8130 /* TextureController.swift in Sources */,
 				02A38F2C23E12D1000E26E19 /* GameScene.swift in Sources */,
 				020E1D7023E2799B00A61642 /* Animation.swift in Sources */,
 				02A38F3623E1380400E26E19 /* RendererExtensions.swift in Sources */,
@@ -769,6 +774,7 @@
 				0294AEBB23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AEAD23DFF129005F2E67 /* Shaders.metal in Sources */,
 				0294AEAF23DFF129005F2E67 /* Water.metal in Sources */,
+				02D25A2123F8975200CD8130 /* TextureController.swift in Sources */,
 				02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */,
 				020E1D7423E2799B00A61642 /* AnimationClip.swift in Sources */,
 				0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */,
@@ -1023,6 +1029,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Common",
 				);
+				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = "Highlands-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1032,6 +1039,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "mehus.scott.com.Highlands-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = Common/Shaders/Common.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
