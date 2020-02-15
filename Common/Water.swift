@@ -28,7 +28,7 @@ class Water: Node {
             mdlMesh = plane
 
             mesh = try MTKMesh(mesh: plane, device: Renderer.device)
-            waterNormalTexture = try Submesh.loadTexture(imageName: "normal-water.png")!
+            waterNormalTexture = try Submesh.loadTexture(imageName: "normal-water.png")!.texture
 
 
 

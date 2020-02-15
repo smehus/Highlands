@@ -17,7 +17,7 @@ extension Texturable {
         for textureName in textureNames {
             do {
                 if let texture = try Submesh.loadTexture(imageName: textureName) {
-                    textures.append(texture)
+                    textures.append(texture.texture)
                     hashedName += textureName
                 }
             } catch {
@@ -63,10 +63,14 @@ extension Texturable {
         return texture
     }
 
-    static func loadTexture(imageName: String, origin: MTKTextureLoader.Origin = .topLeft) throws -> MTLTexture? {
+    static func loadTexture(imageName: String, origin: MTKTextureLoader.Origin = .topLeft) throws -> TextureWrapper? {
+
+        // TODO - should probably just make the texture controller textures a dictionary
+        if let loadedTexture = TextureController.textures.first(where: { $0.name == imageName }) { return loadedTexture }
+
         let textureLoader = MTKTextureLoader(device: Renderer.device)
         let textureLoaderOptions: [MTKTextureLoader.Option: Any] =
-            // TODO: WHAT THE FUCK? gltf textures are loading upside down you dumbass
+            // TODO:  gltf textures are loading upside down you dumbass
             [.origin: origin,
              .SRGB: false,
              .generateMipmaps: NSNumber(booleanLiteral: true)]
@@ -74,12 +78,13 @@ extension Texturable {
         let fileExtension = URL(fileURLWithPath: imageName).pathExtension.isEmpty ? "png" : nil
 
         guard let url = Bundle.main.url(forResource: imageName, withExtension: fileExtension) else {
-            return try textureLoader.newTexture(name: imageName, scaleFactor: 1.0, bundle: Bundle.main, options: nil)
+            let texture = try textureLoader.newTexture(name: imageName, scaleFactor: 1.0, bundle: Bundle.main, options: nil)
+            return TextureWrapper(name: imageName, texture: texture)
         }
 
         print("Loaded texture: \(imageName)")
         let texture = try textureLoader.newTexture(URL: url, options: textureLoaderOptions)
-        return texture
+        return TextureWrapper(name: imageName, texture: texture)
     }
 
     static func loadCubeTexture(imageName: String) throws -> MTLTexture {

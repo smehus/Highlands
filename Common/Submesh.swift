@@ -168,7 +168,7 @@ private extension Submesh.Textures {
             }
 
             print("🛠 Loaded Texture \(filename)")
-            return TextureWrapper(name: filename, texture: texture)
+            return texture
         }
 
         if let texNames = overrideTextures {
