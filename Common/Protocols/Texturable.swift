@@ -11,17 +11,20 @@ import MetalKit
 protocol Texturable { }
 
 extension Texturable {
-    static func loadTextureArray(textureNames: [String]) -> MTLTexture? {
+    static func loadTextureArray(textureNames: [String]) -> TextureWrapper? {
         var textures: [MTLTexture] = []
+        var hashedName = ""
         for textureName in textureNames {
             do {
                 if let texture = try Submesh.loadTexture(imageName: textureName) {
                     textures.append(texture)
+                    hashedName += textureName
                 }
             } catch {
                 fatalError(error.localizedDescription)
             }
         }
+
         guard textures.count > 0 else { return nil }
 
         let descriptor = MTLTextureDescriptor()
@@ -45,7 +48,7 @@ extension Texturable {
         }
         blitEncoder.endEncoding()
         commandBuffer.commit()
-        return arrayTexture
+        return TextureWrapper(name: hashedName, texture: arrayTexture)
     }
 
     static func loadTexture(texture: MDLTexture) throws -> MTLTexture? {

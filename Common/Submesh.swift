@@ -5,9 +5,9 @@ class Submesh {
 
     let mtkSubmesh: MTKSubmesh
     struct Textures {
-        let baseColor: MTLTexture?
-        let normal: MTLTexture?
-        let roughness: MTLTexture?
+        let baseColor: TextureWrapper?
+        let normal: TextureWrapper?
+        let roughness: TextureWrapper?
     }
 
 
@@ -49,8 +49,18 @@ class Submesh {
         texturesBuffer.label = "Prop Texture Buffer"
         textureEncoder.setArgumentBuffer(texturesBuffer, offset: 0)
 
-        if let index = baseColorIndex { textureEncoder.setTexture(TextureController.textures[index], index: 0) }
-        if let index = normalIndex { textureEncoder.setTexture(TextureController.textures[index], index: 1) }
+        if let index = baseColorIndex {
+            textureEncoder.setTexture(
+                TextureController.textures[index].texture,
+                index: 0
+            )
+        }
+        if let index = normalIndex {
+            textureEncoder.setTexture(
+                TextureController.textures[index].texture,
+                index: 1
+            )
+        }
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
@@ -136,7 +146,7 @@ extension Submesh: Texturable {}
 
 private extension Submesh.Textures {
     init(material: MDLMaterial?, origin: MTKTextureLoader.Origin = .topLeft, overrideTextures: [String]? = nil) {
-        func property(with semantic: MDLMaterialSemantic, name: String) -> MTLTexture? {
+        func property(with semantic: MDLMaterialSemantic) -> TextureWrapper? {
             guard
                 let property = material?.property(with: semantic),
                 property.type == .string,
@@ -144,32 +154,32 @@ private extension Submesh.Textures {
             else {
                 if let property = material?.property(with: semantic),
                     property.type == .texture,
-                    let mdlTexture = property.textureSamplerValue?.texture {
+                    let mdlTexture = property.textureSamplerValue?.texture,
+                    let texture = try? Submesh.loadTexture(texture: mdlTexture){
 
-                    return try? Submesh.loadTexture(texture: mdlTexture)
+                    return TextureWrapper(name: property.stringValue!, texture: texture)
                 }
 
                 return nil
             }
 
-            guard let texture = ((try? Submesh.loadTexture(imageName: filename, origin: origin)) as MTLTexture??) else {
-                print("😡 Failed to load texture \(filename)")
-                return nil
+            guard let texture = try? Submesh.loadTexture(imageName: filename, origin: origin) else {
+                print("😡 Failed to load texture \(filename)"); return nil
             }
 
             print("🛠 Loaded Texture \(filename)")
-            return texture
+            return TextureWrapper(name: filename, texture: texture)
         }
 
         if let texNames = overrideTextures {
             baseColor = Submesh.loadTextureArray(textureNames: texNames)
         } else {
-            baseColor = property(with: .baseColor, name: "baseColor")
+            baseColor = property(with: .baseColor)
         }
 
 //        baseColor = property(with: .baseColor, name: "baseColor")
-        normal = property(with: .tangentSpaceNormal, name: "tangentSpaceNormal")
-        roughness = property(with: .roughness, name: "roughness")
+        normal = property(with: .tangentSpaceNormal)
+        roughness = property(with: .roughness)
     }
 }
 

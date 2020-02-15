@@ -8,12 +8,17 @@
 
 import MetalKit
 
+struct TextureWrapper {
+    let name: String
+    let texture: MTLTexture
+}
 
 class TextureController {
-    static var textures: [MTLTexture] = []
+    static var textures: [TextureWrapper] = []
 
-    static func addTexture(texture: MTLTexture?) -> Int? {
+    static func addTexture(texture: TextureWrapper?) -> Int? {
         guard let texture = texture else { return nil }
+
         TextureController.textures.append(texture)
         return TextureController.textures.count - 1
     }

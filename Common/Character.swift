@@ -263,11 +263,11 @@ extension Character: Renderable {
 
                 // Set the textures
                 if let baseColorIndex = submesh.baseColorIndex {
-                    renderEncoder.useResource(TextureController.textures[baseColorIndex], usage: .read)
+                    renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
                 }
 
                 if let normalIndex = submesh.normalIndex {
-                    renderEncoder.useResource(TextureController.textures[normalIndex], usage: .read)
+                    renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
                 }
 
 //                if let roughnessTexture = submesh.textures.roughness {
