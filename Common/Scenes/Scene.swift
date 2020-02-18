@@ -35,6 +35,10 @@ class Scene {
     func setupScene() {
         // Must call super.setupScene at the end of subclass setupScene
         // To allow for models to be created first
+
+        // I NEED TO CREATE EACH MODELS TEXTURES AFTER THIS
+        // WHICH WILL POINT TO THE NEW TEXTURES CREATED IN BUILD HEAPPPP
+        // WHICH MEANS I NEED TO FIND A WAY TO DO THISS....
         TextureController.heap = TextureController.buildHeap()
     }
 
