@@ -20,7 +20,7 @@ class InputController {
             }
         }
     }
-    let maxSpeed: Float = 0.1
+    let maxSpeed: Float = 0.15
     var currentTurnSpeed: Float = 0
     var currentPitch: Float = 0
     var forward = false
