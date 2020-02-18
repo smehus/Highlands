@@ -40,6 +40,9 @@ class Scene {
         // WHICH WILL POINT TO THE NEW TEXTURES CREATED IN BUILD HEAPPPP
         // WHICH MEANS I NEED TO FIND A WAY TO DO THISS....
         TextureController.heap = TextureController.buildHeap()
+        for renderable in renderables {
+            renderable.createTexturesBuffer()
+        }
     }
 
     func isHardCollision() -> Bool {

@@ -274,6 +274,12 @@ extension Terrain: ComputeHandler {
 }
 
 extension Terrain: Renderable {
+
+    func createTexturesBuffer() {
+
+    }
+
+
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 
         renderEncoder.pushDebugGroup("Terrain")

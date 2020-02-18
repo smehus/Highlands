@@ -284,6 +284,12 @@ class Prop: Node {
 
 extension Prop: Renderable {
 
+    func createTexturesBuffer() {
+        for mesh in submeshes {
+            mesh.createTexturesBuffer()
+        }
+    }
+
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(windingOrder)
 

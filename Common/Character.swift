@@ -236,6 +236,14 @@ class Character: Node {
 
 extension Character: Renderable {
 
+    func createTexturesBuffer() {
+        for mesh in meshes {
+            for submesh in mesh.submeshes {
+                submesh.createTexturesBuffer()
+            }
+        }
+    }
+
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 //        renderEncoder.setFrontFacing(.clockwise)
 

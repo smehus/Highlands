@@ -59,6 +59,10 @@ class Water: Node {
 
 extension Water: Renderable {
 
+    func createTexturesBuffer() {
+        
+    }
+
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable]) {
         var uniforms = uniforms
 

@@ -43,29 +43,6 @@ class Submesh {
         material = Material(material: mdlSubmesh.material)
         shadowPipelineState = Submesh.buildShadowPipelineState(type: type)
         pipelineState = makePipelineState(textures: textures, type: type)
-
-        // Texture encoder looks at the fragment function arugment at the bufferIndex - and works out
-        // How long the buffer should be
-        // It will also verify the textures here rather than the render loop
-        // Using the BufferIndexTextures here is different than when I send it in the render loop with
-        // setFragmentBuffer( - This just uses the index to look at the shader function argument and determin information
-        let textureEncoder = fragmentFunction!.makeArgumentEncoder(bufferIndex: Int(BufferIndexTextures.rawValue))
-        texturesBuffer = Renderer.device.makeBuffer(length: textureEncoder.encodedLength, options: [])!
-        texturesBuffer.label = "Prop Texture Buffer"
-        textureEncoder.setArgumentBuffer(texturesBuffer, offset: 0)
-
-        if let index = baseColorIndex {
-            textureEncoder.setTexture(
-                TextureController.textures[index].texture,
-                index: 0
-            )
-        }
-        if let index = normalIndex {
-            textureEncoder.setTexture(
-                TextureController.textures[index].texture,
-                index: 1
-            )
-        }
     }
 
 //    required init(submesh: MTKSubmesh, mdlSubmesh: MDLSubmesh, vertexFunction: String, fragmentFunction: String, isGround: Bool = false, blending: Bool = false) {
@@ -78,6 +55,33 @@ class Submesh {
 //                                                  isGround: isGround,
 //                                                  blending: blending)
 //    }
+
+
+
+    func createTexturesBuffer() {
+        // Texture encoder looks at the fragment function arugment at the bufferIndex - and works out
+        // How long the buffer should be
+        // It will also verify the textures here rather than the render loop
+        // Using the BufferIndexTextures here is different than when I send it in the render loop with
+        // setFragmentBuffer( - This just uses the index to look at the shader function argument and determin information
+        let textureEncoder = fragmentFunction!.makeArgumentEncoder(bufferIndex: Int(BufferIndexTextures.rawValue))
+        texturesBuffer = Renderer.device.makeBuffer(length: textureEncoder.encodedLength, options: [])!
+        texturesBuffer.label = "Prop Texture Buffer"
+        textureEncoder.setArgumentBuffer(texturesBuffer, offset: 0)
+
+        if let index = baseColorIndex {
+            textureEncoder.setTexture(
+                TextureController.heapTextures[index],
+                index: 0
+            )
+        }
+        if let index = normalIndex {
+            textureEncoder.setTexture(
+                TextureController.heapTextures[index],
+                index: 1
+            )
+        }
+    }
 }
 
 // Pipeline state
