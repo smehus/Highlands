@@ -59,6 +59,7 @@
 		020E1D7F23E293E100A61642 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* PBR.metal */; };
 		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
+		02630CE523FCE5A700D0AEDA /* TileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290634F23FC3EC300FA0A26 /* TileScene.swift */; };
 		0277614823E3A985003E4DD5 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
 		0277614923E3A985003E4DD5 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
 		0277614B23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */; };
@@ -803,6 +804,7 @@
 				0294AEC323E077D6005F2E67 /* Terrain.swift in Sources */,
 				0294AECF23E07884005F2E67 /* Renderable.swift in Sources */,
 				02A38F2F23E12D1B00E26E19 /* Water.swift in Sources */,
+				02630CE523FCE5A700D0AEDA /* TileScene.swift in Sources */,
 				0294AEA723DFF129005F2E67 /* DebugLights.metal in Sources */,
 				0294AEA523DFF129005F2E67 /* DebugBoundingBox.metal in Sources */,
 				02A38F3923E1387100E26E19 /* Renderer.swift in Sources */,

@@ -378,7 +378,7 @@ extension Character: Renderable {
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder,
                          heightMapTexture: MTLTexture,
-                         terrain: TerrainParams,
+                         terrainParams: TerrainParams,
                          uniforms: Uniforms,
                          controlPointsBuffer: MTLBuffer?) {
 
@@ -389,7 +389,7 @@ extension Character: Renderable {
 
 //        var position = patchPosition
         var position = self.worldTransform.columns.3.xyz
-        var terrainParams = terrain
+        var terrainParams = terrainParams
         var uniforms = uniforms
         var index = 0
 

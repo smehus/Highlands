@@ -26,6 +26,7 @@ class Terrain: Node {
     var edgeFactors: [Float] = [4]
     var insideFactors: [Float] = [4]
     var tessellationPipelineState: MTLComputePipelineState
+    var normalPipelineState: MTLComputePipelineState
     var renderPipelineState: MTLRenderPipelineState
 
     let heightMap: MTLTexture
@@ -49,6 +50,7 @@ class Terrain: Node {
 
     init(textureName: String) {
         renderPipelineState = Terrain.buildRenderPipelineState()
+        normalPipelineState = Terrain.buildNormalMapPipelineState()
         tessellationPipelineState = Terrain.buildComputePipelineState()
 
         do {
@@ -96,40 +98,23 @@ class Terrain: Node {
 
 extension Terrain {
 
-    static func generateTerrainNormalMap(heightMap: MTLTexture, normalTexture: MTLTexture, commandBuffer: MTLCommandBuffer) {
-        guard let function = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else {
-            print("""
-                ❌❌❌❌❌❌❌❌❌❌
+    func generateTerrainNormalMap(computeEncoder: MTLComputeCommandEncoder) {
 
-                FAILED TO CREATE GENERATE TERRAIN NORMAL MAP SHADER FUNCTION
+        let threadsPerGroup = MTLSize(width: 16, height: 16, depth: 1)
 
-                ❌❌❌❌❌❌❌❌
-                """)
+        computeEncoder.setComputePipelineState(normalPipelineState)
+        computeEncoder.setTexture(heightMap, index: 0)
+        computeEncoder.setTexture(normalMapTexture, index: 1)
+        computeEncoder.setBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.size, index: 3)
+        computeEncoder.dispatchThreadgroups(MTLSizeMake(heightMap.width, heightMap.height, 1), threadsPerThreadgroup: threadsPerGroup)
+    }
 
-            return
+    static func buildNormalMapPipelineState() -> MTLComputePipelineState {
+        guard let kernelFunction = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else {
+            fatalError("Tessellation shader function not found")
         }
 
-        do {
-
-            // This also crashes....
-            // Probably shouldn't be generating terrain normals on every render pass
-            let pipelineState = try Renderer.device.makeComputePipelineState(function: function)
-
-//            guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else {  fatalError() }
-            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-
-            let threadsPerGroup = MTLSize(width: 16, height: 16, depth: 1)
-
-            computeEncoder.setComputePipelineState(pipelineState)
-            computeEncoder.setTexture(heightMap, index: 0)
-            computeEncoder.setTexture(normalTexture, index: 1)
-            computeEncoder.setBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.size, index: 3)
-            computeEncoder.dispatchThreadgroups(MTLSizeMake(heightMap.width, heightMap.height, 1), threadsPerThreadgroup: threadsPerGroup)
-            computeEncoder.endEncoding()
-
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+        return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {

@@ -375,14 +375,14 @@ extension Prop: Renderable {
         }
     }
 
-    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
 
         for (index, transform) in transforms.enumerated() {
             var position = transform.modelMatrix.columns.3.xyz
             guard var patch = patch(for: position) else { return }
 
 
-            var terrainParams = terrain
+            var terrainParams = terrainParams
             var uniforms = uniforms
             var transformIndex = index
 

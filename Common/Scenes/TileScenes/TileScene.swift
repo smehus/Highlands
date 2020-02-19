@@ -7,37 +7,34 @@
 //
 
 import Foundation
+import MetalKit
 
-
-struct TileScene: Node {
-
-    var name: String {
-        return "TileScene"
-    }
+class TileScene: Node {
 
     private let water = Water(size: 500)
     let terrain = Terrain(textureName: "hills")
 
-    init(sceneSize: CGSize) {
-        setupTile()
-    }
-
     func setupTile() {
 
-
-                terrain.position = SIMD3<Float>([0, 0, 0])
+        terrain.position = SIMD3<Float>([0, 0, 0])
+        //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
+        add(childNode: terrain)
 
         water.position.y = -4
         water.rotation = [0, 0, radians(fromDegrees: -90)]
-        add(node: water)
-
-
+        add(childNode: water)
+        /*
+         ground.tiling = 4
+         ground.scale = [4, 1, 4]
+         ground.position = float3(0, -0.03, 0)
+         add(node: ground)
+         */
         let count = 50
         let offset = 100
 
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
-        add(node: tree)
-        physicsController.addStaticBody(node: tree)
+        add(childNode: tree)
+//        physicsController.addStaticBody(node: tree)
         for i in 0..<count {
             var transform = Transform()
             transform.scale = [3.0, 3.0, 3.0]
@@ -55,8 +52,8 @@ struct TileScene: Node {
         let morphTargetNames = ["rock1", "rock2", "rock3"]
         let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
 
-        add(node: rock)
-        physicsController.addStaticBody(node: rock)
+        add(childNode: rock)
+//        physicsController.addStaticBody(node: rock)
         for i in 0..<count {
             var transform = Transform()
 
@@ -73,17 +70,43 @@ struct TileScene: Node {
 
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
+
     }
 }
 
 extension TileScene: Renderable {
 
-    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+    func generateTerrain(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) {
+        terrain.compute(computeEncoder: computeEncoder, uniforms: uniforms)
+    }
 
+    func generateTerrainNormalMap(computeEncoder: MTLComputeCommandEncoder) {
+        terrain.generateTerrainNormalMap(computeEncoder: computeEncoder)
+    }
+
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, terrainParams: TerrainParams, uniforms: Uniforms) {
+
+        for child in children {
+            guard let renderable = child as? Renderable else { fatalError() }
+
+            renderable.calculateHeight(computeEncoder: computeEncoder, heightMapTexture: terrain.heightMap, terrainParams: terrainParams, uniforms: uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
+        }
+    }
+
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+        for child in children {
+            guard let renderable = child as? Renderable else { fatalError() }
+
+            renderable.render(renderEncoder: renderEncoder, uniforms: vertex)
+        }
     }
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
+        for child in children {
+            guard let renderable = child as? Renderable else { fatalError() }
 
+            renderable.renderShadow(renderEncoder: renderEncoder, uniforms: uniforms, startingIndex: startingIndex)
+        }
     }
 
     func renderToTarget(with commandBuffer: MTLCommandBuffer) {
@@ -91,10 +114,6 @@ extension TileScene: Renderable {
     }
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-
-    }
-
-    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
 
     }
 

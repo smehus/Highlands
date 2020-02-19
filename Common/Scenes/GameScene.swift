@@ -13,7 +13,7 @@ import ModelIO
 final class GameScene: Scene {
 
     let orthoCamera = OrthographicCamera()
-    let terrain = Terrain(textureName: "hills")
+//    let terrain = Terrain(textureName: "hills")
 //    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
 //    let plane = Prop(type: .base(name: "large-plane", lighting: true))
     let skeleton = Character(name: "walking_boy")
@@ -36,67 +36,16 @@ final class GameScene: Scene {
 
         inputController.keyboardDelegate = self
 
-        terrain.position = SIMD3<Float>([0, 0, 0])
-//        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
-        add(node: terrain)
-
-
         lights = lighting()
         camera.position = [0, 0, -1.8]
         camera.rotation = [0, 0, 0]
 
 
-        water.position.y = -4
-        water.rotation = [0, 0, radians(fromDegrees: -90)]
-        add(node: water)
-  /*
-        ground.tiling = 4
-        ground.scale = [4, 1, 4]
-        ground.position = float3(0, -0.03, 0)
-        add(node: ground)
-        */
-        let count = 50
-        let offset = 100
+        // Add tiles here
 
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
-        add(node: tree)
-        physicsController.addStaticBody(node: tree)
-        for i in 0..<count {
-            var transform = Transform()
-            transform.scale = [3.0, 3.0, 3.0]
-
-            var position: SIMD3<Float>
-            repeat {
-                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-            } while position.x > 2 && position.z > 2
-
-            transform.position = position
-            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-        }
-
-        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
-        let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
-
-        add(node: rock)
-        physicsController.addStaticBody(node: rock)
-        for i in 0..<count {
-            var transform = Transform()
-
-            if i == 0 {
-                transform.position = [0, 0, 3]
-            } else {
-                var position: SIMD3<Float>
-                repeat {
-                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-                } while position.x > 2 && position.z > 2
-
-                transform.position = position
-            }
-
-            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-        }
-
+        let tile = TileScene()
+        tile.setupTile()
+        add(node: tile)
 
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
@@ -237,26 +186,39 @@ final class GameScene: Scene {
 
 
     override func render(view: MTKView, descriptor: MTLRenderPassDescriptor, commandBuffer: MTLCommandBuffer) {
-        guard let terrain = renderables.first(where: { $0 is Terrain }) as? Terrain else { fatalError() }
 
-        if updateTerrain {
-            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
-            computeEncoder.pushDebugGroup("Tessellation Pass")
-            terrain.compute(computeEncoder: computeEncoder, uniforms: uniforms)
-            computeEncoder.popDebugGroup()
-            computeEncoder.endEncoding()
+        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError("Failed to make compute encoder") }
+        computeEncoder.pushDebugGroup("Tessellation Pass")
 
-            Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
-
-            updateTerrain = false
+        // compute each terrain
+        for renderable in renderables {
+            renderable.generateTerrain(computeEncoder: computeEncoder, uniforms: uniforms)
         }
+
+        computeEncoder.popDebugGroup()
+        computeEncoder.endEncoding()
+
+
+        guard let computeNormalEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
+        computeNormalEncoder.pushDebugGroup("Terrain Normal Compute")
+
+        for renderable in renderables {
+            renderable.generateTerrainNormalMap(computeEncoder: computeNormalEncoder)
+        }
+
+        computeNormalEncoder.popDebugGroup()
+        computeNormalEncoder.endEncoding()
+
+//        // general terrain normal map
+//        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
+
 
         // Calculate Height
 
         guard let heightEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
         heightEncoder.pushDebugGroup("Height pass")
         for renderable in renderables {
-            renderable.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: terrain.heightMap, terrain: Terrain.terrainParams, uniforms: uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
+            renderable.calculateHeight(computeEncoder: heightEncoder, terrainParams: Terrain.terrainParams, uniforms: uniforms)
         }
         heightEncoder.popDebugGroup()
         heightEncoder.endEncoding()
@@ -266,6 +228,7 @@ final class GameScene: Scene {
         let previousUniforms = uniforms
         guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
+
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }

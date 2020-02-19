@@ -15,5 +15,69 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "27DD03C3-A5AB-4E5B-876B-8CB1C9C2FA1E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Common/Scenes/TileScenes/TileScene.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "generateTerrain(computeEncoder:uniforms:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6534641E-71CD-49D6-9211-C33156173087"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Common/Scenes/TileScenes/TileScene.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "generateTerrainNormalMap(computeEncoder:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6534641E-71CD-49D6-9211-C33156173087 - 6976dbad9eb2d3d0"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Highlands_macOS.TileScene.generateTerrainNormalMap(computeEncoder: __C.MTLComputeCommandEncoder) -&gt; ()"
+                  moduleName = "Highlands-macOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/scott.mehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Scenes/TileScenes/TileScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "7">
+               </Location>
+               <Location
+                  uuid = "6534641E-71CD-49D6-9211-C33156173087 - 83b0b00c6dd4fb22"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "protocol witness for Highlands_macOS.Renderable.generateTerrainNormalMap(computeEncoder: __C.MTLComputeCommandEncoder) -&gt; () in conformance Highlands_macOS.TileScene : Highlands_macOS.Renderable in Highlands_macOS"
+                  moduleName = "Highlands-macOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/scott.mehus/Documents/ScottPersonal/MetalApps/Highlands/Common/Scenes/TileScenes/TileScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "11">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
