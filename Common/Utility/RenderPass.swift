@@ -30,7 +30,7 @@ class RenderPass {
                                         depthTexture: MTLTexture) -> MTLRenderPassDescriptor {
     let descriptor = MTLRenderPassDescriptor()
     descriptor.setUpColorAttachment(position: 0, texture: texture)
-    descriptor.setUpDepthAttachment(texture: depthTexture)
+    descriptor.setUpRenderPassDepthAttachment(texture: depthTexture)
     return descriptor
   }
   
@@ -54,7 +54,7 @@ class RenderPass {
  }
 
 private extension MTLRenderPassDescriptor {
-  func setUpDepthAttachment(texture: MTLTexture) {
+  func setUpRenderPassDepthAttachment(texture: MTLTexture) {
     depthAttachment.texture = texture
     depthAttachment.loadAction = .clear
     depthAttachment.storeAction = .store

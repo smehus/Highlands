@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreGraphics
+import MetalKit
 
 class Scene {
 
@@ -25,6 +25,11 @@ class Scene {
     let inputController = InputController()
     let physicsController = PhysicsController()
     var skybox: Skybox?
+
+    lazy var lightPipelineState: MTLRenderPipelineState = {
+        return buildLightPipelineState()
+    }()
+
 
     init(sceneSize: CGSize) {
         self.sceneSize = sceneSize
@@ -111,5 +116,9 @@ class Scene {
             camera.aspect = Float(size.width / size.height)
         }
         sceneSize = size
+    }
+
+    func render(view: MTKView, descriptor: MTLRenderPassDescriptor, commandBuffer: MTLCommandBuffer) {
+        assertionFailure("Must override \(#function)")
     }
 }

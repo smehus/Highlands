@@ -67,6 +67,9 @@
 		0277614F23E3B6D5003E4DD5 /* walking_boy.usda in Resources */ = {isa = PBXBuildFile; fileRef = 0277614D23E3B6D5003E4DD5 /* walking_boy.usda */; };
 		0277615123E3B9A5003E4DD5 /* walking_boy.usd in Resources */ = {isa = PBXBuildFile; fileRef = 0277615023E3B9A4003E4DD5 /* walking_boy.usd */; };
 		0277615223E3B9A5003E4DD5 /* walking_boy.usd in Resources */ = {isa = PBXBuildFile; fileRef = 0277615023E3B9A4003E4DD5 /* walking_boy.usd */; };
+		0290635023FC3EC300FA0A26 /* TileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290634F23FC3EC300FA0A26 /* TileScene.swift */; };
+		0290635523FC528400FA0A26 /* HighlandsTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290635423FC528400FA0A26 /* HighlandsTile.swift */; };
+		0290635623FC528400FA0A26 /* HighlandsTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290635423FC528400FA0A26 /* HighlandsTile.swift */; };
 		0294AE7C23DFEA53005F2E67 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506A221CD641300C63081 /* GameView.swift */; };
 		0294AE9E23DFF129005F2E67 /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9523DFF129005F2E67 /* Shadow.metal */; };
 		0294AE9F23DFF129005F2E67 /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9523DFF129005F2E67 /* Shadow.metal */; };
@@ -208,6 +211,8 @@
 		0277615023E3B9A4003E4DD5 /* walking_boy.usd */ = {isa = PBXFileReference; lastKnownFileType = file; path = walking_boy.usd; sourceTree = SOURCE_ROOT; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
 		0284474022C04EE500A4E479 /* RenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
+		0290634F23FC3EC300FA0A26 /* TileScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileScene.swift; sourceTree = "<group>"; };
+		0290635423FC528400FA0A26 /* HighlandsTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlandsTile.swift; sourceTree = "<group>"; };
 		0294AE6223DFE526005F2E67 /* PBR.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PBR.metal; sourceTree = "<group>"; };
 		0294AE7D23DFEBF7005F2E67 /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
 		0294AE9323DFEE99005F2E67 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
@@ -347,6 +352,15 @@
 			path = Rocks;
 			sourceTree = "<group>";
 		};
+		0290634E23FC3EA700FA0A26 /* TileScenes */ = {
+			isa = PBXGroup;
+			children = (
+				0290634F23FC3EC300FA0A26 /* TileScene.swift */,
+				0290635423FC528400FA0A26 /* HighlandsTile.swift */,
+			);
+			path = TileScenes;
+			sourceTree = "<group>";
+		};
 		0294AE4623DFE15F005F2E67 /* Template */ = {
 			isa = PBXGroup;
 			children = (
@@ -434,6 +448,7 @@
 		A57506DD21CD96FF00C63081 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0290634E23FC3EA700FA0A26 /* TileScenes */,
 				A57506DE21CD970B00C63081 /* Scene.swift */,
 				A57506E121CDA2C600C63081 /* GameScene.swift */,
 			);
@@ -712,6 +727,7 @@
 				0294AEC223E077D5005F2E67 /* Terrain.swift in Sources */,
 				0294AEC023E0774A005F2E67 /* Node.swift in Sources */,
 				0294AEA823DFF129005F2E67 /* Terrain.metal in Sources */,
+				0290635523FC528400FA0A26 /* HighlandsTile.swift in Sources */,
 				020E1D7123E2799B00A61642 /* AnimationComponent.swift in Sources */,
 				0294AEAC23DFF129005F2E67 /* Shaders.metal in Sources */,
 				02A38F4223E1422A00E26E19 /* ViewController.swift in Sources */,
@@ -731,6 +747,7 @@
 				0294AEB623E073CC005F2E67 /* ModelType.swift in Sources */,
 				0294AE9E23DFF129005F2E67 /* Shadow.metal in Sources */,
 				02A38F3423E1377300E26E19 /* Primitive.swift in Sources */,
+				0290635023FC3EC300FA0A26 /* TileScene.swift in Sources */,
 				02A38F2E23E12D1A00E26E19 /* Water.swift in Sources */,
 				0294AED423E07C2F005F2E67 /* PhysicsController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
@@ -791,6 +808,7 @@
 				02A38F3923E1387100E26E19 /* Renderer.swift in Sources */,
 				0294AE9F23DFF129005F2E67 /* Shadow.metal in Sources */,
 				02A38F2D23E12D1100E26E19 /* GameScene.swift in Sources */,
+				0290635623FC528400FA0A26 /* HighlandsTile.swift in Sources */,
 				02A38F3323E12D7800E26E19 /* Camera.swift in Sources */,
 				0294AEA123DFF129005F2E67 /* MorphShader.metal in Sources */,
 				02A38F2223E11AEF00E26E19 /* MDLVertexDescriptor+Extensions.swift in Sources */,
