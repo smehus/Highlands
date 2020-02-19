@@ -219,6 +219,10 @@ final class GameScene: Scene {
         heightEncoder.pushDebugGroup("Height pass")
         for renderable in renderables {
             renderable.calculateHeight(computeEncoder: heightEncoder, terrainParams: Terrain.terrainParams, uniforms: uniforms)
+
+            if let tile = renderable as? TileScene {
+                skeleton.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: tile.terrain.heightMap, terrainParams: Terrain.terrainParams, uniforms: uniforms, controlPointsBuffer: tile.terrain.controlPointsBuffer)
+            }
         }
         heightEncoder.popDebugGroup()
         heightEncoder.endEncoding()
