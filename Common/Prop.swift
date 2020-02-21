@@ -345,8 +345,8 @@ extension Prop: Renderable {
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
 
         var uniforms = uniforms
-        uniforms.modelMatrix = modelMatrix
-        uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+        uniforms.modelMatrix = worldTransform
+        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
 
         renderEncoder.setVertexBuffer(shadowInstanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
