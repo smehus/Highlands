@@ -11,26 +11,29 @@ import MetalKit
 
 class TileScene: Node {
 
-    private let water = Water(size: 500)
+//    private let water = Water(size: 500)
     let terrain = Terrain(textureName: "hills")
 
     func setupTile() {
 
-        terrain.position = SIMD3<Float>([0, 0, 0])
+//        terrain.position = SIMD3<Float>([0, 0, 0])
         //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
         add(childNode: terrain)
+        terrain.setup(with: [0, 0, 0])
 
-        water.position.y = -4
-        water.rotation = [0, 0, radians(fromDegrees: -90)]
-        add(childNode: water)
+//        water.position.y = -4
+//        water.rotation = [0, 0, radians(fromDegrees: -90)]
+//        add(childNode: water)
         /*
          ground.tiling = 4
          ground.scale = [4, 1, 4]
          ground.position = float3(0, -0.03, 0)
          add(node: ground)
          */
-        let count = 50
-        let offset = 100
+
+
+        let count = 2
+        let offset = 25
 
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
         add(childNode: tree)
@@ -70,7 +73,6 @@ class TileScene: Node {
 
             rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
         }
-
     }
 }
 
@@ -87,8 +89,9 @@ extension TileScene: Renderable {
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, terrainParams: TerrainParams, uniforms: Uniforms) {
 
         for child in children {
-            guard let renderable = child as? Renderable else { fatalError() }
+            guard let renderable = child as? Prop else { continue }
 
+            renderable.patches = terrain.terrainPatches.1
             renderable.calculateHeight(computeEncoder: computeEncoder, heightMapTexture: terrain.heightMap, terrainParams: terrainParams, uniforms: uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
         }
     }

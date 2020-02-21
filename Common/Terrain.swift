@@ -20,7 +20,7 @@ class Terrain: Node {
         return Terrain.patches.horizontal * Terrain.patches.vertical
     }
 
-    static var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
+    static var terrainParams = TerrainParams(size: [50, 50], height: 7, maxTessellation: UInt32(maxTessellation))
     var controlPointsBuffer: MTLBuffer?
 
     var edgeFactors: [Float] = [4]
@@ -35,6 +35,7 @@ class Terrain: Node {
     let grassTexture: MTLTexture
 
     let normalMapTexture: MTLTexture
+    var terrainPatches: (normalized: [SIMD3<Float>], patches: [Patch])!
 
     override var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
@@ -85,18 +86,22 @@ class Terrain: Node {
         }
 
         super.init()
+    }
+}
 
-        let controlPoints = Terrain.createControlPoints(patches: Terrain.patches,
+extension Terrain {
+
+    func setup(with position: SIMD3<Float>) {
+        self.position = position
+
+        let controlPoints = createControlPoints(patches: Terrain.patches,
                                                         size: (width: Terrain.terrainParams.size.x,
                                                                height: Terrain.terrainParams.size.y))
         controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints.normalized,
                                                          length: MemoryLayout<SIMD3<Float>>.stride * controlPoints.normalized.count)
 
-
+        terrainPatches = controlPoints
     }
-}
-
-extension Terrain {
 
     func generateTerrainNormalMap(computeEncoder: MTLComputeCommandEncoder) {
 
@@ -160,7 +165,7 @@ extension Terrain {
      - size: size of plane
      - Returns: an array of patch control points. Each group of four makes one patch.
      **/
-    static func createControlPoints(patches: (horizontal: Int, vertical: Int),
+    func createControlPoints(patches: (horizontal: Int, vertical: Int),
                              size: (width: Float, height: Float)) -> (normalized: [SIMD3<Float>], patches: [Patch]) {
 
         var normalizedPoints: [SIMD3<Float>] = []
@@ -210,10 +215,10 @@ extension Terrain {
                         value.z * size.height - size.height / 2]
             }
 
-            let patch = Patch(topLeft: update(value: $0.topLeft),
-                  topRight: update(value: $0.topRight),
-                  bottomLeft: update(value: $0.bottomLeft),
-                  bottomRight: update(value: $0.bottomRight))
+            let patch = Patch(topLeft: update(value: $0.topLeft) + worldTransform.columns.3.xyz,
+                  topRight: update(value: $0.topRight) + worldTransform.columns.3.xyz,
+                  bottomLeft: update(value: $0.bottomLeft) + worldTransform.columns.3.xyz,
+                  bottomRight: update(value: $0.bottomRight) + worldTransform.columns.3.xyz)
             return patch
         }
 
@@ -241,7 +246,7 @@ extension Terrain: ComputeHandler {
         computeEncoder.setBytes(&cameraPosition,
                                 length: MemoryLayout<SIMD4<Float>>.stride,
                                 index: 3)
-        var matrix = modelMatrix
+        var matrix = worldTransform
         computeEncoder.setBytes(&matrix,
                                 length: MemoryLayout<float4x4>.stride,
                                 index: 4)
@@ -271,8 +276,8 @@ extension Terrain: Renderable {
         renderEncoder.setCullMode(.none)
         var uniforms = vertex
 
-        uniforms.modelMatrix = modelMatrix
-        uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+        uniforms.modelMatrix = worldTransform
+        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
 
         renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)

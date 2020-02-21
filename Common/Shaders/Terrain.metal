@@ -37,12 +37,16 @@ kernel void calculate_height(constant float3 &in_position [[ buffer(0) ]],
                              device float *heightBuffer [[ buffer(1) ]],
                              constant TerrainParams &terrain [[ buffer(2) ]],
                              constant Uniforms &uniforms [[ buffer(3) ]],
-                             constant float3 *control_points [[ buffer(4) ]],
+//                             constant float3 *control_points [[ buffer(4) ]],
                              constant Patch &patch [[ buffer(5) ]],
                              constant int &buffer_id [[ buffer(6) ]],
                              texture2d<float> heightMap [[ texture(0) ]])
 {
 
+    // Need to normalize the characters position to the tile?
+    // Or do i need to make the patches topLeft / bottomLeft
+    // I think I need ot pass all the patches here and look for
+    // the correct patch here?
     float4 position  = float4(in_position, 1.0);
     float u = (position.x - patch.topLeft.x) / (patch.topRight.x - patch.topLeft.x);
     float v = (position.z - patch.bottomLeft.z) / (patch.topLeft.z - patch.bottomLeft.z);

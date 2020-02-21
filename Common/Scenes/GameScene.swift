@@ -26,6 +26,7 @@ final class GameScene: Scene {
     private let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
     private var shadowDepthTexture: MTLTexture!
     private var shadowColorTexture: MTLTexture!
+    private var secondTile = TileScene()
 
     override func setupScene() {
 
@@ -44,8 +45,16 @@ final class GameScene: Scene {
         // Add tiles here
 
         let tile = TileScene()
+        tile.position = [0, 0, 0]
+        tile.name = "Tile 1"
         tile.setupTile()
         add(node: tile)
+
+        secondTile.name = "Tile 2"
+        secondTile.position = [0, 0, -50]
+        secondTile.setupTile()
+        add(node: secondTile)
+
 
         skeleton.scale = [0.015, 0.015, 0.015]
         skeleton.rotation = [radians(fromDegrees: 90), 0, radians(fromDegrees: 180)]
@@ -66,8 +75,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 6
-        tpCamera.focusDistance = 8
+        tpCamera.focusHeight = 10
+        tpCamera.focusDistance = 6
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
         currentCameraIndex = cameras.endIndex - 1
@@ -98,6 +107,9 @@ final class GameScene: Scene {
             lights[index].position.x -= 0.2
 
 
+            if secondTile.position.y > -100 {
+//                secondTile.position.y -= 0.02
+            }
 
 //
 //
@@ -220,8 +232,18 @@ final class GameScene: Scene {
         for renderable in renderables {
             renderable.calculateHeight(computeEncoder: heightEncoder, terrainParams: Terrain.terrainParams, uniforms: uniforms)
 
+            // Need to test if character is inside this tile or not
             if let tile = renderable as? TileScene {
-                skeleton.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: tile.terrain.heightMap, terrainParams: Terrain.terrainParams, uniforms: uniforms, controlPointsBuffer: tile.terrain.controlPointsBuffer)
+                let bottomLeft: SIMD3<Float> = [tile.position.x - (Terrain.terrainParams.size.x / 2), 0, tile.position.z - (Terrain.terrainParams.size.y / 2)]
+                let topRight: SIMD3<Float> = [tile.position.x + (Terrain.terrainParams.size.x / 2), 0, tile.position.z + (Terrain.terrainParams.size.y / 2)]
+
+                let horizontal = skeleton.position.x > bottomLeft.x && skeleton.position.x < topRight.x
+                let vertical = skeleton.position.z > bottomLeft.z && skeleton.position.z < topRight.z
+
+                if horizontal && vertical {
+                    skeleton.patches = tile.terrain.terrainPatches.1
+                    skeleton.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: tile.terrain.heightMap, terrainParams: Terrain.terrainParams, uniforms: uniforms, controlPointsBuffer: tile.terrain.controlPointsBuffer)
+                }
             }
         }
         heightEncoder.popDebugGroup()

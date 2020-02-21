@@ -57,7 +57,7 @@ class Prop: Node {
     let heightCalculatePipelineState: MTLComputePipelineState
     let heightBuffer: MTLBuffer
 
-    let patches: [Patch]
+    var patches: [Patch]!
     var currentPatch: Patch?
 
     init(type: ModelType) {
@@ -94,13 +94,6 @@ class Prop: Node {
         var bytes: [Float] = transforms.map { _ in return 0.0 }
         heightBuffer = Renderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
 //        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
-
-        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
-                                              size: (width: Terrain.terrainParams.size.x,
-                                                     height: Terrain.terrainParams.size.y))
-
-
-        patches = terrainPatches.patches
 
         super.init()
         self.name = type.name

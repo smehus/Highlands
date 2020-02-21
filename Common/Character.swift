@@ -62,7 +62,7 @@ class Character: Node {
     let needsXRotationFix = true
     let heightBuffer: MTLBuffer
 
-    let patches: [Patch]
+    var patches: [Patch]?
     var currentPatch: Patch?
     var positionInPatch: SIMD3<Float>?
 
@@ -114,13 +114,6 @@ class Character: Node {
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
         heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
-
-        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
-                                              size: (width: Terrain.terrainParams.size.x,
-                                                     height: Terrain.terrainParams.size.y))
-
-
-        patches = terrainPatches.patches
 
         super.init()
         self.name = name
@@ -216,7 +209,10 @@ class Character: Node {
     }
 
     func patch(for location: SIMD3<Float>) -> Patch? {
-        let foundPatches = patches.filter { (patch) -> Bool in
+        guard let tilePatches = patches else { return nil }
+
+//        tilePatches.forEach({ print("*** \($0)") })
+        let foundPatches = tilePatches.filter { (patch) -> Bool in
             let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
             let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
 
@@ -229,6 +225,7 @@ class Character: Node {
         if let current = currentPatch, current != patch {
 //            print("*** UPDATE CURRENT PATCH \(patch)")
         }
+
 
         return patch
     }

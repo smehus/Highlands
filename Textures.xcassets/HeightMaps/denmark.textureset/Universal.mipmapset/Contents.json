@@ -1,0 +1,12 @@
+{
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "levels" : [
+    {
+      "filename" : "highlands Height Map (ASTER 30m).png",
+      "mipmap-level" : "base"
+    }
+  ]
+}
