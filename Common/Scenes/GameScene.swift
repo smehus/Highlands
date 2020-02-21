@@ -108,7 +108,7 @@ final class GameScene: Scene {
 
 
             if secondTile.position.y > -100 {
-//                secondTile.position.y -= 0.3
+                secondTile.position.y -= 0.05
             }
 
 //
@@ -241,7 +241,7 @@ final class GameScene: Scene {
                 let vertical = skeleton.position.z > bottomLeft.z && skeleton.position.z < topRight.z
 
                 if horizontal && vertical {
-                    skeleton.patches = tile.terrain.terrainPatches.1
+                    skeleton.currentTile = tile
                     skeleton.calculateHeight(computeEncoder: heightEncoder, heightMapTexture: tile.terrain.heightMap, terrainParams: Terrain.terrainParams, uniforms: uniforms, controlPointsBuffer: tile.terrain.controlPointsBuffer)
                 }
             }

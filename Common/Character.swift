@@ -65,6 +65,13 @@ class Character: Node {
     var patches: [Patch]?
     var currentPatch: Patch?
     var positionInPatch: SIMD3<Float>?
+    var currentTile: TileScene? {
+        didSet {
+            guard let tile = currentTile else { return }
+
+            patches = tile.terrain.terrainPatches.1
+        }
+    }
 
     init(name: String) {
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
@@ -149,7 +156,6 @@ class Character: Node {
         }
 
 
-
         // Run / Update Animations
         currentTime += deltaTime
 
@@ -190,6 +196,10 @@ class Character: Node {
 
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
         position.y = pointer.pointee
+
+        if let tile = currentTile {
+            position.y += tile.position.y
+        }
     }
 
     func setLeftRotation(rotationSpeed: Float) {
