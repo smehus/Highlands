@@ -46,11 +46,11 @@ final class GameScene: Scene {
 
         let tile = TileScene()
         tile.position = [0, 0, 0]
-        tile.name = "Tile 1"
+        tile.name = "Tile1"
         tile.setupTile()
         add(node: tile)
 
-        secondTile.name = "Tile 2"
+        secondTile.name = "Tile2"
         secondTile.position = [0, 0, -50]
         secondTile.setupTile()
         add(node: secondTile)

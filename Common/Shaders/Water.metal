@@ -141,7 +141,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
 
     // Ripples
-    float2 uv = vertex_in.uv * 0.8;
+    float2 uv = vertex_in.uv * 0.15;
     float waveStrength = 0.05;
 
     float2 rippleX = float2(uv.x + timer, uv.y);
@@ -166,7 +166,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float3 color = waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
 
 //    return sepiaShaderWater(float4(color, 1));
-    return baseColor;
+    return float4(color, 1);
 }
 
 

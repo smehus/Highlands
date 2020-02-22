@@ -258,14 +258,21 @@ class Prop: Node {
 
     func patch(for location: SIMD3<Float>) -> Patch? {
         let foundPatches = patches.filter { (patch) -> Bool in
-            let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
-            let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
+            let horizontal = patch.topLeft.x <= location.x && patch.topRight.x >= location.x
+            let vertical = patch.topLeft.z >= location.z && patch.bottomLeft.z <= location.z
 
             return horizontal && vertical
         }
 
         //        print("**** patches found for position \(foundPatches.count)")
-        guard let patch = foundPatches.first else { return nil }
+        guard let patch = foundPatches.first else {
+            print(name)
+            print("*** location \(location)")
+            patches.forEach({ print("*** patches \($0)") })
+
+
+            return nil
+        }
 
         if let current = currentPatch, current != patch {
 //            print("*** UPDATE CURRENT PATCH \(patch)")
@@ -371,9 +378,11 @@ extension Prop: Renderable {
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
 
         for (index, transform) in transforms.enumerated() {
-            var position = transform.modelMatrix.columns.3.xyz
-            guard var patch = patch(for: position) else { return }
-
+            let worldPosition = parent!.worldTransform * transform.modelMatrix
+            var position = worldPosition.columns.3.xyz
+            guard var patch = patch(for: position) else {
+                print("⁉️⁉️⁉️⁉️ Couldn't find patch for \(name)"); return
+            }
 
             var terrainParams = terrainParams
             var uniforms = uniforms

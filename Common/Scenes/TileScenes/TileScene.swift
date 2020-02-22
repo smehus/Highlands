@@ -11,8 +11,8 @@ import MetalKit
 
 class TileScene: Node {
 
-//    private let water = Water(size: 50)
-    let terrain = Terrain(textureName: "hills")
+    private let water = Water(size: 50)
+    let terrain = Terrain(textureName: "terrain1")
 
     func setupTile() {
 
@@ -21,9 +21,9 @@ class TileScene: Node {
         add(childNode: terrain)
         terrain.setup(with: [0, 0, 0])
 
-//        water.position.y = -9
-//        water.rotation = [0, 0, radians(fromDegrees: -90)]
-//        add(childNode: water)
+        water.position.y = -6
+        water.rotation = [0, 0, radians(fromDegrees: -90)]
+        add(childNode: water)
         /*
          ground.tiling = 4
          ground.scale = [4, 1, 4]
@@ -36,6 +36,7 @@ class TileScene: Node {
         let offset = 25
 
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
+        tree.name = name
         add(childNode: tree)
 //        physicsController.addStaticBody(node: tree)
         for i in 0..<count {
@@ -51,28 +52,28 @@ class TileScene: Node {
             tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
 
-        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
-        let morphTargetNames = ["rock1", "rock2", "rock3"]
-        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
+//        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
+//        let morphTargetNames = ["rock1", "rock2", "rock3"]
+//        let rock = Prop(type: .morph(textures: textureNames, morphTargets: morphTargetNames, instanceCount: count))
 
-        add(childNode: rock)
-//        physicsController.addStaticBody(node: rock)
-        for i in 0..<count {
-            var transform = Transform()
-
-            if i == 0 {
-                transform.position = [0, 0, 3]
-            } else {
-                var position: SIMD3<Float>
-                repeat {
-                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-                } while position.x > 2 && position.z > 2
-
-                transform.position = position
-            }
-
-            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
-        }
+//        add(childNode: rock)
+////        physicsController.addStaticBody(node: rock)
+//        for i in 0..<count {
+//            var transform = Transform()
+//
+//            if i == 0 {
+//                transform.position = [0, 0, 3]
+//            } else {
+//                var position: SIMD3<Float>
+//                repeat {
+//                    position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//                } while position.x > 2 && position.z > 2
+//
+//                transform.position = position
+//            }
+//
+//            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
+//        }
     }
 }
 
