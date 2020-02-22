@@ -15,12 +15,12 @@ class Terrain: Node {
         return 16
     }()
 
-    static let patches = (horizontal: 7, vertical: 7)
+    static let patches = (horizontal: 3, vertical: 3)
     static var patchCount: Int {
         return Terrain.patches.horizontal * Terrain.patches.vertical
     }
 
-    static var terrainParams = TerrainParams(size: [50, 50], height: 7, maxTessellation: UInt32(maxTessellation))
+    static var terrainParams = TerrainParams(size: [50, 50], height: 17, maxTessellation: UInt32(maxTessellation))
     var controlPointsBuffer: MTLBuffer?
 
     var edgeFactors: [Float] = [4]

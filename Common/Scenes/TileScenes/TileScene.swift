@@ -11,7 +11,7 @@ import MetalKit
 
 class TileScene: Node {
 
-//    private let water = Water(size: 500)
+//    private let water = Water(size: 50)
     let terrain = Terrain(textureName: "hills")
 
     func setupTile() {
@@ -21,7 +21,7 @@ class TileScene: Node {
         add(childNode: terrain)
         terrain.setup(with: [0, 0, 0])
 
-//        water.position.y = -4
+//        water.position.y = -9
 //        water.rotation = [0, 0, radians(fromDegrees: -90)]
 //        add(childNode: water)
         /*
@@ -32,7 +32,7 @@ class TileScene: Node {
          */
 
 
-        let count = 2
+        let count = 10
         let offset = 25
 
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))

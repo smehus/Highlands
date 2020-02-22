@@ -108,7 +108,7 @@ final class GameScene: Scene {
 
 
             if secondTile.position.y > -100 {
-                secondTile.position.y -= 0.05
+//                secondTile.position.y -= 0.05
             }
 
 //

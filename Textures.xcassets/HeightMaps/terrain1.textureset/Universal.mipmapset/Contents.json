@@ -5,7 +5,7 @@
   },
   "levels" : [
     {
-      "filename" : "highlands Height Map (ASTER 30m).png",
+      "filename" : "terrain1.png",
       "mipmap-level" : "base"
     }
   ]

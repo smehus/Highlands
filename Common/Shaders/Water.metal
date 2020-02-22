@@ -166,7 +166,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float3 color = waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
 
 //    return sepiaShaderWater(float4(color, 1));
-    return float4(color, 1);
+    return baseColor;
 }
 
 
