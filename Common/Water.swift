@@ -14,6 +14,7 @@ class Water: Node {
     private let mesh: MTKMesh
     private let mdlMesh: MDLMesh
     private var pipelineState: MTLRenderPipelineState
+    private var stencilPipelineState: MTLRenderPipelineState
     private var waterNormalTexture: MTLTexture
     private var timer: Float = 0
     private let refractionRenderPass: RenderPass
@@ -34,7 +35,8 @@ class Water: Node {
 
             let library = Renderer.device.makeDefaultLibrary()!
             let descriptor = MTLRenderPipelineDescriptor()
-            descriptor.vertexFunction = library.makeFunction(name: "vertex_water")
+            let vertexFunction = library.makeFunction(name: "vertex_water")
+            descriptor.vertexFunction = vertexFunction
             descriptor.fragmentFunction = library.makeFunction(name: "fragment_water")
             descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
             descriptor.depthAttachmentPixelFormat = Renderer.depthPixelFormat
@@ -49,6 +51,18 @@ class Water: Node {
             stencilDescriptor.isDepthWriteEnabled = true
             depthStencilState = Renderer.device.makeDepthStencilState(descriptor: stencilDescriptor)!
 
+
+            // Stencil Buffer Pass
+
+            let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
+            stencilPipelineDescriptor.vertexFunction = vertexFunction
+            stencilPipelineDescriptor.fragmentFunction = nil
+            stencilPipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
+            stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
+            stencilPipelineDescriptor.stencilAttachmentPixelFormat = .stencil8
+
+            stencilPipelineState = try! Renderer.device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
+
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -58,6 +72,10 @@ class Water: Node {
 }
 
 extension Water: Renderable {
+
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+        render(renderEncoder: renderEncoder, pipelineState: stencilPipelineState, uniforms: uniforms)
+    }
 
     func createTexturesBuffer() {
         
@@ -106,12 +124,19 @@ extension Water: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
         renderEncoder.pushDebugGroup("Water")
 
+        render(renderEncoder: renderEncoder, pipelineState: pipelineState, uniforms: vertex)
+
+        renderEncoder.popDebugGroup()
+    }
+
+    private func render(renderEncoder: MTLRenderCommandEncoder, pipelineState: MTLRenderPipelineState, uniforms: Uniforms) {
+
+        var uniforms = uniforms
         timer += 0.0001
 
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
-        var uniforms = vertex
         uniforms.modelMatrix = worldTransform
         uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
@@ -135,8 +160,6 @@ extension Water: Renderable {
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset)
         }
-
-        renderEncoder.popDebugGroup()
     }
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {

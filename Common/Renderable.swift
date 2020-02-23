@@ -27,10 +27,13 @@ protocol Renderable {
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?)
 
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms)
+
     func createTexturesBuffer()
 }
 
 extension Renderable {
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) { }
     func renderToTarget(with commandBuffer: MTLCommandBuffer) { }
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) { }

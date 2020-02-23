@@ -30,6 +30,8 @@ final class GameScene: Scene {
 
     override func setupScene() {
 
+        setupStencilTest()
+
         instanceParamBuffer = Renderer.device
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
@@ -85,6 +87,48 @@ final class GameScene: Scene {
 
         super.setupScene()
 
+    }
+
+    private var mainPassStencilTexture: MTLTexture!
+    private var stencilTestState: MTLDepthStencilState!
+    private var stencilRenderPassDescriptor: MTLRenderPassDescriptor!
+
+    private func setupStencilTest() {
+        let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .stencil8,
+                                                                         width: Int(Renderer.mtkView.drawableSize.width),
+                                                                         height: Int(Renderer.mtkView.drawableSize.width),
+                                                                         mipmapped: true)
+
+        textureDescriptor.textureType = .type2D
+        textureDescriptor.storageMode = .private
+        textureDescriptor.usage = [.renderTarget, .shaderRead, .shaderWrite]
+        mainPassStencilTexture = Renderer.device.makeTexture(descriptor: textureDescriptor)
+
+
+        stencilRenderPassDescriptor = MTLRenderPassDescriptor()
+
+        let stencilAttachment = MTLRenderPassStencilAttachmentDescriptor()
+        stencilAttachment.texture = mainPassStencilTexture
+        stencilAttachment.clearStencil = 0
+        stencilAttachment.loadAction = .clear
+        stencilAttachment.storeAction = .store
+        stencilRenderPassDescriptor.stencilAttachment = stencilAttachment
+
+
+        let stencilDescriptor = MTLDepthStencilDescriptor()
+        stencilDescriptor.depthCompareFunction = MTLCompareFunction.always
+        stencilDescriptor.isDepthWriteEnabled = false
+
+        stencilDescriptor.frontFaceStencil.stencilCompareFunction = MTLCompareFunction.equal
+        stencilDescriptor.frontFaceStencil.stencilFailureOperation = MTLStencilOperation.keep
+        stencilDescriptor.frontFaceStencil.depthFailureOperation = MTLStencilOperation.keep
+        stencilDescriptor.frontFaceStencil.depthStencilPassOperation = MTLStencilOperation.invert
+
+        stencilDescriptor.frontFaceStencil.readMask = 0x1
+        stencilDescriptor.frontFaceStencil.writeMask = 0x1
+        stencilDescriptor.backFaceStencil = nil
+
+        stencilTestState =  Renderer.device.makeDepthStencilState(descriptor: stencilDescriptor)
     }
 
     override func isHardCollision() -> Bool {
@@ -256,7 +300,21 @@ final class GameScene: Scene {
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
 
+        // Stencil Buffer Pass
+
+        let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: stencilRenderPassDescriptor)!
+        stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
+        stencilEncoder.setDepthStencilState(stencilTestState)
+
+        for renderable in renderables {
+            renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
+        }
+
+        stencilEncoder.popDebugGroup()
+        stencilEncoder.endEncoding()
+
         // Main pass
+
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderEncoder.pushDebugGroup("Main pass")
         renderEncoder.label = "Main encoder"
@@ -267,6 +325,28 @@ final class GameScene: Scene {
             renderEncoder.useHeap(heap)
         }
 
+        setFragment(renderEncoder: renderEncoder, previousUniforms: previousUniforms)
+
+        for renderable in renderables {
+            // Allow set up for off screen targets
+            renderable.renderToTarget(with: commandBuffer)
+        }
+
+        for renderable in renderables {
+            renderEncoder.pushDebugGroup(renderable.name)
+            renderable.render(renderEncoder: renderEncoder, uniforms: uniforms)
+            renderEncoder.popDebugGroup()
+        }
+
+        skybox?.render(renderEncoder: renderEncoder, uniforms: uniforms)
+
+        drawDebug(encoder: renderEncoder)
+
+        renderEncoder.endEncoding()
+    }
+
+
+    func setFragment(renderEncoder: MTLRenderCommandEncoder, previousUniforms: Uniforms) {
         var fragmentUniforms = FragmentUniforms()
         fragmentUniforms.cameraPosition = camera.position
         fragmentUniforms.lightCount = UInt32(lights.count)
@@ -301,24 +381,7 @@ final class GameScene: Scene {
         var farZ = Camera.FarZ
         renderEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-        for renderable in renderables {
-            // Allow set up for off screen targets
-            renderable.renderToTarget(with: commandBuffer)
-        }
-
-        for renderable in renderables {
-            renderEncoder.pushDebugGroup(renderable.name)
-            renderable.render(renderEncoder: renderEncoder, uniforms: uniforms)
-            renderEncoder.popDebugGroup()
-        }
-
-        skybox?.render(renderEncoder: renderEncoder, uniforms: uniforms)
-
-        drawDebug(encoder: renderEncoder)
-
-        renderEncoder.endEncoding()
     }
-
 }
 
 #if os(macOS)

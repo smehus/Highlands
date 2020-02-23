@@ -117,6 +117,14 @@ extension TileScene: Renderable {
 
     }
 
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+        for child in children {
+            guard let renderable = child as? Renderable else { fatalError() }
+
+            renderable.renderStencilBuffer(renderEncoder: renderEncoder, uniforms: uniforms)
+        }
+    }
+
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
 
     }
