@@ -107,12 +107,15 @@ final class GameScene: Scene {
 
         stencilRenderPassDescriptor = MTLRenderPassDescriptor()
 
-        let stencilAttachment = MTLRenderPassStencilAttachmentDescriptor()
-        stencilAttachment.texture = mainPassStencilTexture
-        stencilAttachment.clearStencil = 0
-        stencilAttachment.loadAction = .clear
-        stencilAttachment.storeAction = .store
-        stencilRenderPassDescriptor.stencilAttachment = stencilAttachment
+//        let stencilAttachment = MTLRenderPassStencilAttachmentDescriptor()
+//        stencilAttachment.texture = mainPassStencilTexture
+//        stencilAttachment.clearStencil = 1
+//        stencilAttachment.loadAction = .clear
+//        stencilAttachment.storeAction = .store
+        stencilRenderPassDescriptor.stencilAttachment.texture = mainPassStencilTexture
+        stencilRenderPassDescriptor.stencilAttachment.clearStencil = 1
+        stencilRenderPassDescriptor.stencilAttachment.loadAction = .clear
+        stencilRenderPassDescriptor.stencilAttachment.storeAction = .store
 
 
         let stencilDescriptor = MTLDepthStencilDescriptor()
@@ -120,15 +123,16 @@ final class GameScene: Scene {
         stencilDescriptor.isDepthWriteEnabled = false
 
         stencilDescriptor.frontFaceStencil.stencilCompareFunction = MTLCompareFunction.equal
-        stencilDescriptor.frontFaceStencil.stencilFailureOperation = MTLStencilOperation.keep
-        stencilDescriptor.frontFaceStencil.depthFailureOperation = MTLStencilOperation.keep
-        stencilDescriptor.frontFaceStencil.depthStencilPassOperation = MTLStencilOperation.invert
+        stencilDescriptor.frontFaceStencil.stencilFailureOperation = MTLStencilOperation.replace
+        stencilDescriptor.frontFaceStencil.depthFailureOperation = MTLStencilOperation.replace
+        stencilDescriptor.frontFaceStencil.depthStencilPassOperation = MTLStencilOperation.replace
 
         stencilDescriptor.frontFaceStencil.readMask = 0x1
         stencilDescriptor.frontFaceStencil.writeMask = 0x1
         stencilDescriptor.backFaceStencil = nil
 
         stencilTestState =  Renderer.device.makeDepthStencilState(descriptor: stencilDescriptor)
+
     }
 
     override func isHardCollision() -> Bool {
@@ -305,6 +309,7 @@ final class GameScene: Scene {
         let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: stencilRenderPassDescriptor)!
         stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
         stencilEncoder.setDepthStencilState(stencilTestState)
+        stencilEncoder.setStencilReferenceValue(0x1)
 
         for renderable in renderables {
             renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
@@ -315,10 +320,12 @@ final class GameScene: Scene {
 
         // Main pass
 
+//        descriptor.stencilAttachment = stencilRenderPassDescriptor.stencilAttachment
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderEncoder.pushDebugGroup("Main pass")
         renderEncoder.label = "Main encoder"
         renderEncoder.setDepthStencilState(Renderer.depthStencilState)
+        renderEncoder.setStencilReferenceValue(0x1)
         renderEncoder.setCullMode(.back)
 
         if let heap = TextureController.heap {
