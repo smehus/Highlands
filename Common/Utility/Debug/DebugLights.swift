@@ -45,7 +45,8 @@ extension Scene {
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
         let lightPipelineState: MTLRenderPipelineState
         do {
             lightPipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)

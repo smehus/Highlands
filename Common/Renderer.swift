@@ -30,7 +30,7 @@ final class Renderer: NSObject {
         }
 
         metalView.sampleCount = Renderer.sampleCount
-        metalView.depthStencilPixelFormat = .depth32Float
+        metalView.depthStencilPixelFormat = .depth32Float_stencil8
         metalView.device = device
 //        metalView.preferredFramesPerSecond = 30
         Renderer.device = device

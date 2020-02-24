@@ -57,7 +57,7 @@ class Terrain: Node {
         do {
             let textureLoader = MTKTextureLoader(device: Renderer.device)
             heightMap = try textureLoader.newTexture(name: textureName, scaleFactor: 1.0,
-                                                bundle: Bundle.main, options: nil)
+                                                     bundle: Bundle.main, options: nil)
 
 
             // Create normal texture
@@ -71,15 +71,15 @@ class Terrain: Node {
             texDesc.storageMode = .private
             normalMapTexture = Renderer.device.makeTexture(descriptor: texDesc)!
 
-//            let commandBuffer = Renderer.commandQueue.makeCommandBuffer()!
-//            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture, commandBuffer: commandBuffer)
+            //            let commandBuffer = Renderer.commandQueue.makeCommandBuffer()!
+            //            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture, commandBuffer: commandBuffer)
 
             cliffTexture = try textureLoader.newTexture(name: "cliff-color", scaleFactor: 1.0,
-                                                bundle: Bundle.main, options: nil)
+                                                        bundle: Bundle.main, options: nil)
             snowTexture = try textureLoader.newTexture(name: "snow-color", scaleFactor: 1.0,
-                                                bundle: Bundle.main, options: nil)
+                                                       bundle: Bundle.main, options: nil)
             grassTexture = try textureLoader.newTexture(name: "grass-color", scaleFactor: 1.0,
-                                                bundle: Bundle.main, options: nil)
+                                                        bundle: Bundle.main, options: nil)
 
         } catch {
             fatalError(error.localizedDescription)
@@ -95,8 +95,8 @@ extension Terrain {
         self.position = position
 
         let controlPoints = createControlPoints(patches: Terrain.patches,
-                                                        size: (width: Terrain.terrainParams.size.x,
-                                                               height: Terrain.terrainParams.size.y))
+                                                size: (width: Terrain.terrainParams.size.x,
+                                                       height: Terrain.terrainParams.size.y))
         controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints.normalized,
                                                          length: MemoryLayout<SIMD3<Float>>.stride * controlPoints.normalized.count)
 
@@ -131,27 +131,28 @@ extension Terrain {
     }
 
     static func buildRenderPipelineState() -> MTLRenderPipelineState {
-      let descriptor = MTLRenderPipelineDescriptor()
-      descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
-      descriptor.depthAttachmentPixelFormat = .depth32Float
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
 
-      let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
-      let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
-      descriptor.vertexFunction = vertexFunction
-      descriptor.fragmentFunction = fragmentFunction
+        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
+        let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
+        descriptor.vertexFunction = vertexFunction
+        descriptor.fragmentFunction = fragmentFunction
 
-      let vertexDescriptor = MTLVertexDescriptor()
-      vertexDescriptor.attributes[0].format = .float3
-      vertexDescriptor.attributes[0].offset = 0
-      vertexDescriptor.attributes[0].bufferIndex = 0
+        let vertexDescriptor = MTLVertexDescriptor()
+        vertexDescriptor.attributes[0].format = .float3
+        vertexDescriptor.attributes[0].offset = 0
+        vertexDescriptor.attributes[0].bufferIndex = 0
 
-      vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-      vertexDescriptor.layouts[0].stride = MemoryLayout<SIMD3<Float>>.stride
-      descriptor.vertexDescriptor = vertexDescriptor
+        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
+        vertexDescriptor.layouts[0].stride = MemoryLayout<SIMD3<Float>>.stride
+        descriptor.vertexDescriptor = vertexDescriptor
 
-      descriptor.tessellationFactorStepFunction = .perPatch
-      descriptor.maxTessellationFactor = maxTessellation
-      descriptor.tessellationPartitionMode = .pow2
+        descriptor.tessellationFactorStepFunction = .perPatch
+        descriptor.maxTessellationFactor = maxTessellation
+        descriptor.tessellationPartitionMode = .pow2
 
         return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
     }
@@ -216,14 +217,14 @@ extension Terrain {
             }
 
             let patch = Patch(topLeft: update(value: $0.topLeft) + worldTransform.columns.3.xyz,
-                  topRight: update(value: $0.topRight) + worldTransform.columns.3.xyz,
-                  bottomLeft: update(value: $0.bottomLeft) + worldTransform.columns.3.xyz,
-                  bottomRight: update(value: $0.bottomRight) + worldTransform.columns.3.xyz)
+                              topRight: update(value: $0.topRight) + worldTransform.columns.3.xyz,
+                              bottomLeft: update(value: $0.bottomLeft) + worldTransform.columns.3.xyz,
+                              bottomRight: update(value: $0.bottomRight) + worldTransform.columns.3.xyz)
             return patch
         }
 
         for patch in terrainPatches {
-//            print("********\n topLeft \(patch.topLeft)\n topRight \(patch.topRight)\n bottomLeft \(patch.bottomLeft)\n bottomRight  \(patch.bottomRight)\n**********\n\n\n\n")
+            //            print("********\n topLeft \(patch.topLeft)\n topRight \(patch.topRight)\n bottomLeft \(patch.bottomLeft)\n bottomRight  \(patch.bottomRight)\n**********\n\n\n\n")
         }
 
         return (normalizedPoints, terrainPatches)

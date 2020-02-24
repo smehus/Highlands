@@ -39,7 +39,8 @@ class Water: Node {
             descriptor.vertexFunction = vertexFunction
             descriptor.fragmentFunction = library.makeFunction(name: "fragment_water")
             descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-            descriptor.depthAttachmentPixelFormat = Renderer.depthPixelFormat
+            descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+            descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
             descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
             pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
 
@@ -59,7 +60,8 @@ class Water: Node {
             stencilPipelineDescriptor.fragmentFunction = nil
             stencilPipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
             stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-            stencilPipelineDescriptor.stencilAttachmentPixelFormat = .stencil8
+            stencilPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+            stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
 
             stencilPipelineState = try! Renderer.device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
 
