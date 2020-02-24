@@ -4,7 +4,6 @@ import MetalKit
 final class Renderer: NSObject {
 
     static let sampleCount = 1
-
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
     static var colorPixelFormat: MTLPixelFormat!
@@ -15,12 +14,11 @@ final class Renderer: NSObject {
     static let MaxActors = 5
     static let MaxActorInstances = 50
     static let InstanceParamsBufferCapacity = Renderer.MaxActors * Renderer.MaxActorInstances * Renderer.MaxVisibleFaces
+    static var mtkView: MTKView!
 
     var scene: Scene?
 
-    static var depthStencilState: MTLDepthStencilState!
 
-    static var mtkView: MTKView!
 
 
     init(metalView: MTKView) {
@@ -45,8 +43,6 @@ final class Renderer: NSObject {
                                              blue: 0, alpha: 1)
         metalView.delegate = self
         mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
-
-        buildDepthStencilState()
     }
 
     func buildTexture(pixelFormat: MTLPixelFormat, size: CGSize, label: String) -> MTLTexture {
@@ -67,12 +63,6 @@ final class Renderer: NSObject {
         return texture
     }
 
-    func buildDepthStencilState() {
-        let descriptor = MTLDepthStencilDescriptor()
-        descriptor.depthCompareFunction = .less
-        descriptor.isDepthWriteEnabled = true
-        Renderer.depthStencilState = Renderer.device.makeDepthStencilState(descriptor: descriptor)
-    }
 }
 
 extension Renderer: MTKViewDelegate {
