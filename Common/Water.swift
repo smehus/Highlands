@@ -58,7 +58,7 @@ class Water: Node {
             let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
             stencilPipelineDescriptor.vertexFunction = vertexFunction
             stencilPipelineDescriptor.fragmentFunction = nil
-            stencilPipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
+            stencilPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
             stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
             stencilPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
             stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8

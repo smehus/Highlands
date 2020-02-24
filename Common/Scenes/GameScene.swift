@@ -30,8 +30,6 @@ final class GameScene: Scene {
 
     override func setupScene() {
 
-        setupStencilTest()
-
         instanceParamBuffer = Renderer.device
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
@@ -90,19 +88,21 @@ final class GameScene: Scene {
     }
 
     private var mainPassStencilTexture: MTLTexture!
-    private var stencilTestState: MTLDepthStencilState!
+
+    private var drawStencilState: MTLDepthStencilState!
     private var mainDepthStencilState: MTLDepthStencilState!
-    private var stencilRenderPassDescriptor: MTLRenderPassDescriptor!
+    private var maskStencilState: MTLDepthStencilState!
 
+//    private var stencilRenderPassDescriptor: MTLRenderPassDescriptor!
 
-    private func setupStencilTest() {
+    private func setupStencilTest(size: CGSize) {
 
 
         // Create depth / stencil texture
         let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .depth32Float_stencil8,
-                                                                         width: Int(Renderer.mtkView.drawableSize.width),
-                                                                         height: Int(Renderer.mtkView.drawableSize.width),
-                                                                         mipmapped: true)
+                                                                         width: Int(size.width),
+                                                                         height: Int(size.width),
+                                                                         mipmapped: false)
 
         textureDescriptor.textureType = .type2D
         textureDescriptor.storageMode = .private
@@ -110,41 +110,48 @@ final class GameScene: Scene {
         mainPassStencilTexture = Renderer.device.makeTexture(descriptor: textureDescriptor)
 
 
-        // Stencil buffer render pass
-        stencilRenderPassDescriptor = MTLRenderPassDescriptor()
-        stencilRenderPassDescriptor.stencilAttachment.texture = mainPassStencilTexture
-        stencilRenderPassDescriptor.stencilAttachment.clearStencil = 0
-        stencilRenderPassDescriptor.stencilAttachment.loadAction = .clear
-        stencilRenderPassDescriptor.stencilAttachment.storeAction = .store
-
-        stencilRenderPassDescriptor.depthAttachment.loadAction = .clear
-        stencilRenderPassDescriptor.depthAttachment.storeAction = .store
-        stencilRenderPassDescriptor.depthAttachment.texture = mainPassStencilTexture
-
-
-        // Stencil buffer render pass stencilState
-        let stencilDescriptor = MTLDepthStencilDescriptor()
-        stencilDescriptor.depthCompareFunction = MTLCompareFunction.always
-        stencilDescriptor.isDepthWriteEnabled = true
-
-        stencilDescriptor.frontFaceStencil.stencilCompareFunction = MTLCompareFunction.equal
-        stencilDescriptor.frontFaceStencil.stencilFailureOperation = MTLStencilOperation.keep
-        stencilDescriptor.frontFaceStencil.depthFailureOperation = MTLStencilOperation.keep
-        stencilDescriptor.frontFaceStencil.depthStencilPassOperation = MTLStencilOperation.replace
-
-        stencilDescriptor.frontFaceStencil.readMask = 0x1
-        stencilDescriptor.frontFaceStencil.writeMask = 0x1
-        stencilDescriptor.backFaceStencil = nil
-
-        stencilTestState =  Renderer.device.makeDepthStencilState(descriptor: stencilDescriptor)
+//        // Stencil buffer render pass
+//        stencilRenderPassDescriptor = MTLRenderPassDescriptor()
+//        stencilRenderPassDescriptor.stencilAttachment.texture = mainPassStencilTexture
+//        stencilRenderPassDescriptor.stencilAttachment.clearStencil = 0
+//        stencilRenderPassDescriptor.stencilAttachment.loadAction = .clear
+//        stencilRenderPassDescriptor.stencilAttachment.storeAction = .store
+//
+//        stencilRenderPassDescriptor.depthAttachment.loadAction = .clear
+//        stencilRenderPassDescriptor.depthAttachment.storeAction = .store
+//        stencilRenderPassDescriptor.depthAttachment.texture = mainPassStencilTexture
 
 
-        // Main Stencil State
-        let descriptor = MTLDepthStencilDescriptor()
-        descriptor.depthCompareFunction = .less
-        descriptor.isDepthWriteEnabled = true
-        mainDepthStencilState = Renderer.device.makeDepthStencilState(descriptor: descriptor)
+        // Stencil Buffer Pass
+        var depthStencilDescriptor = MTLDepthStencilDescriptor()
+        depthStencilDescriptor.depthCompareFunction = .less
+        depthStencilDescriptor.isDepthWriteEnabled = true
+        mainDepthStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
 
+
+        var stencilDescriptor = MTLStencilDescriptor()
+        stencilDescriptor.stencilCompareFunction = .always
+        stencilDescriptor.depthStencilPassOperation = .replace
+        depthStencilDescriptor.backFaceStencil = stencilDescriptor
+        depthStencilDescriptor.frontFaceStencil = stencilDescriptor
+        depthStencilDescriptor.isDepthWriteEnabled = false
+
+        drawStencilState =  Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
+
+
+
+        // Mask Stencil State
+
+        depthStencilDescriptor = MTLDepthStencilDescriptor()
+        depthStencilDescriptor.depthCompareFunction = .less
+        depthStencilDescriptor.isDepthWriteEnabled = true
+
+        stencilDescriptor = MTLStencilDescriptor()
+        stencilDescriptor.stencilCompareFunction = .equal
+        depthStencilDescriptor.frontFaceStencil = stencilDescriptor
+        depthStencilDescriptor.backFaceStencil = stencilDescriptor
+
+        maskStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
     }
 
     override func isHardCollision() -> Bool {
@@ -225,7 +232,7 @@ final class GameScene: Scene {
 
         orthoCamera.rect = rect
 
-        setupStencilTest()
+        setupStencilTest(size: size)
         buildShadowTexture(size: size)
 
     }
@@ -320,26 +327,35 @@ final class GameScene: Scene {
 
         // Stencil Buffer Pass
 
-        let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: stencilRenderPassDescriptor)!
+        descriptor.stencilAttachment.clearStencil = 1
+        descriptor.stencilAttachment.loadAction = .clear
+        descriptor.stencilAttachment.storeAction = .store
+        descriptor.stencilAttachment.texture = mainPassStencilTexture
+
+        descriptor.depthAttachment.loadAction = .clear
+        descriptor.depthAttachment.storeAction = .store
+        descriptor.depthAttachment.texture = mainPassStencilTexture
+
+//        descriptor.depthAttachment = stencilRenderPassDescriptor.depthAttachment
+//        descriptor.stencilAttachment = stencilRenderPassDescriptor.stencilAttachment
+
+        let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor)!
         stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
-        stencilEncoder.setDepthStencilState(stencilTestState)
-        stencilEncoder.setStencilReferenceValue(0x1)
+        stencilEncoder.setDepthStencilState(drawStencilState)
+        stencilEncoder.setStencilReferenceValue(1)
 
         for renderable in renderables {
-//            renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
+            renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
         }
 
         stencilEncoder.popDebugGroup()
         stencilEncoder.endEncoding()
 
         // Main pass
-
-        descriptor.depthAttachment = stencilRenderPassDescriptor.depthAttachment
-        descriptor.stencilAttachment = stencilRenderPassDescriptor.stencilAttachment
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderEncoder.pushDebugGroup("Main pass")
         renderEncoder.label = "Main encoder"
-        renderEncoder.setDepthStencilState(mainDepthStencilState)
+        renderEncoder.setDepthStencilState(maskStencilState)
         renderEncoder.setStencilReferenceValue(1)
         renderEncoder.setCullMode(.back)
 
