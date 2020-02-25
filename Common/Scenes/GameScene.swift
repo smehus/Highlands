@@ -93,8 +93,6 @@ final class GameScene: Scene {
     private var mainDepthStencilState: MTLDepthStencilState!
     private var maskStencilState: MTLDepthStencilState!
 
-//    private var stencilRenderPassDescriptor: MTLRenderPassDescriptor!
-
     private func setupStencilTest(size: CGSize) {
 
 
@@ -107,19 +105,8 @@ final class GameScene: Scene {
         textureDescriptor.textureType = .type2D
         textureDescriptor.storageMode = .private
         textureDescriptor.usage = [.renderTarget, .shaderRead, .shaderWrite]
+        // used for shadows
         mainPassStencilTexture = Renderer.device.makeTexture(descriptor: textureDescriptor)
-
-
-//        // Stencil buffer render pass
-//        stencilRenderPassDescriptor = MTLRenderPassDescriptor()
-//        stencilRenderPassDescriptor.stencilAttachment.texture = mainPassStencilTexture
-//        stencilRenderPassDescriptor.stencilAttachment.clearStencil = 0
-//        stencilRenderPassDescriptor.stencilAttachment.loadAction = .clear
-//        stencilRenderPassDescriptor.stencilAttachment.storeAction = .store
-//
-//        stencilRenderPassDescriptor.depthAttachment.loadAction = .clear
-//        stencilRenderPassDescriptor.depthAttachment.storeAction = .store
-//        stencilRenderPassDescriptor.depthAttachment.texture = mainPassStencilTexture
 
 
         // Stencil Buffer Pass
@@ -131,13 +118,16 @@ final class GameScene: Scene {
 
         var stencilDescriptor = MTLStencilDescriptor()
         stencilDescriptor.stencilCompareFunction = .always
+        stencilDescriptor.writeMask = 1
+        stencilDescriptor.readMask = 1
         stencilDescriptor.depthStencilPassOperation = .replace
+        stencilDescriptor.stencilFailureOperation = .keep
         depthStencilDescriptor.backFaceStencil = stencilDescriptor
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
+        depthStencilDescriptor.depthCompareFunction = .always
         depthStencilDescriptor.isDepthWriteEnabled = false
 
         drawStencilState =  Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
-
 
 
         // Mask Stencil State
@@ -148,6 +138,10 @@ final class GameScene: Scene {
 
         stencilDescriptor = MTLStencilDescriptor()
         stencilDescriptor.stencilCompareFunction = .equal
+        stencilDescriptor.depthStencilPassOperation = .keep
+        stencilDescriptor.stencilFailureOperation = .zero
+        stencilDescriptor.writeMask = 1
+        stencilDescriptor.readMask = 1
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
         depthStencilDescriptor.backFaceStencil = stencilDescriptor
 
@@ -327,7 +321,7 @@ final class GameScene: Scene {
 
         // Stencil Buffer Pass
 
-        descriptor.stencilAttachment.clearStencil = 1
+        descriptor.stencilAttachment.clearStencil = 0
         descriptor.stencilAttachment.loadAction = .clear
         descriptor.stencilAttachment.storeAction = .store
         descriptor.stencilAttachment.texture = mainPassStencilTexture
@@ -336,8 +330,7 @@ final class GameScene: Scene {
         descriptor.depthAttachment.storeAction = .store
         descriptor.depthAttachment.texture = mainPassStencilTexture
 
-//        descriptor.depthAttachment = stencilRenderPassDescriptor.depthAttachment
-//        descriptor.stencilAttachment = stencilRenderPassDescriptor.stencilAttachment
+
 
         let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor)!
         stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
@@ -350,6 +343,8 @@ final class GameScene: Scene {
 
         stencilEncoder.popDebugGroup()
         stencilEncoder.endEncoding()
+
+        descriptor.stencilAttachment.loadAction = .load
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }

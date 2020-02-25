@@ -11,7 +11,7 @@ import MetalKit
 
 class TileScene: Node {
 
-    private let water = Water(size: 50)
+    private let water = Water(size: 5)
     let terrain = Terrain(textureName: "terrain1")
 
     func setupTile() {
