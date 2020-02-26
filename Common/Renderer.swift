@@ -18,9 +18,6 @@ final class Renderer: NSObject {
 
     var scene: Scene?
 
-
-
-
     init(metalView: MTKView) {
         Renderer.mtkView = metalView
         guard let device = MTLCreateSystemDefaultDevice() else {

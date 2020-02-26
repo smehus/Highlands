@@ -318,17 +318,16 @@ final class GameScene: Scene {
         guard let shadowEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: shadowRenderPassDescriptor) else {  return }
         renderShadowPass(renderEncoder: shadowEncoder, view: view)
 
-
         // Stencil Buffer Pass
 
         descriptor.stencilAttachment.clearStencil = 0
         descriptor.stencilAttachment.loadAction = .clear
         descriptor.stencilAttachment.storeAction = .store
-        descriptor.stencilAttachment.texture = mainPassStencilTexture
+        descriptor.stencilAttachment.texture = view.depthStencilTexture
 
         descriptor.depthAttachment.loadAction = .clear
         descriptor.depthAttachment.storeAction = .store
-        descriptor.depthAttachment.texture = mainPassStencilTexture
+        descriptor.depthAttachment.texture = view.depthStencilTexture
 
 
 
@@ -344,7 +343,9 @@ final class GameScene: Scene {
         stencilEncoder.popDebugGroup()
         stencilEncoder.endEncoding()
 
+//        descriptor.depthAttachment.storeAction = .dontCare
         descriptor.stencilAttachment.loadAction = .load
+//        descriptor.stencilAttachment.storeAction = .dontCare
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
