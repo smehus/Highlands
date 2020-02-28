@@ -91,7 +91,7 @@ final class GameScene: Scene {
 
     private var drawStencilState: MTLDepthStencilState!
     private var mainDepthStencilState: MTLDepthStencilState!
-    private var maskStencilState: MTLDepthStencilState!
+    static var maskStencilState: MTLDepthStencilState!
 
     private func setupStencilTest(size: CGSize) {
 
@@ -145,7 +145,7 @@ final class GameScene: Scene {
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
         depthStencilDescriptor.backFaceStencil = stencilDescriptor
 
-        maskStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
+        GameScene.maskStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
     }
 
     override func isHardCollision() -> Bool {
@@ -351,9 +351,8 @@ final class GameScene: Scene {
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderEncoder.pushDebugGroup("Main pass")
         renderEncoder.label = "Main encoder"
-        renderEncoder.setDepthStencilState(maskStencilState)
-        renderEncoder.setStencilReferenceValue(1)
         renderEncoder.setCullMode(.back)
+        
 
         if let heap = TextureController.heap {
             renderEncoder.useHeap(heap)
@@ -368,6 +367,7 @@ final class GameScene: Scene {
 
         for renderable in renderables {
             renderEncoder.pushDebugGroup(renderable.name)
+            renderEncoder.setDepthStencilState(mainDepthStencilState)
             renderable.render(renderEncoder: renderEncoder, uniforms: uniforms)
             renderEncoder.popDebugGroup()
         }

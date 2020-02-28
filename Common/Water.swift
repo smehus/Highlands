@@ -126,8 +126,10 @@ extension Water: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
         renderEncoder.pushDebugGroup("Water")
 
+        renderEncoder.setStencilReferenceValue(1)
         render(renderEncoder: renderEncoder, pipelineState: pipelineState, uniforms: vertex)
 
+        renderEncoder.setStencilReferenceValue(0)
         renderEncoder.popDebugGroup()
     }
 
@@ -136,6 +138,7 @@ extension Water: Renderable {
         var uniforms = uniforms
         timer += 0.0001
 
+        renderEncoder.setDepthStencilState(GameScene.maskStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
