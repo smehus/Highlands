@@ -60,6 +60,9 @@ class Prop: Node {
     var patches: [Patch]!
     var currentPatch: Patch?
 
+    var instanceStencilPlanes: [MTKMesh]
+    var stencilPipeline: MTLRenderPipelineState
+
     init(type: ModelType) {
 
         self.propType = type
@@ -94,6 +97,29 @@ class Prop: Node {
         var bytes: [Float] = transforms.map { _ in return 0.0 }
         heightBuffer = Renderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
 //        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
+
+
+
+
+        instanceStencilPlanes = (0...instanceCount).map({ _ in
+            let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+            let mdlMesh = MDLMesh(planeWithExtent: [2, 2, 2],
+                           segments: [1, 1],
+                           geometryType: .triangles,
+                           allocator: allocator)
+
+            return try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+        })
+
+        let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
+        stencilPipelineDescriptor.vertexFunction = Renderer.library!.makeFunction(name: "stencil_vertex")!
+        stencilPipelineDescriptor.fragmentFunction = nil
+        stencilPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(instanceStencilPlanes.first!.vertexDescriptor)
+        stencilPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+        stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+
+        stencilPipeline = try! Renderer.device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
 
         super.init()
         self.name = type.name
@@ -295,12 +321,36 @@ extension Prop: Renderable {
         }
     }
 
+
+
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
-        render(renderEncoder: renderEncoder, uniforms: uniforms, type: .stencil)
+        for (transform, plane) in zip(transforms, instanceStencilPlanes) {
+            var uniforms = uniforms
+
+            var planeTransform = Transform()
+            planeTransform.position = transform.position
+            planeTransform.scale = transform.scale
+            planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
+
+            uniforms.modelMatrix = worldTransform * planeTransform.modelMatrix
+
+            renderEncoder.setRenderPipelineState(stencilPipeline)
+            renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
+
+            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+
+            plane.submeshes.enumerated().forEach { (_, submesh) in
+                renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                    indexCount: submesh.indexCount,
+                                                    indexType: submesh.indexType,
+                                                    indexBuffer: submesh.indexBuffer.buffer,
+                                                    indexBufferOffset: submesh.indexBuffer.offset)
+            }
+        }
     }
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
-//        render(renderEncoder: renderEncoder, uniforms: vertex, type: .main)
+        render(renderEncoder: renderEncoder, uniforms: vertex, type: .main)
     }
 
     private func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, type: RenderType) {

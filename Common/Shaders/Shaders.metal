@@ -43,16 +43,11 @@ struct PropTextures {
 
 
 vertex VertexOut stencil_vertex(const VertexIn vertex_in [[ stage_in ]],
-                                uint instanceID [[ instance_id ]],
-                                constant Instances *instances [[ buffer(BufferIndexInstances) ]],
                                 constant Uniforms &uniforms [[ buffer(BufferIndexUniforms)]]) {
-
-    VertexOut out;
-    Instances instance = instances[instanceID];
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * instance.modelMatrix * float4(vertex_in.position.xyz, 1);
-    out.worldPosition = uniforms.modelMatrix * instance.modelMatrix * vertex_in.position;
-
-    return out;
+    return {
+        .position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertex_in.position,
+        .worldPosition = uniforms.modelMatrix * vertex_in.position
+    };
 }
 
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
