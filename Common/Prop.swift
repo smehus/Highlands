@@ -284,68 +284,83 @@ class Prop: Node {
 
 extension Prop: Renderable {
 
+    private enum RenderType {
+        case main
+        case stencil
+    }
+
     func createTexturesBuffer() {
         for mesh in submeshes {
             mesh.createTexturesBuffer()
         }
     }
 
-    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
-//        renderEncoder.setFrontFacing(windingOrder)
-
-        var uniforms = vertex
-        uniforms.modelMatrix = worldTransform
-        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
-
-        renderEncoder.setFragmentSamplerState(samplerState, index: 0)
-
-        renderEncoder.setVertexBytes(&uniforms,
-                                     length: MemoryLayout<Uniforms>.stride,
-                                     index: Int(BufferIndexUniforms.rawValue))
-
-        renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
-        for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
-            renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
-        }
-
-        renderEncoder.setFragmentBytes(&tiling, length: MemoryLayout<UInt32>.stride, index: 22)
-
-
-        for modelSubmesh in submeshes {
-            
-            renderEncoder.setRenderPipelineState(modelSubmesh.pipelineState)
-
-            // Check out character for why this is commented out
-//            if let baseColorIndex = modelSubmesh.baseColorIndex {
-//                renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
-//            }
-//
-//            if let normalIndex = modelSubmesh.normalIndex {
-//                renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
-//            }
-
-//            if let roughnessTexture = modelSubmesh.textures.roughness {
-//                renderEncoder.useResource(roughnessTexture, usage: .read)
-//            }
-
-            renderEncoder.setFragmentBuffer(modelSubmesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
-
-            var material = modelSubmesh.material
-            renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
-
-            let submesh = modelSubmesh.mtkSubmesh
-            renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                indexCount: submesh.indexCount,
-                                                indexType: submesh.indexType,
-                                                indexBuffer: submesh.indexBuffer.buffer,
-                                                indexBufferOffset: submesh.indexBuffer.offset,
-                                                instanceCount: instanceCount)
-            
-            if debugRenderBoundingBox {
-                debugBoundingBox.render(renderEncoder: renderEncoder, uniforms: uniforms)
-            }
-        }
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+        render(renderEncoder: renderEncoder, uniforms: uniforms, type: .stencil)
     }
+
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+//        render(renderEncoder: renderEncoder, uniforms: vertex, type: .main)
+    }
+
+    private func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, type: RenderType) {
+        //        renderEncoder.setFrontFacing(windingOrder)
+
+                var uniforms = vertex
+                uniforms.modelMatrix = worldTransform
+                uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
+
+                renderEncoder.setFragmentSamplerState(samplerState, index: 0)
+
+                renderEncoder.setVertexBytes(&uniforms,
+                                             length: MemoryLayout<Uniforms>.stride,
+                                             index: Int(BufferIndexUniforms.rawValue))
+
+                renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
+                for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+                    renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
+                }
+
+                renderEncoder.setFragmentBytes(&tiling, length: MemoryLayout<UInt32>.stride, index: 22)
+
+
+                for modelSubmesh in submeshes {
+
+                    let typePipeline = type == .stencil ? modelSubmesh.stencilPipelineState : modelSubmesh.pipelineState
+                    renderEncoder.setRenderPipelineState(typePipeline!)
+
+                    // Check out character for why this is commented out
+        //            if let baseColorIndex = modelSubmesh.baseColorIndex {
+        //                renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
+        //            }
+        //
+        //            if let normalIndex = modelSubmesh.normalIndex {
+        //                renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
+        //            }
+
+        //            if let roughnessTexture = modelSubmesh.textures.roughness {
+        //                renderEncoder.useResource(roughnessTexture, usage: .read)
+        //            }
+
+                    renderEncoder.setFragmentBuffer(modelSubmesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
+
+                    var material = modelSubmesh.material
+                    renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
+
+                    let submesh = modelSubmesh.mtkSubmesh
+                    renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                        indexCount: submesh.indexCount,
+                                                        indexType: submesh.indexType,
+                                                        indexBuffer: submesh.indexBuffer.buffer,
+                                                        indexBufferOffset: submesh.indexBuffer.offset,
+                                                        instanceCount: instanceCount)
+
+                    if debugRenderBoundingBox {
+                        debugBoundingBox.render(renderEncoder: renderEncoder, uniforms: uniforms)
+                    }
+                }
+    }
+
 
 
     // Instanced trees: Need to add the number of cube map faces by the number of instances?

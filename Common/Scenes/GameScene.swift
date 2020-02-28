@@ -120,7 +120,7 @@ final class GameScene: Scene {
         stencilDescriptor.stencilCompareFunction = .always
         stencilDescriptor.writeMask = 1
         stencilDescriptor.readMask = 1
-        stencilDescriptor.depthStencilPassOperation = .replace
+        stencilDescriptor.depthStencilPassOperation = .zero
         stencilDescriptor.stencilFailureOperation = .keep
         depthStencilDescriptor.backFaceStencil = stencilDescriptor
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
@@ -139,7 +139,7 @@ final class GameScene: Scene {
         stencilDescriptor = MTLStencilDescriptor()
         stencilDescriptor.stencilCompareFunction = .equal
         stencilDescriptor.depthStencilPassOperation = .keep
-        stencilDescriptor.stencilFailureOperation = .zero
+        stencilDescriptor.stencilFailureOperation = .keep
         stencilDescriptor.writeMask = 1
         stencilDescriptor.readMask = 1
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
@@ -320,7 +320,7 @@ final class GameScene: Scene {
 
         // Stencil Buffer Pass
 
-        descriptor.stencilAttachment.clearStencil = 0
+        descriptor.stencilAttachment.clearStencil = 1
         descriptor.stencilAttachment.loadAction = .clear
         descriptor.stencilAttachment.storeAction = .store
         descriptor.stencilAttachment.texture = view.depthStencilTexture
@@ -343,9 +343,9 @@ final class GameScene: Scene {
         stencilEncoder.popDebugGroup()
         stencilEncoder.endEncoding()
 
-//        descriptor.depthAttachment.storeAction = .dontCare
+        descriptor.depthAttachment.storeAction = .dontCare
         descriptor.stencilAttachment.loadAction = .load
-//        descriptor.stencilAttachment.storeAction = .dontCare
+        descriptor.stencilAttachment.storeAction = .dontCare
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }

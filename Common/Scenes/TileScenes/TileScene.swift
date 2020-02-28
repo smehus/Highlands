@@ -11,7 +11,7 @@ import MetalKit
 
 class TileScene: Node {
 
-    private let water = Water(size: 5)
+    private let water = Water(size: 50)
     let terrain = Terrain(textureName: "terrain1")
 
     func setupTile() {
@@ -99,7 +99,7 @@ extension TileScene: Renderable {
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
         for child in children {
-            guard let renderable = child as? Renderable else { fatalError() }
+            guard let renderable = child as? Renderable else { continue }
 
             renderable.render(renderEncoder: renderEncoder, uniforms: vertex)
         }
@@ -107,7 +107,7 @@ extension TileScene: Renderable {
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
         for child in children {
-            guard let renderable = child as? Renderable else { fatalError() }
+            guard let renderable = child as? Renderable else { continue }
 
             renderable.renderShadow(renderEncoder: renderEncoder, uniforms: uniforms, startingIndex: startingIndex)
         }

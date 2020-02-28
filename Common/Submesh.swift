@@ -16,8 +16,10 @@ class Submesh {
     var roughnessIndex: Int?
     var material: Material
     let type: ModelType
+
     var pipelineState: MTLRenderPipelineState!
     var shadowPipelineState: MTLRenderPipelineState!
+    var stencilPipelineState: MTLRenderPipelineState!
 
     var texturesBuffer: MTLBuffer!
     var vertexFunction: MTLFunction?
@@ -117,8 +119,19 @@ private extension Submesh {
         pipelineDescriptor.sampleCount = Renderer.sampleCount
 
 
+        let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
+        stencilPipelineDescriptor.vertexFunction = vertexFunction
+        stencilPipelineDescriptor.fragmentFunction = nil
+        stencilPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
+        stencilPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+        stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+
+
+
         do {
             pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+            stencilPipelineState = try! Renderer.device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
         } catch let error {
             fatalError(error.localizedDescription)
         }

@@ -243,6 +243,9 @@ class Character: Node {
 
 extension Character: Renderable {
 
+
+    /// This works because the character is added to the scene rather than the TileScene.
+    /// The game scene calls this in super.setup
     func createTexturesBuffer() {
         for mesh in meshes {
             for submesh in mesh.submeshes {

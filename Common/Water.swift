@@ -76,7 +76,7 @@ class Water: Node {
 extension Water: Renderable {
 
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
-        render(renderEncoder: renderEncoder, pipelineState: stencilPipelineState, uniforms: uniforms)
+//        render(renderEncoder: renderEncoder, pipelineState: stencilPipelineState, uniforms: uniforms)
     }
 
     func createTexturesBuffer() {
