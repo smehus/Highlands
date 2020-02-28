@@ -118,9 +118,8 @@ private extension Submesh {
 //        pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
         pipelineDescriptor.sampleCount = Renderer.sampleCount
 
-
         let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
-        stencilPipelineDescriptor.vertexFunction = vertexFunction
+        stencilPipelineDescriptor.vertexFunction = library!.makeFunction(name: "stencil_vertex")!
         stencilPipelineDescriptor.fragmentFunction = nil
         stencilPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
         stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
