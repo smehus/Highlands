@@ -136,7 +136,7 @@ extension Water: Renderable {
     private func render(renderEncoder: MTLRenderCommandEncoder, pipelineState: MTLRenderPipelineState, uniforms: Uniforms) {
 
         var uniforms = uniforms
-        timer += 0.0001
+        timer += 0.00017
 
         renderEncoder.setDepthStencilState(GameScene.maskStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
