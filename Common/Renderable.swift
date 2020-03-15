@@ -8,6 +8,11 @@
 
 import MetalKit
 
+enum RenderType {
+    case main
+    case stencil
+}
+
 protocol Renderable {
     var name: String { get }
 

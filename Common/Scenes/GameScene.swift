@@ -109,17 +109,19 @@ final class GameScene: Scene {
         mainPassStencilTexture = Renderer.device.makeTexture(descriptor: textureDescriptor)
 
 
-        // Stencil Buffer Pass
+
+        // GENERIC MAIN - used for general rendering
         var depthStencilDescriptor = MTLDepthStencilDescriptor()
         depthStencilDescriptor.depthCompareFunction = .less
         depthStencilDescriptor.isDepthWriteEnabled = true
         mainDepthStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
 
 
+        // DRAW: Stencil Buffer Pass
         var stencilDescriptor = MTLStencilDescriptor()
         stencilDescriptor.stencilCompareFunction = .always
         stencilDescriptor.writeMask = 1
-        stencilDescriptor.readMask = 1
+//        stencilDescriptor.readMask = 1
         stencilDescriptor.depthStencilPassOperation = .zero
         stencilDescriptor.stencilFailureOperation = .keep
         depthStencilDescriptor.backFaceStencil = stencilDescriptor
@@ -130,8 +132,8 @@ final class GameScene: Scene {
         drawStencilState =  Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
 
 
-        // Mask Stencil State
-
+        // MASK: Mask Stencil State
+        // used for main render passes we want to use the stencil attachment to block rendering based on comparisons
         depthStencilDescriptor = MTLDepthStencilDescriptor()
         depthStencilDescriptor.depthCompareFunction = .less
         depthStencilDescriptor.isDepthWriteEnabled = true
@@ -140,7 +142,7 @@ final class GameScene: Scene {
         stencilDescriptor.stencilCompareFunction = .equal
         stencilDescriptor.depthStencilPassOperation = .keep
         stencilDescriptor.stencilFailureOperation = .keep
-        stencilDescriptor.writeMask = 1
+//        stencilDescriptor.writeMask = 1
         stencilDescriptor.readMask = 1
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
         depthStencilDescriptor.backFaceStencil = stencilDescriptor
@@ -334,7 +336,9 @@ final class GameScene: Scene {
         let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor)!
         stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
         stencilEncoder.setDepthStencilState(drawStencilState)
-        stencilEncoder.setStencilReferenceValue(1)
+        // value in stencil attachment is compared against this reference value
+        // But should only matter in main pass? Because we're tyring to write to the stencil attachment here
+//        stencilEncoder.setStencilReferenceValue(1)
 
         for renderable in renderables {
             renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
