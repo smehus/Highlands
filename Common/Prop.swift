@@ -18,15 +18,15 @@ class Prop: Node {
     static var defaultVertexDescriptor: MDLVertexDescriptor = {
         let vertexDescriptor = MDLVertexDescriptor()
         vertexDescriptor.attributes[Int(Position.rawValue)] = MDLVertexAttribute(name: MDLVertexAttributePosition,
-                                                            format: .float3,
-                                                            offset: 0,
-                                                            bufferIndex: 0)
+                                                                                 format: .float3,
+                                                                                 offset: 0,
+                                                                                 bufferIndex: 0)
 
 
         vertexDescriptor.attributes[Int(Normal.rawValue)] = MDLVertexAttribute(name: MDLVertexAttributeNormal,
-                                                            format: .float3,
-                                                            offset: 12,
-                                                            bufferIndex: 0)
+                                                                               format: .float3,
+                                                                               offset: 12,
+                                                                               bufferIndex: 0)
 
         vertexDescriptor.attributes[Int(UV.rawValue)] = MDLVertexAttribute(name: MDLVertexAttributeTextureCoordinate,
                                                                            format: .float2,
@@ -79,7 +79,7 @@ class Prop: Node {
         submeshes = mdlMesh.submeshes?.enumerated().compactMap { index, element in
             guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
             return Submesh(submesh: mtkMesh.submeshes[index], mdlSubmesh: submesh, type: type)
-        } ?? []
+            } ?? []
 
         samplerState = Prop.buildSamplerState()
         debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
@@ -96,7 +96,7 @@ class Prop: Node {
 
         var bytes: [Float] = transforms.map { _ in return 0.0 }
         heightBuffer = Renderer.device.makeBuffer(bytes: &bytes, length: MemoryLayout<Float>.size * type.instanceCount, options: .storageModeShared)!
-//        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
+        //        heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<float3>.size * type.instanceCount, options: .storageModeShared)!
 
 
 
@@ -104,9 +104,9 @@ class Prop: Node {
         instanceStencilPlanes = (0...instanceCount).map({ _ in
             let allocator = MTKMeshBufferAllocator(device: Renderer.device)
             let mdlMesh = MDLMesh(planeWithExtent: [2, 2, 2],
-                           segments: [1, 1],
-                           geometryType: .triangles,
-                           allocator: allocator)
+                                  segments: [1, 1],
+                                  geometryType: .triangles,
+                                  allocator: allocator)
 
             return try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
         })
@@ -128,37 +128,37 @@ class Prop: Node {
 
     }
 
-//    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
-//
-//        let mdlMesh = Prop.loadMesh(name: name)
-//        // Add tangent and bit tangent
-//        mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
-//                                tangentAttributeNamed: MDLVertexAttributeTangent,
-//                                bitangentAttributeNamed: MDLVertexAttributeBitangent)
-//
-//        Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
-//        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
-//        self.mesh = mesh
-//
-//        submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
-//            guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
-//            return Submesh(base: (mesh.submeshes[index], submesh, vertexFunction, fragmentFunction),
-//                           isGround: name == "large-plane",
-//                           blending: name == "window")
-//        } ?? []
-//
-//        samplerState = Prop.buildSamplerState()
-//        debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
-//
-//        self.instanceCount = instanceCount
-//        transforms = Prop.buildTransforms(instanceCount: instanceCount)
-//        instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
-//
-//        super.init()
-//
-//        boundingBox = mdlMesh.boundingBox
-//
-//    }
+    //    init(name: String, vertexFunction: String = "vertex_main", fragmentFunction: String = "fragment_main", instanceCount: Int = 1) {
+    //
+    //        let mdlMesh = Prop.loadMesh(name: name)
+    //        // Add tangent and bit tangent
+    //        mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
+    //                                tangentAttributeNamed: MDLVertexAttributeTangent,
+    //                                bitangentAttributeNamed: MDLVertexAttributeBitangent)
+    //
+    //        Prop.defaultVertexDescriptor = mdlMesh.vertexDescriptor
+    //        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+    //        self.mesh = mesh
+    //
+    //        submeshes = mdlMesh.submeshes?.enumerated().compactMap {index, element in
+    //            guard let submesh = element as? MDLSubmesh else { assertionFailure(); return nil }
+    //            return Submesh(base: (mesh.submeshes[index], submesh, vertexFunction, fragmentFunction),
+    //                           isGround: name == "large-plane",
+    //                           blending: name == "window")
+    //        } ?? []
+    //
+    //        samplerState = Prop.buildSamplerState()
+    //        debugBoundingBox = DebugBoundingBox(boundingBox: mdlMesh.boundingBox)
+    //
+    //        self.instanceCount = instanceCount
+    //        transforms = Prop.buildTransforms(instanceCount: instanceCount)
+    //        instanceBuffer = Prop.buildInstanceBuffer(transforms: transforms)
+    //
+    //        super.init()
+    //
+    //        boundingBox = mdlMesh.boundingBox
+    //
+    //    }
 
     static func loadMesh(name: String) -> MDLMesh {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
@@ -177,8 +177,8 @@ class Prop: Node {
         guard
             let instanceBuffer = Renderer.device
                 .makeBuffer(bytes: instances, length: MemoryLayout<Instances>.stride * instances.count)
-        else {
-            fatalError()
+            else {
+                fatalError()
         }
 
         return instanceBuffer
@@ -301,7 +301,7 @@ class Prop: Node {
         }
 
         if let current = currentPatch, current != patch {
-//            print("*** UPDATE CURRENT PATCH \(patch)")
+            //            print("*** UPDATE CURRENT PATCH \(patch)")
         }
 
         return patch
@@ -356,59 +356,59 @@ extension Prop: Renderable {
     private func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, type: RenderType) {
         //        renderEncoder.setFrontFacing(windingOrder)
 
-                var uniforms = vertex
-                uniforms.modelMatrix = worldTransform
-                uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
+        var uniforms = vertex
+        uniforms.modelMatrix = worldTransform
+        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
 
-                renderEncoder.setFragmentSamplerState(samplerState, index: 0)
+        renderEncoder.setFragmentSamplerState(samplerState, index: 0)
 
-                renderEncoder.setVertexBytes(&uniforms,
-                                             length: MemoryLayout<Uniforms>.stride,
-                                             index: Int(BufferIndexUniforms.rawValue))
+        renderEncoder.setVertexBytes(&uniforms,
+                                     length: MemoryLayout<Uniforms>.stride,
+                                     index: Int(BufferIndexUniforms.rawValue))
 
-                renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
-                for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
-                    renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
-                }
+        renderEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
+        for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+            renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
+        }
 
-                renderEncoder.setFragmentBytes(&tiling, length: MemoryLayout<UInt32>.stride, index: 22)
+        renderEncoder.setFragmentBytes(&tiling, length: MemoryLayout<UInt32>.stride, index: 22)
 
 
-                for modelSubmesh in submeshes {
+        for modelSubmesh in submeshes {
 
-                    let typePipeline = type == .stencil ? modelSubmesh.stencilPipelineState : modelSubmesh.pipelineState
-                    renderEncoder.setRenderPipelineState(typePipeline!)
+            let typePipeline = type == .stencil ? modelSubmesh.stencilPipelineState : modelSubmesh.pipelineState
+            renderEncoder.setRenderPipelineState(typePipeline!)
 
-                    // Check out character for why this is commented out
-        //            if let baseColorIndex = modelSubmesh.baseColorIndex {
-        //                renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
-        //            }
-        //
-        //            if let normalIndex = modelSubmesh.normalIndex {
-        //                renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
-        //            }
+            // Check out character for why this is commented out
+            //            if let baseColorIndex = modelSubmesh.baseColorIndex {
+            //                renderEncoder.useResource(TextureController.textures[baseColorIndex].texture, usage: .read)
+            //            }
+            //
+            //            if let normalIndex = modelSubmesh.normalIndex {
+            //                renderEncoder.useResource(TextureController.textures[normalIndex].texture, usage: .read)
+            //            }
 
-        //            if let roughnessTexture = modelSubmesh.textures.roughness {
-        //                renderEncoder.useResource(roughnessTexture, usage: .read)
-        //            }
+            //            if let roughnessTexture = modelSubmesh.textures.roughness {
+            //                renderEncoder.useResource(roughnessTexture, usage: .read)
+            //            }
 
-                    renderEncoder.setFragmentBuffer(modelSubmesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
+            renderEncoder.setFragmentBuffer(modelSubmesh.texturesBuffer, offset: 0, index: Int(BufferIndexTextures.rawValue))
 
-                    var material = modelSubmesh.material
-                    renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
+            var material = modelSubmesh.material
+            renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
 
-                    let submesh = modelSubmesh.mtkSubmesh
-                    renderEncoder.drawIndexedPrimitives(type: .triangle,
-                                                        indexCount: submesh.indexCount,
-                                                        indexType: submesh.indexType,
-                                                        indexBuffer: submesh.indexBuffer.buffer,
-                                                        indexBufferOffset: submesh.indexBuffer.offset,
-                                                        instanceCount: instanceCount)
+            let submesh = modelSubmesh.mtkSubmesh
+            renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                indexCount: submesh.indexCount,
+                                                indexType: submesh.indexType,
+                                                indexBuffer: submesh.indexBuffer.buffer,
+                                                indexBufferOffset: submesh.indexBuffer.offset,
+                                                instanceCount: instanceCount)
 
-                    if debugRenderBoundingBox {
-                        debugBoundingBox.render(renderEncoder: renderEncoder, uniforms: uniforms)
-                    }
-                }
+            if debugRenderBoundingBox {
+                debugBoundingBox.render(renderEncoder: renderEncoder, uniforms: uniforms)
+            }
+        }
     }
 
 

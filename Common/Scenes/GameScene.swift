@@ -372,6 +372,7 @@ final class GameScene: Scene {
         for renderable in renderables {
             renderEncoder.pushDebugGroup(renderable.name)
             renderEncoder.setDepthStencilState(mainDepthStencilState)
+
             renderable.render(renderEncoder: renderEncoder, uniforms: uniforms)
             renderEncoder.popDebugGroup()
         }

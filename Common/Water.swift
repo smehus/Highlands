@@ -129,7 +129,7 @@ extension Water: Renderable {
         renderEncoder.setStencilReferenceValue(1)
         render(renderEncoder: renderEncoder, pipelineState: pipelineState, uniforms: vertex)
 
-        renderEncoder.setStencilReferenceValue(0)
+//        renderEncoder.setStencilReferenceValue(0)
         renderEncoder.popDebugGroup()
     }
 
