@@ -350,7 +350,9 @@ extension Prop: Renderable {
     }
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+        renderEncoder.pushDebugGroup(name)
         render(renderEncoder: renderEncoder, uniforms: vertex, type: .main)
+        renderEncoder.popDebugGroup()
     }
 
     private func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, type: RenderType) {
@@ -360,6 +362,7 @@ extension Prop: Renderable {
         uniforms.modelMatrix = worldTransform
         uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
 
+        
         renderEncoder.setFragmentSamplerState(samplerState, index: 0)
 
         renderEncoder.setVertexBytes(&uniforms,

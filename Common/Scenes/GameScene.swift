@@ -117,17 +117,25 @@ final class GameScene: Scene {
         mainDepthStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
 
 
+        // Props are still reading from the stencil attachment.
+        // Need to figure out a way for everything except water to ignore the stencil attachment
+        // One possible solution is the read write masks
+
+        // Nope, readMasks are only used to mask both the stored attachment value & the reference value.
+        // stored mask = storedValue & readMask
+        // refence mask (setReferenceStencilValue) = referenceValue & readMask
+
         // DRAW: Stencil Buffer Pass
         var stencilDescriptor = MTLStencilDescriptor()
         stencilDescriptor.stencilCompareFunction = .always
-        stencilDescriptor.writeMask = 1
-//        stencilDescriptor.readMask = 1
-        stencilDescriptor.depthStencilPassOperation = .zero
+//        stencilDescriptor.writeMask = 1
+//        stencilDescriptor.readMask = 7
+        stencilDescriptor.depthStencilPassOperation = .invert
         stencilDescriptor.stencilFailureOperation = .keep
         depthStencilDescriptor.backFaceStencil = stencilDescriptor
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
-        depthStencilDescriptor.depthCompareFunction = .always
-        depthStencilDescriptor.isDepthWriteEnabled = false
+//        depthStencilDescriptor.depthCompareFunction = .always
+//        depthStencilDescriptor.isDepthWriteEnabled = true
 
         drawStencilState =  Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
 
@@ -141,9 +149,10 @@ final class GameScene: Scene {
         stencilDescriptor = MTLStencilDescriptor()
         stencilDescriptor.stencilCompareFunction = .equal
         stencilDescriptor.depthStencilPassOperation = .keep
-        stencilDescriptor.stencilFailureOperation = .keep
-//        stencilDescriptor.writeMask = 1
-        stencilDescriptor.readMask = 1
+        // SETTING THIS TO .ZERO IS WHAT I WAS LOOKING FOR
+        stencilDescriptor.stencilFailureOperation = .zero
+//        stencilDescriptor.writeMask = 7
+//        stencilDescriptor.readMask = 7
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
         depthStencilDescriptor.backFaceStencil = stencilDescriptor
 
@@ -322,7 +331,7 @@ final class GameScene: Scene {
 
         // Stencil Buffer Pass
 
-        descriptor.stencilAttachment.clearStencil = 1
+        descriptor.stencilAttachment.clearStencil = 0
         descriptor.stencilAttachment.loadAction = .clear
         descriptor.stencilAttachment.storeAction = .store
         descriptor.stencilAttachment.texture = view.depthStencilTexture
@@ -350,6 +359,9 @@ final class GameScene: Scene {
         descriptor.depthAttachment.storeAction = .dontCare
         descriptor.stencilAttachment.loadAction = .load
         descriptor.stencilAttachment.storeAction = .dontCare
+
+        // Could create two render encoders and have one with a stencil texture & one with out
+//        descriptor.stencilAttachment.texture = nil
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }

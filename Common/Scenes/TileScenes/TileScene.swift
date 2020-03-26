@@ -36,7 +36,7 @@ class TileScene: Node {
         let offset = 25
 
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
-        tree.name = name
+//        tree.name = name
         add(childNode: tree)
 //        physicsController.addStaticBody(node: tree)
         for i in 0..<count {
