@@ -103,7 +103,7 @@ class Prop: Node {
 
         instanceStencilPlanes = (0...instanceCount).map({ _ in
             let allocator = MTKMeshBufferAllocator(device: Renderer.device)
-            let mdlMesh = MDLMesh(planeWithExtent: [2, 2, 2],
+            let mdlMesh = MDLMesh(planeWithExtent: [0.1, 5, 0.1],
                                   segments: [1, 1],
                                   geometryType: .triangles,
                                   allocator: allocator)
@@ -329,6 +329,7 @@ extension Prop: Renderable {
 
             var planeTransform = Transform()
             planeTransform.position = transform.position
+            planeTransform.position.x -= 7.5
             planeTransform.scale = transform.scale
             planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
 
