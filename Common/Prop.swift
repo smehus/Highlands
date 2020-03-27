@@ -103,10 +103,22 @@ class Prop: Node {
 
         instanceStencilPlanes = (0...instanceCount).map({ _ in
             let allocator = MTKMeshBufferAllocator(device: Renderer.device)
-            let mdlMesh = MDLMesh(planeWithExtent: [0.1, 5, 0.1],
-                                  segments: [1, 1],
-                                  geometryType: .triangles,
-                                  allocator: allocator)
+//            let mdlMesh = MDLMesh.newEllipticalCone(withHeight: <#T##Float#>, radii: <#T##vector_float2#>, radialSegments: <#T##Int#>, verticalSegments: <#T##Int#>, geometryType: <#T##MDLGeometryType#>, inwardNormals: <#T##Bool#>, allocator: <#T##MDLMeshBufferAllocator?#>)
+
+            // This works with correct rotation and position.
+            let mdlMesh = MDLMesh.newEllipsoid(withRadii: [1, 0, 0.3], radialSegments: 20, verticalSegments: 20, geometryType: .triangles, inwardNormals: false, hemisphere: true, allocator: allocator)
+//            let mdlMesh = MDLMesh(capsuleWithExtent: [0, 5, 1], cylinderSegments: [1, 1], hemisphereSegments: 5, inwardNormals: false, geometryType: .triangles, allocator: allocator)
+//            let mdlMesh = MDLMesh(coneWithExtent: [0, 5, 1],
+//                             segments: [5, 5],
+//                             inwardNormals: false,
+//                             cap: true,
+//                             geometryType: .triangles,
+//                             allocator: allocator)
+            
+//            let mdlMesh = MDLMesh(planeWithExtent: [0.1, 5, 0.1],
+//                                  segments: [1, 1],
+//                                  geometryType: .triangles,
+//                                  allocator: allocator)
 
             return try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
         })
@@ -329,9 +341,9 @@ extension Prop: Renderable {
 
             var planeTransform = Transform()
             planeTransform.position = transform.position
-            planeTransform.position.x -= 7.5
+            planeTransform.position.x -= 2.5
             planeTransform.scale = transform.scale
-            planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
+            planeTransform.rotation = [0, 0, 0]
 
             uniforms.modelMatrix = worldTransform * planeTransform.modelMatrix
 

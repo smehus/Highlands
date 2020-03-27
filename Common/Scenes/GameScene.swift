@@ -132,7 +132,7 @@ final class GameScene: Scene {
 //        stencilDescriptor.readMask = 7
         stencilDescriptor.depthStencilPassOperation = .invert
         stencilDescriptor.stencilFailureOperation = .keep
-        depthStencilDescriptor.backFaceStencil = stencilDescriptor
+//        depthStencilDescriptor.backFaceStencil = stencilDescriptor
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
 //        depthStencilDescriptor.depthCompareFunction = .always
 //        depthStencilDescriptor.isDepthWriteEnabled = true
@@ -154,7 +154,7 @@ final class GameScene: Scene {
 //        stencilDescriptor.writeMask = 7
 //        stencilDescriptor.readMask = 7
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
-        depthStencilDescriptor.backFaceStencil = stencilDescriptor
+//        depthStencilDescriptor.backFaceStencil = stencilDescriptor
 
         GameScene.maskStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
     }
