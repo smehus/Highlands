@@ -160,6 +160,11 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     refractionCoords += ripple;
     refractionCoords = clamp(refractionCoords, 0.001, 0.999);
 
+    float4 mask = maskTexture.sample(s, float2(x, y));
+    if (mask.r == 0) {
+        return float4(1, 0, 0, 1);
+    }
+
     float4 baseColor = refractionTexture.sample(s, refractionCoords);
     float4 normalValue = normalTexture.sample(s, ripple);
     if (normalValue.r > 0.6) {
