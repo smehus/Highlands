@@ -122,10 +122,16 @@ float4 sepiaShaderWater(float4 color) {
     return output;
 }
 
+fragment float4 fragment_mask(VertexOut vertex_in [[ stage_in ]])
+{
+    return float4(1, 0, 0, 1);
+}
+
 fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
                                texture2d<float> reflectionTexture [[ texture(0) ]],
                                texture2d<float> refractionTexture [[ texture(1) ]],
                                texture2d<float> normalTexture [[ texture(2) ]],
+                               texture2d<float> maskTexture [[ texture(7) ]],
                                constant float &timer [[ buffer(3) ]],
                                constant Light *lights [[ buffer(BufferIndexLights)]],
                                constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],

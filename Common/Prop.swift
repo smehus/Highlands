@@ -62,6 +62,7 @@ class Prop: Node {
 
     var instanceStencilPlanes: [MTKMesh]
     var stencilPipeline: MTLRenderPipelineState
+    var maskPipeline: MTLRenderPipelineState
 
     init(type: ModelType) {
 
@@ -132,6 +133,15 @@ class Prop: Node {
         stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
 
         stencilPipeline = try! Renderer.device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
+
+        let maskPipelineDescriptor = MTLRenderPipelineDescriptor()
+        maskPipelineDescriptor.vertexFunction = Renderer.library!.makeFunction(name: "stencil_vertex")!
+        maskPipelineDescriptor.fragmentFunction = Renderer.library!.makeFunction(name: "fragment_mask")!
+        maskPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        maskPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(instanceStencilPlanes.first!.vertexDescriptor)
+        maskPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+
+        maskPipeline = try! Renderer.device.makeRenderPipelineState(descriptor: maskPipelineDescriptor)
 
         super.init()
         self.name = type.name

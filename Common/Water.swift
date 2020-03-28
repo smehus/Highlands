@@ -14,14 +14,14 @@ class Water: Node {
     private let mesh: MTKMesh
     private let mdlMesh: MDLMesh
     private var pipelineState: MTLRenderPipelineState
-    private var stencilPipelineState: MTLRenderPipelineState
     private var waterNormalTexture: MTLTexture
     private var timer: Float = 0
     private let refractionRenderPass: RenderPass
     private let reflectionRenderPass: RenderPass
+    private let maskRenderPass: RenderPass
     private let depthStencilState: MTLDepthStencilState
     private let reflectionCamera = Camera()
-
+    private let mainDepthStencilState: MTLDepthStencilState
 
     init(size: Float) {
         do {
@@ -46,24 +46,17 @@ class Water: Node {
 
             reflectionRenderPass = RenderPass(name: "reflection", size: Renderer.drawableSize)
             refractionRenderPass = RenderPass(name: "refraction", size: Renderer.drawableSize)
+            maskRenderPass = RenderPass(name: "MaskPass", size: Renderer.drawableSize)
 
             let stencilDescriptor = MTLDepthStencilDescriptor()
             stencilDescriptor.depthCompareFunction = .less
             stencilDescriptor.isDepthWriteEnabled = true
             depthStencilState = Renderer.device.makeDepthStencilState(descriptor: stencilDescriptor)!
 
-
-            // Stencil Buffer Pass
-
-            let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
-            stencilPipelineDescriptor.vertexFunction = vertexFunction
-            stencilPipelineDescriptor.fragmentFunction = nil
-            stencilPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-            stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-            stencilPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
-            stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
-
-            stencilPipelineState = try! Renderer.device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
+            let depthStencilDescriptor = MTLDepthStencilDescriptor()
+            depthStencilDescriptor.depthCompareFunction = .less
+            depthStencilDescriptor.isDepthWriteEnabled = true
+            mainDepthStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
 
         } catch {
             fatalError(error.localizedDescription)
@@ -86,36 +79,67 @@ extension Water: Renderable {
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable]) {
         var uniforms = uniforms
 
-        // Reflection
-        let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
-        reflectEncoder.setDepthStencilState(depthStencilState)
+//        // Reflection
+//        let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
+//        reflectEncoder.setDepthStencilState(depthStencilState)
+//
+//        reflectionCamera.position = camera.position
+//        reflectionCamera.position.y = -camera.position.y
+//        reflectionCamera.rotation.x = -camera.rotation.x
+//        uniforms.viewMatrix = reflectionCamera.viewMatrix
+//
+//        for renderable in renderables {
+//            reflectEncoder.pushDebugGroup("Water Refract \(renderable.name)")
+//            renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
+//            reflectEncoder.popDebugGroup()
+//        }
+//
+//        reflectEncoder.endEncoding()
+//
+//
+//        // Refraction
+//        uniforms.viewMatrix = camera.viewMatrix
+//        let refractEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: refractionRenderPass.descriptor)!
+//        refractEncoder.setDepthStencilState(depthStencilState)
+//
+//        for renderable in renderables {
+//            refractEncoder.pushDebugGroup("Water Refract \(renderable.name)")
+//            renderable.render(renderEncoder: refractEncoder, uniforms: uniforms)
+//            refractEncoder.popDebugGroup()
+//        }
+//
+//        refractEncoder.endEncoding()
 
-        reflectionCamera.position = camera.position
-        reflectionCamera.position.y = -camera.position.y
-        reflectionCamera.rotation.x = -camera.rotation.x
-        uniforms.viewMatrix = reflectionCamera.viewMatrix
+        let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
+        renderEncoder.setDepthStencilState(mainDepthStencilState)
+        for case let prop as Prop in renderables {
+            for (transform, plane) in zip(prop.transforms, prop.instanceStencilPlanes) {
+                var uniforms = uniforms
 
-        for renderable in renderables {
-            reflectEncoder.pushDebugGroup("Water Refract \(renderable.name)")
-            renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
-            reflectEncoder.popDebugGroup()
+                var planeTransform = Transform()
+                planeTransform.position = transform.position
+                planeTransform.position.x -= 2.5
+                planeTransform.scale = transform.scale
+                planeTransform.rotation = [0, 0, 0]
+
+                uniforms.modelMatrix = prop.worldTransform * planeTransform.modelMatrix
+
+                renderEncoder.setRenderPipelineState(prop.maskPipeline)
+                renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
+
+                renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+
+                plane.submeshes.enumerated().forEach { (_, submesh) in
+                    renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                        indexCount: submesh.indexCount,
+                                                        indexType: submesh.indexType,
+                                                        indexBuffer: submesh.indexBuffer.buffer,
+                                                        indexBufferOffset: submesh.indexBuffer.offset)
+                }
+            }
         }
 
-        reflectEncoder.endEncoding()
-
-        
-        // Refraction
-        uniforms.viewMatrix = camera.viewMatrix
-        let refractEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: refractionRenderPass.descriptor)!
-        refractEncoder.setDepthStencilState(depthStencilState)
-
-        for renderable in renderables {
-            refractEncoder.pushDebugGroup("Water Refract \(renderable.name)")
-            renderable.render(renderEncoder: refractEncoder, uniforms: uniforms)
-            refractEncoder.popDebugGroup()
-        }
-
-        refractEncoder.endEncoding()
+        renderEncoder.endEncoding()
     }
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -152,6 +176,7 @@ extension Water: Renderable {
         renderEncoder.setFragmentTexture(reflectionRenderPass.texture, index: 0)
         renderEncoder.setFragmentTexture(refractionRenderPass.texture, index: 1)
         renderEncoder.setFragmentTexture(waterNormalTexture, index: 2)
+        renderEncoder.setFragmentTexture(maskRenderPass.texture, index: 7)
 
         renderEncoder.setFragmentBytes(&timer, length: MemoryLayout<Float>.size, index: 3)
         for (index, submesh) in mesh.submeshes.enumerated() {

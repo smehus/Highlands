@@ -331,37 +331,44 @@ final class GameScene: Scene {
 
         // Stencil Buffer Pass
 
-        descriptor.stencilAttachment.clearStencil = 0
-        descriptor.stencilAttachment.loadAction = .clear
-        descriptor.stencilAttachment.storeAction = .store
-        descriptor.stencilAttachment.texture = view.depthStencilTexture
+//        descriptor.stencilAttachment.clearStencil = 0
+//        descriptor.stencilAttachment.loadAction = .clear
+//        descriptor.stencilAttachment.storeAction = .store
+//        descriptor.stencilAttachment.texture = view.depthStencilTexture
+//
+//        descriptor.depthAttachment.loadAction = .clear
+//        descriptor.depthAttachment.storeAction = .store
+//        descriptor.depthAttachment.texture = view.depthStencilTexture
+//
+//
+//
+//        let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor)!
+//        stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
+//        stencilEncoder.setDepthStencilState(drawStencilState)
+//        // value in stencil attachment is compared against this reference value
+//        // But should only matter in main pass? Because we're tyring to write to the stencil attachment here
+////        stencilEncoder.setStencilReferenceValue(1)
+//
+//        for renderable in renderables {
+//            renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
+//        }
 
-        descriptor.depthAttachment.loadAction = .clear
-        descriptor.depthAttachment.storeAction = .store
-        descriptor.depthAttachment.texture = view.depthStencilTexture
-
-
-
-        let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor)!
-        stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
-        stencilEncoder.setDepthStencilState(drawStencilState)
-        // value in stencil attachment is compared against this reference value
-        // But should only matter in main pass? Because we're tyring to write to the stencil attachment here
-//        stencilEncoder.setStencilReferenceValue(1)
-
-        for renderable in renderables {
-            renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
-        }
-
-        stencilEncoder.popDebugGroup()
-        stencilEncoder.endEncoding()
-
-        descriptor.depthAttachment.storeAction = .dontCare
-        descriptor.stencilAttachment.loadAction = .load
-        descriptor.stencilAttachment.storeAction = .dontCare
+//        stencilEncoder.popDebugGroup()
+//        stencilEncoder.endEncoding()
+//
+//        descriptor.depthAttachment.storeAction = .dontCare
+//        descriptor.stencilAttachment.loadAction = .load
+//        descriptor.stencilAttachment.storeAction = .dontCare
 
         // Could create two render encoders and have one with a stencil texture & one with out
 //        descriptor.stencilAttachment.texture = nil
+
+
+        for renderable in renderables {
+              // Allow set up for off screen targets
+              renderable.renderToTarget(with: commandBuffer, camera: camera, uniforms: previousUniforms, renderables: renderables)
+          }
+
 
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
@@ -375,11 +382,6 @@ final class GameScene: Scene {
         }
 
         setFragment(renderEncoder: renderEncoder, previousUniforms: previousUniforms)
-
-        for renderable in renderables {
-            // Allow set up for off screen targets
-            renderable.renderToTarget(with: commandBuffer)
-        }
 
         for renderable in renderables {
             renderEncoder.pushDebugGroup(renderable.name)

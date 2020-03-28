@@ -20,7 +20,7 @@ protocol Renderable {
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int)
 
-    func renderToTarget(with commandBuffer: MTLCommandBuffer)
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable])
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize)
 
@@ -39,7 +39,7 @@ protocol Renderable {
 
 extension Renderable {
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) { }
-    func renderToTarget(with commandBuffer: MTLCommandBuffer) { }
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable]) {}
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) { }
     func generateTerrain(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) { }

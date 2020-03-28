@@ -113,8 +113,10 @@ extension TileScene: Renderable {
         }
     }
 
-    func renderToTarget(with commandBuffer: MTLCommandBuffer) {
-
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable]) {
+        for case let child as Renderable in children {
+            child.renderToTarget(with: commandBuffer, camera: camera, uniforms: uniforms, renderables: children.compactMap { $0 as? Renderable })
+        }
     }
 
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
