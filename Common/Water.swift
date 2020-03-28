@@ -22,6 +22,7 @@ class Water: Node {
     private let depthStencilState: MTLDepthStencilState
     private let reflectionCamera = Camera()
     private let mainDepthStencilState: MTLDepthStencilState
+    private let orthoCamera = OrthographicCamera()
 
     init(size: Float) {
         do {
@@ -122,6 +123,11 @@ extension Water: Renderable {
                 planeTransform.scale = transform.scale
                 planeTransform.rotation = [0, 0, 0]
 
+                orthoCamera.position = [0, 5, 0]
+                orthoCamera.rotation.x = .pi / 2
+                
+                uniforms.projectionMatrix = orthoCamera.projectionMatrix
+                uniforms.viewMatrix = orthoCamera.viewMatrix
                 uniforms.modelMatrix = prop.worldTransform * planeTransform.modelMatrix
 
                 renderEncoder.setRenderPipelineState(prop.maskPipeline)
@@ -145,6 +151,12 @@ extension Water: Renderable {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         reflectionRenderPass.updateTextures(size: size)
         refractionRenderPass.updateTextures(size: size)
+
+        let cameraSize: Float = 10
+        let ratio = Float(size.width / size.height)
+        let rect = Rectangle(left: -cameraSize * ratio, right: cameraSize * ratio, top: cameraSize, bottom: -cameraSize)
+        orthoCamera.rect = rect
+
     }
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {

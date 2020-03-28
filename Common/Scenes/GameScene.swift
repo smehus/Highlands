@@ -224,8 +224,8 @@ final class GameScene: Scene {
 //        return node.children.compactMap ({ self.find(name: name, in: $0) }).first
 //    }
 
-    override func sceneSizeWillChange(to size: CGSize) {
-        super.sceneSizeWillChange(to: size)
+    override func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+        super.mtkView(view, drawableSizeWillChange: size)
 
         let cameraSize: Float = 10
         let ratio = Float(sceneSize.width / sceneSize.height)
@@ -240,6 +240,9 @@ final class GameScene: Scene {
         setupStencilTest(size: size)
         buildShadowTexture(size: size)
 
+        for renderable in renderables {
+            renderable.mtkView(view, drawableSizeWillChange: size)
+        }
     }
 
 

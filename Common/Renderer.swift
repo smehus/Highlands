@@ -65,7 +65,7 @@ final class Renderer: NSObject {
 
 extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        scene?.sceneSizeWillChange(to: size)
+        scene?.mtkView(view, drawableSizeWillChange: size)
     }
 
     func draw(in view: MTKView) {

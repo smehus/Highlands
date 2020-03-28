@@ -34,7 +34,7 @@ class Scene {
     init(sceneSize: CGSize) {
         self.sceneSize = sceneSize
         setupScene()
-        sceneSizeWillChange(to: sceneSize)
+        mtkView(Renderer.mtkView, drawableSizeWillChange: sceneSize)
     }
 
     func setupScene() {
@@ -111,7 +111,7 @@ class Scene {
         renderables.remove(at: index)
     }
 
-    func sceneSizeWillChange(to size: CGSize) {
+    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         for camera in cameras {
             camera.aspect = Float(size.width / size.height)
         }

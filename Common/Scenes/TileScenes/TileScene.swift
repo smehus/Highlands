@@ -128,7 +128,9 @@ extension TileScene: Renderable {
     }
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-
+        for case let renderable as Renderable in children {
+            renderable.mtkView(view, drawableSizeWillChange: size)
+        }
     }
 
     func createTexturesBuffer() {

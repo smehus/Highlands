@@ -66,6 +66,6 @@ private extension MTLRenderPassDescriptor {
     attachment.texture = texture
     attachment.loadAction = .clear
     attachment.storeAction = .store
-    attachment.clearColor = MTLClearColorMake(0.73, 0.92, 1, 1)
+    attachment.clearColor = MTLClearColorMake(1, 1, 1, 1)
   }
 }

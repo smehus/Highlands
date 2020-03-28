@@ -124,7 +124,7 @@ float4 sepiaShaderWater(float4 color) {
 
 fragment float4 fragment_mask(VertexOut vertex_in [[ stage_in ]])
 {
-    return float4(1, 0, 0, 1);
+    return float4(0, 0, 0, 1);
 }
 
 fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
