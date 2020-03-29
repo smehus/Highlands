@@ -140,6 +140,8 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
                                constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
 
     constexpr sampler s(filter::linear, address::repeat);
+    constexpr sampler maskSampler(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
+
     float width = float(maskTexture.get_width() * 2.0);
     float height = float(maskTexture.get_height() * 2.0);
     float x = vertex_in.position.x / width;
@@ -151,13 +153,9 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float2 uv = vertex_in.uv * 0.15;
     float waveStrength = 0.05;
 
+    bool isMasked = false;
 
-    constexpr sampler maskSampler(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
-    float4 mask = maskTexture.sample(maskSampler, refractionCoords);
-    if (mask.r == 0) {
-        uv = vertex_in.uv * 0.03;
-        waveStrength = 0.2;
-    }
+
 
     float2 rippleX = float2(uv.x + timer, uv.y);
     float2 rippleY = float2(-uv.x, uv.y);// + timer * 0.2;
@@ -169,14 +167,19 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     refractionCoords += ripple;
     refractionCoords = clamp(refractionCoords, 0.001, 0.999);
 
-
+    float4 m = maskTexture.sample(maskSampler, refractionCoords);
+    if (m.r == 0) {
+        waveStrength = 0.12;
+        isMasked = true;
+    }
 
     float4 baseColor = refractionTexture.sample(s, refractionCoords);
     float4 normalValue = normalTexture.sample(s, ripple);
+
     if (normalValue.r > 0.6) {
-        baseColor = float4(1, 1, 1, 1);
+        baseColor = isMasked ? mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8) : float4(1, 1, 1, 1);
     } else {
-        baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
+        baseColor = isMasked ? float4(1, 1, 1, 1) : mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
     }
 
     // Check out ray sample project challenge for lighting against the normalTexture rather than the geometry

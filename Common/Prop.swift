@@ -107,7 +107,7 @@ class Prop: Node {
 //            let mdlMesh = MDLMesh.newEllipticalCone(withHeight: <#T##Float#>, radii: <#T##vector_float2#>, radialSegments: <#T##Int#>, verticalSegments: <#T##Int#>, geometryType: <#T##MDLGeometryType#>, inwardNormals: <#T##Bool#>, allocator: <#T##MDLMeshBufferAllocator?#>)
 
             // This works with correct rotation and position.
-            let mdlMesh = MDLMesh.newEllipsoid(withRadii: [1, 0, 0.3], radialSegments: 20, verticalSegments: 20, geometryType: .triangles, inwardNormals: false, hemisphere: true, allocator: allocator)
+            let mdlMesh = MDLMesh.newEllipsoid(withRadii: [0.9, 0, 0.4], radialSegments: 20, verticalSegments: 20, geometryType: .triangles, inwardNormals: false, hemisphere: true, allocator: allocator)
 //            let mdlMesh = MDLMesh(capsuleWithExtent: [0, 5, 1], cylinderSegments: [1, 1], hemisphereSegments: 5, inwardNormals: false, geometryType: .triangles, allocator: allocator)
 //            let mdlMesh = MDLMesh(coneWithExtent: [0, 5, 1],
 //                             segments: [5, 5],

@@ -122,9 +122,8 @@ extension Water: Renderable {
 
                 var planeTransform = Transform()
                 planeTransform.position = transform.position
-                planeTransform.position.x -= 2.5
+                planeTransform.position.x -= 1.5
                 planeTransform.scale = transform.scale
-                planeTransform.rotation = [0, 0, 0]
 
 
                 uniforms.projectionMatrix = camera.projectionMatrix
