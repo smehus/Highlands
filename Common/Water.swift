@@ -109,12 +109,44 @@ extension Water: Renderable {
     //        refractEncoder.endEncoding()
 
 
-    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable]) {
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable]) {
+        let mainUniforms = uniforms
         var uniforms = uniforms
 
-//        let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
-        
+        /*
+        let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
+        reflectEncoder.setDepthStencilState(mainDepthStencilState)
 
+        reflectionCamera.position = camera.position
+        reflectionCamera.rotation = camera.rotation
+        reflectionCamera.scale = camera.scale
+        reflectionCamera.position.y = -camera.position.y
+        reflectionCamera.rotation.x = -camera.rotation.x
+
+        uniforms.viewMatrix = reflectionCamera.viewMatrix
+
+        // fragment uniforms
+        var fragmentUniforms = FragmentUniforms()
+        fragmentUniforms.cameraPosition = camera.position
+        fragmentUniforms.lightCount = UInt32(lights.count)
+        fragmentUniforms.tiling = 1
+
+        reflectEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.size, index: Int(BufferIndexFragmentUniforms.rawValue))
+
+        var lights = lights
+        reflectEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: Int(BufferIndexLights.rawValue))
+
+        var farZ = Camera.FarZ
+        reflectEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
+
+        for renderable in renderables {
+            guard type(of: renderable) != Water.self else { continue }
+
+            renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
+        }
+
+        reflectEncoder.endEncoding()
+*/
 
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)

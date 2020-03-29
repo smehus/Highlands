@@ -142,8 +142,8 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     constexpr sampler s(filter::linear, address::repeat);
     constexpr sampler maskSampler(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
 
-    float width = float(maskTexture.get_width() * 2.0);
-    float height = float(maskTexture.get_height() * 2.0);
+    float width = float(reflectionTexture.get_width() * 2.0);
+    float height = float(reflectionTexture.get_height() * 2.0);
     float x = vertex_in.position.x / width;
     float y = vertex_in.position.y / height;
     float2 reflectionCoords = float2(x, 1 - y);
@@ -154,8 +154,6 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float waveStrength = 0.05;
 
     bool isMasked = false;
-
-
 
     float2 rippleX = float2(uv.x + timer, uv.y);
     float2 rippleY = float2(-uv.x, uv.y);// + timer * 0.2;
@@ -173,7 +171,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
         isMasked = true;
     }
 
-    float4 baseColor = refractionTexture.sample(s, refractionCoords);
+    float4 baseColor = refractionTexture.sample(maskSampler, refractionCoords);
     float4 normalValue = normalTexture.sample(s, ripple);
 
     if (normalValue.r > 0.6) {

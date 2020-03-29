@@ -139,7 +139,8 @@ class Prop: Node {
         maskPipelineDescriptor.fragmentFunction = Renderer.library!.makeFunction(name: "fragment_mask")!
         maskPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
         maskPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(instanceStencilPlanes.first!.vertexDescriptor)
-        maskPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        maskPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        maskPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
 
         maskPipeline = try! Renderer.device.makeRenderPipelineState(descriptor: maskPipelineDescriptor)
 
