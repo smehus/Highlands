@@ -21,6 +21,7 @@ struct VertexOut {
     float4 worldPosition;
     float2 uv;
     float3 worldNormal;
+    float4 maskPosition;
 };
 
 vertex VertexOut vertex_water(const VertexIn vertex_in [[ stage_in ]],
@@ -31,6 +32,7 @@ vertex VertexOut vertex_water(const VertexIn vertex_in [[ stage_in ]],
     vertex_out.uv = vertex_in.uv;
     vertex_out.worldPosition = uniforms.modelMatrix * vertex_in.position;
     vertex_out.worldNormal = uniforms.normalMatrix * vertex_in.normal;
+    vertex_out.maskPosition = uniforms.maskMatrix * vertex_in.position;
 
     return vertex_out;
 }
@@ -138,8 +140,8 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
                                constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
 
     constexpr sampler s(filter::linear, address::repeat);
-    float width = float(reflectionTexture.get_width() * 2.0);
-    float height = float(reflectionTexture.get_height() * 2.0);
+    float width = float(maskTexture.get_width() * 2.0);
+    float height = float(maskTexture.get_height() * 2.0);
     float x = vertex_in.position.x / width;
     float y = vertex_in.position.y / height;
     float2 reflectionCoords = float2(x, 1 - y);
@@ -160,7 +162,13 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     refractionCoords += ripple;
     refractionCoords = clamp(refractionCoords, 0.001, 0.999);
 
-    float4 mask = maskTexture.sample(s, float2(x, y));
+    constexpr sampler maskSampler(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
+
+    float2 sxy = vertex_in.maskPosition.xy;
+    sxy = sxy * 0.5 + 0.5;
+    //sxy.y = 1 - sxy.y;
+
+    float4 mask = maskTexture.sample(maskSampler, sxy);
     if (mask.r == 0) {
         return float4(1, 0, 0, 1);
     }
