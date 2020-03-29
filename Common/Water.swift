@@ -112,6 +112,8 @@ extension Water: Renderable {
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable]) {
         var uniforms = uniforms
 
+//        let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
+        
 
 
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!

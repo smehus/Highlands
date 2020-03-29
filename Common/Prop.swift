@@ -343,9 +343,10 @@ extension Prop: Renderable {
         }
     }
 
-
-
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+
+        // Uncomment this to create stencil testing masks
+        return
         for (transform, plane) in zip(transforms, instanceStencilPlanes) {
             var uniforms = uniforms
 

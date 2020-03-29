@@ -334,37 +334,34 @@ final class GameScene: Scene {
 
         // Stencil Buffer Pass
 
-//        descriptor.stencilAttachment.clearStencil = 0
-//        descriptor.stencilAttachment.loadAction = .clear
-//        descriptor.stencilAttachment.storeAction = .store
-//        descriptor.stencilAttachment.texture = view.depthStencilTexture
-//
-//        descriptor.depthAttachment.loadAction = .clear
-//        descriptor.depthAttachment.storeAction = .store
-//        descriptor.depthAttachment.texture = view.depthStencilTexture
-//
-//
-//
-//        let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor)!
-//        stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
-//        stencilEncoder.setDepthStencilState(drawStencilState)
-//        // value in stencil attachment is compared against this reference value
-//        // But should only matter in main pass? Because we're tyring to write to the stencil attachment here
-////        stencilEncoder.setStencilReferenceValue(1)
-//
-//        for renderable in renderables {
-//            renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
-//        }
+        descriptor.stencilAttachment.clearStencil = 0
+        descriptor.stencilAttachment.loadAction = .clear
+        descriptor.stencilAttachment.storeAction = .store
+        descriptor.stencilAttachment.texture = view.depthStencilTexture
 
-//        stencilEncoder.popDebugGroup()
-//        stencilEncoder.endEncoding()
-//
-//        descriptor.depthAttachment.storeAction = .dontCare
-//        descriptor.stencilAttachment.loadAction = .load
-//        descriptor.stencilAttachment.storeAction = .dontCare
+        descriptor.depthAttachment.loadAction = .clear
+        descriptor.depthAttachment.storeAction = .store
+        descriptor.depthAttachment.texture = view.depthStencilTexture
 
-        // Could create two render encoders and have one with a stencil texture & one with out
-//        descriptor.stencilAttachment.texture = nil
+
+
+        let stencilEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor)!
+        stencilEncoder.pushDebugGroup("Stencil Buffer Pass")
+        stencilEncoder.setDepthStencilState(drawStencilState)
+        // value in stencil attachment is compared against this reference value
+        // But should only matter in main pass? Because we're tyring to write to the stencil attachment here
+//        stencilEncoder.setStencilReferenceValue(1)
+
+        for renderable in renderables {
+            renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
+        }
+
+        stencilEncoder.popDebugGroup()
+        stencilEncoder.endEncoding()
+
+        descriptor.depthAttachment.storeAction = .dontCare
+        descriptor.stencilAttachment.loadAction = .load
+        descriptor.stencilAttachment.storeAction = .dontCare
 
 
         for renderable in renderables {
