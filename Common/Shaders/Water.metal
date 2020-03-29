@@ -147,10 +147,17 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float2 reflectionCoords = float2(x, 1 - y);
     float2 refractionCoords = float2(x, y);
 
-
     // Ripples
     float2 uv = vertex_in.uv * 0.15;
     float waveStrength = 0.05;
+
+
+    constexpr sampler maskSampler(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
+    float4 mask = maskTexture.sample(maskSampler, refractionCoords);
+    if (mask.r == 0) {
+        uv = vertex_in.uv * 0.03;
+        waveStrength = 0.2;
+    }
 
     float2 rippleX = float2(uv.x + timer, uv.y);
     float2 rippleY = float2(-uv.x, uv.y);// + timer * 0.2;
@@ -162,16 +169,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     refractionCoords += ripple;
     refractionCoords = clamp(refractionCoords, 0.001, 0.999);
 
-    constexpr sampler maskSampler(coord::normalized, filter::linear, address::clamp_to_edge, compare_func:: less);
 
-    float2 sxy = vertex_in.maskPosition.xy;
-    sxy = sxy * 0.5 + 0.5;
-    //sxy.y = 1 - sxy.y;
-
-    float4 mask = maskTexture.sample(maskSampler, sxy);
-    if (mask.r == 0) {
-        return float4(1, 0, 0, 1);
-    }
 
     float4 baseColor = refractionTexture.sample(s, refractionCoords);
     float4 normalValue = normalTexture.sample(s, ripple);

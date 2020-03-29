@@ -77,39 +77,42 @@ extension Water: Renderable {
         
     }
 
+    //        // Reflection
+    //        let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
+    //        reflectEncoder.setDepthStencilState(depthStencilState)
+    //
+    //        reflectionCamera.position = camera.position
+    //        reflectionCamera.position.y = -camera.position.y
+    //        reflectionCamera.rotation.x = -camera.rotation.x
+    //        uniforms.viewMatrix = reflectionCamera.viewMatrix
+    //
+    //        for renderable in renderables {
+    //            reflectEncoder.pushDebugGroup("Water Refract \(renderable.name)")
+    //            renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
+    //            reflectEncoder.popDebugGroup()
+    //        }
+    //
+    //        reflectEncoder.endEncoding()
+    //
+    //
+    //        // Refraction
+    //        uniforms.viewMatrix = camera.viewMatrix
+    //        let refractEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: refractionRenderPass.descriptor)!
+    //        refractEncoder.setDepthStencilState(depthStencilState)
+    //
+    //        for renderable in renderables {
+    //            refractEncoder.pushDebugGroup("Water Refract \(renderable.name)")
+    //            renderable.render(renderEncoder: refractEncoder, uniforms: uniforms)
+    //            refractEncoder.popDebugGroup()
+    //        }
+    //
+    //        refractEncoder.endEncoding()
+
+
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable]) {
         var uniforms = uniforms
 
-//        // Reflection
-//        let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
-//        reflectEncoder.setDepthStencilState(depthStencilState)
-//
-//        reflectionCamera.position = camera.position
-//        reflectionCamera.position.y = -camera.position.y
-//        reflectionCamera.rotation.x = -camera.rotation.x
-//        uniforms.viewMatrix = reflectionCamera.viewMatrix
-//
-//        for renderable in renderables {
-//            reflectEncoder.pushDebugGroup("Water Refract \(renderable.name)")
-//            renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
-//            reflectEncoder.popDebugGroup()
-//        }
-//
-//        reflectEncoder.endEncoding()
-//
-//
-//        // Refraction
-//        uniforms.viewMatrix = camera.viewMatrix
-//        let refractEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: refractionRenderPass.descriptor)!
-//        refractEncoder.setDepthStencilState(depthStencilState)
-//
-//        for renderable in renderables {
-//            refractEncoder.pushDebugGroup("Water Refract \(renderable.name)")
-//            renderable.render(renderEncoder: refractEncoder, uniforms: uniforms)
-//            refractEncoder.popDebugGroup()
-//        }
-//
-//        refractEncoder.endEncoding()
+
 
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)
@@ -124,7 +127,7 @@ extension Water: Renderable {
                 planeTransform.rotation = [0, 0, 0]
 
 
-                uniforms.projectionMatrix = orthoCamera.projectionMatrix
+                uniforms.projectionMatrix = camera.projectionMatrix
                 uniforms.viewMatrix = camera.viewMatrix
                 uniforms.modelMatrix = prop.worldTransform * planeTransform.modelMatrix
                 uniforms.maskMatrix = orthoCamera.projectionMatrix * camera.viewMatrix
@@ -150,6 +153,7 @@ extension Water: Renderable {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         reflectionRenderPass.updateTextures(size: size)
         refractionRenderPass.updateTextures(size: size)
+        maskRenderPass.updateTextures(size: size)
 
         let cameraSize: Float = 10
         let ratio = Float(size.width / size.height)
