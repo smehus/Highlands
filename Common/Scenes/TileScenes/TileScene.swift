@@ -89,10 +89,11 @@ extension TileScene: Renderable {
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, terrainParams: TerrainParams, uniforms: Uniforms) {
 
-        for child in children {
-            guard let renderable = child as? Prop else { continue }
+        for case let renderable as Renderable in children {
+            if let prop = renderable as? Prop {
+                prop.patches = terrain.terrainPatches.1
+            }
 
-            renderable.patches = terrain.terrainPatches.1
             renderable.calculateHeight(computeEncoder: computeEncoder, heightMapTexture: terrain.heightMap, terrainParams: terrainParams, uniforms: uniforms, controlPointsBuffer: terrain.controlPointsBuffer)
         }
     }

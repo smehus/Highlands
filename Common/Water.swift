@@ -23,6 +23,7 @@ class Water: Node {
     private let reflectionCamera = Camera()
     private let mainDepthStencilState: MTLDepthStencilState
     private let orthoCamera = OrthographicCamera()
+    private var heightMap: MTLTexture!
 
     init(size: Float) {
         do {
@@ -42,6 +43,10 @@ class Water: Node {
             descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
             descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
             descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+            descriptor.colorAttachments[0].isBlendingEnabled = true
+            descriptor.colorAttachments[0].rgbBlendOperation = .add
+            descriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+            descriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
             descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
             pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
 
@@ -113,7 +118,7 @@ extension Water: Renderable {
         let mainUniforms = uniforms
         var uniforms = uniforms
 
-        /*
+        /* This doesn't really work because tesselation height needs to be calculated / rendered.
         let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
         reflectEncoder.setDepthStencilState(mainDepthStencilState)
 
@@ -147,6 +152,14 @@ extension Water: Renderable {
 
         reflectEncoder.endEncoding()
 */
+
+
+
+        // Refraction
+
+        // Need to calculate height thing.
+        // I could just pass in the height map & sample. Then based on some arbitrary number, do some stuff.
+        // Do this in the main pass
 
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)
@@ -225,6 +238,8 @@ extension Water: Renderable {
         renderEncoder.setFragmentTexture(refractionRenderPass.texture, index: 1)
         renderEncoder.setFragmentTexture(waterNormalTexture, index: 2)
         renderEncoder.setFragmentTexture(maskRenderPass.texture, index: 7)
+        renderEncoder.setFragmentTexture(heightMap, index: 8)
+
 
         renderEncoder.setFragmentBytes(&timer, length: MemoryLayout<Float>.size, index: 3)
         for (index, submesh) in mesh.submeshes.enumerated() {
@@ -245,8 +260,10 @@ extension Water: Renderable {
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
 
     }
+
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
+        heightMap = heightMapTexture
+    }
 }
-
-
 
 

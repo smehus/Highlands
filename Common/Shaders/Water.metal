@@ -134,7 +134,11 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
                                texture2d<float> refractionTexture [[ texture(1) ]],
                                texture2d<float> normalTexture [[ texture(2) ]],
                                texture2d<float> maskTexture [[ texture(7) ]],
+                               texture2d<float> heightMap [[ texture(8) ]],
+                               texturecube<float> shadowColorTexture [[ texture(ShadowColorTexture) ]],
+                               depthcube<float> shadowDepthTexture [[ texture(ShadowDepthTexture) ]],
                                constant float &timer [[ buffer(3) ]],
+                               constant float &farZ [[ buffer(24) ]],
                                constant Light *lights [[ buffer(BufferIndexLights)]],
                                constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                constant Material &material [[ buffer(BufferIndexMaterials) ]]) {
@@ -153,6 +157,13 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float2 uv = vertex_in.uv * 0.15;
     float waveStrength = 0.05;
 
+    constexpr sampler samp(filter::linear, address::repeat);
+    float2 testxy = (vertex_in.worldPosition.xz + 50 / 2.0) / 50;
+    float4 testcolor = heightMap.sample(samp, testxy);
+    if (testcolor.r > 0.314) {
+//        waveStrength = 0.1;
+    }
+
     bool isMasked = false;
 
     float2 rippleX = float2(uv.x + timer, uv.y);
@@ -165,6 +176,8 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     refractionCoords += ripple;
     refractionCoords = clamp(refractionCoords, 0.001, 0.999);
 
+
+
     float4 m = maskTexture.sample(maskSampler, refractionCoords);
     if (m.r == 0) {
         waveStrength = 0.12;
@@ -173,18 +186,67 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
     float4 baseColor = refractionTexture.sample(maskSampler, refractionCoords);
     float4 normalValue = normalTexture.sample(s, ripple);
+    testxy += ripple;
+    // this caused chaos - probabl because of the refaraction coordinate param i forgot to swap out
+    //    testxy = clamp(refractionCoords, 0.001, 0.999);
+    float4 heightValue = heightMap.sample(samp, testxy) + float4(0.3);
+    //    float testheight = (testcolor.r * 2 - 1) * 17;
 
-    if (normalValue.r > 0.6) {
-        baseColor = isMasked ? mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8) : float4(1, 1, 1, 1);
+
+    float omega = 0.314 + ripple.x;
+    float a = 1.0;
+    if (isMasked) {
+
+        if (normalValue.r > 0.6) {
+            baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
+        } else {
+            baseColor = float4(1, 1, 1, 1);
+        }
+
     } else {
-        baseColor = isMasked ? float4(1, 1, 1, 1) : mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
+
+        if (heightValue.r > omega) {
+            if (normalValue.r > 0.6) {
+                a = 0;
+                baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
+            } else {
+                baseColor = float4(1, 1, 1, 1);
+            }
+
+        } else {
+            if (normalValue.r > 0.6) {
+                baseColor = float4(1, 1, 1, 1);
+            } else {
+                 baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
+            }
+        }
     }
+
+
+
+
 
     // Check out ray sample project challenge for lighting against the normalTexture rather than the geometry
     float3 color = waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
 
+    constexpr sampler shadowSampler(coord::normalized,
+                        filter::linear,
+                        address::clamp_to_edge,
+                        compare_func:: less);
+    Light light = lights[0];
+    float3 fragToLight = vertex_in.worldPosition.xyz - light.position;
+    float4 closestDepth = shadowColorTexture.sample(shadowSampler, fragToLight);
+    float currentDepth = distance(vertex_in.worldPosition.xyz, light.position);
+    float epsilon = 0.001;
+    currentDepth = (currentDepth / farZ) + epsilon;
+
+
+    if (closestDepth.w < currentDepth) {
+        color *= 0.6;
+    }
+
 //    return sepiaShaderWater(float4(color, 1));
-    return float4(color, 1);
+    return float4(color, a);
 }
 
 
