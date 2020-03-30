@@ -79,7 +79,8 @@ class Skybox {
     private static func buildPipelineState(vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {
         let descriptor = MTLRenderPipelineDescriptor()
         descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-        descriptor.depthAttachmentPixelFormat = .depth32Float
+        descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
         descriptor.sampleCount = Renderer.sampleCount
         descriptor.vertexFunction = Renderer.library?.makeFunction(name: "vertexSkybox")
         descriptor.fragmentFunction = Renderer.library?.makeFunction(name: "fragmentSkybox")

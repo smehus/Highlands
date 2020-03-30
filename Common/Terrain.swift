@@ -15,17 +15,18 @@ class Terrain: Node {
         return 16
     }()
 
-    static let patches = (horizontal: 7, vertical: 7)
+    static let patches = (horizontal: 3, vertical: 3)
     static var patchCount: Int {
         return Terrain.patches.horizontal * Terrain.patches.vertical
     }
 
-    static var terrainParams = TerrainParams(size: [500, 500], height: 50, maxTessellation: UInt32(maxTessellation))
+    static var terrainParams = TerrainParams(size: [50, 50], height: 17, maxTessellation: UInt32(maxTessellation))
     var controlPointsBuffer: MTLBuffer?
 
     var edgeFactors: [Float] = [4]
     var insideFactors: [Float] = [4]
     var tessellationPipelineState: MTLComputePipelineState
+    var normalPipelineState: MTLComputePipelineState
     var renderPipelineState: MTLRenderPipelineState
 
     let heightMap: MTLTexture
@@ -34,6 +35,7 @@ class Terrain: Node {
     let grassTexture: MTLTexture
 
     let normalMapTexture: MTLTexture
+    var terrainPatches: (normalized: [SIMD3<Float>], patches: [Patch])!
 
     override var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
@@ -49,12 +51,13 @@ class Terrain: Node {
 
     init(textureName: String) {
         renderPipelineState = Terrain.buildRenderPipelineState()
+        normalPipelineState = Terrain.buildNormalMapPipelineState()
         tessellationPipelineState = Terrain.buildComputePipelineState()
 
         do {
             let textureLoader = MTKTextureLoader(device: Renderer.device)
             heightMap = try textureLoader.newTexture(name: textureName, scaleFactor: 1.0,
-                                                bundle: Bundle.main, options: nil)
+                                                     bundle: Bundle.main, options: nil)
 
 
             // Create normal texture
@@ -68,68 +71,55 @@ class Terrain: Node {
             texDesc.storageMode = .private
             normalMapTexture = Renderer.device.makeTexture(descriptor: texDesc)!
 
-//            let commandBuffer = Renderer.commandQueue.makeCommandBuffer()!
-//            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture, commandBuffer: commandBuffer)
+            //            let commandBuffer = Renderer.commandQueue.makeCommandBuffer()!
+            //            Terrain.generateTerrainNormalMap(heightMap: heightMap, normalTexture: normalMapTexture, commandBuffer: commandBuffer)
 
             cliffTexture = try textureLoader.newTexture(name: "cliff-color", scaleFactor: 1.0,
-                                                bundle: Bundle.main, options: nil)
+                                                        bundle: Bundle.main, options: nil)
             snowTexture = try textureLoader.newTexture(name: "snow-color", scaleFactor: 1.0,
-                                                bundle: Bundle.main, options: nil)
+                                                       bundle: Bundle.main, options: nil)
             grassTexture = try textureLoader.newTexture(name: "grass-color", scaleFactor: 1.0,
-                                                bundle: Bundle.main, options: nil)
+                                                        bundle: Bundle.main, options: nil)
 
         } catch {
             fatalError(error.localizedDescription)
         }
 
         super.init()
-
-        let controlPoints = Terrain.createControlPoints(patches: Terrain.patches,
-                                                        size: (width: Terrain.terrainParams.size.x,
-                                                               height: Terrain.terrainParams.size.y))
-        controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints.normalized,
-                                                         length: MemoryLayout<SIMD3<Float>>.stride * controlPoints.normalized.count)
-
-
     }
 }
 
 extension Terrain {
 
-    static func generateTerrainNormalMap(heightMap: MTLTexture, normalTexture: MTLTexture, commandBuffer: MTLCommandBuffer) {
-        guard let function = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else {
-            print("""
-                ❌❌❌❌❌❌❌❌❌❌
+    func setup(with position: SIMD3<Float>) {
+        self.position = position
 
-                FAILED TO CREATE GENERATE TERRAIN NORMAL MAP SHADER FUNCTION
+        let controlPoints = createControlPoints(patches: Terrain.patches,
+                                                size: (width: Terrain.terrainParams.size.x,
+                                                       height: Terrain.terrainParams.size.y))
+        controlPointsBuffer = Renderer.device.makeBuffer(bytes: controlPoints.normalized,
+                                                         length: MemoryLayout<SIMD3<Float>>.stride * controlPoints.normalized.count)
 
-                ❌❌❌❌❌❌❌❌
-                """)
+        terrainPatches = controlPoints
+    }
 
-            return
+    func generateTerrainNormalMap(computeEncoder: MTLComputeCommandEncoder) {
+
+        let threadsPerGroup = MTLSize(width: 16, height: 16, depth: 1)
+
+        computeEncoder.setComputePipelineState(normalPipelineState)
+        computeEncoder.setTexture(heightMap, index: 0)
+        computeEncoder.setTexture(normalMapTexture, index: 1)
+        computeEncoder.setBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.size, index: 3)
+        computeEncoder.dispatchThreadgroups(MTLSizeMake(heightMap.width, heightMap.height, 1), threadsPerThreadgroup: threadsPerGroup)
+    }
+
+    static func buildNormalMapPipelineState() -> MTLComputePipelineState {
+        guard let kernelFunction = Renderer.library?.makeFunction(name: "TerrainKnl_ComputeNormalsFromHeightmap") else {
+            fatalError("Tessellation shader function not found")
         }
 
-        do {
-
-            // This also crashes....
-            // Probably shouldn't be generating terrain normals on every render pass
-            let pipelineState = try Renderer.device.makeComputePipelineState(function: function)
-
-//            guard let commandBuffer = Renderer.commandQueue.makeCommandBuffer() else {  fatalError() }
-            guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { fatalError() }
-
-            let threadsPerGroup = MTLSize(width: 16, height: 16, depth: 1)
-
-            computeEncoder.setComputePipelineState(pipelineState)
-            computeEncoder.setTexture(heightMap, index: 0)
-            computeEncoder.setTexture(normalTexture, index: 1)
-            computeEncoder.setBytes(&Terrain.terrainParams, length: MemoryLayout<TerrainParams>.size, index: 3)
-            computeEncoder.dispatchThreadgroups(MTLSizeMake(heightMap.width, heightMap.height, 1), threadsPerThreadgroup: threadsPerGroup)
-            computeEncoder.endEncoding()
-
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+        return try! Renderer.device.makeComputePipelineState(function: kernelFunction)
     }
 
     static func buildComputePipelineState() -> MTLComputePipelineState {
@@ -141,27 +131,28 @@ extension Terrain {
     }
 
     static func buildRenderPipelineState() -> MTLRenderPipelineState {
-      let descriptor = MTLRenderPipelineDescriptor()
-      descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
-      descriptor.depthAttachmentPixelFormat = .depth32Float
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
 
-      let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
-      let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
-      descriptor.vertexFunction = vertexFunction
-      descriptor.fragmentFunction = fragmentFunction
+        let vertexFunction = Renderer.library?.makeFunction(name: "vertex_terrain")
+        let fragmentFunction = Renderer.library?.makeFunction(name: "fragment_terrain")
+        descriptor.vertexFunction = vertexFunction
+        descriptor.fragmentFunction = fragmentFunction
 
-      let vertexDescriptor = MTLVertexDescriptor()
-      vertexDescriptor.attributes[0].format = .float3
-      vertexDescriptor.attributes[0].offset = 0
-      vertexDescriptor.attributes[0].bufferIndex = 0
+        let vertexDescriptor = MTLVertexDescriptor()
+        vertexDescriptor.attributes[0].format = .float3
+        vertexDescriptor.attributes[0].offset = 0
+        vertexDescriptor.attributes[0].bufferIndex = 0
 
-      vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-      vertexDescriptor.layouts[0].stride = MemoryLayout<SIMD3<Float>>.stride
-      descriptor.vertexDescriptor = vertexDescriptor
+        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
+        vertexDescriptor.layouts[0].stride = MemoryLayout<SIMD3<Float>>.stride
+        descriptor.vertexDescriptor = vertexDescriptor
 
-      descriptor.tessellationFactorStepFunction = .perPatch
-      descriptor.maxTessellationFactor = maxTessellation
-      descriptor.tessellationPartitionMode = .pow2
+        descriptor.tessellationFactorStepFunction = .perPatch
+        descriptor.maxTessellationFactor = maxTessellation
+        descriptor.tessellationPartitionMode = .pow2
 
         return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
     }
@@ -175,7 +166,7 @@ extension Terrain {
      - size: size of plane
      - Returns: an array of patch control points. Each group of four makes one patch.
      **/
-    static func createControlPoints(patches: (horizontal: Int, vertical: Int),
+    func createControlPoints(patches: (horizontal: Int, vertical: Int),
                              size: (width: Float, height: Float)) -> (normalized: [SIMD3<Float>], patches: [Patch]) {
 
         var normalizedPoints: [SIMD3<Float>] = []
@@ -225,15 +216,15 @@ extension Terrain {
                         value.z * size.height - size.height / 2]
             }
 
-            let patch = Patch(topLeft: update(value: $0.topLeft),
-                  topRight: update(value: $0.topRight),
-                  bottomLeft: update(value: $0.bottomLeft),
-                  bottomRight: update(value: $0.bottomRight))
+            let patch = Patch(topLeft: update(value: $0.topLeft) + worldTransform.columns.3.xyz,
+                              topRight: update(value: $0.topRight) + worldTransform.columns.3.xyz,
+                              bottomLeft: update(value: $0.bottomLeft) + worldTransform.columns.3.xyz,
+                              bottomRight: update(value: $0.bottomRight) + worldTransform.columns.3.xyz)
             return patch
         }
 
         for patch in terrainPatches {
-//            print("********\n topLeft \(patch.topLeft)\n topRight \(patch.topRight)\n bottomLeft \(patch.bottomLeft)\n bottomRight  \(patch.bottomRight)\n**********\n\n\n\n")
+            //            print("********\n topLeft \(patch.topLeft)\n topRight \(patch.topRight)\n bottomLeft \(patch.bottomLeft)\n bottomRight  \(patch.bottomRight)\n**********\n\n\n\n")
         }
 
         return (normalizedPoints, terrainPatches)
@@ -256,7 +247,7 @@ extension Terrain: ComputeHandler {
         computeEncoder.setBytes(&cameraPosition,
                                 length: MemoryLayout<SIMD4<Float>>.stride,
                                 index: 3)
-        var matrix = modelMatrix
+        var matrix = worldTransform
         computeEncoder.setBytes(&matrix,
                                 length: MemoryLayout<float4x4>.stride,
                                 index: 4)
@@ -286,8 +277,8 @@ extension Terrain: Renderable {
         renderEncoder.setCullMode(.none)
         var uniforms = vertex
 
-        uniforms.modelMatrix = modelMatrix
-        uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+        uniforms.modelMatrix = worldTransform
+        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
 
         renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)

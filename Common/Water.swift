@@ -18,9 +18,12 @@ class Water: Node {
     private var timer: Float = 0
     private let refractionRenderPass: RenderPass
     private let reflectionRenderPass: RenderPass
+    private let maskRenderPass: RenderPass
     private let depthStencilState: MTLDepthStencilState
     private let reflectionCamera = Camera()
-
+    private let mainDepthStencilState: MTLDepthStencilState
+    private let orthoCamera = OrthographicCamera()
+    private var heightMap: MTLTexture!
 
     init(size: Float) {
         do {
@@ -34,20 +37,32 @@ class Water: Node {
 
             let library = Renderer.device.makeDefaultLibrary()!
             let descriptor = MTLRenderPipelineDescriptor()
-            descriptor.vertexFunction = library.makeFunction(name: "vertex_water")
+            let vertexFunction = library.makeFunction(name: "vertex_water")
+            descriptor.vertexFunction = vertexFunction
             descriptor.fragmentFunction = library.makeFunction(name: "fragment_water")
             descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-            descriptor.depthAttachmentPixelFormat = Renderer.depthPixelFormat
+            descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+            descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+            descriptor.colorAttachments[0].isBlendingEnabled = true
+            descriptor.colorAttachments[0].rgbBlendOperation = .add
+            descriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+            descriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
             descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
             pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
 
             reflectionRenderPass = RenderPass(name: "reflection", size: Renderer.drawableSize)
             refractionRenderPass = RenderPass(name: "refraction", size: Renderer.drawableSize)
+            maskRenderPass = RenderPass(name: "MaskPass", size: Renderer.drawableSize)
 
             let stencilDescriptor = MTLDepthStencilDescriptor()
             stencilDescriptor.depthCompareFunction = .less
             stencilDescriptor.isDepthWriteEnabled = true
             depthStencilState = Renderer.device.makeDepthStencilState(descriptor: stencilDescriptor)!
+
+            let depthStencilDescriptor = MTLDepthStencilDescriptor()
+            depthStencilDescriptor.depthCompareFunction = .less
+            depthStencilDescriptor.isDepthWriteEnabled = true
+            mainDepthStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
 
         } catch {
             fatalError(error.localizedDescription)
@@ -59,59 +74,161 @@ class Water: Node {
 
 extension Water: Renderable {
 
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+//        render(renderEncoder: renderEncoder, pipelineState: stencilPipelineState, uniforms: uniforms)
+    }
+
     func createTexturesBuffer() {
         
     }
 
-    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, uniforms: Uniforms, renderables: [Renderable]) {
+    //        // Reflection
+    //        let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
+    //        reflectEncoder.setDepthStencilState(depthStencilState)
+    //
+    //        reflectionCamera.position = camera.position
+    //        reflectionCamera.position.y = -camera.position.y
+    //        reflectionCamera.rotation.x = -camera.rotation.x
+    //        uniforms.viewMatrix = reflectionCamera.viewMatrix
+    //
+    //        for renderable in renderables {
+    //            reflectEncoder.pushDebugGroup("Water Refract \(renderable.name)")
+    //            renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
+    //            reflectEncoder.popDebugGroup()
+    //        }
+    //
+    //        reflectEncoder.endEncoding()
+    //
+    //
+    //        // Refraction
+    //        uniforms.viewMatrix = camera.viewMatrix
+    //        let refractEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: refractionRenderPass.descriptor)!
+    //        refractEncoder.setDepthStencilState(depthStencilState)
+    //
+    //        for renderable in renderables {
+    //            refractEncoder.pushDebugGroup("Water Refract \(renderable.name)")
+    //            renderable.render(renderEncoder: refractEncoder, uniforms: uniforms)
+    //            refractEncoder.popDebugGroup()
+    //        }
+    //
+    //        refractEncoder.endEncoding()
+
+
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable]) {
+        let mainUniforms = uniforms
         var uniforms = uniforms
 
-        // Reflection
+        /* This doesn't really work because tesselation height needs to be calculated / rendered.
         let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
-        reflectEncoder.setDepthStencilState(depthStencilState)
+        reflectEncoder.setDepthStencilState(mainDepthStencilState)
 
         reflectionCamera.position = camera.position
+        reflectionCamera.rotation = camera.rotation
+        reflectionCamera.scale = camera.scale
         reflectionCamera.position.y = -camera.position.y
         reflectionCamera.rotation.x = -camera.rotation.x
+
         uniforms.viewMatrix = reflectionCamera.viewMatrix
 
+        // fragment uniforms
+        var fragmentUniforms = FragmentUniforms()
+        fragmentUniforms.cameraPosition = camera.position
+        fragmentUniforms.lightCount = UInt32(lights.count)
+        fragmentUniforms.tiling = 1
+
+        reflectEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.size, index: Int(BufferIndexFragmentUniforms.rawValue))
+
+        var lights = lights
+        reflectEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: Int(BufferIndexLights.rawValue))
+
+        var farZ = Camera.FarZ
+        reflectEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
+
         for renderable in renderables {
-            reflectEncoder.pushDebugGroup("Water Refract \(renderable.name)")
+            guard type(of: renderable) != Water.self else { continue }
+
             renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
-            reflectEncoder.popDebugGroup()
         }
 
         reflectEncoder.endEncoding()
+*/
 
-        
+
+
         // Refraction
-        uniforms.viewMatrix = camera.viewMatrix
-        let refractEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: refractionRenderPass.descriptor)!
-        refractEncoder.setDepthStencilState(depthStencilState)
 
-        for renderable in renderables {
-            refractEncoder.pushDebugGroup("Water Refract \(renderable.name)")
-            renderable.render(renderEncoder: refractEncoder, uniforms: uniforms)
-            refractEncoder.popDebugGroup()
+        // Need to calculate height thing.
+        // I could just pass in the height map & sample. Then based on some arbitrary number, do some stuff.
+        // Do this in the main pass
+
+        let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
+        renderEncoder.setDepthStencilState(mainDepthStencilState)
+        for case let prop as Prop in renderables {
+            for (transform, plane) in zip(prop.transforms, prop.instanceStencilPlanes) {
+                var uniforms = uniforms
+
+                var planeTransform = Transform()
+                planeTransform.position = transform.position
+                planeTransform.position.x -= 1.5
+                planeTransform.scale = transform.scale
+
+
+                uniforms.projectionMatrix = camera.projectionMatrix
+                uniforms.viewMatrix = camera.viewMatrix
+                uniforms.modelMatrix = prop.worldTransform * planeTransform.modelMatrix
+                uniforms.maskMatrix = orthoCamera.projectionMatrix * camera.viewMatrix
+
+                renderEncoder.setRenderPipelineState(prop.maskPipeline)
+                renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
+
+                renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+
+                plane.submeshes.enumerated().forEach { (_, submesh) in
+                    renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                        indexCount: submesh.indexCount,
+                                                        indexType: submesh.indexType,
+                                                        indexBuffer: submesh.indexBuffer.buffer,
+                                                        indexBufferOffset: submesh.indexBuffer.offset)
+                }
+            }
         }
 
-        refractEncoder.endEncoding()
+        renderEncoder.endEncoding()
     }
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         reflectionRenderPass.updateTextures(size: size)
         refractionRenderPass.updateTextures(size: size)
+        maskRenderPass.updateTextures(size: size)
+
+        let cameraSize: Float = 10
+        let ratio = Float(size.width / size.height)
+        let rect = Rectangle(left: -cameraSize * ratio, right: cameraSize * ratio, top: cameraSize, bottom: -cameraSize)
+        orthoCamera.rect = rect
+
     }
 
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
         renderEncoder.pushDebugGroup("Water")
 
-        timer += 0.0001
+//        renderEncoder.setStencilReferenceValue(0)
+        render(renderEncoder: renderEncoder, pipelineState: pipelineState, uniforms: vertex)
 
+//        renderEncoder.setStencilReferenceValue(0)
+        renderEncoder.popDebugGroup()
+    }
+
+    private func render(renderEncoder: MTLRenderCommandEncoder, pipelineState: MTLRenderPipelineState, uniforms: Uniforms) {
+
+        var uniforms = uniforms
+        timer += 0.00017
+
+
+
+        renderEncoder.setDepthStencilState(GameScene.maskStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
-        var uniforms = vertex
         uniforms.modelMatrix = worldTransform
         uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
 
@@ -120,6 +237,9 @@ extension Water: Renderable {
         renderEncoder.setFragmentTexture(reflectionRenderPass.texture, index: 0)
         renderEncoder.setFragmentTexture(refractionRenderPass.texture, index: 1)
         renderEncoder.setFragmentTexture(waterNormalTexture, index: 2)
+        renderEncoder.setFragmentTexture(maskRenderPass.texture, index: 7)
+        renderEncoder.setFragmentTexture(heightMap, index: 8)
+
 
         renderEncoder.setFragmentBytes(&timer, length: MemoryLayout<Float>.size, index: 3)
         for (index, submesh) in mesh.submeshes.enumerated() {
@@ -135,15 +255,15 @@ extension Water: Renderable {
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset)
         }
-
-        renderEncoder.popDebugGroup()
     }
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
 
     }
+
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
+        heightMap = heightMapTexture
+    }
 }
-
-
 
 

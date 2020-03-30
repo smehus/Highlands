@@ -89,3 +89,7 @@ Need to make 40+ tiles
 The game scene will hold an array of TileScenes. No more than 3 and no less than 1. Performance should be pretty good this way.
 
 TileScenes will be static. Will craft each one. But the order of the TileScenes will be random for player.
+
+
+Right now - only the character is using textures so using the texture heap isn't breaking anything because
+the character lives in the game scene

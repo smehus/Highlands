@@ -16,8 +16,10 @@ class Submesh {
     var roughnessIndex: Int?
     var material: Material
     let type: ModelType
+
     var pipelineState: MTLRenderPipelineState!
     var shadowPipelineState: MTLRenderPipelineState!
+    var stencilPipelineState: MTLRenderPipelineState!
 
     var texturesBuffer: MTLBuffer!
     var vertexFunction: MTLFunction?
@@ -108,16 +110,27 @@ private extension Submesh {
 
         pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
         pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = Renderer.depthPixelFormat
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
 //        pipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
 //        pipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
 //        pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
 //        pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
         pipelineDescriptor.sampleCount = Renderer.sampleCount
 
+        let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
+        stencilPipelineDescriptor.vertexFunction = library!.makeFunction(name: "stencil_vertex")!
+        stencilPipelineDescriptor.fragmentFunction = nil
+        stencilPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
+        stencilPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+        stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+
+
 
         do {
             pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+            stencilPipelineState = try! Renderer.device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
         } catch let error {
             fatalError(error.localizedDescription)
         }

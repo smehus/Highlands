@@ -30,8 +30,10 @@
 
 import MetalKit
 
+typealias float3 = SIMD3<Float>
+
 // debug drawing
-extension Renderer {
+extension Scene {
     
 
     func buildLightPipelineState() -> MTLRenderPipelineState {
@@ -43,7 +45,8 @@ extension Renderer {
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
         let lightPipelineState: MTLRenderPipelineState
         do {
             lightPipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
@@ -56,7 +59,7 @@ extension Renderer {
     // uncomment when you have defined `lights`
 
     func debugLights(renderEncoder: MTLRenderCommandEncoder, lightType: LightType, direction: float3) {
-        for light in scene!.lights where light.type == lightType {
+        for light in lights where light.type == lightType {
             switch light.type {
             case Pointlight:
                 drawPointLight(renderEncoder: renderEncoder, position: light.position, color: float3(1, 1, 0))
@@ -86,8 +89,8 @@ extension Renderer {
         let buffer = Renderer.device.makeBuffer(bytes: &vertices,
                                                 length: MemoryLayout<float3>.stride * vertices.count,
                                                 options: [])
-        scene!.uniforms.modelMatrix = float4x4.identity()
-        var uniforms = scene!.uniforms
+        uniforms.modelMatrix = float4x4.identity()
+//        var uniforms = uniforms
         renderEncoder.setVertexBytes(&uniforms,
                                      length: MemoryLayout<Uniforms>.stride, index: 1)
         var lightColor = color
@@ -112,7 +115,7 @@ extension Renderer {
         let buffer = Renderer.device.makeBuffer(bytes: &vertices,
                                                 length: MemoryLayout<float3>.stride * vertices.count,
                                                 options: [])
-        var uniforms = scene!.uniforms
+//        var uniforms = uniforms
         uniforms.modelMatrix = float4x4.identity()
         renderEncoder.setVertexBytes(&uniforms,
                                      length: MemoryLayout<Uniforms>.stride, index: 1)
@@ -134,7 +137,7 @@ extension Renderer {
                                                 length: MemoryLayout<float3>.stride * vertices.count,
                                                 options: [])
 
-        var uniforms = scene!.uniforms
+//        var uniforms = uniforms
         uniforms.modelMatrix = float4x4.identity()
         renderEncoder.setVertexBytes(&uniforms,
                                      length: MemoryLayout<Uniforms>.stride, index: 1)
@@ -155,7 +158,7 @@ extension Renderer {
                                                 length: MemoryLayout<float3>.stride * vertices.count,
                                                 options: [])
 
-        var uniforms = scene!.uniforms
+//        var uniforms = uniforms
         uniforms.modelMatrix = float4x4.identity()
         renderEncoder.setVertexBytes(&uniforms,
                                      length: MemoryLayout<Uniforms>.stride, index: 1)

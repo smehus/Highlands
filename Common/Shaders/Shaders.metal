@@ -41,6 +41,15 @@ struct PropTextures {
 //    texture2d_array<float> baseColorTextureArray;
 };
 
+
+vertex VertexOut stencil_vertex(const VertexIn vertex_in [[ stage_in ]],
+                                constant Uniforms &uniforms [[ buffer(BufferIndexUniforms)]]) {
+    return {
+        .position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * vertex_in.position,
+        .worldPosition = uniforms.modelMatrix * vertex_in.position
+    };
+}
+
 vertex VertexOut vertex_main(const VertexIn vertexIn [[ stage_in ]],
                              constant Instances *instances [[ buffer(BufferIndexInstances) ]],
                              uint instanceID [[ instance_id ]],

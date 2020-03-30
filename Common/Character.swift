@@ -62,9 +62,16 @@ class Character: Node {
     let needsXRotationFix = true
     let heightBuffer: MTLBuffer
 
-    let patches: [Patch]
+    var patches: [Patch]?
     var currentPatch: Patch?
     var positionInPatch: SIMD3<Float>?
+    var currentTile: TileScene? {
+        didSet {
+            guard let tile = currentTile else { return }
+
+            patches = tile.terrain.terrainPatches.1
+        }
+    }
 
     init(name: String) {
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
@@ -115,13 +122,6 @@ class Character: Node {
 
         heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
 
-        let terrainPatches = Terrain.createControlPoints(patches: Terrain.patches,
-                                              size: (width: Terrain.terrainParams.size.x,
-                                                     height: Terrain.terrainParams.size.y))
-
-
-        patches = terrainPatches.patches
-
         super.init()
         self.name = name
     }
@@ -154,7 +154,6 @@ class Character: Node {
             let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
             position.y = pointer.pointee
         }
-
 
 
         // Run / Update Animations
@@ -197,6 +196,10 @@ class Character: Node {
 
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
         position.y = pointer.pointee
+
+        if let tile = currentTile {
+            position.y += tile.position.y
+        }
     }
 
     func setLeftRotation(rotationSpeed: Float) {
@@ -216,7 +219,10 @@ class Character: Node {
     }
 
     func patch(for location: SIMD3<Float>) -> Patch? {
-        let foundPatches = patches.filter { (patch) -> Bool in
+        guard let tilePatches = patches else { return nil }
+
+//        tilePatches.forEach({ print("*** \($0)") })
+        let foundPatches = tilePatches.filter { (patch) -> Bool in
             let horizontal = patch.topLeft.x < location.x && patch.topRight.x > location.x
             let vertical = patch.topLeft.z > location.z && patch.bottomLeft.z < location.z
 
@@ -230,12 +236,16 @@ class Character: Node {
 //            print("*** UPDATE CURRENT PATCH \(patch)")
         }
 
+
         return patch
     }
 }
 
 extension Character: Renderable {
 
+
+    /// This works because the character is added to the scene rather than the TileScene.
+    /// The game scene calls this in super.setup
     func createTexturesBuffer() {
         for mesh in meshes {
             for submesh in mesh.submeshes {
@@ -378,7 +388,7 @@ extension Character: Renderable {
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder,
                          heightMapTexture: MTLTexture,
-                         terrain: TerrainParams,
+                         terrainParams: TerrainParams,
                          uniforms: Uniforms,
                          controlPointsBuffer: MTLBuffer?) {
 
@@ -389,7 +399,7 @@ extension Character: Renderable {
 
 //        var position = patchPosition
         var position = self.worldTransform.columns.3.xyz
-        var terrainParams = terrain
+        var terrainParams = terrainParams
         var uniforms = uniforms
         var index = 0
 

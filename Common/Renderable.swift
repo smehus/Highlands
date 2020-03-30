@@ -8,20 +8,43 @@
 
 import MetalKit
 
+enum RenderType {
+    case main
+    case stencil
+}
+
 protocol Renderable {
     var name: String { get }
+
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms)
+
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int)
-    func renderToTarget(with commandBuffer: MTLCommandBuffer)
+
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable])
+
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize)
-    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?)
+
+    func generateTerrain(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms)
+
+    func generateTerrainNormalMap(computeEncoder: MTLComputeCommandEncoder)
+
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, terrainParams: TerrainParams, uniforms: Uniforms)
+
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?)
+
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms)
+
     func createTexturesBuffer()
 }
 
 extension Renderable {
-    func renderToTarget(with commandBuffer: MTLCommandBuffer) { }
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) { }
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable]) {}
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }
-    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrain: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) { }
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) { }
+    func generateTerrain(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) { }
+    func generateTerrainNormalMap(computeEncoder: MTLComputeCommandEncoder) { }
+    func calculateHeight(computeEncoder: MTLComputeCommandEncoder, terrainParams: TerrainParams, uniforms: Uniforms) { }
 }
 
 protocol ComputeHandler {
