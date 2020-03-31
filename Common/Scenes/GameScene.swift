@@ -26,7 +26,7 @@ final class GameScene: Scene {
     private let shadowRenderPassDescriptor = MTLRenderPassDescriptor()
     private var shadowDepthTexture: MTLTexture!
     private var shadowColorTexture: MTLTexture!
-//    private var secondTile = TileScene()
+    private var secondTile = TileScene()
 
     override func setupScene() {
 
@@ -50,10 +50,10 @@ final class GameScene: Scene {
         tile.setupTile()
         add(node: tile)
 
-//        secondTile.name = "Tile2"
-//        secondTile.position = [0, 0, 50]
-//        secondTile.setupTile()
-//        add(node: secondTile)
+        secondTile.name = "Tile2"
+        secondTile.position = [0, 0, 50]
+        secondTile.setupTile()
+        add(node: secondTile)
 
 
         skeleton.scale = [0.015, 0.015, 0.015]

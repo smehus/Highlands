@@ -11,8 +11,9 @@ import MetalKit
 
 class TileScene: Node {
 
-    private let water = Water(size: 50)
     let terrain = Terrain(textureName: "terrain1")
+    private let water = Water(size: 50)
+    private let box = Prop(type: .base(name: "crate", lighting: true))
 
     func setupTile() {
 
@@ -74,6 +75,11 @@ class TileScene: Node {
 //
 //            rock.updateBuffer(instance: i, transform: transform, textureID: .random(in: 0..<textureNames.count))
 //        }
+
+
+        box.position = [2, 0 , 1]
+//        box.scale = [0.2, 0.2, 0.2]
+        add(childNode: box)
     }
 }
 
@@ -137,6 +143,8 @@ extension TileScene: Renderable {
     }
 
     func createTexturesBuffer() {
-
+        for case let renderable as Renderable in children {
+            renderable.createTexturesBuffer()
+        }
     }
 }

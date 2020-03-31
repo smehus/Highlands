@@ -19,7 +19,7 @@ class TextureController {
     static var heapTextures: [MTLTexture] = []
 
     static func addTexture(texture: TextureWrapper?) -> Int? {
-        guard let texture = texture else { return nil }
+        guard let texture = texture else { assertionFailure(); return nil }
 
         TextureController.textures.append(texture)
         return TextureController.textures.count - 1

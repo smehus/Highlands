@@ -65,7 +65,7 @@ class Character: Node {
     var patches: [Patch]?
     var currentPatch: Patch?
     var positionInPatch: SIMD3<Float>?
-    var currentTile: TileScene? {
+    weak var currentTile: TileScene? {
         didSet {
             guard let tile = currentTile else { return }
 
