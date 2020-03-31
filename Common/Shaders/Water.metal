@@ -157,6 +157,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float2 uv = vertex_in.uv * 0.15;
     float waveStrength = 0.05;
 
+    // This is testing to see how close we are to the shore.
     constexpr sampler samp(filter::linear, address::repeat);
     float2 testxy = (vertex_in.worldPosition.xz + 50 / 2.0) / 50;
     float4 testcolor = heightMap.sample(samp, testxy);
@@ -178,10 +179,22 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
 
 
+    // If mask texture has a mask value - reset the uv coordintates so
+    // inside the mask, the water is more varied / quicker
+    // However the outer boarders we want to have the original ripples (slow ripples)
     float4 m = maskTexture.sample(maskSampler, refractionCoords);
     if (m.r == 0) {
-        waveStrength = 0.12;
         isMasked = true;
+        waveStrength = 0.12;
+        rippleX = float2(uv.x + timer, uv.y);
+        rippleY = float2(-uv.x, uv.y) + timer * 0.2;
+        ripple = ((normalTexture.sample(s, rippleX).rg * 2.0 - 1.0) +
+                         (normalTexture.sample(s, rippleY).rg * 2.0 - 1.0)) * waveStrength;
+
+        reflectionCoords += ripple;
+        reflectionCoords = clamp(reflectionCoords, 0.001, 0.999);
+        refractionCoords += ripple;
+        refractionCoords = clamp(refractionCoords, 0.001, 0.999);
     }
 
     float4 baseColor = refractionTexture.sample(maskSampler, refractionCoords);

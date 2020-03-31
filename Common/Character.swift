@@ -73,6 +73,11 @@ class Character: Node {
         }
     }
 
+
+    let boundingMask: MTKMesh
+    let stencilPipelineState: MTLRenderPipelineState
+    var maskPipeline: MTLRenderPipelineState
+
     init(name: String) {
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: "usdz") else { fatalError() }
 
@@ -121,6 +126,30 @@ class Character: Node {
         heightCalculatePipelineState = Character.buildComputePipelineState()
 
         heightBuffer = Renderer.device.makeBuffer(length: MemoryLayout<Float>.size, options: .storageModeShared)!
+
+        let maskAllocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let mdlMask = MDLMesh.newEllipsoid(withRadii: [1.5, 0, 0.7], radialSegments: 40, verticalSegments: 1, geometryType: .triangles, inwardNormals: false, hemisphere: true, allocator: maskAllocator)
+        boundingMask = try! MTKMesh(mesh: mdlMask, device: Renderer.device)
+
+        let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
+        stencilPipelineDescriptor.vertexFunction = Renderer.library!.makeFunction(name: "stencil_vertex")
+        stencilPipelineDescriptor.fragmentFunction = nil
+        stencilPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(boundingMask.vertexDescriptor)
+        stencilPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+        stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+
+        stencilPipelineState = try! Renderer.device.makeRenderPipelineState(descriptor: stencilPipelineDescriptor)
+
+        let maskPipelineDescriptor = MTLRenderPipelineDescriptor()
+        maskPipelineDescriptor.vertexFunction = Renderer.library!.makeFunction(name: "stencil_vertex")!
+        maskPipelineDescriptor.fragmentFunction = Renderer.library!.makeFunction(name: "fragment_mask")!
+        maskPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        maskPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(boundingMask.vertexDescriptor)
+        maskPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        maskPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+
+        maskPipeline = try! Renderer.device.makeRenderPipelineState(descriptor: maskPipelineDescriptor)
 
         super.init()
         self.name = name
@@ -251,6 +280,30 @@ extension Character: Renderable {
             for submesh in mesh.submeshes {
                 submesh.createTexturesBuffer()
             }
+        }
+    }
+
+    func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
+        var uniforms = uniforms
+
+        return
+        var transform = Transform()
+        transform.position = position
+        transform.position.x -= 1
+//        transform.rotation = [0, 0, radians(fromDegrees: -90)]
+
+        uniforms.modelMatrix = transform.modelMatrix
+
+        renderEncoder.setRenderPipelineState(stencilPipelineState)
+        renderEncoder.setVertexBuffer(boundingMask.vertexBuffers.first!.buffer, offset: 0, index: 0)
+        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: Int(BufferIndexUniforms.rawValue))
+
+        boundingMask.submeshes.forEach { (submesh) in
+            renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                indexCount: submesh.indexCount,
+                                                indexType: submesh.indexType,
+                                                indexBuffer: submesh.indexBuffer.buffer,
+                                                indexBufferOffset: submesh.indexBuffer.offset)
         }
     }
 

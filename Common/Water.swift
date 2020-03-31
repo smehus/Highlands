@@ -163,27 +163,48 @@ extension Water: Renderable {
 
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)
-        for case let prop as Prop in renderables {
-            for (transform, plane) in zip(prop.transforms, prop.instanceStencilPlanes) {
-                var uniforms = uniforms
+        for renderable in renderables {
+            if let prop = renderable as? Prop {
+                for (transform, plane) in zip(prop.transforms, prop.instanceStencilPlanes) {
+                    var uniforms = uniforms
 
-                var planeTransform = Transform()
-                planeTransform.position = transform.position
-                planeTransform.position.x -= 1.5
-                planeTransform.scale = transform.scale
+                    var planeTransform = Transform()
+                    planeTransform.position = transform.position
+                    planeTransform.position.x -= 1.5
+                    planeTransform.scale = transform.scale
 
 
-                uniforms.projectionMatrix = camera.projectionMatrix
-                uniforms.viewMatrix = camera.viewMatrix
-                uniforms.modelMatrix = prop.worldTransform * planeTransform.modelMatrix
-                uniforms.maskMatrix = orthoCamera.projectionMatrix * camera.viewMatrix
+                    uniforms.projectionMatrix = camera.projectionMatrix
+                    uniforms.viewMatrix = camera.viewMatrix
+                    uniforms.modelMatrix = prop.worldTransform * planeTransform.modelMatrix
+                    uniforms.maskMatrix = orthoCamera.projectionMatrix * camera.viewMatrix
 
-                renderEncoder.setRenderPipelineState(prop.maskPipeline)
-                renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
+                    renderEncoder.setRenderPipelineState(prop.maskPipeline)
+                    renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
-                renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+                    renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
-                plane.submeshes.enumerated().forEach { (_, submesh) in
+                    plane.submeshes.enumerated().forEach { (_, submesh) in
+                        renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                            indexCount: submesh.indexCount,
+                                                            indexType: submesh.indexType,
+                                                            indexBuffer: submesh.indexBuffer.buffer,
+                                                            indexBufferOffset: submesh.indexBuffer.offset)
+                    }
+                }
+            } else if let char = renderable as? Character {
+                // do characterrrr
+                var transform = Transform()
+                transform.position = char.position
+                transform.position.x -= 0.3
+
+                uniforms.modelMatrix = transform.modelMatrix
+
+                renderEncoder.setRenderPipelineState(char.maskPipeline)
+                renderEncoder.setVertexBuffer(char.boundingMask.vertexBuffers.first!.buffer, offset: 0, index: 0)
+                renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: Int(BufferIndexUniforms.rawValue))
+
+                char.boundingMask.submeshes.forEach { (submesh) in
                     renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                         indexCount: submesh.indexCount,
                                                         indexType: submesh.indexType,

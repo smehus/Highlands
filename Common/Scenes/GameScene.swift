@@ -352,6 +352,9 @@ final class GameScene: Scene {
         // But should only matter in main pass? Because we're tyring to write to the stencil attachment here
 //        stencilEncoder.setStencilReferenceValue(1)
 
+        var allRenderables = renderables
+        allRenderables.append(skeleton)
+
         for renderable in renderables {
             renderable.renderStencilBuffer(renderEncoder: stencilEncoder, uniforms: previousUniforms)
         }

@@ -116,7 +116,9 @@ extension TileScene: Renderable {
 
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable]) {
         for case let child as Renderable in children {
-            child.renderToTarget(with: commandBuffer, camera: camera, lights: lights, uniforms: uniforms, renderables: children.compactMap { $0 as? Renderable })
+            var nodes = children.compactMap { $0 as? Renderable }
+            nodes.append(contentsOf: renderables)
+            child.renderToTarget(with: commandBuffer, camera: camera, lights: lights, uniforms: uniforms, renderables: nodes)
         }
     }
 
