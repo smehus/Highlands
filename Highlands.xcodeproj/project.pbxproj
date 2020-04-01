@@ -143,14 +143,12 @@
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02D25A2023F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
 		02D25A2123F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
-		02E12F62243379F60061D53C /* crate.obj in Resources */ = {isa = PBXBuildFile; fileRef = 02E12F5E243379F60061D53C /* crate.obj */; };
-		02E12F63243379F60061D53C /* crate.obj in Resources */ = {isa = PBXBuildFile; fileRef = 02E12F5E243379F60061D53C /* crate.obj */; };
-		02E12F64243379F60061D53C /* wood.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02E12F5F243379F60061D53C /* wood.jpg */; };
-		02E12F65243379F60061D53C /* wood.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02E12F5F243379F60061D53C /* wood.jpg */; };
-		02E12F66243379F60061D53C /* crate.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 02E12F60243379F60061D53C /* crate.mtl */; };
-		02E12F67243379F60061D53C /* crate.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 02E12F60243379F60061D53C /* crate.mtl */; };
-		02E12F68243379F60061D53C /* woodnormal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02E12F61243379F60061D53C /* woodnormal.jpg */; };
-		02E12F69243379F60061D53C /* woodnormal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02E12F61243379F60061D53C /* woodnormal.jpg */; };
+		02F3DCD42434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */; };
+		02F3DCD52434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */; };
+		02F3DCD62434E210008FFBC7 /* wooden_box.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD22434E210008FFBC7 /* wooden_box.mtl */; };
+		02F3DCD72434E210008FFBC7 /* wooden_box.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD22434E210008FFBC7 /* wooden_box.mtl */; };
+		02F3DCD82434E210008FFBC7 /* wooden_box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD32434E210008FFBC7 /* wooden_box.obj */; };
+		02F3DCD92434E210008FFBC7 /* wooden_box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD32434E210008FFBC7 /* wooden_box.obj */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
 		A57506EE21CE942700C63081 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EB21CE942700C63081 /* GameView.swift */; };
 		A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3321B8CB42002C0632 /* AppDelegate.swift */; };
@@ -242,10 +240,9 @@
 		02BDBED623DC96A300FB3EEA /* Skeleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = boy_tpose.usdz; sourceTree = SOURCE_ROOT; };
 		02D25A1F23F8975200CD8130 /* TextureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureController.swift; sourceTree = "<group>"; };
-		02E12F5E243379F60061D53C /* crate.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = crate.obj; sourceTree = "<group>"; };
-		02E12F5F243379F60061D53C /* wood.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wood.jpg; sourceTree = "<group>"; };
-		02E12F60243379F60061D53C /* crate.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = crate.mtl; sourceTree = "<group>"; };
-		02E12F61243379F60061D53C /* woodnormal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = woodnormal.jpg; sourceTree = "<group>"; };
+		02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = wooden_box_obj_UVChannel_1_color.tga; sourceTree = "<group>"; };
+		02F3DCD22434E210008FFBC7 /* wooden_box.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wooden_box.mtl; sourceTree = "<group>"; };
+		02F3DCD32434E210008FFBC7 /* wooden_box.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wooden_box.obj; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
 		A563DF1B21E8035200563EA9 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
@@ -311,7 +308,9 @@
 		020E1D3323E2618100A61642 /* Props */ = {
 			isa = PBXGroup;
 			children = (
-				02E12F5D243379F60061D53C /* Crate_obj */,
+				02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */,
+				02F3DCD22434E210008FFBC7 /* wooden_box.mtl */,
+				02F3DCD32434E210008FFBC7 /* wooden_box.obj */,
 				020E1D3423E2618100A61642 /* Tree */,
 				020E1D3723E2618100A61642 /* Ground */,
 				020E1D3D23E2618100A61642 /* normal-water.png */,
@@ -402,17 +401,6 @@
 			);
 			path = UnusedAnimation;
 			sourceTree = "<group>";
-		};
-		02E12F5D243379F60061D53C /* Crate_obj */ = {
-			isa = PBXGroup;
-			children = (
-				02E12F5E243379F60061D53C /* crate.obj */,
-				02E12F5F243379F60061D53C /* wood.jpg */,
-				02E12F60243379F60061D53C /* crate.mtl */,
-				02E12F61243379F60061D53C /* woodnormal.jpg */,
-			);
-			path = Crate_obj;
-			sourceTree = SOURCE_ROOT;
 		};
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
@@ -680,12 +668,9 @@
 				020E1D6423E2618100A61642 /* rock3.obj in Resources */,
 				020E1D5423E2618100A61642 /* ground.png in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
-				02E12F66243379F60061D53C /* crate.mtl in Resources */,
-				02E12F68243379F60061D53C /* woodnormal.jpg in Resources */,
+				02F3DCD82434E210008FFBC7 /* wooden_box.obj in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
 				0277614B23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */,
-				02E12F64243379F60061D53C /* wood.jpg in Resources */,
-				02E12F62243379F60061D53C /* crate.obj in Resources */,
 				020E1D5023E2618100A61642 /* plane.obj in Resources */,
 				020E1D5623E2618100A61642 /* large-plane.obj in Resources */,
 				020E1D6C23E2618100A61642 /* rock3.mtl in Resources */,
@@ -693,7 +678,9 @@
 				020E1D6023E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */,
+				02F3DCD62434E210008FFBC7 /* wooden_box.mtl in Resources */,
 				020E1D6A23E2618100A61642 /* rock2.mtl in Resources */,
+				02F3DCD42434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */,
 				020E1D6823E2618100A61642 /* rock1.mtl in Resources */,
 				020E1D6223E2618100A61642 /* rock2.obj in Resources */,
 				020E1D4E23E2618100A61642 /* large-plane.mtl in Resources */,
@@ -718,9 +705,10 @@
 				020E1D5923E2618100A61642 /* normal-water.png in Resources */,
 				0277614F23E3B6D5003E4DD5 /* walking_boy.usda in Resources */,
 				020E1D5F23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */,
-				02E12F63243379F60061D53C /* crate.obj in Resources */,
 				020E1D4B23E2618100A61642 /* treefir.mtl in Resources */,
 				02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */,
+				02F3DCD52434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */,
+				02F3DCD72434E210008FFBC7 /* wooden_box.mtl in Resources */,
 				020E1D6923E2618100A61642 /* rock1.mtl in Resources */,
 				020E1D5123E2618100A61642 /* plane.obj in Resources */,
 				A57F6A4E21B8CBA8002C0632 /* Assets.xcassets in Resources */,
@@ -733,15 +721,13 @@
 				020E1D5323E2618100A61642 /* plane.mtl in Resources */,
 				0277614C23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */,
 				020E1D6B23E2618100A61642 /* rock2.mtl in Resources */,
+				02F3DCD92434E210008FFBC7 /* wooden_box.obj in Resources */,
 				020E1D6123E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
-				02E12F67243379F60061D53C /* crate.mtl in Resources */,
 				020E1D6323E2618100A61642 /* rock2.obj in Resources */,
 				020E1D6523E2618100A61642 /* rock3.obj in Resources */,
 				020E1D5D23E2618100A61642 /* HRN_LMP_NM.bmp in Resources */,
-				02E12F65243379F60061D53C /* wood.jpg in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
 				02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */,
-				02E12F69243379F60061D53C /* woodnormal.jpg in Resources */,
 				020E1D4F23E2618100A61642 /* large-plane.mtl in Resources */,
 				020E1D5B23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 			);

@@ -107,7 +107,7 @@ class Prop: Node {
 //            let mdlMesh = MDLMesh.newEllipticalCone(withHeight: <#T##Float#>, radii: <#T##vector_float2#>, radialSegments: <#T##Int#>, verticalSegments: <#T##Int#>, geometryType: <#T##MDLGeometryType#>, inwardNormals: <#T##Bool#>, allocator: <#T##MDLMeshBufferAllocator?#>)
 
             // This works with correct rotation and position.
-            let mdlMesh = MDLMesh.newEllipsoid(withRadii: [0.9, 0, 0.4], radialSegments: 20, verticalSegments: 20, geometryType: .triangles, inwardNormals: false, hemisphere: true, allocator: allocator)
+            let maskMesh = MDLMesh.newEllipsoid(withRadii: [6, 0, mdlMesh.boundingBox.maxBounds.x - mdlMesh.boundingBox.minBounds.x], radialSegments: 20, verticalSegments: 20, geometryType: .triangles, inwardNormals: false, hemisphere: true, allocator: allocator)
 //            let mdlMesh = MDLMesh(capsuleWithExtent: [0, 5, 1], cylinderSegments: [1, 1], hemisphereSegments: 5, inwardNormals: false, geometryType: .triangles, allocator: allocator)
 //            let mdlMesh = MDLMesh(coneWithExtent: [0, 5, 1],
 //                             segments: [5, 5],
@@ -121,7 +121,7 @@ class Prop: Node {
 //                                  geometryType: .triangles,
 //                                  allocator: allocator)
 
-            return try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+            return try! MTKMesh(mesh: maskMesh, device: Renderer.device)
         })
 
         let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -347,13 +347,16 @@ extension Prop: Renderable {
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
 
         // Uncomment this to create stencil testing masks
-        return
+
+        guard case let .instanced(modelName, _) = propType else { return }
+        guard modelName == "wooden_box" else { return }
+
         for (transform, plane) in zip(transforms, instanceStencilPlanes) {
             var uniforms = uniforms
 
             var planeTransform = Transform()
             planeTransform.position = transform.position
-            planeTransform.position.x -= 2.5
+            planeTransform.position.x -= 2
             planeTransform.scale = transform.scale
             planeTransform.rotation = [0, 0, 0]
 

@@ -13,7 +13,7 @@ class TileScene: Node {
 
     let terrain = Terrain(textureName: "terrain1")
     private let water = Water(size: 50)
-    private let box = Prop(type: .base(name: "crate", lighting: true))
+
 
     func setupTile() {
 
@@ -35,9 +35,8 @@ class TileScene: Node {
 
         let count = 10
         let offset = 25
-
+//
         let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
-//        tree.name = name
         add(childNode: tree)
 //        physicsController.addStaticBody(node: tree)
         for i in 0..<count {
@@ -77,9 +76,14 @@ class TileScene: Node {
 //        }
 
 
-        box.position = [2, 0 , 1]
-//        box.scale = [0.2, 0.2, 0.2]
+        let box = Prop(type: .instanced(name: "wooden_box", instanceCount: 1))
         add(childNode: box)
+
+        // Shadows only work correctly with instanced props right now.
+        var transform = Transform()
+        transform.position = [0, 0, 4]
+        box.updateBuffer(instance: 0, transform: transform, textureID: 0)
+
     }
 }
 

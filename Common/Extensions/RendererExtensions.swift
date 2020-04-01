@@ -12,11 +12,11 @@ func lighting() -> [Light] {
 
     lights.append(lantern())
 
-//    var light = buildDefaultLight()
-//    light.position = [0, 30, 0]
-//    light.color = [1, 1, 0.9]
-//    light.intensity = 0.01
-//    lights.append(light)
+    var light = buildDefaultLight()
+    light.position = [0, 30, 0]
+    light.color = [1, 1, 0.9]
+    light.intensity = 0.01
+    lights.append(light)
 
 //    light = buildDefaultLight()
 //    light.type = Ambientlight
