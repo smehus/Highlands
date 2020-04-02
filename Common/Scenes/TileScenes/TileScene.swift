@@ -9,7 +9,13 @@
 import Foundation
 import MetalKit
 
+protocol TileSceneDelegate: class {
+    func physicsControllAdd(_ node: Node)
+}
+
 class TileScene: Node {
+
+    weak var delegate: TileSceneDelegate?
 
     let terrain = Terrain(textureName: "terrain1")
     private let water = Water(size: 50)
@@ -83,7 +89,7 @@ class TileScene: Node {
         var transform = Transform()
         transform.position = [0, 0, 4]
         box.updateBuffer(instance: 0, transform: transform, textureID: 0)
-
+        delegate?.physicsControllAdd(box)
     }
 }
 

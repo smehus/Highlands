@@ -25,9 +25,9 @@ class PhysicsController {
         }
     }
 
-    func checkCollisions() -> Bool {
+    func checkCollisions() -> [Node] {
         collidedBodies = []
-        guard let node = dynamicBody else { return false }
+        guard let node = dynamicBody else { return [] }
         let nodeRadius = max((node.size.x / 2), (node.size.z / 2))
         // This calculates the flaot3 position of the node
         let nodePosition = node.worldTransform.columns.3.xyz
@@ -37,12 +37,13 @@ class PhysicsController {
             if let prop = body as? Prop, prop.propType.isInstanced {
                 for transform in prop.transforms {
                     let bodyPosition = transform.modelMatrix.columns.3.xyz
+                    print("*** BODYPOS \(bodyPosition)")
                     let d = distance(nodePosition, bodyPosition)
                     if d < (nodeRadius + bodyRadius) {
                         if holdAllCollided {
                             collidedBodies.append(body)
                         } else {
-                            return true
+                            return []
                         }
                     }
                 }
@@ -53,12 +54,12 @@ class PhysicsController {
                     if holdAllCollided {
                         collidedBodies.append(body)
                     } else {
-                        return true
+                        return []
                     }
                 }
             }
         }
 
-        return collidedBodies.count != 0
+        return collidedBodies
     }
 }

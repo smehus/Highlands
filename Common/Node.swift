@@ -52,6 +52,10 @@ class Node {
     var rightVector: SIMD3<Float> {
         return [forwardVector.z, forwardVector.y, -forwardVector.x]
     }
+
+    var isMovable: Bool {
+        return true
+    }
     
     func update(deltaTime: Float) {
         // override this

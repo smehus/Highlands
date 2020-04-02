@@ -45,6 +45,7 @@ final class GameScene: Scene {
         // Add tiles here
 
         let tile = TileScene()
+        tile.delegate = self
         tile.position = [0, 0, 0]
         tile.name = "Tile1"
         tile.setupTile()

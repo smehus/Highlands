@@ -61,9 +61,13 @@ class Scene {
         let holdRotation = node.rotation
         inputController.updatePlayer(deltaTime: deltaTime)
         
-        if physicsController.checkCollisions() && isHardCollision() {
-            node.position = holdPosition
-            node.rotation = holdRotation
+        if let body = physicsController.checkCollisions().first {
+            if body.isMovable {
+                body.position += node.forwardVector
+            } else if isHardCollision() {
+                node.position = holdPosition
+                node.rotation = holdRotation
+            }
         }
     }
 
@@ -120,5 +124,11 @@ class Scene {
 
     func render(view: MTKView, descriptor: MTLRenderPassDescriptor, commandBuffer: MTLCommandBuffer) {
         assertionFailure("Must override \(#function)")
+    }
+}
+
+extension Scene: TileSceneDelegate {
+    func physicsControllAdd(_ node: Node) {
+        physicsController.addStaticBody(node: node)
     }
 }
