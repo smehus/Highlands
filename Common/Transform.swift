@@ -8,8 +8,19 @@
 
 import Foundation
 
+protocol Positionable {
+    var position: SIMD3<Float> { get set }
+    var isMovable: Bool { get }
+}
+
+extension Positionable {
+    var isMovable: Bool {
+        return true
+    }
+}
+
 /// Used for instances
-struct Transform {
+class Transform: Positionable {
     var position = SIMD3<Float>(repeating: 0)
     var rotation = SIMD3<Float>(repeating: 0)
     var scale = SIMD3<Float>(repeating: 1)

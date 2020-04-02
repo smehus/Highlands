@@ -60,10 +60,12 @@ class Scene {
         let holdPosition = node.position
         let holdRotation = node.rotation
         inputController.updatePlayer(deltaTime: deltaTime)
-        
-        if let body = physicsController.checkCollisions().first {
+
+        let diff = node.position - holdPosition
+
+        if var body = physicsController.checkCollisions().first {
             if body.isMovable {
-                body.position += node.forwardVector
+                body.position += diff
             } else if isHardCollision() {
                 node.position = holdPosition
                 node.rotation = holdRotation
@@ -119,6 +121,7 @@ class Scene {
         for camera in cameras {
             camera.aspect = Float(size.width / size.height)
         }
+
         sceneSize = size
     }
 

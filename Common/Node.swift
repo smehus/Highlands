@@ -8,7 +8,7 @@
 
 import MetalKit
 
-class Node {
+class Node: Positionable {
 
     var name = "untitled"
     var position: SIMD3<Float> = [0, 0, 0]

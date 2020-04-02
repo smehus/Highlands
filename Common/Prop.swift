@@ -349,7 +349,7 @@ extension Prop: Renderable {
         // Uncomment this to create stencil testing masks
 
         guard case let .instanced(modelName, _) = propType else { return }
-        guard modelName == "wooden_box" else { return }
+        guard modelName == "woodend_box" else { return }
 
         for (transform, plane) in zip(transforms, instanceStencilPlanes) {
             var uniforms = uniforms

@@ -10,7 +10,7 @@ class PhysicsController {
     var staticBodies: [Node] = []
 
     var holdAllCollided = true
-    var collidedBodies: [Node] = []
+    var collidedBodies: [Positionable] = []
 
     func addStaticBody(node: Node) {
         removeBody(node: node)
@@ -25,7 +25,7 @@ class PhysicsController {
         }
     }
 
-    func checkCollisions() -> [Node] {
+    func checkCollisions() -> [Positionable] {
         collidedBodies = []
         guard let node = dynamicBody else { return [] }
         let nodeRadius = max((node.size.x / 2), (node.size.z / 2))
@@ -37,11 +37,10 @@ class PhysicsController {
             if let prop = body as? Prop, prop.propType.isInstanced {
                 for transform in prop.transforms {
                     let bodyPosition = transform.modelMatrix.columns.3.xyz
-                    print("*** BODYPOS \(bodyPosition)")
                     let d = distance(nodePosition, bodyPosition)
                     if d < (nodeRadius + bodyRadius) {
                         if holdAllCollided {
-                            collidedBodies.append(body)
+                            collidedBodies.append(transform)
                         } else {
                             return []
                         }
