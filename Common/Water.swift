@@ -165,13 +165,14 @@ extension Water: Renderable {
         renderEncoder.setDepthStencilState(mainDepthStencilState)
         for renderable in renderables {
             if let prop = renderable as? Prop {
-                for (transform, plane) in zip(prop.transforms, prop.instanceStencilPlanes) {
+                for (transform, plane) in zip(prop.transforms, prop.maskPlanes) {
                     var uniforms = uniforms
 
-                    var planeTransform = Transform()
+                    let planeTransform = Transform()
                     planeTransform.position = transform.position
-                    planeTransform.position.x -= 1.5
+                    planeTransform.position.x -= 15
                     planeTransform.scale = transform.scale
+//                    planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
 
 
                     uniforms.projectionMatrix = camera.projectionMatrix
@@ -194,7 +195,7 @@ extension Water: Renderable {
                 }
             } else if let char = renderable as? Character {
                 // do characterrrr
-                var transform = Transform()
+                let transform = Transform()
                 transform.position = char.position
                 transform.position.x -= 0.3
 

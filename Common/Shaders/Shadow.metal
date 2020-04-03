@@ -123,9 +123,16 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
 //        return float4(0, 0, 1, 1);
 //    }
 
+
+    // idk if this will ever work
+//    float3 lightDirection = light.position - in.worldPos.xyz;
+//    if (abs(lightDirection.x) < 3 && abs(lightDirection.z) < 3 && lightDirection.y > 0.5) {
+//        discard_fragment();
+//    }
+
 //    // Vector direction between light & fragment
-    float lightDirection = distance(in.worldPos.xyz, light.position);
-    lightDirection /= Far;
+    float lightDistance = distance(in.worldPos.xyz, light.position);
+    lightDistance /= Far;
 
 //    if (in.face == 1 || in.face == 0) {
 //        return float4(lightDirection, 0, 0, lightDirection);
@@ -135,5 +142,5 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
 //        return float4(0, lightDirection, 0, lightDirection);
 //    }
 
-    return float4(lightDirection);
+    return float4(lightDistance);
 }

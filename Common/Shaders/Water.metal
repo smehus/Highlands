@@ -253,6 +253,8 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float epsilon = 0.001;
     currentDepth = (currentDepth / farZ) + epsilon;
 
+    // This is trying to get rid of the large shadow when directly overhead
+    bool shouldShadow = (fragToLight.x < 3 && fragToLight.z < 3 && currentDepth < 0.6);
 
     if (closestDepth.w < currentDepth) {
         color *= 0.6;
