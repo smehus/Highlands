@@ -118,6 +118,9 @@ vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
 }
 
 fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
+                               // This gets populated by the 'transform'. If we popluated this with 'ShadowTransforms' where
+                               // there are the same amount as the amount of instances passed to the vertex shader
+                               // than we wouldn't neeed to do instanceID / 6
                                constant ShadowFragmentUniforms *fragmentUniforms [[ buffer(9) ]],
                                constant float &Far [[ buffer(10) ]],
                                constant float &Near [[ buffer(11) ]],
@@ -154,7 +157,7 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
     float3 nodePosition = fragmentUniforms[in.transformID].position;
 
     float lightDistanceToCenter = abs(distance(nodePosition, light.position));
-    if (lightDistanceToCenter < 5.0) { return float4(1, 1, 1, 1); }
+//    if (lightDistanceToCenter < 5.0) { return float4(1, 1, 1, 1); }
 
     lightDistance /= Far;
 

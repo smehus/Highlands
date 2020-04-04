@@ -24,6 +24,8 @@ class Water: Node {
     private let mainDepthStencilState: MTLDepthStencilState
     private let orthoCamera = OrthographicCamera()
     private var heightMap: MTLTexture!
+    private let shadowInstanceBuffer: MTLBuffer
+    private let shadowPipelineState: MTLRenderPipelineState
 
     init(size: Float) {
         do {
@@ -63,6 +65,36 @@ class Water: Node {
             depthStencilDescriptor.depthCompareFunction = .less
             depthStencilDescriptor.isDepthWriteEnabled = true
             mainDepthStencilState = Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
+
+
+
+            let shadowTransforms = (0..<6)
+                .map { _ in Transform() }
+                .enumerated()
+                .map { (element) in
+                    return Instances(modelMatrix: element.element.modelMatrix,
+                                     normalMatrix: element.element.normalMatrix,
+                                     textureID: 0,
+                                     viewportIndex: UInt32(element.offset))
+            }
+
+            shadowInstanceBuffer = Renderer.device.makeBuffer(bytes: shadowTransforms, length: MemoryLayout<Instances>.stride * shadowTransforms.count)!
+
+
+            let constants = MTLFunctionConstantValues()
+            var value = false
+            constants.setConstantValue(&value, type: .bool, index: 0)
+            value = true
+            constants.setConstantValue(&value, type: .bool, index: 1)
+
+            let pipelineDescriptor = MTLRenderPipelineDescriptor()
+            pipelineDescriptor.vertexFunction = try Renderer.library!.makeFunction(name: "vertex_omni_depth", constantValues: constants)
+            pipelineDescriptor.fragmentFunction = try Renderer.library!.makeFunction(name: "fragment_depth", constantValues: constants)
+            pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
+            pipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mdlMesh.vertexDescriptor)
+            pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+            pipelineDescriptor.inputPrimitiveTopology = .triangle
+            shadowPipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
 
         } catch {
             fatalError(error.localizedDescription)
@@ -245,8 +277,6 @@ extension Water: Renderable {
         var uniforms = uniforms
         timer += 0.00017
 
-
-
         renderEncoder.setDepthStencilState(GameScene.maskStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
@@ -280,7 +310,29 @@ extension Water: Renderable {
     }
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
+        return // This isn't working but its not really that important anyway
+        renderEncoder.pushDebugGroup("Water")
+        var uniforms = uniforms
+        uniforms.modelMatrix = worldTransform
+        uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
 
+        renderEncoder.setRenderPipelineState(shadowPipelineState)
+        renderEncoder.setVertexBuffer(shadowInstanceBuffer, offset: 0, index: Int(BufferIndexInstances.rawValue))
+        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: Int(BufferIndexUniforms.rawValue))
+        renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
+
+        var transformPosition = [ShadowFragmentUniforms(position: position)]
+        renderEncoder.setFragmentBytes(&transformPosition, length: MemoryLayout<ShadowFragmentUniforms>.stride * transformPosition.count, index: 9)
+
+        mesh.submeshes.forEach { (submesh) in
+            renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                indexCount: submesh.indexCount,
+                                                indexType: submesh.indexType,
+                                                indexBuffer: submesh.indexBuffer.buffer,
+                                                indexBufferOffset: submesh.indexBuffer.offset)
+        }
+
+        renderEncoder.popDebugGroup()
     }
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {
