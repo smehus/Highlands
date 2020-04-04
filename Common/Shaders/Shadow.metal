@@ -14,14 +14,15 @@ constant bool isSkinnedModel [[ function_constant(0) ]];
 constant bool isInstanced [[ function_constant(1) ]];
 
 struct VertexIn {
-    float4 position [[ attribute(0) ]];
+    float4  position [[ attribute(0) ]];
     ushort4 joints [[ attribute(Joints) ]];
-    float4 weights [[ attribute(Weights) ]];
+    float4  weights [[ attribute(Weights) ]];
 };
 
 struct DepthOut {
-    float4 position [[ position ]];
-    uint   face [[render_target_array_index]];
+    float4  position [[ position ]];
+    uint    transformID;
+    uint    face [[render_target_array_index]];
     float4  worldPos;
 };
 
@@ -78,6 +79,7 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
 
             out.position =  map.faceViewMatrix * worldPosition;
             out.worldPos = worldPosition;
+            out.transformID = 0;
 
             return out;
 
@@ -105,13 +107,18 @@ vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
 
     out.position =  map.faceViewMatrix * worldPosition;
     out.worldPos = worldPosition;
-
+    // This instance id is the same value as the current render_target_array_index. Maybe take the instanceID & divide by 6? But somehow
+    // get the instance value were looking for. Check the total amount of instances & divide by the amount of faces.
+    // The instances probably are fucked because I'm passing along the shadowInstances & theres 6 instances for each actual
+    // model instance.. So if value is between 0-5 transform = 1. value = 6-10: transform would equal 2. you get it.
+    out.transformID = uint(instanceID / 6);
 
     return out;
 
 }
 
 fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
+                               constant ShadowFragmentUniforms *fragmentUniforms [[ buffer(9) ]],
                                constant float &Far [[ buffer(10) ]],
                                constant float &Near [[ buffer(11) ]],
                                constant Light &light [[ buffer(BufferIndexLights) ]]) {
@@ -127,11 +134,28 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
     // idk if this will ever work
 //    float3 lightDirection = light.position - in.worldPos.xyz;
 //    if (abs(lightDirection.x) < 3 && abs(lightDirection.z) < 3 && lightDirection.y > 0.5) {
-//        discard_fragment();
+//        discard_fragment();img
 //    }
 
 //    // Vector direction between light & fragment
     float lightDistance = distance(in.worldPos.xyz, light.position);
+//    float3 posone = fragmentUniforms[0].position;
+//    float distanceone = abs(distance(posone, light.position));
+//
+//    float3 postwo = fragmentUniforms[1].position;
+//    float distancetwo = abs(distance(postwo, light.position));
+
+//    if (in.transformID == 0) {
+//        return float4(0, 0, 0, 1);
+//    } else {
+//        return float4(1, 1, 1, 1);
+//    }
+
+    float3 nodePosition = fragmentUniforms[in.transformID].position;
+
+    float lightDistanceToCenter = abs(distance(nodePosition, light.position));
+    if (lightDistanceToCenter < 5.0) { return float4(1, 1, 1, 1); }
+
     lightDistance /= Far;
 
 //    if (in.face == 1 || in.face == 0) {

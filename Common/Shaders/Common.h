@@ -35,6 +35,10 @@ typedef enum {
 } LightType;
 
 typedef struct {
+    vector_float3 position;
+} ShadowFragmentUniforms;
+
+typedef struct {
     matrix_float4x4 faceViewMatrix;
     vector_float3 direction;
     vector_float3 up;

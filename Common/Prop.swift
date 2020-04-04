@@ -124,7 +124,7 @@ class Prop: Node {
             return try! MTKMesh(mesh: maskMesh, device: Renderer.device)
         })
 
-        instanceStencilPlanes = (0...instanceCount).map({ _ in
+        instanceStencilPlanes = (0..<instanceCount).map({ _ in
             let allocator = MTKMeshBufferAllocator(device: Renderer.device)
 //            let mdlMesh = MDLMesh.newEllipticalCone(withHeight: <#T##Float#>, radii: <#T##vector_float2#>, radialSegments: <#T##Int#>, verticalSegments: <#T##Int#>, geometryType: <#T##MDLGeometryType#>, inwardNormals: <#T##Bool#>, allocator: <#T##MDLMeshBufferAllocator?#>)
 
@@ -241,9 +241,6 @@ class Prop: Node {
         pointer.pointee.modelMatrix = transform.modelMatrix
         pointer.pointee.normalMatrix = transform.normalMatrix
         pointer.pointee.textureID = UInt32(textureID)
-
-
-
 
         // Set matrices for shadow instances
         var shadowPointer = shadowInstanceBuffer.contents().bindMemory(to: Instances.self, capacity: shadowTransforms.count)
@@ -378,7 +375,7 @@ extension Prop: Renderable {
 
             let planeTransform = Transform()
             planeTransform.position = transform.position
-            planeTransform.position.x -= 11
+            planeTransform.position.x -= (20 - (boundingBox.maxBounds.x - boundingBox.minBounds.x))
             planeTransform.scale = transform.scale
             planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
 
@@ -469,6 +466,7 @@ extension Prop: Renderable {
     // Instanced trees: Need to add the number of cube map faces by the number of instances?
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) {
 
+        renderEncoder.pushDebugGroup(name)
         var uniforms = uniforms
         uniforms.modelMatrix = worldTransform
         uniforms.normalMatrix = float3x3(normalFrom4x4: worldTransform)
@@ -479,6 +477,10 @@ extension Prop: Renderable {
         for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
             renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, index: index)
         }
+
+
+        var transformPositions = transforms.map { ShadowFragmentUniforms(position: $0.position) }
+        renderEncoder.setFragmentBytes(&transformPositions, length: MemoryLayout<ShadowFragmentUniforms>.stride * transformPositions.count, index: 9)
 
         for modelSubmesh in submeshes {
             renderEncoder.setRenderPipelineState(modelSubmesh.shadowPipelineState)
@@ -491,6 +493,8 @@ extension Prop: Renderable {
                                                 indexBufferOffset: submesh.indexBuffer.offset,
                                                 instanceCount: shadowInstanceCount)
         }
+
+        renderEncoder.popDebugGroup()
     }
 
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) {

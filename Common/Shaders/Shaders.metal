@@ -266,7 +266,7 @@ fragment float4 fragment_main(VertexOut in [[ stage_in ]],
 
     normalValue = normalize(normalValue);
 
-    baseColor = distanceFog(in.position, baseColor);
+//    baseColor = distanceFog(in.position, baseColor);
 
     float3 color;
 
