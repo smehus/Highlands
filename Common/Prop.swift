@@ -373,9 +373,10 @@ extension Prop: Renderable {
         for (transform, plane) in zip(transforms, instanceStencilPlanes) {
             var uniforms = uniforms
 
+            let bBox = boundingBox.maxBounds.x - boundingBox.minBounds.x
             let planeTransform = Transform()
             planeTransform.position = transform.position
-            planeTransform.position.x -= (20 - (boundingBox.maxBounds.x - boundingBox.minBounds.x))
+            planeTransform.position.x -= (10 - (bBox / 2))
             planeTransform.scale = transform.scale
             planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
 

@@ -89,6 +89,9 @@ vertex DepthOut vertex_depth(const VertexIn vertexIn [[ stage_in ]],
     }
 }
 
+
+// Shadow actors need to be instanced. Theres an instance for each face of the cube map
+// that the actor should be rendered to. ( In my case, i'm just rendering the actor to every face because its easier)
 vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
                                   uint instanceID [[ instance_id ]],
                                   constant Instances *instances [[ buffer(BufferIndexInstances) ]],
@@ -107,10 +110,7 @@ vertex DepthOut vertex_omni_depth(const VertexIn vertexIn [[ stage_in ]],
 
     out.position =  map.faceViewMatrix * worldPosition;
     out.worldPos = worldPosition;
-    // This instance id is the same value as the current render_target_array_index. Maybe take the instanceID & divide by 6? But somehow
-    // get the instance value were looking for. Check the total amount of instances & divide by the amount of faces.
-    // The instances probably are fucked because I'm passing along the shadowInstances & theres 6 instances for each actual
-    // model instance.. So if value is between 0-5 transform = 1. value = 6-10: transform would equal 2. you get it.
+
     out.transformID = uint(instanceID / 6);
 
     return out;
