@@ -57,6 +57,7 @@
 		020E1D7B23E2936200A61642 /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A6221B978E3002C0632 /* MathLibrary.swift */; };
 		020E1D7E23E293E100A61642 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* PBR.metal */; };
 		020E1D7F23E293E100A61642 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* PBR.metal */; };
+		023312A52443F3A7002CC03B /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023312A32443DEB0002CC03B /* Text.swift */; };
 		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02630CE523FCE5A700D0AEDA /* TileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290634F23FC3EC300FA0A26 /* TileScene.swift */; };
@@ -211,6 +212,7 @@
 		0222791F23BBB568005ED8FA /* TransformComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformComponent.swift; sourceTree = "<group>"; };
 		0222792223BBBB8B005ED8FA /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDLVertexDescriptor+Extensions.swift"; sourceTree = "<group>"; };
+		023312A32443DEB0002CC03B /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		02544A98231AB2130072E47F /* Terrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terrain.swift; sourceTree = "<group>"; };
 		02544A9E231AC6F20072E47F /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Textures.xcassets; path = ../Textures.xcassets; sourceTree = "<group>"; };
 		0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = walking_boy.usdz; sourceTree = SOURCE_ROOT; };
@@ -364,6 +366,15 @@
 			);
 			path = Rocks;
 			sourceTree = "<group>";
+		};
+		023312A42443DEB0002CC03B /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				023312A32443DEB0002CC03B /* Text.swift */,
+			);
+			name = Text;
+			path = "/Users/scott.mehus/Documents/ScottPersonal/MetalApps/Highlands/Highlands-iOS/Text";
+			sourceTree = "<absolute>";
 		};
 		0290634E23FC3EA700FA0A26 /* TileScenes */ = {
 			isa = PBXGroup;
@@ -521,6 +532,7 @@
 		A57F6A3221B8CB42002C0632 /* Highlands-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				023312A42443DEB0002CC03B /* Text */,
 				A5C952C421CE952D00B23364 /* MotionController.swift */,
 				A57506EB21CE942700C63081 /* GameView.swift */,
 				A57506EA21CE942700C63081 /* InputController.swift */,
@@ -768,6 +780,7 @@
 				02A38F3423E1377300E26E19 /* Primitive.swift in Sources */,
 				0290635023FC3EC300FA0A26 /* TileScene.swift in Sources */,
 				02A38F2E23E12D1A00E26E19 /* Water.swift in Sources */,
+				023312A52443F3A7002CC03B /* Text.swift in Sources */,
 				0294AED423E07C2F005F2E67 /* PhysicsController.swift in Sources */,
 				A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */,
 				020E1D7223E2799B00A61642 /* Skeleton.swift in Sources */,

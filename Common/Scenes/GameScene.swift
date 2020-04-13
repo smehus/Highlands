@@ -299,9 +299,7 @@ final class GameScene: Scene {
         computeNormalEncoder.popDebugGroup()
         computeNormalEncoder.endEncoding()
 
-//        // general terrain normal map
-//        Terrain.generateTerrainNormalMap(heightMap: terrain.heightMap, normalTexture: terrain.normalMapTexture, commandBuffer: commandBuffer)
-
+        
 
         // Calculate Height
 
@@ -374,6 +372,7 @@ final class GameScene: Scene {
           }
 
 
+        
         // Main pass
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else { fatalError() }
         renderEncoder.pushDebugGroup("Main pass")

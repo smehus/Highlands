@@ -157,7 +157,7 @@ fragment float4 fragment_depth(DepthOut in [[ stage_in ]],
     float3 nodePosition = fragmentUniforms[in.transformID].position;
 
     float lightDistanceToCenter = abs(distance(nodePosition, light.position));
-//    if (lightDistanceToCenter < 5.0) { return float4(1, 1, 1, 1); }
+    if (lightDistanceToCenter < 5.0) { return float4(1, 1, 1, 1); }
 
     lightDistance /= Far;
 

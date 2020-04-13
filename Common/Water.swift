@@ -150,16 +150,27 @@ extension Water: Renderable {
         let mainUniforms = uniforms
         var uniforms = uniforms
 
-        /* This doesn't really work because tesselation height needs to be calculated / rendered.
+
+        // Maybe I can render the tesselatted terrain to a render target
+        // & then use that texture to create the refraction & reflections...
+        // I'd have to sample the render target texture somehow
+        // ..... wait i've already run the tesselation... why doesn't this render target work
+        // I'm already rendering to a target
+
+
+        // ITS NOT EVEN RENDERING THE TERRAIN...
+
+
+        // This doesn't really work because tesselation height needs to be calculated / rendered.
         let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
         reflectEncoder.setDepthStencilState(mainDepthStencilState)
 
         reflectionCamera.position = camera.position
         reflectionCamera.rotation = camera.rotation
         reflectionCamera.scale = camera.scale
-        reflectionCamera.position.y = -camera.position.y
-        reflectionCamera.rotation.x = -camera.rotation.x
-
+//        reflectionCamera.position.y = -camera.position.y
+//        reflectionCamera.rotation.x = -camera.rotation.x
+        uniforms.projectionMatrix = camera.projectionMatrix
         uniforms.viewMatrix = reflectionCamera.viewMatrix
 
         // fragment uniforms
@@ -177,18 +188,23 @@ extension Water: Renderable {
         reflectEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
         for renderable in renderables {
-            guard type(of: renderable) != Water.self else { continue }
+            guard type(of: renderable) == Terrain.self else { continue }
 
             renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
         }
 
         reflectEncoder.endEncoding()
-*/
+
 
 
 
         // Refraction
 
+        // Not sure if this will work either - because of the tesselation
+
+
+
+        // Object masks
         // Need to calculate height thing.
         // I could just pass in the height map & sample. Then based on some arbitrary number, do some stuff.
         // Do this in the main pass

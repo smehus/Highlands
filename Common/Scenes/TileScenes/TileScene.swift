@@ -38,6 +38,9 @@ class TileScene: Node {
          add(node: ground)
          */
 
+        let text = Text()
+        text.createAtlas()
+
 
         let count = 10
         let offset = 25
@@ -82,18 +85,18 @@ class TileScene: Node {
 //        }
 
 
-//        let box = Prop(type: .instanced(name: "wooden_box", instanceCount: 2))
-//        add(childNode: box)
-//
-//        // Shadows only work correctly with instanced props right now.
-//        let transform = Transform()
-//        transform.position = [0, 0, 4]
-//        box.updateBuffer(instance: 0, transform: transform, textureID: 0)
-//
-//        let transform2 = Transform()
-//        transform2.position = [8, 0, 2]
-//        box.updateBuffer(instance: 1, transform: transform2, textureID: 0)
-//        delegate?.physicsControllAdd(box)
+        let box = Prop(type: .instanced(name: "wooden_box", instanceCount: 2))
+        add(childNode: box)
+
+        // Shadows only work correctly with instanced props right now.
+        let transform = Transform()
+        transform.position = [0, 0, 4]
+        box.updateBuffer(instance: 0, transform: transform, textureID: 0)
+
+        let transform2 = Transform()
+        transform2.position = [8, 0, 2]
+        box.updateBuffer(instance: 1, transform: transform2, textureID: 0)
+        delegate?.physicsControllAdd(box)
     }
 }
 

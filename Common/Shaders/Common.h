@@ -24,6 +24,7 @@ typedef struct {
     matrix_float3x3 normalMatrix;
     matrix_float4x4 shadowMatrix;
     matrix_float4x4 maskMatrix;
+    vector_float4 clipPlane;
 } Uniforms;
 
 typedef enum {

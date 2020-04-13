@@ -316,40 +316,42 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
 //        color = snowTexture.sample(sample, in.uv * tiling);
     }
 
+    return color;
+
 //    constexpr sampler sam(min_filter::linear, mag_filter::linear);
 //    float3 localNormal = normalMap.sample(sam, in.uv).xyz;
 
-    float3 lightColor = terrainDiffuseLighting(in, color.rgb, in.worldNormal, fragmentUniforms, lights);
-
-    constexpr sampler s(coord::normalized,
-                        filter::linear,
-                        address::clamp_to_edge,
-                        compare_func:: less);
-
-    Light light = lights[0];
-
-
-    float3 fragToLight = in.worldPosition.xyz - light.position;
-//    float3 fragToLight = normalize(in.worldPosition.xyz - light.position);
-    float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
-//    return closestDepth;
-
-    float currentDepth = distance(in.worldPosition.xyz, light.position);
-//    float currentDepth = in.worldPosition.z / in.worldPosition.w;
-
-//    closestDepth *= farZ;
-    float epsilon = 0.001;
-    currentDepth = (currentDepth / farZ) + epsilon;
-
-
-    if (closestDepth.w < currentDepth) {
-        lightColor *= 0.6;
-    }
-
-
-    // current depth is maxed out...n
-//    float n = normalize(currentDepth);
-    return float4(lightColor, 1);
+//    float3 lightColor = color.rgb;//terrainDiffuseLighting(in, color.rgb, in.worldNormal, fragmentUniforms, lights);
+//
+//    constexpr sampler s(coord::normalized,
+//                        filter::linear,
+//                        address::clamp_to_edge,
+//                        compare_func:: less);
+//
+//    Light light = lights[0];
+//
+//
+//    float3 fragToLight = in.worldPosition.xyz - light.position;
+////    float3 fragToLight = normalize(in.worldPosition.xyz - light.position);
+//    float4 closestDepth = shadowColorTexture.sample(s, fragToLight);
+////    return closestDepth;
+//
+//    float currentDepth = distance(in.worldPosition.xyz, light.position);
+////    float currentDepth = in.worldPosition.z / in.worldPosition.w;
+//
+////    closestDepth *= farZ;
+//    float epsilon = 0.001;
+//    currentDepth = (currentDepth / farZ) + epsilon;
+//
+//
+//    if (closestDepth.w < currentDepth) {
+//        lightColor *= 0.6;
+//    }
+//
+//
+//    // current depth is maxed out...n
+////    float n = normalize(currentDepth);
+//    return float4(lightColor, 1);
 }
 
 // Shadow texutre is being rendered with isntances - before having the height calculated - thats why the z+ frame has the shadow
