@@ -38,6 +38,7 @@ protocol Renderable {
 }
 
 extension Renderable {
+    func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) { }
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) { }
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable]) {}
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }

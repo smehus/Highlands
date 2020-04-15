@@ -39,8 +39,7 @@ class TileScene: Node {
          */
 
         let text = Text()
-        text.createAtlas()
-
+        add(childNode: text)
 
         let count = 10
         let offset = 25

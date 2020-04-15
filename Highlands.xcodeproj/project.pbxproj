@@ -58,6 +58,8 @@
 		020E1D7E23E293E100A61642 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* PBR.metal */; };
 		020E1D7F23E293E100A61642 /* PBR.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE6223DFE526005F2E67 /* PBR.metal */; };
 		023312A52443F3A7002CC03B /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023312A32443DEB0002CC03B /* Text.swift */; };
+		023312A72444A348002CC03B /* Text.metal in Sources */ = {isa = PBXBuildFile; fileRef = 023312A62444A348002CC03B /* Text.metal */; };
+		023312A82444A348002CC03B /* Text.metal in Sources */ = {isa = PBXBuildFile; fileRef = 023312A62444A348002CC03B /* Text.metal */; };
 		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02630CE523FCE5A700D0AEDA /* TileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290634F23FC3EC300FA0A26 /* TileScene.swift */; };
@@ -213,6 +215,7 @@
 		0222792223BBBB8B005ED8FA /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		0222792A23BBC0CD005ED8FA /* MDLVertexDescriptor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDLVertexDescriptor+Extensions.swift"; sourceTree = "<group>"; };
 		023312A32443DEB0002CC03B /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
+		023312A62444A348002CC03B /* Text.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Text.metal; sourceTree = "<group>"; };
 		02544A98231AB2130072E47F /* Terrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terrain.swift; sourceTree = "<group>"; };
 		02544A9E231AC6F20072E47F /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Textures.xcassets; path = ../Textures.xcassets; sourceTree = "<group>"; };
 		0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = walking_boy.usdz; sourceTree = SOURCE_ROOT; };
@@ -454,6 +457,7 @@
 		A57506CE21CD671A00C63081 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				023312A62444A348002CC03B /* Text.metal */,
 				0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */,
 				0294AE9823DFF129005F2E67 /* DebugBoundingBox.metal */,
 				0294AE9923DFF129005F2E67 /* DebugLights.metal */,
@@ -756,6 +760,7 @@
 				0294AEAE23DFF129005F2E67 /* Water.metal in Sources */,
 				02A38F3023E12D5C00E26E19 /* RenderPass.swift in Sources */,
 				0294AEC223E077D5005F2E67 /* Terrain.swift in Sources */,
+				023312A72444A348002CC03B /* Text.metal in Sources */,
 				0294AEC023E0774A005F2E67 /* Node.swift in Sources */,
 				0294AEA823DFF129005F2E67 /* Terrain.metal in Sources */,
 				0290635523FC528400FA0A26 /* HighlandsTile.swift in Sources */,
@@ -816,6 +821,7 @@
 				0294AEA323DFF129005F2E67 /* Skybox.metal in Sources */,
 				0294AEC123E0774A005F2E67 /* Node.swift in Sources */,
 				0277614923E3A985003E4DD5 /* CharacterShaders.metal in Sources */,
+				023312A82444A348002CC03B /* Text.metal in Sources */,
 				A57F6A4C21B8CBA8002C0632 /* LocalViewController.swift in Sources */,
 				02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */,
 				A57F6A4A21B8CBA8002C0632 /* AppDelegate.swift in Sources */,

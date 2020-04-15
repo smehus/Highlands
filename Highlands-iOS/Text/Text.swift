@@ -10,35 +10,105 @@ import UIKit
 import CoreText
 import MetalKit
 
-class Text {
+class Text: Node {
 
-    func createAtlas() {
+    private static let atlasSize: CGFloat = 2048
+    private static var fontSize: CGFloat = 57
+    private let atlasTexture: MTLTexture
+    private let pipelineState: MTLRenderPipelineState
+    private let quadsMeshes: [MTKMesh]
 
+    override init() {
+        atlasTexture = Text.createAtlas()
+        quadsMeshes = Text.createQuadMeshes()
+        pipelineState = Text.createPipelineState(quadsMeshes.first!.vertexDescriptor)
+
+        super.init()
+    }
+
+
+    private static func createQuadMeshes() -> [MTKMesh] {
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let mdlMesh = MDLMesh(planeWithExtent: [1, 1, 1], segments: [1, 1], geometryType: .triangles, allocator: allocator)
+        let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+        return [mesh]
+    }
+
+    private static func createPipelineState(_ vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.vertexFunction = Renderer.library!.makeFunction(name: "vertex_text")
+        descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "fragment_text")
+        descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+//        descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)
+        let state = try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+
+        return state
+    }
+
+    private static func create() -> MTLTexture {
+        let font = UIFont(name: "HoeflerText-Regular", size: fontSize)!
+        let ctFont = CTFontCreateWithName(font.fontName as CFString, fontSize, nil)
+
+        let mabString = NSMutableAttributedString(string: "WTF", attributes: [.font: ctFont])
+        let setter = CTFramesetterCreateWithAttributedString(mabString)
+        let path = CGMutablePath()
+        let setterSize = CTFramesetterSuggestFrameSizeWithConstraints(setter, CFRangeMake(0, 0), nil, Renderer.drawableSize, nil)
+        path.addRect(CGRect(origin: CGPoint(x: 0, y: 0), size: setterSize))
+        let frame = CTFramesetterCreateFrame(setter, CFRangeMake(0, 0), path, nil)
         let colorSpace = CGColorSpaceCreateDeviceGray()
         let bitmapInfo = CGBitmapInfo.alphaInfoMask.rawValue & CGImageAlphaInfo.none.rawValue
+        let rawData = [UInt8](repeating: 0, count: Int(setterSize.width * setterSize.height * 4))
+
         let context = CGContext(data: nil,
-                                width: 4096,
-                                height: 4096,
+                                width: Int(setterSize.width),
+                                height: Int(setterSize.height),
                                 bitsPerComponent: 8,
-                                bytesPerRow: 4096,
+                                bytesPerRow: Int(setterSize.width * 4),
                                 space: colorSpace,
                                 bitmapInfo: bitmapInfo)!
 
 
+
+        CTFrameDraw(frame, context)
+        let image = context.makeImage()
+
+        let textureLoaderOptions: [MTKTextureLoader.Option: Any] = [.origin: MTKTextureLoader.Origin.topLeft, .SRGB: false, .generateMipmaps: NSNumber(booleanLiteral: false)]
+
+        let textureLoader = MTKTextureLoader(device: Renderer.device)
+        do {
+            return try textureLoader.newTexture(cgImage: image!, options: textureLoaderOptions)
+        } catch {
+            fatalError("*** error creating texture \(error.localizedDescription)")
+        }
+    }
+
+    private static func createAtlas() -> MTLTexture {
+
+        let colorSpace = CGColorSpaceCreateDeviceGray()
+        let bitmapInfo = CGBitmapInfo.alphaInfoMask.rawValue & CGImageAlphaInfo.none.rawValue
+        let context = CGContext(data: nil,
+                                width: Int(atlasSize),
+                                height: Int(atlasSize),
+                                bitsPerComponent: 8,
+                                bytesPerRow: Int(atlasSize),
+                                space: colorSpace,
+                                bitmapInfo: bitmapInfo)!
         // Turn off antialiasing so we only get fully-on or fully-off pixels.
         // This implicitly disables subpixel antialiasing and hinting.
         context.setAllowsAntialiasing(false)
 
         // Flip context coordinate space so y increases downward
-        context.translateBy(x: 0, y: 4096)
+        context.translateBy(x: 0, y: atlasSize)
         context.scaleBy(x: 1, y: -1)
 
         // Fill background color
         context.setFillColor(UIColor.white.cgColor)
-        context.fill(CGRect(x: 0, y: 0, width: 4096, height: 4096))
+        context.fill(CGRect(x: 0, y: 0, width: atlasSize, height: atlasSize))
 
-        let font = UIFont(name: "HoeflerText-Regular", size: 114)!
-        let ctFont = CTFontCreateWithName(font.fontName as CFString, 114, nil)
+        let font = UIFont(name: "HoeflerText-Regular", size: fontSize)!
+        let ctFont = CTFontCreateWithName(font.fontName as CFString, fontSize, nil)
 
         let fontGlyphCount: CFIndex = CTFontGetGlyphCount(ctFont)
 
@@ -67,7 +137,7 @@ class Text {
                                             1)
 
             // If at the end of the line
-            if origin.x + boundingRect.maxX + glyphMargin > 4096 {
+            if origin.x + boundingRect.maxX + glyphMargin > atlasSize {
                 origin.x = 0
                 origin.y = CGFloat(maxYCoordForLine) + glyphMargin + fontDescent
                 maxYCoordForLine = -1
@@ -84,8 +154,6 @@ class Text {
             // gotta look up what this is doing...
             var glyphTransform: CGAffineTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: glyphOriginX, ty: glyphOriginY)
 
-            print("*** GLIYSDFJ \(glyph)")
-
             guard let path: CGPath = CTFontCreatePathForGlyph(ctFont, glyph, &glyphTransform) else { return }
 //            print("*** path \(path)")
             context.addPath(path)
@@ -101,10 +169,12 @@ class Text {
 //                    glyphPathBoundingRect = CGRectZero;
 //                }
 
-            let texCoordLeft = glyphPathBoundingRect.origin.x / 4096;
-            let texCoordRight = (glyphPathBoundingRect.origin.x + glyphPathBoundingRect.size.width) / 4096;
-            let texCoordTop = (glyphPathBoundingRect.origin.y) / 4096;
-            let texCoordBottom = (glyphPathBoundingRect.origin.y + glyphPathBoundingRect.size.height) / 4096;
+
+            // I think this creates coords between 0 & 1 for the texture
+            let texCoordLeft = glyphPathBoundingRect.origin.x / atlasSize;
+            let texCoordRight = (glyphPathBoundingRect.origin.x + glyphPathBoundingRect.size.width) / atlasSize;
+            let texCoordTop = (glyphPathBoundingRect.origin.y) / atlasSize;
+            let texCoordBottom = (glyphPathBoundingRect.origin.y + glyphPathBoundingRect.size.height) / atlasSize;
 
             // add glyphDescriptors
             // Not sure if needed if not doing signed-distance field
@@ -119,7 +189,62 @@ class Text {
 
         let contextImage = context.makeImage()!
         let fontImage = UIImage(cgImage: contextImage)
-        let _ = fontImage.pngData()
+        let imageData = fontImage.pngData()!
+
+        let textureLoaderOptions: [MTKTextureLoader.Option: Any] = [.origin: MTKTextureLoader.Origin.topLeft, .SRGB: false, .generateMipmaps: NSNumber(booleanLiteral: false)]
+
+        let textureLoader = MTKTextureLoader(device: Renderer.device)
+
+        do {
+            return try textureLoader.newTexture(data: imageData, options: textureLoaderOptions)
+        } catch {
+            fatalError("*** error creating texture \(error.localizedDescription)")
+        }
+    }
+}
+
+typealias VertexArr = [[[Int]]]
+extension Text: Renderable {
+
+    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }
+
+    func createTexturesBuffer() { }
+
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
+
+        renderEncoder.pushDebugGroup("Text")
+//        var uniforms = vertex
+        renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setFragmentTexture(atlasTexture, index: 0)
+
+
+        var vertices: [TextVertex] = [
+            TextVertex(position: [1, -1], textureCoordinate: [1, 1]),
+            TextVertex(position: [-1, 1], textureCoordinate: [1, 1]),
+            TextVertex(position: [-1, 1], textureCoordinate: [1, 1])
+        ]
+        renderEncoder.setVertexBytes(&vertices, length: MemoryLayout<TextVertex>.size * vertices.count, index: 17)
+        var viewPort = Renderer.mtkView.drawableSize
+        renderEncoder.setVertexBytes(&viewPort, length: MemoryLayout<CGSize>.size, index: 18)
+
+
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertices.count)
+        renderEncoder.popDebugGroup()
+        // Use quads instead
+//        for mesh in quadsMeshes {
+//            uniforms.modelMatrix = worldTransform
+//            uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
+//            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: Int(BufferIndexUniforms.rawValue))
+//            renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
+//
+//            for submesh in mesh.submeshes {
+//                renderEncoder.drawIndexedPrimitives(type: .triangle,
+//                                                    indexCount: submesh.indexCount,
+//                                                    indexType: submesh.indexType,
+//                                                    indexBuffer: submesh.indexBuffer.buffer,
+//                                                    indexBufferOffset: submesh.indexBuffer.offset)
+//            }
+//        }
     }
 }
 
