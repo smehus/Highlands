@@ -30,7 +30,7 @@ vertex VertexOut vertex_text(uint vertexID [[ vertex_id ]],
     out.position = float4(0.0, 0.0, 0.0, 1.0);
     out.position.xy = pixelSpacePosition / (viewportSize / 2.0);
 
-    out.textureCoordinate = text.textureCoordinate;
+//    out.textureCoordinate = text.textureCoordinate;
 
     return out;
 }

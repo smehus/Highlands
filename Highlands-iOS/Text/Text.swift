@@ -39,6 +39,7 @@ class Text: Node {
         descriptor.vertexFunction = Renderer.library!.makeFunction(name: "vertex_text")
         descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "fragment_text")
         descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+
         descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
         descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
 //        descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)
@@ -218,15 +219,19 @@ extension Text: Renderable {
         renderEncoder.setFragmentTexture(atlasTexture, index: 0)
 
 
-        var vertices: [TextVertex] = [
-            TextVertex(position: [1, -1], textureCoordinate: [1, 1]),
-            TextVertex(position: [-1, 1], textureCoordinate: [1, 1]),
-            TextVertex(position: [-1, 1], textureCoordinate: [1, 1])
-        ]
-        renderEncoder.setVertexBytes(&vertices, length: MemoryLayout<TextVertex>.size * vertices.count, index: 17)
-        var viewPort = Renderer.mtkView.drawableSize
-        renderEncoder.setVertexBytes(&viewPort, length: MemoryLayout<CGSize>.size, index: 18)
+        let vertices: [TextVertex] = [
+            TextVertex(position: SIMD2<Float>( 250, -250), textureCoordinate: [1, 1]),
+            TextVertex(position: SIMD2<Float>(-250, -250), textureCoordinate: [1, 1]),
+            TextVertex(position: SIMD2<Float>(-250,  250), textureCoordinate: [1, 1]),
 
+            TextVertex(position: SIMD2<Float>( 250, -250), textureCoordinate: [1, 1]),
+            TextVertex(position: SIMD2<Float>(-250,  250), textureCoordinate: [1, 1]),
+            TextVertex(position: SIMD2<Float>( 250,  250), textureCoordinate: [1, 1])
+        ]
+
+        renderEncoder.setVertexBytes(vertices, length: MemoryLayout<TextVertex>.stride * vertices.count, index: 17)
+        var viewPort = vector_uint2(x: UInt32(2436.0), y: UInt32(1125.0))
+        renderEncoder.setVertexBytes(&viewPort, length: MemoryLayout<vector_uint2>.size, index: 18)
 
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertices.count)
         renderEncoder.popDebugGroup()
