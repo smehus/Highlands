@@ -18,25 +18,32 @@ class Text: Node {
     private let pipelineState: MTLRenderPipelineState
     private let quadsMeshes: [MTKMesh]
     private let glyphs: [GlyphDescriptor]
-    private var indexGlyphs: [CGGlyph]
+    private var indexGlyphs: [CGGlyph] = []
+    private let quadSize: Float = 10000
+    private static var fontNameString = "Arial"
 
     override init() {
         (atlasTexture, glyphs) = Text.createAtlas()
         quadsMeshes = Text.createQuadMeshes()
         pipelineState = Text.createPipelineState(quadsMeshes.first!.vertexDescriptor)
 
-        let str = "Fuck You"
-        let chars: [unichar] = Array(str.utf16)
-        let font = UIFont(name: "HoeflerText-Regular", size: 114)!
-        let ctFont = CTFontCreateWithName(font.fontName as CFString, 114, nil)
+        print(Text.fontNameString)
+        let font = UIFont(name: Text.fontNameString, size: 114)!
+        let str = "Scott Rules"
+        let richText = NSAttributedString(string: str, attributes: [.font: font])
+        let line = CTLineCreateWithAttributedString(richText)
+        let run = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
+        print(run)
+        let buffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: str.count)
+        CTRunGetGlyphs(run, CFRange(location: 0, length: str.count), buffer)
 
-        var glyphPointer: [CGGlyph] = Array(repeating: 0, count: str.count)
-        guard CTFontGetGlyphsForCharacters(ctFont, chars, &glyphPointer, str.count) else { fatalError() }
-        indexGlyphs = glyphPointer
-        print("*** FUCK YOU \(chars)")
+        for glyph in UnsafeMutableBufferPointer(start: buffer, count: str.count) {
+            print(glyph)
+            indexGlyphs.append(glyph)
+        }
+
         super.init()
     }
-
 
     private static func createQuadMeshes() -> [MTKMesh] {
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
@@ -50,9 +57,14 @@ class Text: Node {
         descriptor.vertexFunction = Renderer.library!.makeFunction(name: "vertex_text")
         descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "fragment_text")
         descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        descriptor.colorAttachments[0].isBlendingEnabled = true
+        descriptor.colorAttachments[0].rgbBlendOperation = .add
+        descriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+        descriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
 
         descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
         descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+
 //        descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(vertexDescriptor)
         let state = try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
 
@@ -60,7 +72,7 @@ class Text: Node {
     }
 
     private static func create() -> MTLTexture {
-        let font = UIFont(name: "HoeflerText-Regular", size: fontSize)!
+        let font = UIFont(name: fontNameString, size: fontSize)!
         let ctFont = CTFontCreateWithName(font.fontName as CFString, fontSize, nil)
 
         let mabString = NSMutableAttributedString(string: "WTF", attributes: [.font: ctFont])
@@ -227,25 +239,48 @@ extension Text: Renderable {
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setFragmentTexture(atlasTexture, index: 0)
 
-        let glyph = glyphs[Int(indexGlyphs.first!)]
-        let quadSize: Float = 500
+        var xOrigin: Float = -(Float(Renderer.mtkView.drawableSize.width) / 4)
+        for indexGlyph in indexGlyphs {
+            let idx = Int(indexGlyph) - 3
+            guard glyphs.indices.contains(idx) else { continue }
 
-        let vertices: [TextVertex] = [
-            // Top Right
-            TextVertex(position: SIMD2<Float>( 250, -250), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
-            // Top Left
-            TextVertex(position: SIMD2<Float>(-250, -250), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
-            // Bottom Left
-            TextVertex(position: SIMD2<Float>(-250,  250), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+            let glyph = glyphs[idx]
 
-            // Top Right
-            TextVertex(position: SIMD2<Float>( 250, -250), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
-            // Bottom Left
-            TextVertex(position: SIMD2<Float>(-250,  250), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
-            // Bottom Right
-            TextVertex(position: SIMD2<Float>( 250,  250), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
-        ]
+            let glyphWidth = glyph.bottomRightTexCoord.x - glyph.topLeftTexCoord.x
+            // Coordinates are flipped?
+            let glyphHeight = glyph.bottomRightTexCoord.y - glyph.topLeftTexCoord.y
+            let adjustedSize = (Float(glyphWidth) * quadSize)
+            let maxX = xOrigin + adjustedSize
+            let maxY = Float(glyphHeight) * quadSize
+    
+            let vertices: [TextVertex] = [
+                // Top Right
+                TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                // Top Left
+                TextVertex(position: SIMD2<Float>(xOrigin, maxY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                // Bottom Left
+                TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
 
+                // Top Right
+                TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                // Bottom Left
+                TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+                // Bottom Right
+                TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
+            ]
+
+
+            renderEncoder.setVertexBytes(vertices, length: MemoryLayout<TextVertex>.stride * vertices.count, index: 17)
+            var viewPort = vector_uint2(x: UInt32(2436.0), y: UInt32(1125.0))
+            renderEncoder.setVertexBytes(&viewPort, length: MemoryLayout<vector_uint2>.size, index: 18)
+
+            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertices.count)
+            xOrigin += adjustedSize
+        }
+
+
+
+        // Used for whole atlas rendering
 //        let vertices: [TextVertex] = [
 //            // Top Right
 //            TextVertex(position: SIMD2<Float>( quadSize, -quadSize), textureCoordinate: [1, 1]),
@@ -262,11 +297,7 @@ extension Text: Renderable {
 //            TextVertex(position: SIMD2<Float>( quadSize,  quadSize), textureCoordinate: [1, 0])
 //        ]
 
-        renderEncoder.setVertexBytes(vertices, length: MemoryLayout<TextVertex>.stride * vertices.count, index: 17)
-        var viewPort = vector_uint2(x: UInt32(2436.0), y: UInt32(1125.0))
-        renderEncoder.setVertexBytes(&viewPort, length: MemoryLayout<vector_uint2>.size, index: 18)
 
-        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertices.count)
         renderEncoder.popDebugGroup()
     }
 }

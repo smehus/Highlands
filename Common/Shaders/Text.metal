@@ -42,8 +42,8 @@ fragment float4 fragment_text(VertexOut vertex_in [[ stage_in ]],
     float4 value = atlasTexture.sample(s, vertex_in.textureCoordinate);
 
     if (value.r < 1) {
-        return float4(0, 0, 0, 1);
+        return float4(1, 0, 0, 1);
     } else {
-        return float4(1, 1, 1, 1);
+        discard_fragment();
     }
 }
