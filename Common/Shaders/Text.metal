@@ -30,7 +30,7 @@ vertex VertexOut vertex_text(uint vertexID [[ vertex_id ]],
     out.position = float4(0.0, 0.0, 0.0, 1.0);
     out.position.xy = pixelSpacePosition / (viewportSize / 2.0);
 
-//    out.textureCoordinate = text.textureCoordinate;
+    out.textureCoordinate = text.textureCoordinate;
 
     return out;
 }
@@ -38,5 +38,12 @@ vertex VertexOut vertex_text(uint vertexID [[ vertex_id ]],
 fragment float4 fragment_text(VertexOut vertex_in [[ stage_in ]],
                               texture2d<float> atlasTexture [[ texture(0) ]])
 {
-    return float4(1, 0, 0, 0);
+    constexpr sampler s(filter::linear);
+    float4 value = atlasTexture.sample(s, vertex_in.textureCoordinate);
+
+    if (value.r < 1) {
+        return float4(0, 0, 0, 1);
+    } else {
+        return float4(1, 1, 1, 1);
+    }
 }

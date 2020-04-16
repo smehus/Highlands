@@ -12,17 +12,28 @@ import MetalKit
 
 class Text: Node {
 
-    private static let atlasSize: CGFloat = 2048
-    private static var fontSize: CGFloat = 57
+    private static let atlasSize: CGFloat = 4096
+    private static var fontSize: CGFloat = 114
     private let atlasTexture: MTLTexture
     private let pipelineState: MTLRenderPipelineState
     private let quadsMeshes: [MTKMesh]
+    private let glyphs: [GlyphDescriptor]
+    private var indexGlyphs: [CGGlyph]
 
     override init() {
-        atlasTexture = Text.createAtlas()
+        (atlasTexture, glyphs) = Text.createAtlas()
         quadsMeshes = Text.createQuadMeshes()
         pipelineState = Text.createPipelineState(quadsMeshes.first!.vertexDescriptor)
 
+        let str = "Fuck You"
+        let chars: [unichar] = Array(str.utf16)
+        let font = UIFont(name: "HoeflerText-Regular", size: 114)!
+        let ctFont = CTFontCreateWithName(font.fontName as CFString, 114, nil)
+
+        var glyphPointer: [CGGlyph] = Array(repeating: 0, count: str.count)
+        guard CTFontGetGlyphsForCharacters(ctFont, chars, &glyphPointer, str.count) else { fatalError() }
+        indexGlyphs = glyphPointer
+        print("*** FUCK YOU \(chars)")
         super.init()
     }
 
@@ -85,7 +96,7 @@ class Text: Node {
         }
     }
 
-    private static func createAtlas() -> MTLTexture {
+    private static func createAtlas() -> (MTLTexture, [GlyphDescriptor]) {
 
         let colorSpace = CGColorSpaceCreateDeviceGray()
         let bitmapInfo = CGBitmapInfo.alphaInfoMask.rawValue & CGImageAlphaInfo.none.rawValue
@@ -156,19 +167,17 @@ class Text: Node {
             var glyphTransform: CGAffineTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: glyphOriginX, ty: glyphOriginY)
 
             guard let path: CGPath = CTFontCreatePathForGlyph(ctFont, glyph, &glyphTransform) else { return }
-//            print("*** path \(path)")
             context.addPath(path)
             context.fillPath()
 
-            let glyphPathBoundingRect = path.boundingBoxOfPath
+            var glyphPathBoundingRect = path.boundingBoxOfPath
 
-            // ignore for now
-//            // The null rect (i.e., the bounding rect of an empty path) is problematic
-//                // because it has its origin at (+inf, +inf); we fix that up here
-//                if (CGRectEqualToRect(glyphPathBoundingRect, CGRectNull))
-//                {
-//                    glyphPathBoundingRect = CGRectZero;
-//                }
+            // The null rect (i.e., the bounding rect of an empty path) is problematic
+                // because it has its origin at (+inf, +inf); we fix that up here
+            if glyphPathBoundingRect.equalTo(.null)
+                {
+                    glyphPathBoundingRect = .zero;
+                }
 
 
             // I think this creates coords between 0 & 1 for the texture
@@ -179,6 +188,7 @@ class Text: Node {
 
             // add glyphDescriptors
             // Not sure if needed if not doing signed-distance field
+
             mutableGlyphs.append(GlyphDescriptor(glyphIndex: glyph,
                                                  topLeftTexCoord: CGPoint(x: texCoordLeft, y: texCoordTop),
                                                  bottomRightTexCoord: CGPoint(x: texCoordRight, y: texCoordBottom)))
@@ -197,7 +207,7 @@ class Text: Node {
         let textureLoader = MTKTextureLoader(device: Renderer.device)
 
         do {
-            return try textureLoader.newTexture(data: imageData, options: textureLoaderOptions)
+            return (try textureLoader.newTexture(data: imageData, options: textureLoaderOptions), mutableGlyphs)
         } catch {
             fatalError("*** error creating texture \(error.localizedDescription)")
         }
@@ -214,20 +224,43 @@ extension Text: Renderable {
     func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms) {
 
         renderEncoder.pushDebugGroup("Text")
-//        var uniforms = vertex
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setFragmentTexture(atlasTexture, index: 0)
 
+        let glyph = glyphs[Int(indexGlyphs.first!)]
+        let quadSize: Float = 500
 
         let vertices: [TextVertex] = [
-            TextVertex(position: SIMD2<Float>( 250, -250), textureCoordinate: [1, 1]),
-            TextVertex(position: SIMD2<Float>(-250, -250), textureCoordinate: [1, 1]),
-            TextVertex(position: SIMD2<Float>(-250,  250), textureCoordinate: [1, 1]),
+            // Top Right
+            TextVertex(position: SIMD2<Float>( 250, -250), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+            // Top Left
+            TextVertex(position: SIMD2<Float>(-250, -250), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+            // Bottom Left
+            TextVertex(position: SIMD2<Float>(-250,  250), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
 
-            TextVertex(position: SIMD2<Float>( 250, -250), textureCoordinate: [1, 1]),
-            TextVertex(position: SIMD2<Float>(-250,  250), textureCoordinate: [1, 1]),
-            TextVertex(position: SIMD2<Float>( 250,  250), textureCoordinate: [1, 1])
+            // Top Right
+            TextVertex(position: SIMD2<Float>( 250, -250), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+            // Bottom Left
+            TextVertex(position: SIMD2<Float>(-250,  250), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+            // Bottom Right
+            TextVertex(position: SIMD2<Float>( 250,  250), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
         ]
+
+//        let vertices: [TextVertex] = [
+//            // Top Right
+//            TextVertex(position: SIMD2<Float>( quadSize, -quadSize), textureCoordinate: [1, 1]),
+//            // Top Left
+//            TextVertex(position: SIMD2<Float>(-quadSize, -quadSize), textureCoordinate: [0, 1]),
+//            // Bottom Left
+//            TextVertex(position: SIMD2<Float>(-quadSize,  quadSize), textureCoordinate: [0, 0]),
+//
+//            // Top Right
+//            TextVertex(position: SIMD2<Float>( quadSize, -quadSize), textureCoordinate: [1, 1]),
+//            // Bottom Left
+//            TextVertex(position: SIMD2<Float>(-quadSize,  quadSize), textureCoordinate: [0, 0]),
+//            // Bottom Right
+//            TextVertex(position: SIMD2<Float>( quadSize,  quadSize), textureCoordinate: [1, 0])
+//        ]
 
         renderEncoder.setVertexBytes(vertices, length: MemoryLayout<TextVertex>.stride * vertices.count, index: 17)
         var viewPort = vector_uint2(x: UInt32(2436.0), y: UInt32(1125.0))
@@ -235,21 +268,6 @@ extension Text: Renderable {
 
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertices.count)
         renderEncoder.popDebugGroup()
-        // Use quads instead
-//        for mesh in quadsMeshes {
-//            uniforms.modelMatrix = worldTransform
-//            uniforms.normalMatrix = float3x3(normalFrom4x4: modelMatrix)
-//            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: Int(BufferIndexUniforms.rawValue))
-//            renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
-//
-//            for submesh in mesh.submeshes {
-//                renderEncoder.drawIndexedPrimitives(type: .triangle,
-//                                                    indexCount: submesh.indexCount,
-//                                                    indexType: submesh.indexType,
-//                                                    indexBuffer: submesh.indexBuffer.buffer,
-//                                                    indexBufferOffset: submesh.indexBuffer.offset)
-//            }
-//        }
     }
 }
 
@@ -257,5 +275,11 @@ struct GlyphDescriptor {
     let glyphIndex: CGGlyph
     let topLeftTexCoord: CGPoint
     let bottomRightTexCoord: CGPoint
+}
+
+extension CGFloat {
+    var float: Float {
+        return Float(self)
+    }
 }
 
