@@ -252,22 +252,42 @@ extension Text: Renderable {
             let adjustedSize = (Float(glyphWidth) * quadSize)
             let maxX = xOrigin + adjustedSize
             let maxY = Float(glyphHeight) * quadSize
-    
-            let vertices: [TextVertex] = [
-                // Top Right
-                TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
-                // Top Left
-                TextVertex(position: SIMD2<Float>(xOrigin, maxY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
-                // Bottom Left
-                TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
 
-                // Top Right
-                TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
-                // Bottom Left
-                TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
-                // Bottom Right
-                TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
-            ]
+            let vertices: [TextVertex]
+
+            // Why are the glyphs offset by 3??
+            if indexGlyph == 3 {
+                vertices = [
+                    // Top Right
+                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [0.0, 0.0]),
+                    // Top Left
+                    TextVertex(position: SIMD2<Float>(xOrigin, maxY), textureCoordinate: [0.0, 0.0]),
+                    // Bottom Left
+                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [0.0, 0.0]),
+                    // Top Right
+                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [0.0, 0.0]),
+                    // Bottom Left
+                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [0.0, 0.0]),
+                    // Bottom Right
+                    TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [0.0, 0.0])
+                ]
+            } else {
+                vertices = [
+                    // Top Right
+                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    // Top Left
+                    TextVertex(position: SIMD2<Float>(xOrigin, maxY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    // Bottom Left
+                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+
+                    // Top Right
+                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    // Bottom Left
+                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+                    // Bottom Right
+                    TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
+                ]
+            }
 
 
             renderEncoder.setVertexBytes(vertices, length: MemoryLayout<TextVertex>.stride * vertices.count, index: 17)
