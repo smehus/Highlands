@@ -118,7 +118,7 @@ extension Water: Renderable {
         let mainUniforms = uniforms
         var uniforms = uniforms
 
-        /* This doesn't really work because tesselation height needs to be calculated / rendered.
+        // Reflection
         let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
         reflectEncoder.setDepthStencilState(mainDepthStencilState)
 
@@ -128,6 +128,7 @@ extension Water: Renderable {
         reflectionCamera.position.y = -camera.position.y
         reflectionCamera.rotation.x = -camera.rotation.x
 
+        uniforms.projectionMatrix = reflectionCamera.projectionMatrix
         uniforms.viewMatrix = reflectionCamera.viewMatrix
 
         // fragment uniforms
@@ -145,13 +146,13 @@ extension Water: Renderable {
         reflectEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
         for renderable in renderables {
-            guard type(of: renderable) != Water.self else { continue }
+            guard type(of: renderable) == Prop.self else { continue }
 
             renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
         }
 
         reflectEncoder.endEncoding()
-*/
+
 
 
 
