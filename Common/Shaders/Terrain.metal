@@ -316,12 +316,10 @@ fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
 //        color = snowTexture.sample(sample, in.uv * tiling);
     }
 
-    return color;
-
 //    constexpr sampler sam(min_filter::linear, mag_filter::linear);
 //    float3 localNormal = normalMap.sample(sam, in.uv).xyz;
 
-    float3 lightColor = color.rgb;//terrainDiffuseLighting(in, color.rgb, in.worldNormal, fragmentUniforms, lights);
+    float3 lightColor = terrainDiffuseLighting(in, color.rgb, in.worldNormal, fragmentUniforms, lights);
 
     constexpr sampler s(coord::normalized,
                         filter::linear,
