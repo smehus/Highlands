@@ -20,7 +20,7 @@ protocol Renderable {
 
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int)
 
-    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture)
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture, player: Node)
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize)
 
@@ -40,7 +40,7 @@ protocol Renderable {
 extension Renderable {
     func renderShadow(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms, startingIndex: Int) { }
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) { }
-    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture) { }
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture, player: Node) { }
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { }
     func calculateHeight(computeEncoder: MTLComputeCommandEncoder, heightMapTexture: MTLTexture, terrainParams: TerrainParams, uniforms: Uniforms, controlPointsBuffer: MTLBuffer?) { }
     func generateTerrain(computeEncoder: MTLComputeCommandEncoder, uniforms: Uniforms) { }

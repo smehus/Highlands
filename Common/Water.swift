@@ -20,7 +20,7 @@ class Water: Node {
     private let reflectionRenderPass: RenderPass
     private let maskRenderPass: RenderPass
     private let depthStencilState: MTLDepthStencilState
-    private let reflectionCamera = Camera()
+    private let reflectionCamera = ThirdPersonCamera()
     private let mainDepthStencilState: MTLDepthStencilState
     private let orthoCamera = OrthographicCamera()
     private var heightMap: MTLTexture!
@@ -114,7 +114,7 @@ extension Water: Renderable {
     //        refractEncoder.endEncoding()
 
 
-    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture) {
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture, player: Node) {
         let mainUniforms = uniforms
         var uniforms = uniforms
 
@@ -122,18 +122,23 @@ extension Water: Renderable {
         let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
         reflectEncoder.setDepthStencilState(mainDepthStencilState)
 
+        // set the transform
+        reflectionCamera.focus = player
         reflectionCamera.position = camera.position
-        reflectionCamera.rotation = camera.rotation
         reflectionCamera.scale = camera.scale
+
+        // Move to the negative value (if 6 move to -6) and angle upwards
+        // This might have always been right, its just a weird angle
+
+        // Just let ThirdPersonCamera handle the rotation
         reflectionCamera.position.y = -camera.position.y
-        reflectionCamera.rotation.x = -camera.rotation.x
 
         uniforms.projectionMatrix = reflectionCamera.projectionMatrix
         uniforms.viewMatrix = reflectionCamera.viewMatrix
 
         // fragment uniforms
         var fragmentUniforms = FragmentUniforms()
-        fragmentUniforms.cameraPosition = camera.position
+        fragmentUniforms.cameraPosition = reflectionCamera.position
         fragmentUniforms.lightCount = UInt32(lights.count)
         fragmentUniforms.tiling = 1
 

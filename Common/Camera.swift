@@ -60,9 +60,15 @@ class OrthographicCamera: Camera {
 
 class ThirdPersonCamera: Camera {
 
-    var focus: Node
+    var focus: Node!
     var focusDistance: Float = 3
     var focusHeight: Float = 3
+
+    // the rotation is is all 0's because its never actually set
+
+    override init() {
+        super.init()
+    }
 
     init(focus: Node) {
         self.focus = focus

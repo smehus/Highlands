@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
-   <Group
-      location = "group:/Users/scott.mehus/Documents/ScottPersonal/MetalApps/Highlands/Highlands-iOS/Text"
-      name = "Text">
-      <FileRef
-         location = "group:Text.swift">
-      </FileRef>
-   </Group>
    <FileRef
       location = "self:">
    </FileRef>

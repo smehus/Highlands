@@ -29,7 +29,7 @@ class Text: Node {
 
         print(Text.fontNameString)
         let font = UIFont(name: Text.fontNameString, size: 114)!
-        let str = "Scott Rules"
+        let str = "Claire Rules"
         let richText = NSAttributedString(string: str, attributes: [.font: font])
         let line = CTLineCreateWithAttributedString(richText)
         let run = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
