@@ -368,7 +368,7 @@ final class GameScene: Scene {
 
         for renderable in renderables {
               // Allow set up for off screen targets
-            renderable.renderToTarget(with: commandBuffer, camera: camera, lights: lights, uniforms: previousUniforms, renderables: renderables)
+            renderable.renderToTarget(with: commandBuffer, camera: camera, lights: lights, uniforms: previousUniforms, renderables: renderables, shadowColorTexture: shadowColorTexture, shadowDepthTexture: shadowDepthTexture)
           }
 
 

@@ -114,7 +114,7 @@ extension Water: Renderable {
     //        refractEncoder.endEncoding()
 
 
-    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable]) {
+    func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture) {
         let mainUniforms = uniforms
         var uniforms = uniforms
 
@@ -137,6 +137,8 @@ extension Water: Renderable {
         fragmentUniforms.lightCount = UInt32(lights.count)
         fragmentUniforms.tiling = 1
 
+        reflectEncoder.setFragmentTexture(shadowColorTexture, index: Int(ShadowColorTexture.rawValue))
+        reflectEncoder.setFragmentTexture(shadowDepthTexture, index: Int(ShadowDepthTexture.rawValue))
         reflectEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.size, index: Int(BufferIndexFragmentUniforms.rawValue))
 
         var lights = lights
@@ -146,7 +148,7 @@ extension Water: Renderable {
         reflectEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
         for renderable in renderables {
-            guard type(of: renderable) == Prop.self else { continue }
+            guard type(of: renderable) == Terrain.self else { continue }
 
             renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
         }
