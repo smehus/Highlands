@@ -124,14 +124,17 @@ extension Water: Renderable {
 
         // set the transform
         reflectionCamera.focus = player
-        reflectionCamera.position = camera.position
+//        reflectionCamera.position = camera.position
         reflectionCamera.scale = camera.scale
 
         // Move to the negative value (if 6 move to -6) and angle upwards
         // This might have always been right, its just a weird angle
 
         // Just let ThirdPersonCamera handle the rotation
-        reflectionCamera.position.y = -camera.position.y
+//        reflectionCamera.position.y = -camera.position.y
+
+        reflectionCamera.focusDistance = (camera as! ThirdPersonCamera).focusDistance
+        reflectionCamera.focusHeight = -(camera as! ThirdPersonCamera).focusHeight
 
         uniforms.projectionMatrix = reflectionCamera.projectionMatrix
         uniforms.viewMatrix = reflectionCamera.viewMatrix
