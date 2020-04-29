@@ -133,6 +133,8 @@ extension Water: Renderable {
         // Just let ThirdPersonCamera handle the rotation
 //        reflectionCamera.position.y = -camera.position.y
 
+        // Should this really be from the characters perspective? Or maybe the light? Kinda weird that we can
+        // rotate around and the reflection shifts but hte character doesn't
         reflectionCamera.focusDistance = (camera as! ThirdPersonCamera).focusDistance
         reflectionCamera.focusHeight = -(camera as! ThirdPersonCamera).focusHeight
 

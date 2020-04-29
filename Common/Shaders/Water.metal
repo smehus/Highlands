@@ -213,7 +213,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
         if (normalValue.r > 0.6) {
             baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
         } else {
-            baseColor = float4(1, 1, 1, 1);
+            baseColor = mix(baseColor, float4(1, 1, 1, 1), 0.8);
         }
 
     } else {
@@ -223,12 +223,13 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
                 a = 0;
                 baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
             } else {
-                baseColor = float4(1, 1, 1, 1);
+                baseColor = mix(baseColor, float4(1, 1, 1, 1), 0.8);
             }
 
         } else {
             if (normalValue.r > 0.6) {
-                baseColor = float4(1, 1, 1, 1);
+                baseColor = mix
+                (baseColor, float4(1, 1, 1, 1), 0.8);
             } else {
                  baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
             }
