@@ -155,8 +155,8 @@ extension Water: Renderable {
         var farZ = Camera.FarZ
         reflectEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-        for renderable in renderables {
-            guard type(of: renderable) == Terrain.self else { continue }
+        for case let renderable as Prop in renderables where renderable.name == "treefir" {
+//            guard type(of: renderable) == Terrain.self else { continue }
 
             renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
         }
@@ -172,6 +172,10 @@ extension Water: Renderable {
         // I could just pass in the height map & sample. Then based on some arbitrary number, do some stuff.
         // Do this in the main pass
 
+
+
+
+        // Water Displacement!
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)
         for renderable in renderables {

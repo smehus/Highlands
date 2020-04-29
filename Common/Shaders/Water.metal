@@ -197,7 +197,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
         refractionCoords = clamp(refractionCoords, 0.001, 0.999);
     }
 
-    float4 baseColor = refractionTexture.sample(maskSampler, refractionCoords);
+    float4 baseColor = reflectionTexture.sample(maskSampler, reflectionCoords);
     float4 normalValue = normalTexture.sample(s, ripple);
     testxy += ripple;
     // this caused chaos - probabl because of the refaraction coordinate param i forgot to swap out
@@ -240,7 +240,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
 
     // Check out ray sample project challenge for lighting against the normalTexture rather than the geometry
-    float3 color = waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
+    float3 color = baseColor.xyz;//waterDiffuseLighting(vertex_in, baseColor.xyz, vertex_in.worldNormal, material, fragmentUniforms, lights);
 
     constexpr sampler shadowSampler(coord::normalized,
                         filter::linear,
