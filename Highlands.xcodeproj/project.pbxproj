@@ -144,6 +144,7 @@
 		02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
 		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
+		02CF22B62459C3DD00D81337 /* DynamicRasterizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CF22B52459C3DD00D81337 /* DynamicRasterizedText.swift */; };
 		02D25A2023F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
 		02D25A2123F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
 		02F3DCD42434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */; };
@@ -244,6 +245,7 @@
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		02BDBED623DC96A300FB3EEA /* Skeleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = boy_tpose.usdz; sourceTree = SOURCE_ROOT; };
+		02CF22B52459C3DD00D81337 /* DynamicRasterizedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRasterizedText.swift; sourceTree = "<group>"; };
 		02D25A1F23F8975200CD8130 /* TextureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureController.swift; sourceTree = "<group>"; };
 		02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = wooden_box_obj_UVChannel_1_color.tga; sourceTree = "<group>"; };
 		02F3DCD22434E210008FFBC7 /* wooden_box.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wooden_box.mtl; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				023312A32443DEB0002CC03B /* Text.swift */,
+				02CF22B52459C3DD00D81337 /* DynamicRasterizedText.swift */,
 			);
 			name = Text;
 			path = "/Users/scott.mehus/Documents/ScottPersonal/MetalApps/Highlands/Highlands-iOS/Text";
@@ -756,6 +759,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02CF22B62459C3DD00D81337 /* DynamicRasterizedText.swift in Sources */,
 				0294AEA223DFF129005F2E67 /* Skybox.metal in Sources */,
 				0294AEAE23DFF129005F2E67 /* Water.metal in Sources */,
 				02A38F3023E12D5C00E26E19 /* RenderPass.swift in Sources */,

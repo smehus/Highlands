@@ -12,15 +12,17 @@ import MetalKit
 
 class Text: Node {
 
+    static let fontNameString = "Arial"
+    static let fontSize: CGFloat = 114
+
     private static let atlasSize: CGFloat = 4096
-    private static var fontSize: CGFloat = 114
     private let atlasTexture: MTLTexture
     private let pipelineState: MTLRenderPipelineState
     private let quadsMeshes: [MTKMesh]
     private let glyphs: [GlyphDescriptor]
     private var indexGlyphs: [CGGlyph] = []
     private let quadSize: Float = 10000
-    private static var fontNameString = "Arial"
+    private var stringValue = "Fuck you"
 
     override init() {
         (atlasTexture, glyphs) = Text.createAtlas()
@@ -28,16 +30,15 @@ class Text: Node {
         pipelineState = Text.createPipelineState(quadsMeshes.first!.vertexDescriptor)
 
         print(Text.fontNameString)
-        let font = UIFont(name: Text.fontNameString, size: 114)!
-        let str = "Claire Rules"
-        let richText = NSAttributedString(string: str, attributes: [.font: font])
-        let line = CTLineCreateWithAttributedString(richText)
-        let run = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
+        let font = UIFont(name: Text.fontNameString, size: Text.fontSize)!
+        let richText = NSAttributedString(string: stringValue, attributes: [.font: font])
+        let line: CTLine = CTLineCreateWithAttributedString(richText)
+        let run: CTRun = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
         print(run)
-        let buffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: str.count)
-        CTRunGetGlyphs(run, CFRange(location: 0, length: str.count), buffer)
+        let buffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: stringValue.count)
+        CTRunGetGlyphs(run, CFRange(location: 0, length: stringValue.count), buffer)
 
-        for glyph in UnsafeMutableBufferPointer(start: buffer, count: str.count) {
+        for glyph in UnsafeMutableBufferPointer(start: buffer, count: stringValue.count) {
             print(glyph)
             indexGlyphs.append(glyph)
         }
@@ -52,7 +53,7 @@ class Text: Node {
         return [mesh]
     }
 
-    private static func createPipelineState(_ vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {
+    static func createPipelineState(_ vertexDescriptor: MDLVertexDescriptor) -> MTLRenderPipelineState {
         let descriptor = MTLRenderPipelineDescriptor()
         descriptor.vertexFunction = Renderer.library!.makeFunction(name: "vertex_text")
         descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "fragment_text")
@@ -71,6 +72,7 @@ class Text: Node {
         return state
     }
 
+    // I forget if this works?
     private static func create() -> MTLTexture {
         let font = UIFont(name: fontNameString, size: fontSize)!
         let ctFont = CTFontCreateWithName(font.fontName as CFString, fontSize, nil)
@@ -131,7 +133,7 @@ class Text: Node {
         context.setFillColor(UIColor.white.cgColor)
         context.fill(CGRect(x: 0, y: 0, width: atlasSize, height: atlasSize))
 
-        let font = UIFont(name: "HoeflerText-Regular", size: fontSize)!
+        let font = UIFont(name: fontNameString, size: fontSize)!
         let ctFont = CTFontCreateWithName(font.fontName as CFString, fontSize, nil)
 
         let fontGlyphCount: CFIndex = CTFontGetGlyphCount(ctFont)
@@ -178,7 +180,11 @@ class Text: Node {
             // gotta look up what this is doing...
             var glyphTransform: CGAffineTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: glyphOriginX, ty: glyphOriginY)
 
-            guard let path: CGPath = CTFontCreatePathForGlyph(ctFont, glyph, &glyphTransform) else { return }
+            guard let path: CGPath = CTFontCreatePathForGlyph(ctFont, glyph, &glyphTransform) else {
+                mutableGlyphs.append(.empty)
+                return
+            }
+
             context.addPath(path)
             context.fillPath()
 
@@ -201,9 +207,13 @@ class Text: Node {
             // add glyphDescriptors
             // Not sure if needed if not doing signed-distance field
 
-            mutableGlyphs.append(GlyphDescriptor(glyphIndex: glyph,
-                                                 topLeftTexCoord: CGPoint(x: texCoordLeft, y: texCoordTop),
-                                                 bottomRightTexCoord: CGPoint(x: texCoordRight, y: texCoordBottom)))
+            let validGlyph: GlyphDescriptor = .valid(ValidGlyphDescriptor(glyphIndex: glyph,
+                                                                          topLeftTexCoord: CGPoint(x: texCoordLeft,
+                                                                                                   y: texCoordTop),
+                                                                          bottomRightTexCoord: CGPoint(x: texCoordRight,
+                                                                                                       y: texCoordBottom)))
+
+            mutableGlyphs.append(validGlyph)
 
             origin.x += boundingRect.width + glyphMargin;
         }
@@ -241,10 +251,11 @@ extension Text: Renderable {
 
         var xOrigin: Float = -(Float(Renderer.mtkView.drawableSize.width) / 4)
         for indexGlyph in indexGlyphs {
-            let idx = Int(indexGlyph) - 3
+            let idx = Int(indexGlyph)
             guard glyphs.indices.contains(idx) else { continue }
 
-            let glyph = glyphs[idx]
+            let descriptor = glyphs[idx]
+            guard case let .valid(glyph) = descriptor else { continue }
 
             let glyphWidth = glyph.bottomRightTexCoord.x - glyph.topLeftTexCoord.x
             // Coordinates are flipped?
@@ -256,22 +267,23 @@ extension Text: Renderable {
             let vertices: [TextVertex]
 
             // Why are the glyphs offset by 3??
-            if indexGlyph == 3 {
-                vertices = [
-                    // Top Right
-                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [0.0, 0.0]),
-                    // Top Left
-                    TextVertex(position: SIMD2<Float>(xOrigin, maxY), textureCoordinate: [0.0, 0.0]),
-                    // Bottom Left
-                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [0.0, 0.0]),
-                    // Top Right
-                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [0.0, 0.0]),
-                    // Bottom Left
-                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [0.0, 0.0]),
-                    // Bottom Right
-                    TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [0.0, 0.0])
-                ]
-            } else {
+//            if indexGlyph == 3 {
+//                vertices = [
+//                    // Top Right
+//                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [0.0, 0.0]),
+//                    // Top Left
+//                    TextVertex(position: SIMD2<Float>(xOrigin, maxY), textureCoordinate: [0.0, 0.0]),
+//                    // Bottom Left
+//                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [0.0, 0.0]),
+//
+//                    // Top Right
+//                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [0.0, 0.0]),
+//                    // Bottom Left
+//                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [0.0, 0.0]),
+//                    // Bottom Right
+//                    TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [0.0, 0.0])
+//                ]
+//            } else {
                 vertices = [
                     // Top Right
                     TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
@@ -287,7 +299,7 @@ extension Text: Renderable {
                     // Bottom Right
                     TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
                 ]
-            }
+//            }
 
 
             renderEncoder.setVertexBytes(vertices, length: MemoryLayout<TextVertex>.stride * vertices.count, index: 17)
@@ -322,10 +334,15 @@ extension Text: Renderable {
     }
 }
 
-struct GlyphDescriptor {
+struct ValidGlyphDescriptor {
     let glyphIndex: CGGlyph
     let topLeftTexCoord: CGPoint
     let bottomRightTexCoord: CGPoint
+}
+
+enum GlyphDescriptor {
+    case empty
+    case valid(ValidGlyphDescriptor)
 }
 
 extension CGFloat {
