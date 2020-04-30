@@ -22,7 +22,7 @@ class Text: Node {
     private let glyphs: [GlyphDescriptor]
     private var indexGlyphs: [CGGlyph] = []
     private let quadSize: Float = 10000
-    private var stringValue = "Fuck you"
+    private var stringValue = "HighlAnds"
 
     override init() {
         (atlasTexture, glyphs) = Text.createAtlas()
@@ -138,7 +138,7 @@ class Text: Node {
 
         let fontGlyphCount: CFIndex = CTFontGetGlyphCount(ctFont)
 
-        let glyphMargin = CGFloat(ceilf(Float(NSString(string: "!").size(withAttributes: [.font: font]).width)))
+        let glyphMargin = CGFloat(ceilf(Float(NSString(string: "A").size(withAttributes: [.font: font]).width)))
 
         // Set fill color so that glyphs are solid white
         context.setFillColor(UIColor.black.cgColor)
@@ -156,11 +156,13 @@ class Text: Node {
 
             // using nil instead?
 //            var boundingRect: CGRect = .zero
+
             let boundingRect = CTFontGetBoundingRectsForGlyphs(ctFont,
                                             CTFontOrientation.horizontal,
                                             &glyph,
                                             nil,
                                             1)
+
 
             // If at the end of the line
             if origin.x + boundingRect.maxX + glyphMargin > atlasSize {
@@ -211,7 +213,7 @@ class Text: Node {
                                                                           topLeftTexCoord: CGPoint(x: texCoordLeft,
                                                                                                    y: texCoordTop),
                                                                           bottomRightTexCoord: CGPoint(x: texCoordRight,
-                                                                                                       y: texCoordBottom)))
+                                                                                                       y: texCoordBottom), yOrigin: origin.y))
 
             mutableGlyphs.append(validGlyph)
 
@@ -259,11 +261,20 @@ extension Text: Renderable {
 
             let glyphWidth = glyph.bottomRightTexCoord.x - glyph.topLeftTexCoord.x
             // Coordinates are flipped?
-            let glyphHeight = glyph.bottomRightTexCoord.y - glyph.topLeftTexCoord.y
+//            let glyphHeight = Float(glyph.bottomRightTexCoord.y - glyph.topLeftTexCoord.y) * quadSize
+//            let origin = Float(glyph.yOrigin)
+//            let halfHeight = glyphHeight / 2
+
             let adjustedSize = (Float(glyphWidth) * quadSize)
             let maxX = xOrigin + adjustedSize
-            let maxY = Float(glyphHeight) * quadSize
 
+
+
+            // height
+            var lowY = (glyph.bottomRightTexCoord.y.float * quadSize) - 1000
+            var highY = (glyph.topLeftTexCoord.y.float * quadSize) - 1000
+
+            print("*** low y \(lowY) high \(highY)")
             let vertices: [TextVertex]
 
             // Why are the glyphs offset by 3??
@@ -284,20 +295,22 @@ extension Text: Renderable {
 //                    TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [0.0, 0.0])
 //                ]
 //            } else {
+
+
                 vertices = [
                     // Top Right
-                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(maxX, highY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Top Left
-                    TextVertex(position: SIMD2<Float>(xOrigin, maxY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(xOrigin, highY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Bottom Left
-                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(xOrigin,  lowY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
 
                     // Top Right
-                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(maxX, highY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Bottom Left
-                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(xOrigin,  lowY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
                     // Bottom Right
-                    TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
+                    TextVertex(position: SIMD2<Float>(maxX,  lowY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
                 ]
 //            }
 
@@ -338,6 +351,7 @@ struct ValidGlyphDescriptor {
     let glyphIndex: CGGlyph
     let topLeftTexCoord: CGPoint
     let bottomRightTexCoord: CGPoint
+    let yOrigin: CGFloat
 }
 
 enum GlyphDescriptor {
