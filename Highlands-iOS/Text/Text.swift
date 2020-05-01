@@ -14,16 +14,16 @@ import CoreGraphics
 class Text: Node {
 
     static let fontNameString = "Arial"
-    static let fontSize: CGFloat = 36
+    static let fontSize: CGFloat = 144
 
     private static let atlasSize: CGFloat = 4096
     private let atlasTexture: MTLTexture
     private let pipelineState: MTLRenderPipelineState
     private let quadsMeshes: [MTKMesh]
     private let glyphs: [GlyphDescriptor]
-    private var indexGlyphs: [CGGlyph] = []
+    private var indexGlyphs: [(CGGlyph, CGRect)] = []
     private let quadSize: Float = 10000
-    private var stringValue = "HighlAnds"
+    private var stringValue = "Highlands"
 
     override init() {
         (atlasTexture, glyphs) = Text.createAtlas()
@@ -51,7 +51,7 @@ class Text: Node {
         // create stuff
         let frameSetter = CTFramesetterCreateWithAttributedString(richText)
         let setterSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, 0), nil, Renderer.drawableSize, nil)
-        print("*** setter size \(setterSize)")
+//        print("*** setter size \(setterSize)")
         let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: setterSize)
         let rectPath = CGPath(rect: rect, transform: nil)
         let frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), rectPath, nil)
@@ -80,9 +80,10 @@ class Text: Node {
             let boundsTransX = frameBoundingRect.origin.x + lineOriginBuffer.pointee.x
             print(lineOriginBuffer.pointee)
             let boundsTransY = frameBoundingRect.height + frameBoundingRect.origin.y - lineOriginBuffer.pointee.y + glyphOrigin.y
-            let pathTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: boundsTransX, ty: boundsTransY)
-            print("glyph \(glyph) pos: \(glyphRect.applying(pathTransform).origin.y)")
-            indexGlyphs.append(glyph)
+            let pathTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: 1, tx: boundsTransX, ty: boundsTransY)
+            let finalRect = glyphRect.applying(pathTransform)
+//            print("glyph \(glyph) pos: \(finalRect)")
+            indexGlyphs.append((glyph, finalRect))
         }
 
 
@@ -306,29 +307,25 @@ extension Text: Renderable {
 
         var xOrigin: Float = -(Float(Renderer.mtkView.drawableSize.width) / 4)
         for indexGlyph in indexGlyphs {
-            let idx = Int(indexGlyph)
+
+            let idx = Int(indexGlyph.0)
             guard glyphs.indices.contains(idx) else { continue }
 
             let descriptor = glyphs[idx]
             guard case let .valid(glyph) = descriptor else { continue }
 
+            print("*** DRAW INDEX \(indexGlyph)")
+            print("*** DRAW GLYPH \(glyph)")
             let glyphWidth = glyph.bottomRightTexCoord.x - glyph.topLeftTexCoord.x
             // Coordinates are flipped?
-//            let glyphHeight = Float(glyph.bottomRightTexCoord.y - glyph.topLeftTexCoord.y) * quadSize
-//            let origin = Float(glyph.yOrigin)
-//            let halfHeight = glyphHeight / 2
-
+            let glyphHeight = glyph.bottomRightTexCoord.y - glyph.topLeftTexCoord.y
             let adjustedSize = (Float(glyphWidth) * quadSize)
             let maxX = xOrigin + adjustedSize
+            let maxY = Float(glyphHeight) * quadSize
 
-
-
-            // height
-            var lowY = (glyph.bottomRightTexCoord.y.float * quadSize) - 1000
-            var highY = (glyph.topLeftTexCoord.y.float * quadSize) - 1000
-
-//            print("*** low y \(lowY) high \(highY)")
             let vertices: [TextVertex]
+
+            let vec = indexGlyph.1
 
             // Why are the glyphs offset by 3??
 //            if indexGlyph == 3 {
@@ -348,22 +345,20 @@ extension Text: Renderable {
 //                    TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [0.0, 0.0])
 //                ]
 //            } else {
-
-
                 vertices = [
                     // Top Right
-                    TextVertex(position: SIMD2<Float>(maxX, highY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.maxX.float, vec.maxY.float), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Top Left
-                    TextVertex(position: SIMD2<Float>(xOrigin, highY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.minX.float, vec.maxY.float), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Bottom Left
-                    TextVertex(position: SIMD2<Float>(xOrigin,  lowY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.minX.float,  vec.minY.float), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
 
                     // Top Right
-                    TextVertex(position: SIMD2<Float>(maxX, highY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.maxX.float, vec.maxY.float), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Bottom Left
-                    TextVertex(position: SIMD2<Float>(xOrigin,  lowY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.minX.float,  vec.minY.float), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
                     // Bottom Right
-                    TextVertex(position: SIMD2<Float>(maxX,  lowY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
+                    TextVertex(position: SIMD2<Float>(vec.maxX.float,  vec.minY.float), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
                 ]
 //            }
 
