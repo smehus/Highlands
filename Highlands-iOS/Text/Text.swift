@@ -9,39 +9,93 @@
 import UIKit
 import CoreText
 import MetalKit
+import CoreGraphics
 
 class Text: Node {
 
     static let fontNameString = "Arial"
-    static let fontSize: CGFloat = 114
+    static let fontSize: CGFloat = 144
 
     private static let atlasSize: CGFloat = 4096
     private let atlasTexture: MTLTexture
     private let pipelineState: MTLRenderPipelineState
     private let quadsMeshes: [MTKMesh]
     private let glyphs: [GlyphDescriptor]
-    private var indexGlyphs: [CGGlyph] = []
+    private var indexGlyphs: [(CGGlyph, CGRect)] = []
     private let quadSize: Float = 10000
-    private var stringValue = "Fuck you"
+    private var stringValue = "Highlands"
 
     override init() {
         (atlasTexture, glyphs) = Text.createAtlas()
         quadsMeshes = Text.createQuadMeshes()
         pipelineState = Text.createPipelineState(quadsMeshes.first!.vertexDescriptor)
 
-        print(Text.fontNameString)
+
+
+        UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
+        let context = UIGraphicsGetCurrentContext()
+
+//        print(Text.fontNameString)
         let font = UIFont(name: Text.fontNameString, size: Text.fontSize)!
         let richText = NSAttributedString(string: stringValue, attributes: [.font: font])
-        let line: CTLine = CTLineCreateWithAttributedString(richText)
-        let run: CTRun = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
-        print(run)
-        let buffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: stringValue.count)
-        CTRunGetGlyphs(run, CFRange(location: 0, length: stringValue.count), buffer)
+//        let line: CTLine = CTLineCreateWithAttributedString(richText)
+//        let run: CTRun = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
+//        let buffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: stringValue.count)
+//        CTRunGetGlyphs(run, CFRange(location: 0, length: stringValue.count), buffer)
+//
+//        for glyph in UnsafeMutableBufferPointer(start: buffer, count: stringValue.count) {
+//            indexGlyphs.append(glyph)
+//        }
 
-        for glyph in UnsafeMutableBufferPointer(start: buffer, count: stringValue.count) {
-            print(glyph)
-            indexGlyphs.append(glyph)
+
+        // create stuff
+        let frameSetter = CTFramesetterCreateWithAttributedString(richText)
+        let setterSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, 0), nil, Renderer.drawableSize, nil)
+//        print("*** setter size \(setterSize)")
+        let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: setterSize)
+        let rectPath = CGPath(rect: rect, transform: nil)
+        let frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), rectPath, nil)
+
+        let framePath = CTFrameGetPath(frame)
+        let frameBoundingRect = framePath.boundingBoxOfPath
+        let line: CTLine = (CTFrameGetLines(frame) as! Array<CTLine>).first!
+
+        let lineOriginBuffer = UnsafeMutablePointer<CGPoint>.allocate(capacity: 1)
+        CTFrameGetLineOrigins(frame, CFRangeMake(0, 0), lineOriginBuffer)
+
+        let run: CTRun = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
+        let glyphBuffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: stringValue.count)
+        CTRunGetGlyphs(run, CFRangeMake(0, 0), glyphBuffer)
+
+        let glyphCount = CTRunGetGlyphCount(run)
+        let glyphPositionBuffer = UnsafeMutablePointer<CGPoint>.allocate(capacity: glyphCount)
+        CTRunGetPositions(run, CFRangeMake(0, 0), glyphPositionBuffer)
+
+        let glyphs = UnsafeMutableBufferPointer(start: glyphBuffer, count: glyphCount)
+        let positions = UnsafeMutableBufferPointer(start: glyphPositionBuffer, count: glyphCount)
+
+        for (index, (glyph, glyphOrigin)) in zip(glyphs, positions).enumerated()  {
+
+            let glyphRect = CTRunGetImageBounds(run, context, CFRangeMake(index, 1))
+            let boundsTransX = frameBoundingRect.origin.x + lineOriginBuffer.pointee.x
+            print(lineOriginBuffer.pointee)
+            let boundsTransY = frameBoundingRect.height + frameBoundingRect.origin.y - lineOriginBuffer.pointee.y + glyphOrigin.y
+            let pathTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: 1, tx: boundsTransX, ty: boundsTransY)
+            let finalRect = glyphRect.applying(pathTransform)
+//            print("glyph \(glyph) pos: \(finalRect)")
+            indexGlyphs.append((glyph, finalRect))
         }
+
+
+//        for buf in UnsafeMutableBufferPointer(start: lineOriginBuffer, count: lines.count) {
+//            print("*** BUF \(buf)")
+//        }
+
+//        for (line, lineOrigin) in zip(lines,  UnsafeMutableBufferPointer(start: lineOriginBuffer, count: lines.count)) {
+//            let runs = CTLineGetGlyphRuns(line)
+//        }
+
+
 
         super.init()
     }
@@ -138,7 +192,7 @@ class Text: Node {
 
         let fontGlyphCount: CFIndex = CTFontGetGlyphCount(ctFont)
 
-        let glyphMargin = CGFloat(ceilf(Float(NSString(string: "!").size(withAttributes: [.font: font]).width)))
+        let glyphMargin = CGFloat(ceilf(Float(NSString(string: "A").size(withAttributes: [.font: font]).width)))
 
         // Set fill color so that glyphs are solid white
         context.setFillColor(UIColor.black.cgColor)
@@ -156,11 +210,13 @@ class Text: Node {
 
             // using nil instead?
 //            var boundingRect: CGRect = .zero
+
             let boundingRect = CTFontGetBoundingRectsForGlyphs(ctFont,
                                             CTFontOrientation.horizontal,
                                             &glyph,
                                             nil,
                                             1)
+
 
             // If at the end of the line
             if origin.x + boundingRect.maxX + glyphMargin > atlasSize {
@@ -211,7 +267,7 @@ class Text: Node {
                                                                           topLeftTexCoord: CGPoint(x: texCoordLeft,
                                                                                                    y: texCoordTop),
                                                                           bottomRightTexCoord: CGPoint(x: texCoordRight,
-                                                                                                       y: texCoordBottom)))
+                                                                                                       y: texCoordBottom), yOrigin: origin.y))
 
             mutableGlyphs.append(validGlyph)
 
@@ -251,12 +307,15 @@ extension Text: Renderable {
 
         var xOrigin: Float = -(Float(Renderer.mtkView.drawableSize.width) / 4)
         for indexGlyph in indexGlyphs {
-            let idx = Int(indexGlyph)
+
+            let idx = Int(indexGlyph.0)
             guard glyphs.indices.contains(idx) else { continue }
 
             let descriptor = glyphs[idx]
             guard case let .valid(glyph) = descriptor else { continue }
 
+            print("*** DRAW INDEX \(indexGlyph)")
+            print("*** DRAW GLYPH \(glyph)")
             let glyphWidth = glyph.bottomRightTexCoord.x - glyph.topLeftTexCoord.x
             // Coordinates are flipped?
             let glyphHeight = glyph.bottomRightTexCoord.y - glyph.topLeftTexCoord.y
@@ -265,6 +324,8 @@ extension Text: Renderable {
             let maxY = Float(glyphHeight) * quadSize
 
             let vertices: [TextVertex]
+
+            let vec = indexGlyph.1
 
             // Why are the glyphs offset by 3??
 //            if indexGlyph == 3 {
@@ -286,18 +347,18 @@ extension Text: Renderable {
 //            } else {
                 vertices = [
                     // Top Right
-                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.maxX.float, vec.maxY.float), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Top Left
-                    TextVertex(position: SIMD2<Float>(xOrigin, maxY), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.minX.float, vec.maxY.float), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Bottom Left
-                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.minX.float,  vec.minY.float), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
 
                     // Top Right
-                    TextVertex(position: SIMD2<Float>(maxX, maxY), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.maxX.float, vec.maxY.float), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.topLeftTexCoord.y.float]),
                     // Bottom Left
-                    TextVertex(position: SIMD2<Float>(xOrigin,  0), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
+                    TextVertex(position: SIMD2<Float>(vec.minX.float,  vec.minY.float), textureCoordinate: [glyph.topLeftTexCoord.x.float, glyph.bottomRightTexCoord.y.float]),
                     // Bottom Right
-                    TextVertex(position: SIMD2<Float>(maxX,  0), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
+                    TextVertex(position: SIMD2<Float>(vec.maxX.float,  vec.minY.float), textureCoordinate: [glyph.bottomRightTexCoord.x.float, glyph.bottomRightTexCoord.y.float])
                 ]
 //            }
 
@@ -338,6 +399,7 @@ struct ValidGlyphDescriptor {
     let glyphIndex: CGGlyph
     let topLeftTexCoord: CGPoint
     let bottomRightTexCoord: CGPoint
+    let yOrigin: CGFloat
 }
 
 enum GlyphDescriptor {
