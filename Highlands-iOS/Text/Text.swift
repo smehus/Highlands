@@ -9,11 +9,12 @@
 import UIKit
 import CoreText
 import MetalKit
+import CoreGraphics
 
 class Text: Node {
 
     static let fontNameString = "Arial"
-    static let fontSize: CGFloat = 114
+    static let fontSize: CGFloat = 36
 
     private static let atlasSize: CGFloat = 4096
     private let atlasTexture: MTLTexture
@@ -29,19 +30,57 @@ class Text: Node {
         quadsMeshes = Text.createQuadMeshes()
         pipelineState = Text.createPipelineState(quadsMeshes.first!.vertexDescriptor)
 
-        print(Text.fontNameString)
+//        print(Text.fontNameString)
         let font = UIFont(name: Text.fontNameString, size: Text.fontSize)!
         let richText = NSAttributedString(string: stringValue, attributes: [.font: font])
-        let line: CTLine = CTLineCreateWithAttributedString(richText)
-        let run: CTRun = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
-        print(run)
-        let buffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: stringValue.count)
-        CTRunGetGlyphs(run, CFRange(location: 0, length: stringValue.count), buffer)
+//        let line: CTLine = CTLineCreateWithAttributedString(richText)
+//        let run: CTRun = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
+//        let buffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: stringValue.count)
+//        CTRunGetGlyphs(run, CFRange(location: 0, length: stringValue.count), buffer)
+//
+//        for glyph in UnsafeMutableBufferPointer(start: buffer, count: stringValue.count) {
+//            indexGlyphs.append(glyph)
+//        }
 
-        for glyph in UnsafeMutableBufferPointer(start: buffer, count: stringValue.count) {
-            print(glyph)
+
+        // create stuff
+        let frameSetter = CTFramesetterCreateWithAttributedString(richText)
+        let setterSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, 0), nil, Renderer.drawableSize, nil)
+        print("*** setter size \(setterSize)")
+        let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: setterSize)
+        let rectPath = CGPath(rect: rect, transform: nil)
+        let frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), rectPath, nil)
+
+        let framePath = CTFrameGetPath(frame)
+        let frameBoundingRect = framePath.boundingBoxOfPath
+        let line: CTLine = (CTFrameGetLines(frame) as! Array<CTLine>).first!
+
+        let lineOriginBuffer = UnsafeMutablePointer<CGPoint>.allocate(capacity: 1)
+        CTFrameGetLineOrigins(frame, CFRangeMake(0, 0), lineOriginBuffer)
+
+        let run: CTRun = (CTLineGetGlyphRuns(line) as! Array<CTRun>).first!
+        let glyphBuffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: stringValue.count)
+        CTRunGetGlyphs(run, CFRangeMake(0, 0), glyphBuffer)
+
+        let glyphCount = CTRunGetGlyphCount(run)
+        let glyphPositionBuffer = UnsafeMutablePointer<CGPoint>.allocate(capacity: glyphCount)
+        CTRunGetPositions(run, CFRangeMake(0, 0), glyphPositionBuffer)
+
+        for glyph in UnsafeMutableBufferPointer(start: glyphBuffer, count: glyphCount) {
+            print("*** glyph \(glyph)")
             indexGlyphs.append(glyph)
         }
+
+
+//        for buf in UnsafeMutableBufferPointer(start: lineOriginBuffer, count: lines.count) {
+//            print("*** BUF \(buf)")
+//        }
+
+//        for (line, lineOrigin) in zip(lines,  UnsafeMutableBufferPointer(start: lineOriginBuffer, count: lines.count)) {
+//            let runs = CTLineGetGlyphRuns(line)
+//        }
+
+
 
         super.init()
     }
@@ -274,7 +313,7 @@ extension Text: Renderable {
             var lowY = (glyph.bottomRightTexCoord.y.float * quadSize) - 1000
             var highY = (glyph.topLeftTexCoord.y.float * quadSize) - 1000
 
-            print("*** low y \(lowY) high \(highY)")
+//            print("*** low y \(lowY) high \(highY)")
             let vertices: [TextVertex]
 
             // Why are the glyphs offset by 3??
