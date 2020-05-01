@@ -52,7 +52,7 @@ class Text: Node {
         let frameSetter = CTFramesetterCreateWithAttributedString(richText)
         let setterSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, 0), nil, Renderer.drawableSize, nil)
 //        print("*** setter size \(setterSize)")
-        let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: setterSize)
+        let rect = CGRect(origin: CGPoint(x: -setterSize.width / 2, y: 0), size: setterSize)
         let rectPath = CGPath(rect: rect, transform: nil)
         let frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), rectPath, nil)
 
