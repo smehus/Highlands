@@ -30,6 +30,11 @@ class Text: Node {
         quadsMeshes = Text.createQuadMeshes()
         pipelineState = Text.createPipelineState(quadsMeshes.first!.vertexDescriptor)
 
+
+
+        UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
+        let context = UIGraphicsGetCurrentContext()
+
 //        print(Text.fontNameString)
         let font = UIFont(name: Text.fontNameString, size: Text.fontSize)!
         let richText = NSAttributedString(string: stringValue, attributes: [.font: font])
@@ -66,8 +71,17 @@ class Text: Node {
         let glyphPositionBuffer = UnsafeMutablePointer<CGPoint>.allocate(capacity: glyphCount)
         CTRunGetPositions(run, CFRangeMake(0, 0), glyphPositionBuffer)
 
-        for glyph in UnsafeMutableBufferPointer(start: glyphBuffer, count: glyphCount) {
-            print("*** glyph \(glyph)")
+        let glyphs = UnsafeMutableBufferPointer(start: glyphBuffer, count: glyphCount)
+        let positions = UnsafeMutableBufferPointer(start: glyphPositionBuffer, count: glyphCount)
+
+        for (index, (glyph, glyphOrigin)) in zip(glyphs, positions).enumerated()  {
+
+            let glyphRect = CTRunGetImageBounds(run, context, CFRangeMake(index, 1))
+            let boundsTransX = frameBoundingRect.origin.x + lineOriginBuffer.pointee.x
+            print(lineOriginBuffer.pointee)
+            let boundsTransY = frameBoundingRect.height + frameBoundingRect.origin.y - lineOriginBuffer.pointee.y + glyphOrigin.y
+            let pathTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: boundsTransX, ty: boundsTransY)
+            print("glyph \(glyph) pos: \(glyphRect.applying(pathTransform).origin.y)")
             indexGlyphs.append(glyph)
         }
 
