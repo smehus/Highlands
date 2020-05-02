@@ -10,6 +10,9 @@
 using namespace metal;
 #import "Common.h"
 
+
+constant bool isDisplacementMesh [[ function_constant(0) ]];
+
 struct VertexIn {
     float4 position [[ attribute(Position) ]];
     float3 normal [[ attribute(Normal) ]];
@@ -155,7 +158,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
     // Ripples
     float2 uv = vertex_in.uv * 0.15;
-    float waveStrength = 0.05;
+    float waveStrength = 0.02;
 
     // This is testing to see how close we are to the shore.
     constexpr sampler samp(filter::linear, address::repeat);
@@ -167,8 +170,16 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
     bool isMasked = false;
 
-    float2 rippleX = float2(uv.x + timer, uv.y);
-    float2 rippleY = float2(-uv.x, uv.y);// + timer * 0.2;
+    float2 rippleX;
+    float2 rippleY;
+    if (isDisplacementMesh) {
+        rippleX = float2(uv.x, uv.y);
+        rippleY = float2(-uv.x, uv.y) + timer * 0.2;
+    } else {
+        rippleX = float2(uv.x + timer, uv.y);
+        rippleY = float2(-uv.x, uv.y);// + timer * 0.2
+    }
+
     float2 ripple = ((normalTexture.sample(s, rippleX).rg * 2.0 - 1.0) +
                      (normalTexture.sample(s, rippleY).rg * 2.0 - 1.0)) * waveStrength;
 
@@ -210,17 +221,19 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float a = 1.0;
     if (isMasked) {
 
-        if (normalValue.r > 0.6) {
-            baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
-        } else {
-            baseColor = mix(baseColor, float4(1, 1, 1, 1), 0.8);
-        }
+        discard_fragment();
+//        if (normalValue.r > 0.6) {
+//            baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
+//        } else {
+//            baseColor = mix(baseColor, float4(1, 1, 1, 1), 0.8);
+//        }
 
     } else {
 
         if (heightValue.r > omega) {
             if (normalValue.r > 0.6) {
                 a = 0;
+                
                 baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
             } else {
                 baseColor = mix(baseColor, float4(1, 1, 1, 1), 0.8);
@@ -234,6 +247,10 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
                  baseColor = mix(baseColor, float4(0.1, 0.5, 0.6, 1.0), 0.8);
             }
         }
+    }
+
+    if (isDisplacementMesh) {
+        baseColor = float4(1, 0, 0, 1);
     }
 
 

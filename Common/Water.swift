@@ -14,6 +14,7 @@ class Water: Node {
     private let mesh: MTKMesh
     private let mdlMesh: MDLMesh
     private var pipelineState: MTLRenderPipelineState
+    private var displacementPipelineState: MTLRenderPipelineState
     private var waterNormalTexture: MTLTexture
     private var timer: Float = 0
     private let refractionRenderPass: RenderPass
@@ -35,21 +36,33 @@ class Water: Node {
             waterNormalTexture = try Submesh.loadTexture(imageName: "normal-water.png")!.texture
 
 
-
             let library = Renderer.device.makeDefaultLibrary()!
-            let descriptor = MTLRenderPipelineDescriptor()
-            let vertexFunction = library.makeFunction(name: "vertex_water")
-            descriptor.vertexFunction = vertexFunction
-            descriptor.fragmentFunction = library.makeFunction(name: "fragment_water")
-            descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-            descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
-            descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
-            descriptor.colorAttachments[0].isBlendingEnabled = true
-            descriptor.colorAttachments[0].rgbBlendOperation = .add
-            descriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
-            descriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
-            descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-            pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+
+
+            let makePipeline: ((MTKMesh, Bool) -> MTLRenderPipelineState) = { mesh, value in
+
+                let constants = MTLFunctionConstantValues()
+                var isDisplacement = value
+                constants.setConstantValue(&isDisplacement, type: .bool, index: 0)
+
+                let descriptor = MTLRenderPipelineDescriptor()
+
+                descriptor.vertexFunction = library.makeFunction(name: "vertex_water")
+                descriptor.fragmentFunction = try! library.makeFunction(name: "fragment_water", constantValues: constants)
+                descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+                descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+                descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+                descriptor.colorAttachments[0].isBlendingEnabled = true
+                descriptor.colorAttachments[0].rgbBlendOperation = .add
+                descriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+                descriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+                descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
+                return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+            }
+
+
+            pipelineState = makePipeline(mesh, false)
+            displacementPipelineState = makePipeline(mesh, true)
 
             reflectionRenderPass = RenderPass(name: "reflection", size: Renderer.drawableSize)
             refractionRenderPass = RenderPass(name: "refraction", size: Renderer.drawableSize)
@@ -265,7 +278,7 @@ extension Water: Renderable {
         timer += 0.00017
 
         // Render water plane
-        renderEncoder.setDepthStencilState(GameScene.maskStencilState)
+//        renderEncoder.setDepthStencilState(GameScene.maskStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
@@ -298,15 +311,32 @@ extension Water: Renderable {
 
 
 
-        // Render displacement meshes
-        displacementMeshes.forEach { (transform, mesh) in
 
-            renderEncoder.setDepthStencilState(GameScene.maskStencilState)
-            renderEncoder.setRenderPipelineState(pipelineState)
+        return
+        // Render displacement meshes
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        renderEncoder.setDepthStencilState(mainDepthStencilState)
+        displacementMeshes.forEach { (transform, _) in
+            let mdlMesh = MDLMesh(planeWithExtent: [15, 1.5, 1],
+                                   segments: [1, 1],
+                                   geometryType: .triangles,
+                                   allocator: allocator)
+
+            let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+
+            let newTrans = Transform()
+            newTrans.position = transform.position
+            newTrans.position.x -= 10
+            newTrans.position.z += 1.6
+            newTrans.scale = transform.scale
+            newTrans.rotation = transform.rotation
+
+            renderEncoder.setRenderPipelineState(displacementPipelineState)
             renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
-            uniforms.modelMatrix = transform.modelMatrix
-            uniforms.normalMatrix = transform.normalMatrix
+            newTrans.rotation = [0, 0, 0]
+            uniforms.modelMatrix = newTrans.modelMatrix
+            uniforms.normalMatrix = newTrans.normalMatrix
 
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
