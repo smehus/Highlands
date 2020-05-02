@@ -24,6 +24,7 @@ class Water: Node {
     private let mainDepthStencilState: MTLDepthStencilState
     private let orthoCamera = OrthographicCamera()
     private var heightMap: MTLTexture!
+    private var displacementMeshes: [(Transform, MTKMesh)] = []
 
     init(size: Float) {
         do {
@@ -175,8 +176,6 @@ extension Water: Renderable {
         // Do this in the main pass
 
 
-
-
         // Water Displacement!
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)
@@ -210,6 +209,9 @@ extension Water: Renderable {
                                                             indexBufferOffset: submesh.indexBuffer.offset)
                     }
                 }
+
+                displacementMeshes = zip(prop.transforms, prop.instanceStencilPlanes).map { return ($0, $1) }
+
             } else if let char = renderable as? Character {
                 // do characterrrr
                 let transform = Transform()
@@ -262,8 +264,7 @@ extension Water: Renderable {
         var uniforms = uniforms
         timer += 0.00017
 
-
-
+        // Render water plane
         renderEncoder.setDepthStencilState(GameScene.maskStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
@@ -293,6 +294,45 @@ extension Water: Renderable {
                                                 indexType: submesh.indexType,
                                                 indexBuffer: submesh.indexBuffer.buffer,
                                                 indexBufferOffset: submesh.indexBuffer.offset)
+        }
+
+
+
+        // Render displacement meshes
+        displacementMeshes.forEach { (transform, mesh) in
+
+            renderEncoder.setDepthStencilState(GameScene.maskStencilState)
+            renderEncoder.setRenderPipelineState(pipelineState)
+            renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
+
+            uniforms.modelMatrix = transform.modelMatrix
+            uniforms.normalMatrix = transform.normalMatrix
+
+            renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
+
+            renderEncoder.setFragmentTexture(reflectionRenderPass.texture, index: 0)
+            renderEncoder.setFragmentTexture(refractionRenderPass.texture, index: 1)
+            renderEncoder.setFragmentTexture(waterNormalTexture, index: 2)
+            renderEncoder.setFragmentTexture(maskRenderPass.texture, index: 7)
+            renderEncoder.setFragmentTexture(heightMap, index: 8)
+
+
+            renderEncoder.setFragmentBytes(&timer, length: MemoryLayout<Float>.size, index: 3)
+            for (index, submesh) in mesh.submeshes.enumerated() {
+
+                // Not a great way to do this
+                let mdlSubmesh = mdlMesh.submeshes?[index] as! MDLSubmesh
+                var material = Material(material: mdlSubmesh.material)
+                renderEncoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: Int(BufferIndexMaterials.rawValue))
+
+                renderEncoder.drawIndexedPrimitives(type: .triangle,
+                                                    indexCount: submesh.indexCount,
+                                                    indexType: submesh.indexType,
+                                                    indexBuffer: submesh.indexBuffer.buffer,
+                                                    indexBufferOffset: submesh.indexBuffer.offset)
+            }
+
+
         }
     }
 
