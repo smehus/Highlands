@@ -38,8 +38,10 @@ class TileScene: Node {
          add(node: ground)
          */
 
-        let text = Text()
-        add(childNode: text)
+        #if (iOS)
+            let text = Text()
+            add(childNode: text)
+        #endif
 
         let count = 10
         let offset = 25
