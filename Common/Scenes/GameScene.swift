@@ -131,7 +131,7 @@ final class GameScene: Scene {
         stencilDescriptor.stencilCompareFunction = .always
 //        stencilDescriptor.writeMask = 1
 //        stencilDescriptor.readMask = 7
-        stencilDescriptor.depthStencilPassOperation = .invert
+        stencilDescriptor.depthStencilPassOperation = .incrementClamp
         stencilDescriptor.stencilFailureOperation = .keep
 //        depthStencilDescriptor.backFaceStencil = stencilDescriptor
         depthStencilDescriptor.frontFaceStencil = stencilDescriptor
