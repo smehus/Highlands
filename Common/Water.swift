@@ -325,7 +325,6 @@ extension Water: Renderable {
 
 
         // Render displacement meshes
-        return
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         renderEncoder.setDepthStencilState(mainDepthStencilState)
         displacementMeshes.forEach { (transform, _) in

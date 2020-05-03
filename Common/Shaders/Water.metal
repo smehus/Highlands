@@ -221,7 +221,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
     float omega = 0.314 + ripple.x;
     float a = 1.0;
-    if (isMasked && !isDisplacementMesh) {
+    if (isMasked) {
 
         discard_fragment();
 //        if (normalValue.r > 0.6) {
