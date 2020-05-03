@@ -352,7 +352,7 @@ class Prop: Node {
 
 extension Prop: Renderable {
 
-    private enum RenderType {
+    enum RenderType {
         case main
         case stencil
     }
@@ -403,7 +403,7 @@ extension Prop: Renderable {
         renderEncoder.popDebugGroup()
     }
 
-    private func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, type: RenderType) {
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, type: RenderType) {
         //        renderEncoder.setFrontFacing(windingOrder)
 
         var uniforms = vertex

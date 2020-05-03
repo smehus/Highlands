@@ -23,14 +23,16 @@ class TileScene: Node {
 
     func setupTile() {
 
+        water.position.y = -6
+        water.rotation = [0, 0, radians(fromDegrees: -90)]
+        add(childNode: water)
+
 //        terrain.position = SIMD3<Float>([0, 0, 0])
         //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
         add(childNode: terrain)
         terrain.setup(with: [0, 0, 0])
 
-        water.position.y = -6
-//        water.rotation = [0, 0, radians(fromDegrees: -90)]
-        add(childNode: water)
+
         /*
          ground.tiling = 4
          ground.scale = [4, 1, 4]

@@ -28,18 +28,19 @@ class Water: Node {
     private var displacementMeshes: [(Transform, MTKMesh)] = []
 
 
-    lazy var depthState: MTLDepthStencilState = {
+    private lazy var depthState: MTLDepthStencilState = {
         var depthStencilDescriptor = MTLDepthStencilDescriptor()
-        depthStencilDescriptor.depthCompareFunction = .greater
+        depthStencilDescriptor.depthCompareFunction = .less
         depthStencilDescriptor.isDepthWriteEnabled = true
+        depthStencilDescriptor.frontFaceStencil.depthStencilPassOperation = .keep
         return Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
     }()
 
     init(size: Float) {
         do {
-//            let plane = Primitive.makePlane(device: Renderer.device, size: size)
-            let allocator = MTKMeshBufferAllocator(device: Renderer.device)
-            let plane = MDLMesh(boxWithExtent: [size, 3.0, size], segments: [1, 1, 1], inwardNormals: false, geometryType: .triangles, allocator: allocator)
+            let plane = Primitive.makePlane(device: Renderer.device, size: size)
+//            let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+//            let plane = MDLMesh(boxWithExtent: [size, 3.0, size], segments: [1, 1, 1], inwardNormals: false, geometryType: .triangles, allocator: allocator)
             mdlMesh = plane
 
             mesh = try MTKMesh(mesh: plane, device: Renderer.device)
@@ -199,13 +200,26 @@ extension Water: Renderable {
         // Do this in the main pass
 
 
+
         // Water Displacement!
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)
         for renderable in renderables {
+
+            var uniforms = uniforms
+
             if let prop = renderable as? Prop {
+
+                uniforms.projectionMatrix = camera.projectionMatrix
+                uniforms.viewMatrix = camera.viewMatrix
+
                 for (transform, plane) in zip(prop.transforms, prop.instanceStencilPlanes) {
-                    var uniforms = uniforms
+
+                    // Render Prop \\
+                    prop.render(renderEncoder: renderEncoder, uniforms: uniforms, type: .stencil)
+
+
+                    // Render displacement mask models \\
 
                     let planeTransform = Transform()
                     planeTransform.position = transform.position
@@ -213,15 +227,11 @@ extension Water: Renderable {
                     planeTransform.scale = transform.scale
                     planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
 
-
-                    uniforms.projectionMatrix = camera.projectionMatrix
-                    uniforms.viewMatrix = camera.viewMatrix
                     uniforms.modelMatrix = prop.worldTransform * planeTransform.modelMatrix
                     uniforms.maskMatrix = orthoCamera.projectionMatrix * camera.viewMatrix
-
                     renderEncoder.setRenderPipelineState(prop.maskPipeline)
-                    renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
+                    renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
                     renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
                     plane.submeshes.enumerated().forEach { (_, submesh) in
@@ -229,7 +239,8 @@ extension Water: Renderable {
                                                             indexCount: submesh.indexCount,
                                                             indexType: submesh.indexType,
                                                             indexBuffer: submesh.indexBuffer.buffer,
-                                                            indexBufferOffset: submesh.indexBuffer.offset)
+                                                            indexBufferOffset: submesh.indexBuffer.offset,
+                                                            instanceCount: 1)
                     }
                 }
 

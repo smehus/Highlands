@@ -119,14 +119,12 @@ private extension Submesh {
         pipelineDescriptor.sampleCount = Renderer.sampleCount
 
         let stencilPipelineDescriptor = MTLRenderPipelineDescriptor()
-        stencilPipelineDescriptor.vertexFunction = library!.makeFunction(name: "stencil_vertex")!
-        stencilPipelineDescriptor.fragmentFunction = nil
+        stencilPipelineDescriptor.vertexFunction = library!.makeFunction(name: "vertex_main")!
+        stencilPipelineDescriptor.fragmentFunction = Renderer.library!.makeFunction(name: "fragment_mask")!
         stencilPipelineDescriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
         stencilPipelineDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(type.vertexDescriptor)
         stencilPipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
         stencilPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
-
-
 
         do {
             pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: pipelineDescriptor)
