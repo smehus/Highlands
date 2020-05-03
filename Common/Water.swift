@@ -324,9 +324,11 @@ extension Water: Renderable {
 
 
 
-        // Render displacement meshes
-        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         renderEncoder.setDepthStencilState(mainDepthStencilState)
+        // Render displacement meshes
+        return
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+
         displacementMeshes.forEach { (transform, _) in
 //            let mdlMesh = MDLMesh(planeWithExtent: [15, 10, 1],
 //                                   segments: [1, 1],
