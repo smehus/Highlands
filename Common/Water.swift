@@ -27,9 +27,19 @@ class Water: Node {
     private var heightMap: MTLTexture!
     private var displacementMeshes: [(Transform, MTKMesh)] = []
 
+
+    lazy var depthState: MTLDepthStencilState = {
+        var depthStencilDescriptor = MTLDepthStencilDescriptor()
+        depthStencilDescriptor.depthCompareFunction = .greater
+        depthStencilDescriptor.isDepthWriteEnabled = true
+        return Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
+    }()
+
     init(size: Float) {
         do {
-            let plane = Primitive.makePlane(device: Renderer.device, size: size)
+//            let plane = Primitive.makePlane(device: Renderer.device, size: size)
+            let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+            let plane = MDLMesh(boxWithExtent: [size, 3.0, size], segments: [1, 1, 1], inwardNormals: false, geometryType: .triangles, allocator: allocator)
             mdlMesh = plane
 
             mesh = try MTKMesh(mesh: plane, device: Renderer.device)
@@ -194,14 +204,14 @@ extension Water: Renderable {
         renderEncoder.setDepthStencilState(mainDepthStencilState)
         for renderable in renderables {
             if let prop = renderable as? Prop {
-                for (transform, plane) in zip(prop.transforms, prop.maskPlanes) {
+                for (transform, plane) in zip(prop.transforms, prop.instanceStencilPlanes) {
                     var uniforms = uniforms
 
                     let planeTransform = Transform()
                     planeTransform.position = transform.position
-                    planeTransform.position.x -= 15
+                    planeTransform.position.x -= 8
                     planeTransform.scale = transform.scale
-//                    planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
+                    planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
 
 
                     uniforms.projectionMatrix = camera.projectionMatrix
@@ -272,13 +282,14 @@ extension Water: Renderable {
         renderEncoder.popDebugGroup()
     }
 
+
     private func render(renderEncoder: MTLRenderCommandEncoder, pipelineState: MTLRenderPipelineState, uniforms: Uniforms) {
 
         var uniforms = uniforms
         timer += 0.00017
 
         // Render water plane
-//        renderEncoder.setDepthStencilState(GameScene.maskStencilState)
+        renderEncoder.setDepthStencilState(depthState)
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
@@ -312,22 +323,26 @@ extension Water: Renderable {
 
 
 
-        return
+
         // Render displacement meshes
+        return
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         renderEncoder.setDepthStencilState(mainDepthStencilState)
         displacementMeshes.forEach { (transform, _) in
-            let mdlMesh = MDLMesh(planeWithExtent: [15, 1.5, 1],
-                                   segments: [1, 1],
-                                   geometryType: .triangles,
-                                   allocator: allocator)
+//            let mdlMesh = MDLMesh(planeWithExtent: [15, 10, 1],
+//                                   segments: [1, 1],
+//                                   geometryType: .triangles,
+//                                   allocator: allocator)
 
+
+            let mdlMesh = MDLMesh(boxWithExtent: [15, 1, 8], segments: [1, 1, 1], inwardNormals: true, geometryType: .triangles, allocator: allocator)
             let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
 
             let newTrans = Transform()
             newTrans.position = transform.position
+//            newTrans.position.y -= 3
             newTrans.position.x -= 10
-            newTrans.position.z += 1.6
+//            newTrans.position.z += 1.6
             newTrans.scale = transform.scale
             newTrans.rotation = transform.rotation
 

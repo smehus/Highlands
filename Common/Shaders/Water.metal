@@ -156,6 +156,8 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     float2 reflectionCoords = float2(x, 1 - y);
     float2 refractionCoords = float2(x, y);
 
+    float2 maskCoords = refractionCoords;
+
     // Ripples
     float2 uv = vertex_in.uv * 0.15;
     float waveStrength = 0.02;
@@ -193,8 +195,8 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     // If mask texture has a mask value - reset the uv coordintates so
     // inside the mask, the water is more varied / quicker
     // However the outer boarders we want to have the original ripples (slow ripples)
-    float4 m = maskTexture.sample(maskSampler, refractionCoords);
-    if (m.r == 0) {
+    float4 masked = maskTexture.sample(maskSampler, maskCoords);
+    if (masked.r == 0) {
         isMasked = true;
         waveStrength = 0.12;
         rippleX = float2(uv.x + timer, uv.y);
@@ -219,7 +221,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
 
     float omega = 0.314 + ripple.x;
     float a = 1.0;
-    if (isMasked) {
+    if (isMasked && !isDisplacementMesh) {
 
         discard_fragment();
 //        if (normalValue.r > 0.6) {
@@ -250,7 +252,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     }
 
     if (isDisplacementMesh) {
-        baseColor = float4(1, 0, 0, 1);
+//        baseColor = float4(1, 0, 0, 1);
     }
 
 

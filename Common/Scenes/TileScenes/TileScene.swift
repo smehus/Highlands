@@ -29,7 +29,7 @@ class TileScene: Node {
         terrain.setup(with: [0, 0, 0])
 
         water.position.y = -6
-        water.rotation = [0, 0, radians(fromDegrees: -90)]
+//        water.rotation = [0, 0, radians(fromDegrees: -90)]
         add(childNode: water)
         /*
          ground.tiling = 4
