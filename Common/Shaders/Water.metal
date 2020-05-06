@@ -195,7 +195,7 @@ fragment float4 fragment_water(VertexOut vertex_in [[ stage_in ]],
     // If mask texture has a mask value - reset the uv coordintates so
     // inside the mask, the water is more varied / quicker
     // However the outer boarders we want to have the original ripples (slow ripples)
-    float4 masked = maskTexture.sample(maskSampler, maskCoords);
+    float4 masked = maskTexture.sample(maskSampler, refractionCoords);
     if (masked.r == 0) {
         isMasked = true;
         waveStrength = 0.12;

@@ -21,12 +21,18 @@ class Water: Node {
     private let reflectionRenderPass: RenderPass
     private let maskRenderPass: RenderPass
     private let depthStencilState: MTLDepthStencilState
-    private let reflectionCamera = ThirdPersonCamera()
+    private let reflectionCamera = ReflectionCamera()
     private let mainDepthStencilState: MTLDepthStencilState
     private let orthoCamera = OrthographicCamera()
     private var heightMap: MTLTexture!
     private var displacementMeshes: [(Transform, MTKMesh)] = []
 
+
+    private lazy var reflectionDepthState: MTLDepthStencilState = {
+        var depthStencilDescriptor = MTLDepthStencilDescriptor()
+        depthStencilDescriptor.depthCompareFunction = .less
+        return Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
+    }()
 
     private lazy var depthState: MTLDepthStencilState = {
         var depthStencilDescriptor = MTLDepthStencilDescriptor()
@@ -140,12 +146,11 @@ extension Water: Renderable {
 
 
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture, player: Node) {
-        let mainUniforms = uniforms
-        var uniforms = uniforms
+        var reflectionUnifroms = Uniforms()
 
         // Reflection
         let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
-        reflectEncoder.setDepthStencilState(mainDepthStencilState)
+        reflectEncoder.setDepthStencilState(reflectionDepthState)
 
         // set the transform
         reflectionCamera.focus = player
@@ -162,9 +167,10 @@ extension Water: Renderable {
         // rotate around and the reflection shifts but hte character doesn't
         reflectionCamera.focusDistance = (camera as! ThirdPersonCamera).focusDistance
         reflectionCamera.focusHeight = -(camera as! ThirdPersonCamera).focusHeight
+        reflectionCamera.focusHeight -= 0.85
 
-        uniforms.projectionMatrix = reflectionCamera.projectionMatrix
-        uniforms.viewMatrix = reflectionCamera.viewMatrix
+        reflectionUnifroms.projectionMatrix = reflectionCamera.projectionMatrix
+        reflectionUnifroms.viewMatrix = reflectionCamera.viewMatrix
 
         // fragment uniforms
         var fragmentUniforms = FragmentUniforms()
@@ -182,10 +188,15 @@ extension Water: Renderable {
         var farZ = Camera.FarZ
         reflectEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-        for case let renderable as Prop in renderables where renderable.name == "treefir" {
-//            guard type(of: renderable) == Terrain.self else { continue }
-
-            renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
+        for renderable in renderables {
+            switch renderable {
+            case let prop as Prop where prop.name == "treefir":
+                renderable.render(renderEncoder: reflectEncoder, uniforms: reflectionUnifroms)
+            case is Terrain:
+                renderable.render(renderEncoder: reflectEncoder, uniforms: reflectionUnifroms)
+            default:
+                continue
+            }
         }
 
         reflectEncoder.endEncoding()
