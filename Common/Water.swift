@@ -147,6 +147,7 @@ extension Water: Renderable {
 
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture, player: Node) {
         var reflectionUnifroms = Uniforms()
+        reflectionUnifroms.clipPlane = SIMD4<Float>(0, 1, 0, 6);
 
         // Reflection
         let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
@@ -168,6 +169,7 @@ extension Water: Renderable {
         reflectionCamera.focusDistance = (camera as! ThirdPersonCamera).focusDistance
         reflectionCamera.focusHeight = -(camera as! ThirdPersonCamera).focusHeight
         reflectionCamera.focusHeight -= 0.85
+        reflectionCamera.focusHeight = -15 //
 
         reflectionUnifroms.projectionMatrix = reflectionCamera.projectionMatrix
         reflectionUnifroms.viewMatrix = reflectionCamera.viewMatrix
@@ -219,7 +221,7 @@ extension Water: Renderable {
 
             var uniforms = uniforms
 
-            if let prop = renderable as? Prop {
+            if let prop = renderable as? Prop, prop.name != "treefir" {
 
                 uniforms.projectionMatrix = camera.projectionMatrix
                 uniforms.viewMatrix = camera.viewMatrix

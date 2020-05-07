@@ -48,26 +48,26 @@ class TileScene: Node {
         let count = 10
         let offset = 25
 //
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 1))
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
         add(childNode: tree)
 
-        var t = Transform()
-        t.scale = [3.0, 3.0, 3.0]
-        t.position = [0, 0, -8]
-        tree.updateBuffer(instance: 0, transform: t, textureID: 0)
+//        var t = Transform()
+//        t.scale = [3.0, 3.0, 3.0]
+//        t.position = [0, 0, -8]
+//        tree.updateBuffer(instance: 0, transform: t, textureID: 0)
 
 //        physicsController.addStaticBody(node: tree)
         for i in 0..<count {
-//            var transform = Transform()
-//            transform.scale = [3.0, 3.0, 3.0]
-//
-//            var position: SIMD3<Float>
-//            repeat {
-//                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-//            } while position.x > 2 && position.z > 2
-//
-//            transform.position = position
-//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+            var transform = Transform()
+            transform.scale = [3.0, 3.0, 3.0]
+
+            var position: SIMD3<Float>
+            repeat {
+                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+            } while position.x > 2 && position.z > 2
+
+            transform.position = position
+            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
         }
 
 //        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]

@@ -22,7 +22,7 @@ func lighting() -> [Light] {
     light.type = Ambientlight
     light.intensity = 0.2
     light.color = [0, 0, 0.0]
-    lights.append(light)
+//    lights.append(light)
 
     return lights
 }
