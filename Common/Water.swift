@@ -31,6 +31,7 @@ class Water: Node {
     private lazy var reflectionDepthState: MTLDepthStencilState = {
         var depthStencilDescriptor = MTLDepthStencilDescriptor()
         depthStencilDescriptor.depthCompareFunction = .less
+
         return Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
     }()
 
@@ -167,9 +168,7 @@ extension Water: Renderable {
         // Should this really be from the characters perspective? Or maybe the light? Kinda weird that we can
         // rotate around and the reflection shifts but hte character doesn't
         reflectionCamera.focusDistance = (camera as! ThirdPersonCamera).focusDistance
-        reflectionCamera.focusHeight = -(camera as! ThirdPersonCamera).focusHeight
-        reflectionCamera.focusHeight -= 0.85
-        reflectionCamera.focusHeight = -15 //
+        reflectionCamera.focusHeight = -(camera as! ThirdPersonCamera).focusHeight //
 
         reflectionUnifroms.projectionMatrix = reflectionCamera.projectionMatrix
         reflectionUnifroms.viewMatrix = reflectionCamera.viewMatrix
@@ -185,6 +184,8 @@ extension Water: Renderable {
         reflectEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.size, index: Int(BufferIndexFragmentUniforms.rawValue))
 
         var lights = lights
+        let l = buildDefaultLight()
+        lights.append(l)
         reflectEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: Int(BufferIndexLights.rawValue))
 
         var farZ = Camera.FarZ

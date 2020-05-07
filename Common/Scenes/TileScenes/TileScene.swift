@@ -48,27 +48,37 @@ class TileScene: Node {
         let count = 10
         let offset = 25
 //
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: count))
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 3))
         add(childNode: tree)
 
-//        var t = Transform()
-//        t.scale = [3.0, 3.0, 3.0]
-//        t.position = [0, 0, -8]
-//        tree.updateBuffer(instance: 0, transform: t, textureID: 0)
+        let t1 = Transform()
+        t1.scale = [3.0, 3.0, 3.0]
+        t1.position = [0, 0, -9]
+        tree.updateBuffer(instance: 0, transform: t1, textureID: 0)
 
+
+        let t2 = Transform()
+        t2.scale = [4.0, 4.0, 4.0]
+        t2.position = [-4, 0, -12]
+        tree.updateBuffer(instance: 1, transform: t2, textureID: 0)
+
+        let t3 = Transform()
+        t3.scale = [2.0, 2.0, 2.0]
+        t3.position = [4, 0, -8]
+        tree.updateBuffer(instance: 2, transform: t3, textureID: 0)
 //        physicsController.addStaticBody(node: tree)
-        for i in 0..<count {
-            var transform = Transform()
-            transform.scale = [3.0, 3.0, 3.0]
-
-            var position: SIMD3<Float>
-            repeat {
-                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
-            } while position.x > 2 && position.z > 2
-
-            transform.position = position
-            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-        }
+//        for i in 0..<count {
+//            var transform = Transform()
+//            transform.scale = [3.0, 3.0, 3.0]
+//
+//            var position: SIMD3<Float>
+//            repeat {
+//                position = [Float(Int.random(in: -offset...offset)), 0, Float(Int.random(in: -offset...offset))]
+//            } while position.x > 2 && position.z > 2
+//
+//            transform.position = position
+//            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
+//        }
 
 //        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
 //        let morphTargetNames = ["rock1", "rock2", "rock3"]
