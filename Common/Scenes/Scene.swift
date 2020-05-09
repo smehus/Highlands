@@ -61,16 +61,9 @@ class Scene {
         let holdRotation = node.rotation
         inputController.updatePlayer(deltaTime: deltaTime)
 
-        let diff = node.position - holdPosition
-
-        if var body = physicsController.checkCollisions().first {
-            if body.isMovable {
-                body.position += diff
-            } else if isHardCollision() {
-                node.position = holdPosition
-                node.rotation = holdRotation
-            }
-        }
+        let playerMovement = node.position - holdPosition
+        physicsController.checkPlayerCollisions(playerMovement: playerMovement)
+        physicsController.checkPropCollisions(playerMovement: playerMovement)
     }
 
     final func update(deltaTime: Float) {
