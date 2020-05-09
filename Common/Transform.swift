@@ -36,3 +36,15 @@ class Transform: Positionable {
         return float3x3(normalFrom4x4: modelMatrix)
     }
 }
+
+extension Transform: Equatable {
+    static func ==(lhs: Transform, rhs: Transform) -> Bool {
+        let equalPosition = lhs.position == rhs.position
+        let equalRotation = lhs.rotation == rhs.rotation
+        let equalScale = lhs.scale == rhs.scale
+        let reduced = [equalPosition, equalRotation, equalScale].reduce(true) { $0 && $1 }
+        let equated = equalPosition && equalRotation && equalScale
+        assert(reduced == equated)
+        return reduced
+    }
+}

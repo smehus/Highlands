@@ -35,10 +35,8 @@ class PhysicsController {
         //
 
 
-        func t(iteratedTransform: Transform, n1Position: SIMD3<Float>, n1Radius: Float, n2Radius: Float) -> Bool {
-            let bodyPosition = iteratedTransform.modelMatrix.columns.3.xyz
-            let d = distance(n1Position, bodyPosition)
-            if d < (n1Radius + n2Radius) {
+        func t(p1: SIMD3<Float>, p2: SIMD3<Float>, r1: Float, r2: Float) -> Bool {
+            if distance(p1, p2) < (r1 + r2) {
                 if holdAllCollided {
                     return true
                 } else {
@@ -49,32 +47,37 @@ class PhysicsController {
             return false
         }
 
-        /// Handling collisions with player
-        for body in staticBodies  {
-            let bodyRadius = max((body.size.x / 2), (body.size.z / 2))
-            if let prop = body as? Prop, prop.propType.isInstanced {
-                for transform in prop.transforms {
-                    if t(iteratedTransform: transform,
-                         n1Position: nodePosition,
-                         n1Radius: nodeRadius,
-                         n2Radius: bodyRadius) {
 
-                        collidedBodies.append(transform)
-                    }
+        for case let (index, body) in staticBodies.enumerated() {
+            guard let prop = body as? Prop, prop.propType.isInstanced else { continue }
+            let bodyRadius = max((prop.size.x / 2), (prop.size.z / 2))
+            for (transformIndex, transform) in prop.transforms.enumerated() {
+                // Test player collision
+                if t(p1: nodePosition, p2: transform.modelMatrix.columns.3.xyz, r1: nodeRadius, r2: bodyRadius) {
+                    collidedBodies.append(transform)
                 }
-            } else {
-                let bodyPosition = body.worldTransform.columns.3.xyz
-                let d = distance(nodePosition, bodyPosition)
-                if d < (nodeRadius + bodyRadius) {
-                    if holdAllCollided {
-                        collidedBodies.append(body)
-                    } else {
-                        return []
+
+                // Test prop to prop collision
+                for (comparandIndex, comparandBody) in staticBodies.enumerated() {
+                    let comparandRadius = max((prop.size.x / 2), (prop.size.z / 2))
+                    guard let prop = body as? Prop, prop.propType.isInstanced else { continue }
+                    for (comparanandTransformIndex, comparandTransform) in prop.transforms.enumerated() {
+                        guard !(comparandIndex == index && comparanandTransformIndex == transformIndex) else { continue }
+                        guard !collidedBodies.contains(where: { (positionable) -> Bool in
+                            guard let t = positionable as? Transform, !(t == comparandTransform) else { return false }
+                            return true
+                        }) else { continue }
+
+                        // Does comparand transfrom collide with base transform iteration.
+                        if t(p1: comparandTransform.position, p2: transform.position, r1: comparandRadius, r2: bodyRadius) {
+                            collidedBodies.append(comparandTransform)
+                        }
                     }
                 }
             }
         }
 
+        print("*** COLLIDED BODIES \(collidedBodies.count)")
         return collidedBodies
     }
 }
