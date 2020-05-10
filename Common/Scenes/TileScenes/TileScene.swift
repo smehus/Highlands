@@ -109,10 +109,12 @@ class TileScene: Node {
 
         // Shadows only work correctly with instanced props right now.
         let transform = Transform()
+        transform.name = "first"
         transform.position = [0, 0, 4]
         box.updateBuffer(instance: 0, transform: transform, textureID: 0)
 
         let transform2 = Transform()
+        transform2.name = "second"
         transform2.position = [8, 0, 2]
         box.updateBuffer(instance: 1, transform: transform2, textureID: 0)
         delegate?.physicsControllAdd(box)

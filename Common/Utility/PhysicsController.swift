@@ -33,8 +33,10 @@ class PhysicsController {
             let propRadius = max(prop.size.x / 2, prop.size.z / 2)
 
             for transform in prop.transforms {
+                transform.isColliding = false
                 if distance(player.position, transform.position) < (playerRadius + propRadius) {
                     transform.position += playerMovement
+                    transform.isColliding = true
                 }
             }
         }
@@ -49,7 +51,11 @@ class PhysicsController {
 
             for (index, transform) in transforms.enumerated() {
                 if distance(checkTransform.position, transform.position) < max(prop.size.x, prop.size.z) {
-                    transforms.remove(at: index).position += playerMovement
+                    if !transform.isColliding {
+                        transforms.remove(at: index).position += playerMovement
+                    } else {
+                        checkTransform.position += playerMovement
+                    }
                 }
             }
         }
