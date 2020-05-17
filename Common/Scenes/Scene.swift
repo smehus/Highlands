@@ -63,7 +63,6 @@ class Scene {
 
         let playerMovement = node.position - holdPosition
         physicsController.checkPlayerCollisions(playerMovement: playerMovement)
-        physicsController.checkPropCollisions(playerMovement: playerMovement)
     }
 
     final func update(deltaTime: Float) {

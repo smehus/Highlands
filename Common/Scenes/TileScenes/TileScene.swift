@@ -104,8 +104,9 @@ class TileScene: Node {
 //        }
 
 
-        let box = Prop(type: .instanced(name: "wooden_box", instanceCount: 2))
+        let box = Prop(type: .instanced(name: "wooden_box", instanceCount: 3))
         add(childNode: box)
+        delegate?.physicsControllAdd(box)
 
         // Shadows only work correctly with instanced props right now.
         let transform = Transform()
@@ -117,7 +118,11 @@ class TileScene: Node {
         transform2.name = "second"
         transform2.position = [8, 0, 2]
         box.updateBuffer(instance: 1, transform: transform2, textureID: 0)
-        delegate?.physicsControllAdd(box)
+
+        let transform3 = Transform()
+        transform3.name = "third"
+        transform3.position = [0, 0, 8]
+        box.updateBuffer(instance: 2, transform: transform3, textureID: 0)
     }
 }
 
