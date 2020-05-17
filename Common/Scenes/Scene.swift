@@ -123,7 +123,7 @@ class Scene {
 }
 
 extension Scene: TileSceneDelegate {
-    func physicsControllAdd(_ node: Node) {
+    func physicsControllAdd(_ node: Prop) {
         physicsController.addStaticBody(node: node)
     }
 }

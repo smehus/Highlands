@@ -10,7 +10,7 @@ import Foundation
 import MetalKit
 
 protocol TileSceneDelegate: class {
-    func physicsControllAdd(_ node: Node)
+    func physicsControllAdd(_ node: Prop)
 }
 
 class TileScene: Node {

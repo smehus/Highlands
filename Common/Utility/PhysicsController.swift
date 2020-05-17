@@ -7,17 +7,17 @@ let debugRenderBoundingBox = true
 class PhysicsController {
 
     var dynamicBody: Node?
-    var staticBodies: [Node] = []
+    var staticBodies: [Prop] = []
 
     var holdAllCollided = true
     var collidedBodies: [Positionable] = []
 
-    func addStaticBody(node: Node) {
+    func addStaticBody(node: Prop) {
         removeBody(node: node)
         staticBodies.append(node)
     }
 
-    func removeBody(node: Node) {
+    func removeBody(node: Prop) {
         if let index = staticBodies.firstIndex(where: {
             $0.self === node
         }) {
@@ -28,32 +28,39 @@ class PhysicsController {
     func checkPlayerCollisions(playerMovement: SIMD3<Float>) {
         guard let player = dynamicBody as? Character else { assertionFailure(); return }
         let playerRadius = max(player.size.x / 2, player.size.z / 2)
-        let prop = staticBodies.first! as! Prop
-        let propRadius = max(prop.size.x / 2, prop.size.z / 2)
 
-        prop.transforms.forEach { $0.isColliding = false }
-        let transforms = prop.transforms
+        staticBodies.flatMap { $0.transforms }.forEach { $0.isColliding = false }
 
-        guard let playerCollidedTransform = transforms.first(where: { (transform) -> Bool in
-            return distance(player.position, transform.position) < (playerRadius + propRadius)
-        }) else { return }
+        // Find first body / transform with collison with player
+        // Should refactor to use flatMap / firstWhere etc
+        for body in staticBodies {
+            let bodyRadius = max(body.size.x / 2, body.size.z / 2)
+            let transforms = body.transforms
 
-        playerCollidedTransform.position += playerMovement
-        playerCollidedTransform.isColliding = true
+            guard let playerCollidedTransform = transforms.first(where: { (transform) -> Bool in
+                  return distance(player.position, transform.position) < (playerRadius + bodyRadius)
+              }) else { continue }
 
-        // Return a bool from this function
-        // 'containsFutureCollisionWithSolidObject'
-        // But we need to refector to inject the prop type? Or something
-        let containsFutureCollisionWithSolidObject = findAllCollisions(
-            playerRadius: playerRadius,
-            propRadius: propRadius,
-            transform: playerCollidedTransform,
-            allTransforms: transforms,
-            move: playerMovement
-        )
 
-        if !containsFutureCollisionWithSolidObject {
-            // Add prop movement
+            playerCollidedTransform.position += playerMovement
+             playerCollidedTransform.isColliding = true
+
+             // Return a bool from this function
+             // 'containsFutureCollisionWithSolidObject'
+             // But we need to refector to inject the prop type? Or something
+             let containsFutureCollisionWithSolidObject = findAllCollisions(
+                 playerRadius: playerRadius,
+                 propRadius: bodyRadius,
+                 transform: playerCollidedTransform,
+                 allTransforms: transforms,
+                 move: playerMovement
+             )
+
+             if !containsFutureCollisionWithSolidObject {
+                 // Add prop movement
+             }
+
+            return
         }
     }
 
