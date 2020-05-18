@@ -82,6 +82,10 @@ class PhysicsController {
                 if distance(transform.position + move, iteratedTransform.position) < (bodyRadius + iterationPropRadius) {
                     iteratedTransform.isColliding = true
 
+                    if !iteratedProp.isMovable {
+                        return true
+                    }
+
                     let containsFutureHold = findAllCollisions(prop: iteratedProp, transform: iteratedTransform, move: move)
 
                     if !containsFutureHold {
