@@ -48,14 +48,14 @@ class TileScene: Node {
         let count = 10
         let offset = 25
 //
-//        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 3))
-//        add(childNode: tree)
-//
-//        let t1 = Transform()
-//        t1.scale = [3.0, 3.0, 3.0]
-//        t1.position = [0, 0, -9]
-//        tree.updateBuffer(instance: 0, transform: t1, textureID: 0)
-//
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 3))
+        add(childNode: tree)
+
+        let t1 = Transform()
+        t1.scale = [3.0, 3.0, 3.0]
+        t1.position = [8, 0, 8]
+        tree.updateBuffer(instance: 0, transform: t1, textureID: 0)
+        delegate?.physicsControllAdd(tree)
 //
 //        let t2 = Transform()
 //        t2.scale = [4.0, 4.0, 4.0]

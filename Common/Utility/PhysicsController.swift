@@ -2,8 +2,8 @@
 
 import MetalKit
 
-// Render bounding boxes
-let debugRenderBoundingBox = true
+// TODO: - Fix this
+let debugRenderBoundingBox = false
 class PhysicsController {
 
     var dynamicBody: Node?
