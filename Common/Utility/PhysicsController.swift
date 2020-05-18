@@ -31,9 +31,13 @@ class PhysicsController {
 
         staticBodies.flatMap { $0.transforms }.forEach { $0.isColliding = false }
 
-        // Find first body / transform with collison with player
-        // Should refactor to use flatMap / firstWhere etc
-        for body in staticBodies {
+        // Find first transform / body
+
+        var collidedTransform: Transform?
+        var collidedProp: Prop?
+
+        Outer: for body in staticBodies {
+
             let bodyRadius = max(body.size.x / 2, body.size.z / 2)
             let transforms = body.transforms
 
@@ -42,45 +46,67 @@ class PhysicsController {
               }) else { continue }
 
 
-            playerCollidedTransform.position += playerMovement
-             playerCollidedTransform.isColliding = true
+            collidedProp = body
+            collidedTransform = playerCollidedTransform
 
-             // Return a bool from this function
-             // 'containsFutureCollisionWithSolidObject'
-             // But we need to refector to inject the prop type? Or something
-             let containsFutureCollisionWithSolidObject = findAllCollisions(
-                 playerRadius: playerRadius,
-                 propRadius: bodyRadius,
-                 transform: playerCollidedTransform,
-                 allTransforms: transforms,
-                 move: playerMovement
-             )
-
-             if !containsFutureCollisionWithSolidObject {
-                 // Add prop movement
-             }
-
-            return
+            break Outer
         }
+
+        guard let playerCollidedTransform = collidedTransform, let playerCollidedProp = collidedProp else { return }
+
+        playerCollidedTransform.isColliding = true
+
+        let containsFutureCollisionWithSolidObject = findAllCollisions(
+            prop: playerCollidedProp,
+            transform: playerCollidedTransform,
+            move: playerMovement
+        )
+
+         if !containsFutureCollisionWithSolidObject {
+             playerCollidedTransform.position += playerMovement
+         }
     }
 
-    private func findAllCollisions(playerRadius: Float, propRadius: Float, transform: Transform, allTransforms: [Transform], move: SIMD3<Float>) -> Bool {
 
-        let nonCollidedTransforms = allTransforms.filter { !$0.isColliding }
+    private func findAllCollisions(prop: Prop, transform: Transform, move: SIMD3<Float>) -> Bool {
+        let bodyRadius = max(prop.size.x / 2, prop.size.z / 2)
 
-        for checkTransform in nonCollidedTransforms {
-            if distance(transform.position, checkTransform.position) < (propRadius + propRadius) {
-                checkTransform.position += move
-                checkTransform.isColliding = true
-                return findAllCollisions(
-                    playerRadius: playerRadius,
-                    propRadius: propRadius,
-                    transform: checkTransform,
-                    allTransforms: nonCollidedTransforms,
-                    move: move
-                )
+        for iteratedProp in staticBodies {
+
+            let nonCollidingTransforms = iteratedProp.transforms.filter { !$0.isColliding }
+            let iterationPropRadius = max(iteratedProp.size.x / 2, iteratedProp.size.z / 2)
+
+            for iteratedTransform in nonCollidingTransforms {
+                if distance(transform.position + move, iteratedTransform.position) < (bodyRadius + iterationPropRadius) {
+                    iteratedTransform.isColliding = true
+
+                    let containsFutureHold = findAllCollisions(prop: iteratedProp, transform: iteratedTransform, move: move)
+
+                    if !containsFutureHold {
+                        iteratedTransform.position += move
+                    }
+
+                    return containsFutureHold
+                }
             }
         }
+
+
+//        let nonCollidedTransforms = allTransforms.filter { !$0.isColliding }
+
+//        for checkTransform in nonCollidedTransforms {
+//            if distance(transform.position, checkTransform.position) < (propRadius + propRadius) {
+//                checkTransform.position += move
+//                checkTransform.isColliding = true
+//                return findAllCollisions(
+//                    playerRadius: playerRadius,
+//                    propRadius: propRadius,
+//                    transform: checkTransform,
+//                    allTransforms: nonCollidedTransforms,
+//                    move: move
+//                )
+//            }
+//        }
 
         return false
     }
