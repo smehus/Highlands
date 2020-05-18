@@ -25,7 +25,7 @@ class PhysicsController {
         }
     }
 
-    func checkPlayerCollisions(playerMovement: SIMD3<Float>) {
+    func checkPlayerCollisions(initialPlayerPosition: SIMD3<Float>, playerMovement: SIMD3<Float>) {
         guard let player = dynamicBody as? Character else { assertionFailure(); return }
         let playerRadius = max(player.size.x / 2, player.size.z / 2)
 
@@ -62,9 +62,11 @@ class PhysicsController {
             move: playerMovement
         )
 
-         if !containsFutureCollisionWithSolidObject {
+        if !containsFutureCollisionWithSolidObject && playerCollidedProp.isMovable {
              playerCollidedTransform.position += playerMovement
-         }
+        } else {
+            player.position = initialPlayerPosition
+        }
     }
 
 

@@ -48,7 +48,8 @@ class TileScene: Node {
         let count = 10
         let offset = 25
 //
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 3))
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 1))
+        tree.isMovable = false
         add(childNode: tree)
 
         let t1 = Transform()
