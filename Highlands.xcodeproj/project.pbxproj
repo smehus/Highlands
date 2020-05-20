@@ -62,15 +62,11 @@
 		023312A82444A348002CC03B /* Text.metal in Sources */ = {isa = PBXBuildFile; fileRef = 023312A62444A348002CC03B /* Text.metal */; };
 		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
+		025EA11B24759A7C002524D9 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 025EA11A24759A7C002524D9 /* walking_boy.usdz */; };
+		025EA11C24759A7C002524D9 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 025EA11A24759A7C002524D9 /* walking_boy.usdz */; };
 		02630CE523FCE5A700D0AEDA /* TileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290634F23FC3EC300FA0A26 /* TileScene.swift */; };
 		0277614823E3A985003E4DD5 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
 		0277614923E3A985003E4DD5 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
-		0277614B23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */; };
-		0277614C23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */; };
-		0277614E23E3B6D5003E4DD5 /* walking_boy.usda in Resources */ = {isa = PBXBuildFile; fileRef = 0277614D23E3B6D5003E4DD5 /* walking_boy.usda */; };
-		0277614F23E3B6D5003E4DD5 /* walking_boy.usda in Resources */ = {isa = PBXBuildFile; fileRef = 0277614D23E3B6D5003E4DD5 /* walking_boy.usda */; };
-		0277615123E3B9A5003E4DD5 /* walking_boy.usd in Resources */ = {isa = PBXBuildFile; fileRef = 0277615023E3B9A4003E4DD5 /* walking_boy.usd */; };
-		0277615223E3B9A5003E4DD5 /* walking_boy.usd in Resources */ = {isa = PBXBuildFile; fileRef = 0277615023E3B9A4003E4DD5 /* walking_boy.usd */; };
 		0290635023FC3EC300FA0A26 /* TileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290634F23FC3EC300FA0A26 /* TileScene.swift */; };
 		0290635523FC528400FA0A26 /* HighlandsTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290635423FC528400FA0A26 /* HighlandsTile.swift */; };
 		0290635623FC528400FA0A26 /* HighlandsTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290635423FC528400FA0A26 /* HighlandsTile.swift */; };
@@ -142,8 +138,6 @@
 		02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CB1E9D21EA848E002CCB94 /* DebugLights.swift */; };
 		02A38F4223E1422A00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
 		02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
-		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
-		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02CF22B62459C3DD00D81337 /* DynamicRasterizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CF22B52459C3DD00D81337 /* DynamicRasterizedText.swift */; };
 		02D25A2023F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
 		02D25A2123F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
@@ -219,9 +213,7 @@
 		023312A62444A348002CC03B /* Text.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Text.metal; sourceTree = "<group>"; };
 		02544A98231AB2130072E47F /* Terrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terrain.swift; sourceTree = "<group>"; };
 		02544A9E231AC6F20072E47F /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Textures.xcassets; path = ../Textures.xcassets; sourceTree = "<group>"; };
-		0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = walking_boy.usdz; sourceTree = SOURCE_ROOT; };
-		0277614D23E3B6D5003E4DD5 /* walking_boy.usda */ = {isa = PBXFileReference; lastKnownFileType = text; path = walking_boy.usda; sourceTree = SOURCE_ROOT; };
-		0277615023E3B9A4003E4DD5 /* walking_boy.usd */ = {isa = PBXFileReference; lastKnownFileType = file; path = walking_boy.usd; sourceTree = SOURCE_ROOT; };
+		025EA11A24759A7C002524D9 /* walking_boy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = walking_boy.usdz; sourceTree = "<group>"; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
 		0284474022C04EE500A4E479 /* RenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
 		0290634F23FC3EC300FA0A26 /* TileScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileScene.swift; sourceTree = "<group>"; };
@@ -244,7 +236,6 @@
 		02BDBED423DC96A300FB3EEA /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		02BDBED623DC96A300FB3EEA /* Skeleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
-		02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = boy_tpose.usdz; sourceTree = SOURCE_ROOT; };
 		02CF22B52459C3DD00D81337 /* DynamicRasterizedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRasterizedText.swift; sourceTree = "<group>"; };
 		02D25A1F23F8975200CD8130 /* TextureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureController.swift; sourceTree = "<group>"; };
 		02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = wooden_box_obj_UVChannel_1_color.tga; sourceTree = "<group>"; };
@@ -422,10 +413,7 @@
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
-				0277615023E3B9A4003E4DD5 /* walking_boy.usd */,
-				0277614D23E3B6D5003E4DD5 /* walking_boy.usda */,
-				0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */,
-				02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */,
+				025EA11A24759A7C002524D9 /* walking_boy.usdz */,
 			);
 			path = Characters;
 			sourceTree = "<group>";
@@ -687,9 +675,9 @@
 				020E1D6423E2618100A61642 /* rock3.obj in Resources */,
 				020E1D5423E2618100A61642 /* ground.png in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
+				025EA11B24759A7C002524D9 /* walking_boy.usdz in Resources */,
 				02F3DCD82434E210008FFBC7 /* wooden_box.obj in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
-				0277614B23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */,
 				020E1D5023E2618100A61642 /* plane.obj in Resources */,
 				020E1D5623E2618100A61642 /* large-plane.obj in Resources */,
 				020E1D6C23E2618100A61642 /* rock3.mtl in Resources */,
@@ -704,16 +692,13 @@
 				020E1D6223E2618100A61642 /* rock2.obj in Resources */,
 				020E1D4E23E2618100A61642 /* large-plane.mtl in Resources */,
 				020E1D4A23E2618100A61642 /* treefir.mtl in Resources */,
-				0277615123E3B9A5003E4DD5 /* walking_boy.usd in Resources */,
 				020E1D5E23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */,
 				020E1D5A23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				020E1D6623E2618100A61642 /* rock1.obj in Resources */,
 				020E1D5223E2618100A61642 /* plane.mtl in Resources */,
-				0277614E23E3B6D5003E4DD5 /* walking_boy.usda in Resources */,
 				020E1D4C23E2618100A61642 /* treefir.obj in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				020E1D5823E2618100A61642 /* normal-water.png in Resources */,
-				02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,10 +707,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				020E1D5923E2618100A61642 /* normal-water.png in Resources */,
-				0277614F23E3B6D5003E4DD5 /* walking_boy.usda in Resources */,
 				020E1D5F23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */,
 				020E1D4B23E2618100A61642 /* treefir.mtl in Resources */,
 				02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */,
+				025EA11C24759A7C002524D9 /* walking_boy.usdz in Resources */,
 				02F3DCD52434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */,
 				02F3DCD72434E210008FFBC7 /* wooden_box.mtl in Resources */,
 				020E1D6923E2618100A61642 /* rock1.mtl in Resources */,
@@ -735,10 +720,8 @@
 				020E1D6D23E2618100A61642 /* rock3.mtl in Resources */,
 				020E1D5523E2618100A61642 /* ground.png in Resources */,
 				020E1D4D23E2618100A61642 /* treefir.obj in Resources */,
-				0277615223E3B9A5003E4DD5 /* walking_boy.usd in Resources */,
 				020E1D6723E2618100A61642 /* rock1.obj in Resources */,
 				020E1D5323E2618100A61642 /* plane.mtl in Resources */,
-				0277614C23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */,
 				020E1D6B23E2618100A61642 /* rock2.mtl in Resources */,
 				02F3DCD92434E210008FFBC7 /* wooden_box.obj in Resources */,
 				020E1D6123E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
@@ -746,7 +729,6 @@
 				020E1D6523E2618100A61642 /* rock3.obj in Resources */,
 				020E1D5D23E2618100A61642 /* HRN_LMP_NM.bmp in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
-				02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */,
 				020E1D4F23E2618100A61642 /* large-plane.mtl in Resources */,
 				020E1D5B23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 			);

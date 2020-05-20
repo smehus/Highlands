@@ -62,6 +62,7 @@ final class GameScene: Scene {
         skeleton.position = [0, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
 //        skeleton.currentAnimation.speed = 1.0
+        
         add(node: skeleton)
 //
         physicsController.dynamicBody = skeleton
@@ -76,8 +77,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 20
-        tpCamera.focusDistance = 12
+        tpCamera.focusHeight = 10
+        tpCamera.focusDistance = 6
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
         currentCameraIndex = cameras.endIndex - 1

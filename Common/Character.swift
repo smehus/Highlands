@@ -190,7 +190,7 @@ class Character: Node {
 
 //        You're using the first animation for simplicity. The starter code for the following chapter will refactor the animation code so that you can send a named animation to the model.
         for mesh in meshes {
-            if let animationClip = animations.first?.value {
+            if let animationClip = animations["/walking_boy/Animations/wheelbarrow"] {
                 mesh.skeleton?.updatePose(animationClip: animationClip, at: currentTime)
                 mesh.transform?.currentTransform = .identity() }
             else {
