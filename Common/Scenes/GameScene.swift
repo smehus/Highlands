@@ -33,7 +33,7 @@ final class GameScene: Scene {
         instanceParamBuffer = Renderer.device
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
-        skybox = Skybox(textureName: nil)
+//        skybox = Skybox(textureName: nil)
 
         inputController.keyboardDelegate = self
 
@@ -76,8 +76,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 10
-        tpCamera.focusDistance = 6
+        tpCamera.focusHeight = 20
+        tpCamera.focusDistance = 12
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
         currentCameraIndex = cameras.endIndex - 1

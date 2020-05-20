@@ -93,3 +93,14 @@ TileScenes will be static. Will craft each one. But the order of the TileScenes 
 
 Right now - only the character is using textures so using the texture heap isn't breaking anything because
 the character lives in the game scene
+
+
+
+multiple animations in blender
+- have all the different animations in separate .fbx files
+- import one of the fbx files into blender
+- rename the animation action for that fbx (to keep naming clear)
+- import another .fbx file
+- rename the animation action that wwas also imported (in the dope sheet -> Actions)
+- delete the amarature & the meshes for the imported model
+- should only have one mode and can run both animation actions on the model
