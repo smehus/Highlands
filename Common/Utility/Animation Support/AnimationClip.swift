@@ -10,6 +10,16 @@ class AnimationClip {
     init(name: String) {
         self.name = name
     }
+
+    func needsToFinish(at time: Float) -> Bool {
+        let needsFinish = jointAnimation.values.reduce(into: true) { (result, animation) in
+            guard result else { return }
+
+            result = animation?.isLastKeyFrame(at: time) ?? true
+        }
+
+        return needsFinish
+    }
     
 //    A full transform should include scale as well. The starter code for the following chapter will have scale keys included.
     func getPose(at time: Float, jointPath: String) -> float4x4? {

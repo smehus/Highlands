@@ -51,9 +51,7 @@ class Character: Node {
 
     // Stuff I added \\
 
-
-    // Not sure about this tho
-//    var currentAnimation: AnimationClip?
+    var currentAnimation: AnimationClip?
 //    var currentAnimationPlaying = false
 
     var shadowInstanceCount: Int = 0
@@ -223,26 +221,32 @@ class Character: Node {
         for mesh in meshes {
 
             var animation: AnimationClip?
-            if previousYPosition <= position.y {
-                print("*** PREVIOUS \(previousYPosition) CURRENT \(position.y)")
+            if previousYPosition < position.y {
                 animation = animations["/walking_boy/Animations/wheelbarrow"]
             } else {
                 animation = animations["/walking_boy/Animations/walking"]
             }
 
+            // Check if the current animation needs to finish
+            if let current = currentAnimation, current.needsToFinish(at: currentTime) {
+                animation = current
+            }
+
             // change walking to wheelbarrow
             if let animationClip = animation {
                 mesh.skeleton?.updatePose(animationClip: animationClip, at: currentTime)
-                mesh.transform?.currentTransform = .identity() }
-            else {
-                mesh.transform?.setCurrentTransform(at: currentTime) }
+                mesh.transform?.currentTransform = .identity()
+                currentAnimation = animationClip
+            } else {
+                mesh.transform?.setCurrentTransform(at: currentTime)
+            }
         }
 
 
-
-        if let tile = currentTile {
-            position.y += tile.position.y
-        }
+        // Doesn't do anything now?
+//        if let tile = currentTile {
+//            position.y += tile.position.y
+//        }
     }
 
     func setLeftRotation(rotationSpeed: Float) {

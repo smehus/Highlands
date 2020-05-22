@@ -16,6 +16,23 @@ struct Animation {
     var rotations: [KeyQuaternion] = []
     private var repeatAnimation = true
 
+    func isLastKeyFrame(at time: Float) -> Bool {
+        guard let lastKeyframe = translations.last else { return false }
+
+        let currentTime = fmod(time, lastKeyframe.time)
+
+        let keyFramePairs = translations.indices.dropFirst().map {
+            (previous: translations[$0 - 1], next: translations[$0])
+        }
+
+        guard let (previousKey, nextKey) = ( keyFramePairs.first {
+            currentTime < $0.next.time
+        } ) else { return false }
+
+
+        return (previousKey.time == lastKeyframe.time || nextKey.time == lastKeyframe.time)
+    }
+
     func getTranslation(at time: Float) -> SIMD3<Float>? {
         guard let lastKeyframe = translations.last else { return nil }
 
