@@ -221,7 +221,8 @@ class Character: Node {
         for mesh in meshes {
 
             var animation: AnimationClip?
-            if previousYPosition < position.y {
+            let uphill = previousYPosition < position.y//(position.y - previousYPosition) > 0
+            if uphill {
                 animation = animations["/walking_boy/Animations/wheelbarrow"]
             } else {
                 animation = animations["/walking_boy/Animations/walking"]

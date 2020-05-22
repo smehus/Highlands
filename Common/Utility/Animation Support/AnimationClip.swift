@@ -12,13 +12,10 @@ class AnimationClip {
     }
 
     func needsToFinish(at time: Float) -> Bool {
-        let needsFinish = jointAnimation.values.reduce(into: true) { (result, animation) in
-            guard result else { return }
-
-            result = animation?.isLastKeyFrame(at: time) ?? true
-        }
-
-        return needsFinish
+        guard name == "wheelbarrow" else { return false }
+        
+        let (isLastKeyFrame, _) = jointAnimation.values.first!!.isLastKeyFrame(at: time * speed)
+        return !isLastKeyFrame
     }
     
 //    A full transform should include scale as well. The starter code for the following chapter will have scale keys included.
