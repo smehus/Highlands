@@ -179,6 +179,7 @@ class Character: Node {
         currentPatch = patch(for: position)
         positionInPatch = positionInPatch(patch: currentPatch)
 
+        let previousYPosition = Float(position.y)
         if position.y == 0 {
             let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
             position.y = pointer.pointee
@@ -189,13 +190,6 @@ class Character: Node {
         currentTime += deltaTime
 
 //        You're using the first animation for simplicity. The starter code for the following chapter will refactor the animation code so that you can send a named animation to the model.
-        for mesh in meshes {
-            if let animationClip = animations["/walking_boy/Animations/wheelbarrow"] {
-                mesh.skeleton?.updatePose(animationClip: animationClip, at: currentTime)
-                mesh.transform?.currentTransform = .identity() }
-            else {
-                mesh.transform?.setCurrentTransform(at: currentTime) }
-        }
 
 
         /* DEPRECATED WITH USDA
@@ -225,6 +219,26 @@ class Character: Node {
 
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
         position.y = pointer.pointee
+
+        for mesh in meshes {
+
+            var animation: AnimationClip?
+            if previousYPosition <= position.y {
+                print("*** PREVIOUS \(previousYPosition) CURRENT \(position.y)")
+                animation = animations["/walking_boy/Animations/wheelbarrow"]
+            } else {
+                animation = animations["/walking_boy/Animations/walking"]
+            }
+
+            // change walking to wheelbarrow
+            if let animationClip = animation {
+                mesh.skeleton?.updatePose(animationClip: animationClip, at: currentTime)
+                mesh.transform?.currentTransform = .identity() }
+            else {
+                mesh.transform?.setCurrentTransform(at: currentTime) }
+        }
+
+
 
         if let tile = currentTile {
             position.y += tile.position.y
