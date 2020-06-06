@@ -13,7 +13,7 @@ class AnimationClip {
 
     func needsToFinish(at time: Float) -> Bool {
         guard name == "wheelbarrow" else { return false }
-        
+
         let (isLastKeyFrame, _) = jointAnimation.values.first!!.isLastKeyFrame(at: time * speed)
         return !isLastKeyFrame
     }
