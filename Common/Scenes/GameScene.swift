@@ -77,8 +77,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 10
-        tpCamera.focusDistance = 6
+        tpCamera.focusHeight = 20
+        tpCamera.focusDistance = 10
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
         currentCameraIndex = cameras.endIndex - 1
