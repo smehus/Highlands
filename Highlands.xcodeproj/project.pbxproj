@@ -147,6 +147,8 @@
 		02F3DCD72434E210008FFBC7 /* wooden_box.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD22434E210008FFBC7 /* wooden_box.mtl */; };
 		02F3DCD82434E210008FFBC7 /* wooden_box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD32434E210008FFBC7 /* wooden_box.obj */; };
 		02F3DCD92434E210008FFBC7 /* wooden_box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD32434E210008FFBC7 /* wooden_box.obj */; };
+		02FD20C6248D84D40063409A /* walking_boy_all.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02FD20C5248D84D40063409A /* walking_boy_all.usdz */; };
+		02FD20C7248D84D40063409A /* walking_boy_all.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02FD20C5248D84D40063409A /* walking_boy_all.usdz */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
 		A57506EE21CE942700C63081 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EB21CE942700C63081 /* GameView.swift */; };
 		A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3321B8CB42002C0632 /* AppDelegate.swift */; };
@@ -241,6 +243,7 @@
 		02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = wooden_box_obj_UVChannel_1_color.tga; sourceTree = "<group>"; };
 		02F3DCD22434E210008FFBC7 /* wooden_box.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wooden_box.mtl; sourceTree = "<group>"; };
 		02F3DCD32434E210008FFBC7 /* wooden_box.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wooden_box.obj; sourceTree = "<group>"; };
+		02FD20C5248D84D40063409A /* walking_boy_all.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = walking_boy_all.usdz; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
 		A563DF1B21E8035200563EA9 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
@@ -413,6 +416,7 @@
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
+				02FD20C5248D84D40063409A /* walking_boy_all.usdz */,
 				025EA11A24759A7C002524D9 /* walking_boy.usdz */,
 			);
 			path = Characters;
@@ -686,6 +690,7 @@
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */,
 				02F3DCD62434E210008FFBC7 /* wooden_box.mtl in Resources */,
+				02FD20C6248D84D40063409A /* walking_boy_all.usdz in Resources */,
 				020E1D6A23E2618100A61642 /* rock2.mtl in Resources */,
 				02F3DCD42434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */,
 				020E1D6823E2618100A61642 /* rock1.mtl in Resources */,
@@ -726,6 +731,7 @@
 				02F3DCD92434E210008FFBC7 /* wooden_box.obj in Resources */,
 				020E1D6123E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				020E1D6323E2618100A61642 /* rock2.obj in Resources */,
+				02FD20C7248D84D40063409A /* walking_boy_all.usdz in Resources */,
 				020E1D6523E2618100A61642 /* rock3.obj in Resources */,
 				020E1D5D23E2618100A61642 /* HRN_LMP_NM.bmp in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,

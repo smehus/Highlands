@@ -223,9 +223,9 @@ class Character: Node {
             var animation: AnimationClip?
             let uphill = ((position.y - previousYPosition) * 100) > 8.0
             if uphill {
-                animation = animations["/walking_boy/Animations/wheelbarrow"]
+                animation = animations["/walking_boy_all/Animations/wheelbarrow"]
             } else {
-                animation = animations["/walking_boy/Animations/walking"]
+                animation = animations["/walking_boy_all/Animations/walking"]
             }
 
             // Check if the current animation needs to finish

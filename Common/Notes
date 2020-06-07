@@ -104,3 +104,6 @@ multiple animations in blender
 - rename the animation action that wwas also imported (in the dope sheet -> Actions)
 - delete the amarature & the meshes for the imported model
 - should only have one mode and can run both animation actions on the model
+
+    - Note - in blender - I think you need to get rid of the f next to the animation name...
+    // Little shield button next to it
