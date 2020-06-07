@@ -48,26 +48,32 @@ class TileScene: Node {
         let count = 10
         let offset = 25
 //
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 1))
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 4))
         tree.isMovable = false
         add(childNode: tree)
 
         let t1 = Transform()
         t1.scale = [3.0, 3.0, 3.0]
-        t1.position = [8, 0, 8]
+        t1.position = [8, 0, -10]
         tree.updateBuffer(instance: 0, transform: t1, textureID: 0)
         delegate?.physicsControllAdd(tree)
 //
-//        let t2 = Transform()
-//        t2.scale = [4.0, 4.0, 4.0]
-//        t2.position = [-4, 0, -12]
-//        tree.updateBuffer(instance: 1, transform: t2, textureID: 0)
+        let t2 = Transform()
+        t2.scale = [4.0, 4.0, 4.0]
+        t2.position = [-4, 0, -12]
+        tree.updateBuffer(instance: 1, transform: t2, textureID: 0)
 //
-//        let t3 = Transform()
-//        t3.scale = [2.0, 2.0, 2.0]
-//        t3.position = [4, 0, -8]
-//        tree.updateBuffer(instance: 2, transform: t3, textureID: 0)
-//        physicsController.addStaticBody(node: tree)
+        let t3 = Transform()
+        t3.scale = [2.0, 2.0, 2.0]
+        t3.position = [4, 0, -8]
+        tree.updateBuffer(instance: 2, transform: t3, textureID: 0)
+
+
+        let t4 = Transform()
+        t4.scale = [4.0, 4.0, 4.0]
+        t4.position = [4, 0, 23]
+        tree.updateBuffer(instance: 3, transform: t4, textureID: 0)
+
 //        for i in 0..<count {
 //            var transform = Transform()
 //            transform.scale = [3.0, 3.0, 3.0]
@@ -122,7 +128,7 @@ class TileScene: Node {
 
         let transform3 = Transform()
         transform3.name = "third"
-        transform3.position = [0, 0, 8]
+        transform3.position = [0, 0, 10]
         box.updateBuffer(instance: 2, transform: transform3, textureID: 0)
     }
 }

@@ -50,6 +50,10 @@ class Character: Node {
         }
     }
 
+    override var size: SIMD3<Float> {
+        return (boundingBox.maxBounds - boundingBox.minBounds) + 0.5
+    }
+
     let meshes: [Mesh]
     var currentTime: Float = 0
     var samplerState: MTLSamplerState
@@ -245,7 +249,9 @@ class Character: Node {
                 }
             }
 
-            mesh.skeleton?.updatePose(animationClip: animations[currentAnimation], at: currentTime)
+            let animation = animations[currentAnimation]
+            animation.speed = currentAnimation.speed
+            mesh.skeleton?.updatePose(animationClip: animation, at: currentTime)
             mesh.transform?.currentTransform = .identity()
 //            } else {
 //                mesh.transform?.setCurrentTransform(at: currentTime)
@@ -541,6 +547,13 @@ enum CharacterAnimation: String {
     case walking = "/walking_boy_all/Animations/walking"
     case pushing = "/walking_boy_all/Animations/push"
     case wheelbarrow = "/walking_boy_all/Animations/wheelbarrow"
+
+    var speed: Float {
+        switch self {
+        case .pushing: return 2.0
+        default: return 1.0
+        }
+    }
 }
 
 extension Character {

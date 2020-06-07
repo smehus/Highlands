@@ -205,6 +205,16 @@ class Prop: Node {
     //
     //    }
 
+
+    override var size: SIMD3<Float> {
+        switch name {
+        case "wooden_box":
+            return (boundingBox.maxBounds - boundingBox.minBounds)// + 0.5
+        default:
+            return boundingBox.maxBounds - boundingBox.minBounds
+        }
+    }
+
     static func loadMesh(name: String) -> MDLMesh {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
