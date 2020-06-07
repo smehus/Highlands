@@ -450,11 +450,11 @@ extension GameScene: KeyboardDelegate {
         case .key2: currentCameraIndex = 2
         case .w, .s, .a, .d, .left, .right, .up, .down:
             if state == .began {
-//                skeleton.resumeAnimation()
+                skeleton.set(animation: .walking)
             }
 
             if state == .ended, keysDown.isEmpty {
-//                skeleton.pauseAnimation()
+                skeleton.set(animation: .idle)
             }
         default:
             break
@@ -464,19 +464,17 @@ extension GameScene: KeyboardDelegate {
     }
 }
 
-
-
 #endif
 
 #if os(iOS)
 
 extension GameScene: KeyboardDelegate {
     func didStartMove() {
-//        skeleton.resumeAnimation()
+        skeleton.set(animation: .walking)
     }
 
     func didEndMove() {
-//        skeleton.pauseAnimation()
+        skeleton.set(animation: .idle)
     }
 }
 

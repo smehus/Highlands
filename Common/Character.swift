@@ -33,6 +33,14 @@ class CharacterTorch: Prop {
     }
 }
 
+private extension Dictionary where Key == String, Value == AnimationClip {
+    subscript(_ animation: CharacterAnimation) -> AnimationClip {
+        get {
+            return self[animation.rawValue]!
+        }
+    }
+}
+
 class Character: Node {
 
     var debugBoundingBox: DebugBoundingBox?
@@ -51,7 +59,7 @@ class Character: Node {
 
     // Stuff I added \\
 
-    var currentAnimation: AnimationClip?
+    var currentAnimation: CharacterAnimation = .idle
 //    var currentAnimationPlaying = false
 
     var shadowInstanceCount: Int = 0
@@ -219,28 +227,22 @@ class Character: Node {
         position.y = pointer.pointee
 
         for mesh in meshes {
+//            if var animation = currentAnimation {
 
-            var animation: AnimationClip?
-            let uphill = ((position.y - previousYPosition) * 100) > 8.0
-            if uphill {
-                animation = animations["/walking_boy_all/Animations/wheelbarrow"]
-            } else {
-                animation = animations["/walking_boy_all/Animations/walking"]
+            if currentAnimation == .walking {
+                let uphill = ((position.y - previousYPosition) * 100) > 8.0
+                if uphill {
+                    currentAnimation = .wheelbarrow
+                } else {
+                    currentAnimation = .walking
+                }
             }
 
-            // Check if the current animation needs to finish
-            if let current = currentAnimation, current.needsToFinish(at: currentTime) {
-                animation = current
-            }
-
-            // change walking to wheelbarrow
-            if let animationClip = animation {
-                mesh.skeleton?.updatePose(animationClip: animationClip, at: currentTime)
-                mesh.transform?.currentTransform = .identity()
-                currentAnimation = animationClip
-            } else {
-                mesh.transform?.setCurrentTransform(at: currentTime)
-            }
+            mesh.skeleton?.updatePose(animationClip: animations[currentAnimation], at: currentTime)
+            mesh.transform?.currentTransform = .identity()
+//            } else {
+//                mesh.transform?.setCurrentTransform(at: currentTime)
+//            }
         }
 
 
@@ -305,6 +307,8 @@ extension Character: Renderable {
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
         var uniforms = uniforms
 
+        // Used to remove water around the player - but right now not using the stencil buffer anymore.
+        // Using rendered traget as mask
         return
         var transform = Transform()
         transform.position = position
@@ -523,3 +527,19 @@ extension Character {
         render(renderEncoder: renderEncoder, uniforms: uniforms)
     }
 }
+
+
+enum CharacterAnimation: String {
+    case idle = "/walking_boy_all/Animations/idle"
+    case walking = "/walking_boy_all/Animations/walking"
+    case pushing = "/walking_boy_all/Animations/push"
+    case wheelbarrow = "/walking_boy_all/Animations/wheelbarrow"
+}
+
+extension Character {
+
+    func set(animation: CharacterAnimation) {
+        currentAnimation = animation
+    }
+}
+
