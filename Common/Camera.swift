@@ -95,3 +95,15 @@ class ThirdPersonCamera: Camera {
         rotation.y = focus.rotation.y
     }
 }
+
+class ReflectionCamera: ThirdPersonCamera {
+
+//    override var viewMatrix: float4x4 {
+//        // Don't include focuse distance to render from camera & facing player forward vector
+//        position = focus.position * focus.forwardVector
+//        position.y = focus.position.y + focusHeight
+//        rotation.y = focus.rotation.y
+//
+//        return float4x4(lookAtLHEye: position, target: focus.position, up: [0, 1, 0])
+//    }
+}

@@ -17,6 +17,17 @@ struct TerrainVertexOut {
     float4 color;
     float height;
     float2 uv;
+    float clip_distance [[ clip_distance ]] [1];
+};
+
+struct TerrainFragmentIn {
+    float4 position [[ position ]];
+    float4 worldPosition;
+    float3 worldNormal;
+    float4 color;
+    float height;
+    float2 uv;
+    float clip_distance;
 };
 
 struct ControlPoint {
@@ -183,10 +194,11 @@ vertex_terrain(patch_control_point<ControlPoint> control_points [[ stage_in ]],
 
     out.uv = xy;
     out.height = height;
+    out.clip_distance[0] = dot(uniforms.modelMatrix * position, uniforms.clipPlane);
     return out;
 }
 
-float3 terrainDiffuseLighting(TerrainVertexOut in,
+float3 terrainDiffuseLighting(TerrainFragmentIn in,
                        float3 baseColor,
                        float3 normalValue,
                        constant FragmentUniforms &fragmentUniforms,
@@ -289,7 +301,7 @@ float3 terrainDiffuseLighting(TerrainVertexOut in,
 
 }
 
-fragment float4 fragment_terrain(TerrainVertexOut in [[ stage_in ]],
+fragment float4 fragment_terrain(TerrainFragmentIn in [[ stage_in ]],
                                  constant Light *lights [[ buffer(BufferIndexLights) ]],
                                  constant FragmentUniforms &fragmentUniforms [[ buffer(BufferIndexFragmentUniforms) ]],
                                  texture2d<float> cliffTexture [[ texture(TerrainTextureBase) ]],

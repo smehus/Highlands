@@ -61,16 +61,8 @@ class Scene {
         let holdRotation = node.rotation
         inputController.updatePlayer(deltaTime: deltaTime)
 
-        let diff = node.position - holdPosition
-
-        if var body = physicsController.checkCollisions().first {
-            if body.isMovable {
-                body.position += diff
-            } else if isHardCollision() {
-                node.position = holdPosition
-                node.rotation = holdRotation
-            }
-        }
+        let playerMovement = node.position - holdPosition
+        physicsController.checkPlayerCollisions(initialPlayerPosition: holdPosition, playerMovement: playerMovement)
     }
 
     final func update(deltaTime: Float) {
@@ -131,7 +123,7 @@ class Scene {
 }
 
 extension Scene: TileSceneDelegate {
-    func physicsControllAdd(_ node: Node) {
+    func physicsControllAdd(_ node: Prop) {
         physicsController.addStaticBody(node: node)
     }
 }

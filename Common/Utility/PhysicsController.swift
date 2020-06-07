@@ -2,22 +2,22 @@
 
 import MetalKit
 
-// Render bounding boxes
+// TODO: - Fix this
 let debugRenderBoundingBox = false
 class PhysicsController {
 
     var dynamicBody: Node?
-    var staticBodies: [Node] = []
+    var staticBodies: [Prop] = []
 
     var holdAllCollided = true
     var collidedBodies: [Positionable] = []
 
-    func addStaticBody(node: Node) {
+    func addStaticBody(node: Prop) {
         removeBody(node: node)
         staticBodies.append(node)
     }
 
-    func removeBody(node: Node) {
+    func removeBody(node: Prop) {
         if let index = staticBodies.firstIndex(where: {
             $0.self === node
         }) {
@@ -25,40 +25,96 @@ class PhysicsController {
         }
     }
 
-    func checkCollisions() -> [Positionable] {
-        collidedBodies = []
-        guard let node = dynamicBody else { return [] }
-        let nodeRadius = max((node.size.x / 2), (node.size.z / 2))
-        // This calculates the flaot3 position of the node
-        let nodePosition = node.worldTransform.columns.3.xyz
-        
-        for body in staticBodies  {
-            let bodyRadius = max((body.size.x / 2), (body.size.z / 2))
-            if let prop = body as? Prop, prop.propType.isInstanced {
-                for transform in prop.transforms {
-                    let bodyPosition = transform.modelMatrix.columns.3.xyz
-                    let d = distance(nodePosition, bodyPosition)
-                    if d < (nodeRadius + bodyRadius) {
-                        if holdAllCollided {
-                            collidedBodies.append(transform)
-                        } else {
-                            return []
-                        }
+    func checkPlayerCollisions(initialPlayerPosition: SIMD3<Float>, playerMovement: SIMD3<Float>) {
+        guard let player = dynamicBody as? Character else { assertionFailure(); return }
+        let playerRadius = max(player.size.x / 2, player.size.z / 2)
+
+        staticBodies.flatMap { $0.transforms }.forEach { $0.isColliding = false }
+
+        // Find first transform / body
+
+        var collidedTransform: Transform?
+        var collidedProp: Prop?
+
+        Outer: for body in staticBodies {
+
+            let bodyRadius = max(body.size.x / 2, body.size.z / 2)
+            let transforms = body.transforms
+
+            guard let playerCollidedTransform = transforms.first(where: { (transform) -> Bool in
+                  return distance(player.position, transform.position) < (playerRadius + bodyRadius)
+            }) else { player.currentlyColliding = false; continue }
+
+
+            player.currentlyColliding = true
+            collidedProp = body
+            collidedTransform = playerCollidedTransform
+
+            break Outer
+        }
+
+        guard let playerCollidedTransform = collidedTransform, let playerCollidedProp = collidedProp else { return }
+
+        playerCollidedTransform.isColliding = true
+
+        let containsFutureCollisionWithSolidObject = findAllCollisions(
+            prop: playerCollidedProp,
+            transform: playerCollidedTransform,
+            move: playerMovement
+        )
+
+        if !containsFutureCollisionWithSolidObject && playerCollidedProp.isMovable {
+             playerCollidedTransform.position += playerMovement
+        } else {
+            player.position = initialPlayerPosition
+        }
+    }
+
+
+    private func findAllCollisions(prop: Prop, transform: Transform, move: SIMD3<Float>) -> Bool {
+        let bodyRadius = max(prop.size.x / 2, prop.size.z / 2)
+
+        for iteratedProp in staticBodies {
+
+            let nonCollidingTransforms = iteratedProp.transforms.filter { !$0.isColliding }
+            let iterationPropRadius = max(iteratedProp.size.x / 2, iteratedProp.size.z / 2)
+
+            for iteratedTransform in nonCollidingTransforms {
+                if distance(transform.position + move, iteratedTransform.position) < (bodyRadius + iterationPropRadius) {
+                    iteratedTransform.isColliding = true
+
+                    if !iteratedProp.isMovable {
+                        return true
                     }
-                }
-            } else {
-                let bodyPosition = body.worldTransform.columns.3.xyz
-                let d = distance(nodePosition, bodyPosition)
-                if d < (nodeRadius + bodyRadius) {
-                    if holdAllCollided {
-                        collidedBodies.append(body)
-                    } else {
-                        return []
+
+                    let containsFutureHold = findAllCollisions(prop: iteratedProp, transform: iteratedTransform, move: move)
+
+                    if !containsFutureHold {
+                        iteratedTransform.position += move
                     }
+
+                    return containsFutureHold
                 }
             }
         }
 
-        return collidedBodies
+
+//        let nonCollidedTransforms = allTransforms.filter { !$0.isColliding }
+
+//        for checkTransform in nonCollidedTransforms {
+//            if distance(transform.position, checkTransform.position) < (propRadius + propRadius) {
+//                checkTransform.position += move
+//                checkTransform.isColliding = true
+//                return findAllCollisions(
+//                    playerRadius: playerRadius,
+//                    propRadius: propRadius,
+//                    transform: checkTransform,
+//                    allTransforms: nonCollidedTransforms,
+//                    move: move
+//                )
+//            }
+//        }
+
+        return false
     }
 }

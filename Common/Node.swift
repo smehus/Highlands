@@ -53,9 +53,7 @@ class Node: Positionable {
         return [forwardVector.z, forwardVector.y, -forwardVector.x]
     }
 
-    var isMovable: Bool {
-        return true
-    }
+    var isMovable = true
     
     func update(deltaTime: Float) {
         // override this

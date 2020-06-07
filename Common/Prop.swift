@@ -205,6 +205,16 @@ class Prop: Node {
     //
     //    }
 
+
+    override var size: SIMD3<Float> {
+        switch name {
+        case "wooden_box":
+            return (boundingBox.maxBounds - boundingBox.minBounds)// + 0.5
+        default:
+            return boundingBox.maxBounds - boundingBox.minBounds
+        }
+    }
+
     static func loadMesh(name: String) -> MDLMesh {
         let assetURL = Bundle.main.url(forResource: name, withExtension: "obj")
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
@@ -352,7 +362,7 @@ class Prop: Node {
 
 extension Prop: Renderable {
 
-    private enum RenderType {
+    enum RenderType {
         case main
         case stencil
     }
@@ -403,7 +413,7 @@ extension Prop: Renderable {
         renderEncoder.popDebugGroup()
     }
 
-    private func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, type: RenderType) {
+    func render(renderEncoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, type: RenderType) {
         //        renderEncoder.setFrontFacing(windingOrder)
 
         var uniforms = vertex

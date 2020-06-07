@@ -21,9 +21,11 @@ extension Positionable {
 
 /// Used for instances
 class Transform: Positionable {
+    var name = ""
     var position = SIMD3<Float>(repeating: 0)
     var rotation = SIMD3<Float>(repeating: 0)
     var scale = SIMD3<Float>(repeating: 1)
+    var isColliding = false
 
     var modelMatrix: float4x4 {
         let translationMatrix = float4x4(translation: position)
@@ -34,5 +36,17 @@ class Transform: Positionable {
 
     var normalMatrix: float3x3 {
         return float3x3(normalFrom4x4: modelMatrix)
+    }
+}
+
+extension Transform: Equatable {
+    static func ==(lhs: Transform, rhs: Transform) -> Bool {
+        let equalPosition = lhs.position == rhs.position
+        let equalRotation = lhs.rotation == rhs.rotation
+        let equalScale = lhs.scale == rhs.scale
+        let reduced = [equalPosition, equalRotation, equalScale].reduce(true) { $0 && $1 }
+        let equated = equalPosition && equalRotation && equalScale
+        assert(reduced == equated)
+        return reduced
     }
 }

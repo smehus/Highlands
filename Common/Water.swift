@@ -14,42 +14,73 @@ class Water: Node {
     private let mesh: MTKMesh
     private let mdlMesh: MDLMesh
     private var pipelineState: MTLRenderPipelineState
+    private var displacementPipelineState: MTLRenderPipelineState
     private var waterNormalTexture: MTLTexture
     private var timer: Float = 0
     private let refractionRenderPass: RenderPass
     private let reflectionRenderPass: RenderPass
     private let maskRenderPass: RenderPass
     private let depthStencilState: MTLDepthStencilState
-    private let reflectionCamera = ThirdPersonCamera()
+    private let reflectionCamera = ReflectionCamera()
     private let mainDepthStencilState: MTLDepthStencilState
     private let orthoCamera = OrthographicCamera()
     private var heightMap: MTLTexture!
     private var displacementMeshes: [(Transform, MTKMesh)] = []
 
+
+    private lazy var reflectionDepthState: MTLDepthStencilState = {
+        var depthStencilDescriptor = MTLDepthStencilDescriptor()
+        depthStencilDescriptor.depthCompareFunction = .less
+
+        return Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
+    }()
+
+    private lazy var depthState: MTLDepthStencilState = {
+        var depthStencilDescriptor = MTLDepthStencilDescriptor()
+        depthStencilDescriptor.depthCompareFunction = .less
+        depthStencilDescriptor.isDepthWriteEnabled = true
+        depthStencilDescriptor.frontFaceStencil.depthStencilPassOperation = .keep
+        return Renderer.device.makeDepthStencilState(descriptor: depthStencilDescriptor)!
+    }()
+
     init(size: Float) {
         do {
             let plane = Primitive.makePlane(device: Renderer.device, size: size)
+//            let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+//            let plane = MDLMesh(boxWithExtent: [size, 3.0, size], segments: [1, 1, 1], inwardNormals: false, geometryType: .triangles, allocator: allocator)
             mdlMesh = plane
 
             mesh = try MTKMesh(mesh: plane, device: Renderer.device)
             waterNormalTexture = try Submesh.loadTexture(imageName: "normal-water.png")!.texture
 
 
-
             let library = Renderer.device.makeDefaultLibrary()!
-            let descriptor = MTLRenderPipelineDescriptor()
-            let vertexFunction = library.makeFunction(name: "vertex_water")
-            descriptor.vertexFunction = vertexFunction
-            descriptor.fragmentFunction = library.makeFunction(name: "fragment_water")
-            descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
-            descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
-            descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
-            descriptor.colorAttachments[0].isBlendingEnabled = true
-            descriptor.colorAttachments[0].rgbBlendOperation = .add
-            descriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
-            descriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
-            descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-            pipelineState = try Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+
+
+            let makePipeline: ((MTKMesh, Bool) -> MTLRenderPipelineState) = { mesh, value in
+
+                let constants = MTLFunctionConstantValues()
+                var isDisplacement = value
+                constants.setConstantValue(&isDisplacement, type: .bool, index: 0)
+
+                let descriptor = MTLRenderPipelineDescriptor()
+
+                descriptor.vertexFunction = library.makeFunction(name: "vertex_water")
+                descriptor.fragmentFunction = try! library.makeFunction(name: "fragment_water", constantValues: constants)
+                descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+                descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+                descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+                descriptor.colorAttachments[0].isBlendingEnabled = true
+                descriptor.colorAttachments[0].rgbBlendOperation = .add
+                descriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+                descriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+                descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
+                return try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+            }
+
+
+            pipelineState = makePipeline(mesh, false)
+            displacementPipelineState = makePipeline(mesh, true)
 
             reflectionRenderPass = RenderPass(name: "reflection", size: Renderer.drawableSize)
             refractionRenderPass = RenderPass(name: "refraction", size: Renderer.drawableSize)
@@ -116,12 +147,12 @@ extension Water: Renderable {
 
 
     func renderToTarget(with commandBuffer: MTLCommandBuffer, camera: Camera, lights: [Light], uniforms: Uniforms, renderables: [Renderable], shadowColorTexture: MTLTexture, shadowDepthTexture: MTLTexture, player: Node) {
-        let mainUniforms = uniforms
-        var uniforms = uniforms
+        var reflectionUnifroms = Uniforms()
+        reflectionUnifroms.clipPlane = SIMD4<Float>(0, 1, 0, 6);
 
         // Reflection
         let reflectEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: reflectionRenderPass.descriptor)!
-        reflectEncoder.setDepthStencilState(mainDepthStencilState)
+        reflectEncoder.setDepthStencilState(reflectionDepthState)
 
         // set the transform
         reflectionCamera.focus = player
@@ -137,10 +168,10 @@ extension Water: Renderable {
         // Should this really be from the characters perspective? Or maybe the light? Kinda weird that we can
         // rotate around and the reflection shifts but hte character doesn't
         reflectionCamera.focusDistance = (camera as! ThirdPersonCamera).focusDistance
-        reflectionCamera.focusHeight = -(camera as! ThirdPersonCamera).focusHeight
+        reflectionCamera.focusHeight = -(camera as! ThirdPersonCamera).focusHeight //
 
-        uniforms.projectionMatrix = reflectionCamera.projectionMatrix
-        uniforms.viewMatrix = reflectionCamera.viewMatrix
+        reflectionUnifroms.projectionMatrix = reflectionCamera.projectionMatrix
+        reflectionUnifroms.viewMatrix = reflectionCamera.viewMatrix
 
         // fragment uniforms
         var fragmentUniforms = FragmentUniforms()
@@ -153,15 +184,22 @@ extension Water: Renderable {
         reflectEncoder.setFragmentBytes(&fragmentUniforms, length: MemoryLayout<FragmentUniforms>.size, index: Int(BufferIndexFragmentUniforms.rawValue))
 
         var lights = lights
+        let l = buildDefaultLight()
+        lights.append(l)
         reflectEncoder.setFragmentBytes(&lights, length: MemoryLayout<Light>.stride * lights.count, index: Int(BufferIndexLights.rawValue))
 
         var farZ = Camera.FarZ
         reflectEncoder.setFragmentBytes(&farZ, length: MemoryLayout<Float>.stride, index: 24)
 
-        for case let renderable as Prop in renderables where renderable.name == "treefir" {
-//            guard type(of: renderable) == Terrain.self else { continue }
-
-            renderable.render(renderEncoder: reflectEncoder, uniforms: uniforms)
+        for renderable in renderables {
+            switch renderable {
+            case let prop as Prop where prop.name == "treefir":
+                renderable.render(renderEncoder: reflectEncoder, uniforms: reflectionUnifroms)
+            case is Terrain:
+                renderable.render(renderEncoder: reflectEncoder, uniforms: reflectionUnifroms)
+            default:
+                continue
+            }
         }
 
         reflectEncoder.endEncoding()
@@ -176,29 +214,38 @@ extension Water: Renderable {
         // Do this in the main pass
 
 
+
         // Water Displacement!
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)
         for renderable in renderables {
-            if let prop = renderable as? Prop {
-                for (transform, plane) in zip(prop.transforms, prop.maskPlanes) {
-                    var uniforms = uniforms
+
+            var uniforms = uniforms
+
+            if let prop = renderable as? Prop, prop.name != "treefir" {
+
+                uniforms.projectionMatrix = camera.projectionMatrix
+                uniforms.viewMatrix = camera.viewMatrix
+
+                for (transform, plane) in zip(prop.transforms, prop.instanceStencilPlanes) {
+
+                    // Render Prop \\
+                    prop.render(renderEncoder: renderEncoder, uniforms: uniforms, type: .stencil)
+
+
+                    // Render displacement mask models \\
 
                     let planeTransform = Transform()
                     planeTransform.position = transform.position
-                    planeTransform.position.x -= 15
+                    planeTransform.position.x -= 8
                     planeTransform.scale = transform.scale
-//                    planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
+                    planeTransform.rotation = [0, 0, radians(fromDegrees: -90)]
 
-
-                    uniforms.projectionMatrix = camera.projectionMatrix
-                    uniforms.viewMatrix = camera.viewMatrix
                     uniforms.modelMatrix = prop.worldTransform * planeTransform.modelMatrix
                     uniforms.maskMatrix = orthoCamera.projectionMatrix * camera.viewMatrix
-
                     renderEncoder.setRenderPipelineState(prop.maskPipeline)
-                    renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
+                    renderEncoder.setVertexBuffer(plane.vertexBuffers.first!.buffer, offset: 0, index: 0)
                     renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 
                     plane.submeshes.enumerated().forEach { (_, submesh) in
@@ -206,7 +253,8 @@ extension Water: Renderable {
                                                             indexCount: submesh.indexCount,
                                                             indexType: submesh.indexType,
                                                             indexBuffer: submesh.indexBuffer.buffer,
-                                                            indexBufferOffset: submesh.indexBuffer.offset)
+                                                            indexBufferOffset: submesh.indexBuffer.offset,
+                                                            instanceCount: 1)
                     }
                 }
 
@@ -259,13 +307,14 @@ extension Water: Renderable {
         renderEncoder.popDebugGroup()
     }
 
+
     private func render(renderEncoder: MTLRenderCommandEncoder, pipelineState: MTLRenderPipelineState, uniforms: Uniforms) {
 
         var uniforms = uniforms
         timer += 0.00017
 
         // Render water plane
-        renderEncoder.setDepthStencilState(GameScene.maskStencilState)
+        renderEncoder.setDepthStencilState(depthState)
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
@@ -298,15 +347,37 @@ extension Water: Renderable {
 
 
 
-        // Render displacement meshes
-        displacementMeshes.forEach { (transform, mesh) in
 
-            renderEncoder.setDepthStencilState(GameScene.maskStencilState)
-            renderEncoder.setRenderPipelineState(pipelineState)
+
+        renderEncoder.setDepthStencilState(mainDepthStencilState)
+        // Render displacement meshes
+        return
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+
+        displacementMeshes.forEach { (transform, _) in
+//            let mdlMesh = MDLMesh(planeWithExtent: [15, 10, 1],
+//                                   segments: [1, 1],
+//                                   geometryType: .triangles,
+//                                   allocator: allocator)
+
+
+            let mdlMesh = MDLMesh(boxWithExtent: [15, 1, 8], segments: [1, 1, 1], inwardNormals: true, geometryType: .triangles, allocator: allocator)
+            let mesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
+
+            let newTrans = Transform()
+            newTrans.position = transform.position
+//            newTrans.position.y -= 3
+            newTrans.position.x -= 10
+//            newTrans.position.z += 1.6
+            newTrans.scale = transform.scale
+            newTrans.rotation = transform.rotation
+
+            renderEncoder.setRenderPipelineState(displacementPipelineState)
             renderEncoder.setVertexBuffer(mesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
-            uniforms.modelMatrix = transform.modelMatrix
-            uniforms.normalMatrix = transform.normalMatrix
+            newTrans.rotation = [0, 0, 0]
+            uniforms.modelMatrix = newTrans.modelMatrix
+            uniforms.normalMatrix = newTrans.normalMatrix
 
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: Int(BufferIndexUniforms.rawValue))
 

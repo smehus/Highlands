@@ -62,15 +62,11 @@
 		023312A82444A348002CC03B /* Text.metal in Sources */ = {isa = PBXBuildFile; fileRef = 023312A62444A348002CC03B /* Text.metal */; };
 		02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
 		02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02544A9E231AC6F20072E47F /* Textures.xcassets */; };
+		025EA11B24759A7C002524D9 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 025EA11A24759A7C002524D9 /* walking_boy.usdz */; };
+		025EA11C24759A7C002524D9 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 025EA11A24759A7C002524D9 /* walking_boy.usdz */; };
 		02630CE523FCE5A700D0AEDA /* TileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290634F23FC3EC300FA0A26 /* TileScene.swift */; };
 		0277614823E3A985003E4DD5 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
 		0277614923E3A985003E4DD5 /* CharacterShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0294AE9B23DFF129005F2E67 /* CharacterShaders.metal */; };
-		0277614B23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */; };
-		0277614C23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */; };
-		0277614E23E3B6D5003E4DD5 /* walking_boy.usda in Resources */ = {isa = PBXBuildFile; fileRef = 0277614D23E3B6D5003E4DD5 /* walking_boy.usda */; };
-		0277614F23E3B6D5003E4DD5 /* walking_boy.usda in Resources */ = {isa = PBXBuildFile; fileRef = 0277614D23E3B6D5003E4DD5 /* walking_boy.usda */; };
-		0277615123E3B9A5003E4DD5 /* walking_boy.usd in Resources */ = {isa = PBXBuildFile; fileRef = 0277615023E3B9A4003E4DD5 /* walking_boy.usd */; };
-		0277615223E3B9A5003E4DD5 /* walking_boy.usd in Resources */ = {isa = PBXBuildFile; fileRef = 0277615023E3B9A4003E4DD5 /* walking_boy.usd */; };
 		0290635023FC3EC300FA0A26 /* TileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290634F23FC3EC300FA0A26 /* TileScene.swift */; };
 		0290635523FC528400FA0A26 /* HighlandsTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290635423FC528400FA0A26 /* HighlandsTile.swift */; };
 		0290635623FC528400FA0A26 /* HighlandsTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290635423FC528400FA0A26 /* HighlandsTile.swift */; };
@@ -142,8 +138,6 @@
 		02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CB1E9D21EA848E002CCB94 /* DebugLights.swift */; };
 		02A38F4223E1422A00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
 		02A38F4323E1422B00E26E19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A1CD2321BA2833002F6F35 /* ViewController.swift */; };
-		02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
-		02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */; };
 		02CF22B62459C3DD00D81337 /* DynamicRasterizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CF22B52459C3DD00D81337 /* DynamicRasterizedText.swift */; };
 		02D25A2023F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
 		02D25A2123F8975200CD8130 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D25A1F23F8975200CD8130 /* TextureController.swift */; };
@@ -153,6 +147,12 @@
 		02F3DCD72434E210008FFBC7 /* wooden_box.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD22434E210008FFBC7 /* wooden_box.mtl */; };
 		02F3DCD82434E210008FFBC7 /* wooden_box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD32434E210008FFBC7 /* wooden_box.obj */; };
 		02F3DCD92434E210008FFBC7 /* wooden_box.obj in Resources */ = {isa = PBXBuildFile; fileRef = 02F3DCD32434E210008FFBC7 /* wooden_box.obj */; };
+		02FD20C6248D84D40063409A /* walking_boy_all.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02FD20C5248D84D40063409A /* walking_boy_all.usdz */; };
+		02FD20C7248D84D40063409A /* walking_boy_all.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 02FD20C5248D84D40063409A /* walking_boy_all.usdz */; };
+		02FD20CC248DADED0063409A /* ObjectiveBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FD20CB248DADED0063409A /* ObjectiveBeacon.swift */; };
+		02FD20CD248DADED0063409A /* ObjectiveBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FD20CB248DADED0063409A /* ObjectiveBeacon.swift */; };
+		02FD20CF248DB4080063409A /* ObjectiveBeacon.metal in Sources */ = {isa = PBXBuildFile; fileRef = 02FD20CE248DB4080063409A /* ObjectiveBeacon.metal */; };
+		02FD20D0248DB4080063409A /* ObjectiveBeacon.metal in Sources */ = {isa = PBXBuildFile; fileRef = 02FD20CE248DB4080063409A /* ObjectiveBeacon.metal */; };
 		A57506EC21CE942700C63081 /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EA21CE942700C63081 /* InputController.swift */; };
 		A57506EE21CE942700C63081 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57506EB21CE942700C63081 /* GameView.swift */; };
 		A57F6A3421B8CB42002C0632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F6A3321B8CB42002C0632 /* AppDelegate.swift */; };
@@ -219,9 +219,7 @@
 		023312A62444A348002CC03B /* Text.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Text.metal; sourceTree = "<group>"; };
 		02544A98231AB2130072E47F /* Terrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terrain.swift; sourceTree = "<group>"; };
 		02544A9E231AC6F20072E47F /* Textures.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Textures.xcassets; path = ../Textures.xcassets; sourceTree = "<group>"; };
-		0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = walking_boy.usdz; sourceTree = SOURCE_ROOT; };
-		0277614D23E3B6D5003E4DD5 /* walking_boy.usda */ = {isa = PBXFileReference; lastKnownFileType = text; path = walking_boy.usda; sourceTree = SOURCE_ROOT; };
-		0277615023E3B9A4003E4DD5 /* walking_boy.usd */ = {isa = PBXFileReference; lastKnownFileType = file; path = walking_boy.usd; sourceTree = SOURCE_ROOT; };
+		025EA11A24759A7C002524D9 /* walking_boy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = walking_boy.usdz; sourceTree = "<group>"; };
 		0284473722C02DFB00A4E479 /* Water.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Water.swift; sourceTree = "<group>"; };
 		0284474022C04EE500A4E479 /* RenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
 		0290634F23FC3EC300FA0A26 /* TileScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileScene.swift; sourceTree = "<group>"; };
@@ -244,12 +242,14 @@
 		02BDBED423DC96A300FB3EEA /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		02BDBED523DC96A300FB3EEA /* AnimationComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		02BDBED623DC96A300FB3EEA /* Skeleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
-		02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = boy_tpose.usdz; sourceTree = SOURCE_ROOT; };
 		02CF22B52459C3DD00D81337 /* DynamicRasterizedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRasterizedText.swift; sourceTree = "<group>"; };
 		02D25A1F23F8975200CD8130 /* TextureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureController.swift; sourceTree = "<group>"; };
 		02F3DCD12434E20F008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = wooden_box_obj_UVChannel_1_color.tga; sourceTree = "<group>"; };
 		02F3DCD22434E210008FFBC7 /* wooden_box.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wooden_box.mtl; sourceTree = "<group>"; };
 		02F3DCD32434E210008FFBC7 /* wooden_box.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wooden_box.obj; sourceTree = "<group>"; };
+		02FD20C5248D84D40063409A /* walking_boy_all.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = walking_boy_all.usdz; sourceTree = "<group>"; };
+		02FD20CB248DADED0063409A /* ObjectiveBeacon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveBeacon.swift; sourceTree = "<group>"; };
+		02FD20CE248DB4080063409A /* ObjectiveBeacon.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ObjectiveBeacon.metal; sourceTree = "<group>"; };
 		A551AE0721C9A4E700FA207B /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		A563DF1121E6EBBE00563EA9 /* Skybox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skybox.swift; sourceTree = "<group>"; };
 		A563DF1B21E8035200563EA9 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
@@ -422,10 +422,8 @@
 		A551ADFE21C997C000FA207B /* Characters */ = {
 			isa = PBXGroup;
 			children = (
-				0277615023E3B9A4003E4DD5 /* walking_boy.usd */,
-				0277614D23E3B6D5003E4DD5 /* walking_boy.usda */,
-				0277614A23E3B5A9003E4DD5 /* walking_boy.usdz */,
-				02BDBEE523DC983100FB3EEA /* boy_tpose.usdz */,
+				02FD20C5248D84D40063409A /* walking_boy_all.usdz */,
+				025EA11A24759A7C002524D9 /* walking_boy.usdz */,
 			);
 			path = Characters;
 			sourceTree = "<group>";
@@ -472,6 +470,7 @@
 				0294AE9D23DFF129005F2E67 /* Water.metal */,
 				0294AE9323DFEE99005F2E67 /* Common.h */,
 				0294AE6223DFE526005F2E67 /* PBR.metal */,
+				02FD20CE248DB4080063409A /* ObjectiveBeacon.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -532,6 +531,7 @@
 				02544A98231AB2130072E47F /* Terrain.swift */,
 				0222792223BBBB8B005ED8FA /* Mesh.swift */,
 				0294AEB523E073CC005F2E67 /* ModelType.swift */,
+				02FD20CB248DADED0063409A /* ObjectiveBeacon.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -687,9 +687,9 @@
 				020E1D6423E2618100A61642 /* rock3.obj in Resources */,
 				020E1D5423E2618100A61642 /* ground.png in Resources */,
 				A5F6ABB421CF292E0027D425 /* Notes in Resources */,
+				025EA11B24759A7C002524D9 /* walking_boy.usdz in Resources */,
 				02F3DCD82434E210008FFBC7 /* wooden_box.obj in Resources */,
 				A57F6A3E21B8CB43002C0632 /* LaunchScreen.storyboard in Resources */,
-				0277614B23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */,
 				020E1D5023E2618100A61642 /* plane.obj in Resources */,
 				020E1D5623E2618100A61642 /* large-plane.obj in Resources */,
 				020E1D6C23E2618100A61642 /* rock3.mtl in Resources */,
@@ -698,22 +698,20 @@
 				A57F6A3B21B8CB43002C0632 /* Assets.xcassets in Resources */,
 				02544A9F231AC6F20072E47F /* Textures.xcassets in Resources */,
 				02F3DCD62434E210008FFBC7 /* wooden_box.mtl in Resources */,
+				02FD20C6248D84D40063409A /* walking_boy_all.usdz in Resources */,
 				020E1D6A23E2618100A61642 /* rock2.mtl in Resources */,
 				02F3DCD42434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */,
 				020E1D6823E2618100A61642 /* rock1.mtl in Resources */,
 				020E1D6223E2618100A61642 /* rock2.obj in Resources */,
 				020E1D4E23E2618100A61642 /* large-plane.mtl in Resources */,
 				020E1D4A23E2618100A61642 /* treefir.mtl in Resources */,
-				0277615123E3B9A5003E4DD5 /* walking_boy.usd in Resources */,
 				020E1D5E23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */,
 				020E1D5A23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 				020E1D6623E2618100A61642 /* rock1.obj in Resources */,
 				020E1D5223E2618100A61642 /* plane.mtl in Resources */,
-				0277614E23E3B6D5003E4DD5 /* walking_boy.usda in Resources */,
 				020E1D4C23E2618100A61642 /* treefir.obj in Resources */,
 				A57F6A3921B8CB42002C0632 /* Main.storyboard in Resources */,
 				020E1D5823E2618100A61642 /* normal-water.png in Resources */,
-				02BDBEE623DC983100FB3EEA /* boy_tpose.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,10 +720,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				020E1D5923E2618100A61642 /* normal-water.png in Resources */,
-				0277614F23E3B6D5003E4DD5 /* walking_boy.usda in Resources */,
 				020E1D5F23E2618100A61642 /* HRN_LMP_CM.bmp in Resources */,
 				020E1D4B23E2618100A61642 /* treefir.mtl in Resources */,
 				02544AA0231AC6F20072E47F /* Textures.xcassets in Resources */,
+				025EA11C24759A7C002524D9 /* walking_boy.usdz in Resources */,
 				02F3DCD52434E210008FFBC7 /* wooden_box_obj_UVChannel_1_color.tga in Resources */,
 				02F3DCD72434E210008FFBC7 /* wooden_box.mtl in Resources */,
 				020E1D6923E2618100A61642 /* rock1.mtl in Resources */,
@@ -735,18 +733,16 @@
 				020E1D6D23E2618100A61642 /* rock3.mtl in Resources */,
 				020E1D5523E2618100A61642 /* ground.png in Resources */,
 				020E1D4D23E2618100A61642 /* treefir.obj in Resources */,
-				0277615223E3B9A5003E4DD5 /* walking_boy.usd in Resources */,
 				020E1D6723E2618100A61642 /* rock1.obj in Resources */,
 				020E1D5323E2618100A61642 /* plane.mtl in Resources */,
-				0277614C23E3B5A9003E4DD5 /* walking_boy.usdz in Resources */,
 				020E1D6B23E2618100A61642 /* rock2.mtl in Resources */,
 				02F3DCD92434E210008FFBC7 /* wooden_box.obj in Resources */,
 				020E1D6123E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.obj in Resources */,
 				020E1D6323E2618100A61642 /* rock2.obj in Resources */,
+				02FD20C7248D84D40063409A /* walking_boy_all.usdz in Resources */,
 				020E1D6523E2618100A61642 /* rock3.obj in Resources */,
 				020E1D5D23E2618100A61642 /* HRN_LMP_NM.bmp in Resources */,
 				A57F6A5121B8CBA8002C0632 /* Main.storyboard in Resources */,
-				02BDBEE723DC983100FB3EEA /* boy_tpose.usdz in Resources */,
 				020E1D4F23E2618100A61642 /* large-plane.mtl in Resources */,
 				020E1D5B23E2618100A61642 /* SA_LD_Medieval_Horn_Lantern.mtl in Resources */,
 			);
@@ -770,6 +766,7 @@
 				0290635523FC528400FA0A26 /* HighlandsTile.swift in Sources */,
 				020E1D7123E2799B00A61642 /* AnimationComponent.swift in Sources */,
 				0294AEAC23DFF129005F2E67 /* Shaders.metal in Sources */,
+				02FD20CC248DADED0063409A /* ObjectiveBeacon.swift in Sources */,
 				02A38F4223E1422A00E26E19 /* ViewController.swift in Sources */,
 				0294AEBA23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AED623E07C56005F2E67 /* Skybox.swift in Sources */,
@@ -799,6 +796,7 @@
 				0294AECA23E07845005F2E67 /* DebugBoundingBox.swift in Sources */,
 				020E1D6E23E2799B00A61642 /* TransformComponent.swift in Sources */,
 				0294AEA023DFF129005F2E67 /* MorphShader.metal in Sources */,
+				02FD20CF248DB4080063409A /* ObjectiveBeacon.metal in Sources */,
 				A5A1CD2921BA2887002F6F35 /* ViewControllerExtension.swift in Sources */,
 				0277614823E3A985003E4DD5 /* CharacterShaders.metal in Sources */,
 				02A38F3823E1387000E26E19 /* Renderer.swift in Sources */,
@@ -820,6 +818,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				020E1D7623E2799B00A61642 /* AnimationComponent.swift in Sources */,
+				02FD20D0248DB4080063409A /* ObjectiveBeacon.metal in Sources */,
 				0294AED123E07896005F2E67 /* InputController.swift in Sources */,
 				02A38F2923E11BEC00E26E19 /* Patch+Extensions.swift in Sources */,
 				0294AEA323DFF129005F2E67 /* Skybox.metal in Sources */,
@@ -833,6 +832,7 @@
 				0294AEBB23E07693005F2E67 /* Mesh.swift in Sources */,
 				0294AEAD23DFF129005F2E67 /* Shaders.metal in Sources */,
 				0294AEAF23DFF129005F2E67 /* Water.metal in Sources */,
+				02FD20CD248DADED0063409A /* ObjectiveBeacon.swift in Sources */,
 				02D25A2123F8975200CD8130 /* TextureController.swift in Sources */,
 				02A38F3B23E1389600E26E19 /* DebugLights.swift in Sources */,
 				020E1D7423E2799B00A61642 /* AnimationClip.swift in Sources */,

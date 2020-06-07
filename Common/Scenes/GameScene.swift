@@ -16,7 +16,7 @@ final class GameScene: Scene {
 //    let terrain = Terrain(textureName: "hills")
 //    let ground = Prop(type: .base(name: "floor_grid", lighting: true))
 //    let plane = Prop(type: .base(name: "large-plane", lighting: true))
-    let skeleton = Character(name: "walking_boy")
+    let skeleton = Character(name: "walking_boy_all")
 //    let lantern = Prop(type: .base(name: "SA_LD_Medieval_Horn_Lantern", lighting: false))
 //    let lantern = CharacterTorch(type: .base(name: "Torch", lighting: true))
     let water = Water(size: 500)
@@ -33,7 +33,7 @@ final class GameScene: Scene {
         instanceParamBuffer = Renderer.device
             .makeBuffer(length: MemoryLayout<InstanceParams>.stride * Renderer.InstanceParamsBufferCapacity, options: .storageModeShared)!
 
-        skybox = Skybox(textureName: nil)
+//        skybox = Skybox(textureName: nil)
 
         inputController.keyboardDelegate = self
 
@@ -62,6 +62,7 @@ final class GameScene: Scene {
         skeleton.position = [0, 0, 0]
         skeleton.boundingBox = MDLAxisAlignedBoundingBox(maxBounds: [0.4, 1.7, 0.4], minBounds: [-0.4, 0, -0.4])
 //        skeleton.currentAnimation.speed = 1.0
+        
         add(node: skeleton)
 //
         physicsController.dynamicBody = skeleton
@@ -76,8 +77,8 @@ final class GameScene: Scene {
 
 
         let tpCamera = ThirdPersonCamera(focus: skeleton)
-        tpCamera.focusHeight = 10
-        tpCamera.focusDistance = 6
+        tpCamera.focusHeight = 20
+        tpCamera.focusDistance = 10
         cameras.append(tpCamera)
         cameras.first?.position = [0, 4 , 3]
         currentCameraIndex = cameras.endIndex - 1
@@ -449,11 +450,11 @@ extension GameScene: KeyboardDelegate {
         case .key2: currentCameraIndex = 2
         case .w, .s, .a, .d, .left, .right, .up, .down:
             if state == .began {
-//                skeleton.resumeAnimation()
+                skeleton.set(animation: .walking)
             }
 
             if state == .ended, keysDown.isEmpty {
-//                skeleton.pauseAnimation()
+                skeleton.set(animation: .idle)
             }
         default:
             break
@@ -463,19 +464,17 @@ extension GameScene: KeyboardDelegate {
     }
 }
 
-
-
 #endif
 
 #if os(iOS)
 
 extension GameScene: KeyboardDelegate {
     func didStartMove() {
-//        skeleton.resumeAnimation()
+        skeleton.set(animation: .walking)
     }
 
     func didEndMove() {
-//        skeleton.pauseAnimation()
+        skeleton.set(animation: .idle)
     }
 }
 

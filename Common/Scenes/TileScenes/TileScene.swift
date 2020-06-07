@@ -10,7 +10,7 @@ import Foundation
 import MetalKit
 
 protocol TileSceneDelegate: class {
-    func physicsControllAdd(_ node: Node)
+    func physicsControllAdd(_ node: Prop)
 }
 
 class TileScene: Node {
@@ -23,14 +23,16 @@ class TileScene: Node {
 
     func setupTile() {
 
+        water.position.y = -6
+        water.rotation = [0, 0, radians(fromDegrees: -90)]
+        add(childNode: water)
+
 //        terrain.position = SIMD3<Float>([0, 0, 0])
         //        terrain.rotation = float3(radians(fromDegrees: -20), 0, 0)
         add(childNode: terrain)
         terrain.setup(with: [0, 0, 0])
 
-        water.position.y = -6
-        water.rotation = [0, 0, radians(fromDegrees: -90)]
-        add(childNode: water)
+
         /*
          ground.tiling = 4
          ground.scale = [4, 1, 4]
@@ -46,16 +48,33 @@ class TileScene: Node {
         let count = 10
         let offset = 25
 //
-        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 1))
+        let tree = Prop(type: .instanced(name: "treefir", instanceCount: 4))
+        tree.isMovable = false
         add(childNode: tree)
 
-        var t = Transform()
-        t.scale = [3.0, 3.0, 3.0]
-        t.position = [0, 0, -8]
-        tree.updateBuffer(instance: 0, transform: t, textureID: 0)
+        let t1 = Transform()
+        t1.scale = [3.0, 3.0, 3.0]
+        t1.position = [8, 0, -10]
+        tree.updateBuffer(instance: 0, transform: t1, textureID: 0)
+        delegate?.physicsControllAdd(tree)
+//
+        let t2 = Transform()
+        t2.scale = [4.0, 4.0, 4.0]
+        t2.position = [-4, 0, -12]
+        tree.updateBuffer(instance: 1, transform: t2, textureID: 0)
+//
+        let t3 = Transform()
+        t3.scale = [2.0, 2.0, 2.0]
+        t3.position = [4, 0, -8]
+        tree.updateBuffer(instance: 2, transform: t3, textureID: 0)
 
-//        physicsController.addStaticBody(node: tree)
-        for i in 0..<count {
+
+        let t4 = Transform()
+        t4.scale = [4.0, 4.0, 4.0]
+        t4.position = [4, 0, 23]
+        tree.updateBuffer(instance: 3, transform: t4, textureID: 0)
+
+//        for i in 0..<count {
 //            var transform = Transform()
 //            transform.scale = [3.0, 3.0, 3.0]
 //
@@ -66,7 +85,7 @@ class TileScene: Node {
 //
 //            transform.position = position
 //            tree.updateBuffer(instance: i, transform: transform, textureID: 0)
-        }
+//        }
 
 //        let textureNames = ["rock1-color", "rock2-color", "rock3-color"]
 //        let morphTargetNames = ["rock1", "rock2", "rock3"]
@@ -92,18 +111,25 @@ class TileScene: Node {
 //        }
 
 
-        let box = Prop(type: .instanced(name: "wooden_box", instanceCount: 2))
+        let box = Prop(type: .instanced(name: "wooden_box", instanceCount: 3))
         add(childNode: box)
+        delegate?.physicsControllAdd(box)
 
         // Shadows only work correctly with instanced props right now.
         let transform = Transform()
+        transform.name = "first"
         transform.position = [0, 0, 4]
         box.updateBuffer(instance: 0, transform: transform, textureID: 0)
 
         let transform2 = Transform()
+        transform2.name = "second"
         transform2.position = [8, 0, 2]
         box.updateBuffer(instance: 1, transform: transform2, textureID: 0)
-        delegate?.physicsControllAdd(box)
+
+        let transform3 = Transform()
+        transform3.name = "third"
+        transform3.position = [0, 0, 10]
+        box.updateBuffer(instance: 2, transform: transform3, textureID: 0)
     }
 }
 

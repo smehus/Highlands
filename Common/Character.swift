@@ -33,6 +33,14 @@ class CharacterTorch: Prop {
     }
 }
 
+private extension Dictionary where Key == String, Value == AnimationClip {
+    subscript(_ animation: CharacterAnimation) -> AnimationClip {
+        get {
+            return self[animation.rawValue]!
+        }
+    }
+}
+
 class Character: Node {
 
     var debugBoundingBox: DebugBoundingBox?
@@ -40,6 +48,10 @@ class Character: Node {
         didSet {
             debugBoundingBox = DebugBoundingBox(boundingBox: boundingBox)
         }
+    }
+
+    override var size: SIMD3<Float> {
+        return (boundingBox.maxBounds - boundingBox.minBounds) + 0.5
     }
 
     let meshes: [Mesh]
@@ -51,12 +63,17 @@ class Character: Node {
 
     // Stuff I added \\
 
-
-    // Not sure about this tho
-//    var currentAnimation: AnimationClip?
+    var currentAnimation: CharacterAnimation = .idle
 //    var currentAnimationPlaying = false
 
     var shadowInstanceCount: Int = 0
+    var currentlyColliding = false {
+        didSet {
+            if currentlyColliding {
+                set(animation: .pushing)
+            }
+        }
+    }
 
     let heightCalculatePipelineState: MTLComputePipelineState
     let needsXRotationFix = true
@@ -179,6 +196,7 @@ class Character: Node {
         currentPatch = patch(for: position)
         positionInPatch = positionInPatch(patch: currentPatch)
 
+        let previousYPosition = Float(position.y)
         if position.y == 0 {
             let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
             position.y = pointer.pointee
@@ -189,13 +207,6 @@ class Character: Node {
         currentTime += deltaTime
 
 //        You're using the first animation for simplicity. The starter code for the following chapter will refactor the animation code so that you can send a named animation to the model.
-        for mesh in meshes {
-            if let animationClip = animations.first?.value {
-                mesh.skeleton?.updatePose(animationClip: animationClip, at: currentTime)
-                mesh.transform?.currentTransform = .identity() }
-            else {
-                mesh.transform?.setCurrentTransform(at: currentTime) }
-        }
 
 
         /* DEPRECATED WITH USDA
@@ -226,9 +237,32 @@ class Character: Node {
         let pointer = heightBuffer.contents().bindMemory(to: Float.self, capacity: 1)
         position.y = pointer.pointee
 
-        if let tile = currentTile {
-            position.y += tile.position.y
+        for mesh in meshes {
+//            if var animation = currentAnimation {
+
+            if currentAnimation == .walking {
+                let uphill = ((position.y - previousYPosition) * 100) > 8.0
+                if uphill {
+                    currentAnimation = .wheelbarrow
+                } else {
+                    currentAnimation = .walking
+                }
+            }
+
+            let animation = animations[currentAnimation]
+            animation.speed = currentAnimation.speed
+            mesh.skeleton?.updatePose(animationClip: animation, at: currentTime)
+            mesh.transform?.currentTransform = .identity()
+//            } else {
+//                mesh.transform?.setCurrentTransform(at: currentTime)
+//            }
         }
+
+
+        // Doesn't do anything now?
+//        if let tile = currentTile {
+//            position.y += tile.position.y
+//        }
     }
 
     func setLeftRotation(rotationSpeed: Float) {
@@ -286,6 +320,8 @@ extension Character: Renderable {
     func renderStencilBuffer(renderEncoder: MTLRenderCommandEncoder, uniforms: Uniforms) {
         var uniforms = uniforms
 
+        // Used to remove water around the player - but right now not using the stencil buffer anymore.
+        // Using rendered traget as mask
         return
         var transform = Transform()
         transform.position = position
@@ -504,3 +540,26 @@ extension Character {
         render(renderEncoder: renderEncoder, uniforms: uniforms)
     }
 }
+
+
+enum CharacterAnimation: String {
+    case idle = "/walking_boy_all/Animations/idle"
+    case walking = "/walking_boy_all/Animations/walking"
+    case pushing = "/walking_boy_all/Animations/push"
+    case wheelbarrow = "/walking_boy_all/Animations/wheelbarrow"
+
+    var speed: Float {
+        switch self {
+        case .pushing: return 2.0
+        default: return 1.0
+        }
+    }
+}
+
+extension Character {
+
+    func set(animation: CharacterAnimation) {
+        currentAnimation = animation
+    }
+}
+
