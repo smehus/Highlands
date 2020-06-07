@@ -43,9 +43,10 @@ class PhysicsController {
 
             guard let playerCollidedTransform = transforms.first(where: { (transform) -> Bool in
                   return distance(player.position, transform.position) < (playerRadius + bodyRadius)
-              }) else { continue }
+            }) else { player.currentlyColliding = false; continue }
 
 
+            player.currentlyColliding = true
             collidedProp = body
             collidedTransform = playerCollidedTransform
 

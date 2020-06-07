@@ -63,6 +63,13 @@ class Character: Node {
 //    var currentAnimationPlaying = false
 
     var shadowInstanceCount: Int = 0
+    var currentlyColliding = false {
+        didSet {
+            if currentlyColliding {
+                set(animation: .pushing)
+            }
+        }
+    }
 
     let heightCalculatePipelineState: MTLComputePipelineState
     let needsXRotationFix = true
