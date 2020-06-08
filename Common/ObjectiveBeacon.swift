@@ -12,6 +12,7 @@ final class ObjectiveBeacon: Node {
 
     private let mdlMesh: MDLMesh!
     private let mtkMesh: MTKMesh!
+    private let pipelineState: MTLRenderPipelineState
 
     override init() {
 
@@ -29,6 +30,16 @@ final class ObjectiveBeacon: Node {
 
         mtkMesh = try! MTKMesh(mesh: mdlMesh, device: Renderer.device)
 
+        let descriptor = MTLRenderPipelineDescriptor()
+        descriptor.vertexFunction = Renderer.library!.makeFunction(name: "objective_vertex")
+        descriptor.fragmentFunction = Renderer.library!.makeFunction(name: "objective_fragment")
+        descriptor.colorAttachments[0].pixelFormat = Renderer.colorPixelFormat
+        descriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        descriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+        descriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mtkMesh.vertexDescriptor)
+
+        pipelineState = try! Renderer.device.makeRenderPipelineState(descriptor: descriptor)
+
         super.init()
     }
 }
@@ -43,6 +54,7 @@ extension ObjectiveBeacon: Renderable {
         // Depth stencil state
 
         // Pipelinestate
+        renderEncoder.setRenderPipelineState(pipelineState)
 
         // uniforms
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: Int(BufferIndexUniforms.rawValue))

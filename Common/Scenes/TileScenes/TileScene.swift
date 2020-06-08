@@ -130,6 +130,10 @@ class TileScene: Node {
         transform3.name = "third"
         transform3.position = [0, 0, 10]
         box.updateBuffer(instance: 2, transform: transform3, textureID: 0)
+
+        let beacon = ObjectiveBeacon()
+        beacon.position = [-4, water.position.y - 1, 0]
+        add(childNode: beacon)
     }
 }
 
