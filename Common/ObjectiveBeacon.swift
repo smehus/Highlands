@@ -62,6 +62,9 @@ extension ObjectiveBeacon: Renderable {
         // Vertex buffer
         renderEncoder.setVertexBuffer(mtkMesh.vertexBuffers.first!.buffer, offset: 0, index: 0)
 
+        // Textures
+        renderEncoder.setFragmentTexture(TextureController.maskRenderPass.texture, index: 0)
+
         for submesh in mtkMesh.submeshes {
             renderEncoder.drawIndexedPrimitives(
                 type: .triangle,

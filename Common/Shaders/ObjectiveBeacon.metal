@@ -26,7 +26,10 @@ vertex VertexOut objective_vertex(const VertexIn in [[ stage_in ]],
     };
 }
 
-fragment float4 objective_fragment(VertexOut in [[ stage_in ]])
+fragment float4 objective_fragment(VertexOut in [[ stage_in ]],
+                                   texture2d<float> maskTexture [[ texture(0) ]])
 {
+    // sample mask and check if beacon is inside mask
+    // Then change color based on that
     return float4(1, 0, 0, 1);
 }

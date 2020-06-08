@@ -19,7 +19,6 @@ class Water: Node {
     private var timer: Float = 0
     private let refractionRenderPass: RenderPass
     private let reflectionRenderPass: RenderPass
-    private let maskRenderPass: RenderPass
     private let depthStencilState: MTLDepthStencilState
     private let reflectionCamera = ReflectionCamera()
     private let mainDepthStencilState: MTLDepthStencilState
@@ -84,7 +83,7 @@ class Water: Node {
 
             reflectionRenderPass = RenderPass(name: "reflection", size: Renderer.drawableSize)
             refractionRenderPass = RenderPass(name: "refraction", size: Renderer.drawableSize)
-            maskRenderPass = RenderPass(name: "MaskPass", size: Renderer.drawableSize)
+            TextureController.maskRenderPass = RenderPass(name: "MaskPass", size: Renderer.drawableSize)
 
             let stencilDescriptor = MTLDepthStencilDescriptor()
             stencilDescriptor.depthCompareFunction = .less
@@ -216,7 +215,7 @@ extension Water: Renderable {
 
 
         // Water Displacement!
-        let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: maskRenderPass.descriptor)!
+        let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: TextureController.maskRenderPass.descriptor)!
         renderEncoder.setDepthStencilState(mainDepthStencilState)
         for renderable in renderables {
 
@@ -288,7 +287,7 @@ extension Water: Renderable {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         reflectionRenderPass.updateTextures(size: size)
         refractionRenderPass.updateTextures(size: size)
-        maskRenderPass.updateTextures(size: size)
+        TextureController.maskRenderPass.updateTextures(size: size)
 
         let cameraSize: Float = 10
         let ratio = Float(size.width / size.height)
@@ -326,7 +325,7 @@ extension Water: Renderable {
         renderEncoder.setFragmentTexture(reflectionRenderPass.texture, index: 0)
         renderEncoder.setFragmentTexture(refractionRenderPass.texture, index: 1)
         renderEncoder.setFragmentTexture(waterNormalTexture, index: 2)
-        renderEncoder.setFragmentTexture(maskRenderPass.texture, index: 7)
+        renderEncoder.setFragmentTexture(TextureController.maskRenderPass.texture, index: 7)
         renderEncoder.setFragmentTexture(heightMap, index: 8)
 
 
@@ -384,7 +383,7 @@ extension Water: Renderable {
             renderEncoder.setFragmentTexture(reflectionRenderPass.texture, index: 0)
             renderEncoder.setFragmentTexture(refractionRenderPass.texture, index: 1)
             renderEncoder.setFragmentTexture(waterNormalTexture, index: 2)
-            renderEncoder.setFragmentTexture(maskRenderPass.texture, index: 7)
+            renderEncoder.setFragmentTexture(TextureController.maskRenderPass.texture, index: 7)
             renderEncoder.setFragmentTexture(heightMap, index: 8)
 
 

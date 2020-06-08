@@ -17,6 +17,7 @@ class TextureController {
     static var heap: MTLHeap?
     static var textures: [TextureWrapper] = []
     static var heapTextures: [MTLTexture] = []
+    static var maskRenderPass: RenderPass!
 
     static func addTexture(texture: TextureWrapper?) -> Int? {
         guard let texture = texture else { assertionFailure(); return nil }
