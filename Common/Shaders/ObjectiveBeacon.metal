@@ -31,5 +31,22 @@ fragment float4 objective_fragment(VertexOut in [[ stage_in ]],
 {
     // sample mask and check if beacon is inside mask
     // Then change color based on that
+
+    float width = float(maskTexture.get_width() * 2.0);
+    float height = float(maskTexture.get_height() * 2.0);
+    float tx = in.position.x / width;
+    float ty = in.position.y / height;
+
+    constexpr sampler maskSampler(coord::normalized,
+                                  filter::linear,
+                                  address::clamp_to_edge,
+                                  compare_func:: less
+                                  );
+
+    float4 sample = maskTexture.sample(maskSampler, float2(tx, ty));
+    if (sample.r < 0.2) {
+        return float4(0, 1, 0, 1);
+    }
+
     return float4(1, 0, 0, 1);
 }
